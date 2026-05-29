@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 技术简报 2026年04月21日 | AI Daily Briefing April 21</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card2: #162032;
+      --border: #334155;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #a78bfa;
+      --accent2: #7c3aed;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --cyan: #22d3ee;
+      --tag-us: #1d4ed8;
+      --tag-cn: #dc2626;
+      --tag-sg: #f97316;
+      --tag-research: #059669;
+      --tag-open: #7c3aed;
+      --tag-policy: #b45309;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+    /* ====== Header ====== */
+    .ai-report-header {
+      background: linear-gradient(135deg, #1e1240, #0f172a);
+      border: 1px solid #4c1d95;
+      border-radius: 12px;
+      padding: 24px 32px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .ai-header-left .ai-title {
+      font-size: 22px; font-weight: 700; color: var(--accent);
+    }
+    .ai-header-left .ai-subtitle-cn {
+      color: var(--text); font-size: 13px; margin-top: 4px; font-weight: 500;
+    }
+    .ai-header-left .ai-subtitle-en {
+      color: var(--text-muted); font-size: 11px; font-style: italic; margin-top: 2px;
+    }
+    .ai-header-right { text-align: right; color: var(--text-muted); font-size: 12px; }
+    .ai-slot-badge {
+      display: inline-block; background: var(--accent2); color: #fff;
+      font-weight: 700; padding: 4px 14px; border-radius: 20px; font-size: 13px; margin-bottom: 6px;
+    }
+    .ai-header-right .en { font-style: italic; font-size: 11px; color: #64748b; }
+
+    /* ====== Stats bar ====== */
+    .stats-bar {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      background: var(--card2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 20px; margin-bottom: 20px;
+    }
+    .stat-item { display: flex; flex-direction: column; gap: 2px; }
+    .stat-label-cn { font-size: 10px; color: var(--text-muted); letter-spacing: 0.3px; }
+    .stat-label-en { font-size: 10px; color: #475569; font-style: italic; }
+    .stat-value { font-size: 18px; font-weight: 700; color: var(--accent); }
+    .stat-unit-cn { font-size: 11px; color: var(--text-muted); }
+    .stat-unit-en { font-size: 10px; color: #475569; font-style: italic; }
+
+    /* ====== Key Trends card ====== */
+    .trends-card {
+      background: linear-gradient(135deg, #1a1040, #1e293b);
+      border: 1px solid #4c1d95;
+      border-radius: 10px; padding: 20px 24px; margin-bottom: 20px;
+    }
+    .trends-title-cn {
+      font-size: 14px; font-weight: 700; color: var(--accent);
+      margin-bottom: 2px;
+    }
+    .trends-title-en {
+      font-size: 11px; color: #7c6fcd; font-style: italic; margin-bottom: 16px;
+    }
+    .trend-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      margin-bottom: 14px; padding-bottom: 14px;
+      border-bottom: 1px solid rgba(71,64,153,0.3);
+    }
+    .trend-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .trend-arrow { color: var(--accent); font-size: 16px; margin-top: 2px; flex-shrink: 0; }
+    .trend-content {}
+    .trend-cn { font-weight: 600; font-size: 13px; color: var(--text); }
+    .trend-en { font-size: 11px; font-style: italic; color: var(--text-muted); margin-top: 2px; }
+
+    /* ====== Section nav ====== */
+    .section-nav {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 20px; padding: 12px 16px;
+      background: var(--card2); border: 1px solid var(--border); border-radius: 8px;
+    }
+    .section-nav a {
+      color: var(--text-muted); text-decoration: none; font-size: 12px;
+      padding: 4px 12px; border-radius: 16px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .section-nav a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ====== Cards ====== */
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 24px; margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 16px; font-weight: 700; color: var(--text);
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title .title-cn { color: var(--text); }
+    .card-title .title-en {
+      font-size: 12px; font-weight: 400; color: var(--text-muted);
+      font-style: italic; margin-left: 8px;
+    }
+
+    /* ====== News items ====== */
+    .news-item {
+      margin-bottom: 20px; padding: 16px 18px;
+      border-radius: 0 8px 8px 0;
+      background: rgba(255,255,255,0.02);
+    }
+    .news-item:last-child { margin-bottom: 0; }
+    .news-item.top-story { border-left: 4px solid var(--accent); }
+    .news-item.us-story  { border-left: 4px solid #3b82f6; }
+    .news-item.cn-story  { border-left: 4px solid #ef4444; }
+    .news-item.sg-story  { border-left: 4px solid #f97316; }
+    .news-item.research  { border-left: 4px solid #10b981; }
+    .news-item.open-src  { border-left: 4px solid #8b5cf6; }
+    .news-item.policy    { border-left: 4px solid #f59e0b; }
+
+    .news-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .tag {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; font-weight: 600; color: #fff;
+    }
+    .tag-us { background: var(--tag-us); }
+    .tag-cn { background: var(--tag-cn); }
+    .tag-sg { background: var(--tag-sg); }
+    .tag-research { background: var(--tag-research); }
+    .tag-open { background: var(--tag-open); }
+    .tag-policy { background: var(--tag-policy); }
+
+    .news-title-cn {
+      font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px;
+    }
+    .news-title-en {
+      font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 10px;
+    }
+
+    .news-summary { margin-bottom: 10px; padding-left: 12px; border-left: 2px solid #334155; }
+    .news-summary-cn { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+    .news-summary-en { font-size: 12px; color: var(--text-muted); font-style: italic; line-height: 1.6; }
+
+    .why-matters { margin-bottom: 10px; }
+    .why-cn { font-size: 12px; color: #cbd5e1; margin-bottom: 3px; }
+    .why-en { font-size: 11px; color: #64748b; font-style: italic; }
+
+    .news-links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .news-link {
+      display: inline-block; padding: 4px 12px; border-radius: 6px;
+      font-size: 11px; color: var(--accent); text-decoration: none;
+      background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.2);
+      transition: all 0.2s;
+    }
+    .news-link:hover { background: rgba(167,139,250,0.15); }
+    .news-link.primary { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.3); font-weight: 600; }
+
+    /* ====== New Source Callout ====== */
+    .new-source-callout {
+      background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.25);
+      border-radius: 6px; padding: 6px 10px; color: #67e8f9; margin-top: 8px;
+    }
+    .new-source-callout strong { color: #22d3ee; }
+
+    /* ====== Whitelist block ====== */
+    .whitelist-block {
+      background: rgba(6,182,212,0.05); border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; font-size: 12px;
+    }
+    .whitelist-title-cn { font-size: 13px; font-weight: 700; color: #22d3ee; }
+    .whitelist-title-en { font-size: 11px; font-style: italic; color: #0891b2; margin-bottom: 8px; }
+    .whitelist-note-cn { font-size: 11px; color: #67e8f9; margin-bottom: 2px; }
+    .whitelist-note-en { font-size: 10px; font-style: italic; color: #0891b2; margin-bottom: 10px; }
+    .whitelist-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .wl-item {
+      background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 4px; padding: 2px 8px; color: #67e8f9;
+    }
+    .wl-item.wl-new {
+      background: rgba(6,182,212,0.2); border-color: #06b6d4;
+      color: #22d3ee; font-weight: 600;
+    }
+
+    /* ====== Footer ====== */
+    .report-footer {
+      text-align: center; color: var(--text-muted); font-size: 11px;
+      margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border);
+      line-height: 2.2;
+    }
+    .report-footer .footer-cn { color: var(--text-muted); }
+    .report-footer .footer-en { color: #475569; font-style: italic; font-size: 10px; }
+    .report-footer a { color: var(--accent); text-decoration: none; }
+    .dedupe-keys { font-size: 10px; color: #475569; margin-top: 8px; word-break: break-all; }
+
+    @media (max-width: 768px) {
+      .ai-report-header { flex-direction: column; gap: 12px; }
+      .ai-header-right { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== Header ===== -->
+  <div class="ai-report-header">
+    <div class="ai-header-left">
+      <div class="ai-title">🤖 AI 技术简报 · AI Daily Briefing</div>
+      <div class="ai-subtitle-cn">2026年04月21日 周一 &nbsp;·&nbsp; 全球 AI 技术动态</div>
+      <div class="ai-subtitle-en">Monday, April 21, 2026 &nbsp;·&nbsp; Global AI Technology Updates</div>
+    </div>
+    <div class="ai-header-right">
+      <div class="ai-slot-badge">日刊 Daily Edition</div>
+      <div class="footer-cn">更新时间：2026-04-21 10:36 SGT</div>
+      <div class="en">Updated: 2026-04-21 10:36 SGT</div>
+      <div class="footer-cn" style="margin-top:4px;">来源：OpenAI · Anthropic · DeepMind · DeepSeek · Google · 新加坡 GovTech</div>
+      <div class="en">Sources: OpenAI · Anthropic · DeepMind · DeepSeek · Google · Singapore GovTech</div>
+    </div>
+  </div>
+
+  <!-- ===== Stats bar ===== -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-label-cn">今日报道</span>
+      <span class="stat-label-en">Stories Today</span>
+      <span class="stat-value">13</span>
+      <span class="stat-unit-cn">条</span>
+      <span class="stat-unit-en">items</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label-cn">美国主线</span>
+      <span class="stat-label-en">US Stories</span>
+      <span class="stat-value">6</span>
+      <span class="stat-unit-cn">条</span>
+      <span class="stat-unit-en">items</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label-cn">中国主线</span>
+      <span class="stat-label-en">China Stories</span>
+      <span class="stat-value">2</span>
+      <span class="stat-unit-cn">条</span>
+      <span class="stat-unit-en">items</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label-cn">研究技术</span>
+      <span class="stat-label-en">Research</span>
+      <span class="stat-value">2</span>
+      <span class="stat-unit-cn">条</span>
+      <span class="stat-unit-en">items</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label-cn">新加坡动态</span>
+      <span class="stat-label-en">Singapore</span>
+      <span class="stat-value" style="color:var(--tag-sg);">2</span>
+      <span class="stat-unit-cn">条</span>
+      <span class="stat-unit-en">items</span>
+    </div>
+  </div>
+
+  <!-- ===== Key Trends Card ===== -->
+  <div class="trends-card">
+    <div class="trends-title-cn">📋 本期核心趋势</div>
+    <div class="trends-title-en">Key Trends This Edition</div>
+
+    <div class="trend-item">
+      <div class="trend-arrow">→</div>
+      <div class="trend-content">
+        <div class="trend-cn"><strong>GPT-6 正式发布，AI 进入 200 万 Token 时代：</strong>OpenAI 代号 "Spud" 的 GPT-6 于 4 月 14 日上线，5 万亿参数、200 万 Token 上下文、原生多模态 Agent，被视为"AGI 最后一公里"。</div>
+        <div class="trend-en"><em>GPT-6 launches, ushering in the 2M-token era: OpenAI's "Spud" GPT-6 went live April 14 with 5T parameters, 2M-token context, and native multimodal agents—dubbed "the last mile to AGI."</em></div>
+      </div>
+    </div>
+
+    <div class="trend-item">
+      <div class="trend-arrow">→</div>
+      <div class="trend-content">
+        <div class="trend-cn"><strong>AI 编程工具全面平台化：</strong>OpenAI Codex 扩展为"全能开发助手"（后台 Computer Use + 90 插件 + 多日自动化），Anthropic Claude Code 上线 Routines（云端定时编码 Agent），Claude Design 面世——三大厂商同周在编码与设计工具上密集升级。</div>
+        <div class="trend-en"><em>AI coding tools go full-platform: OpenAI Codex becomes an "everything assistant" (background computer use + 90 plugins + multi-day automation), Anthropic launches Claude Code Routines and Claude Design—a convergence of major upgrades from all three leading AI labs in the same week.</em></div>
+      </div>
+    </div>
+
+    <div class="trend-item">
+      <div class="trend-arrow">→</div>
+      <div class="trend-content">
+        <div class="trend-cn"><strong>网络安全 AI 军备竞赛：</strong>Anthropic 发布 Claude Mythos（政府专用安全模型），OpenAI 紧跟推出 GPT-5.4-Cyber，一周内两大厂商竞相布局网络安全 AI 市场。</div>
+        <div class="trend-en"><em>Cybersecurity AI arms race: Anthropic released Claude Mythos (government-focused security model), followed within a week by OpenAI's GPT-5.4-Cyber—both AI giants racing into the cybersecurity AI market.</em></div>
+      </div>
+    </div>
+
+    <div class="trend-item">
+      <div class="trend-arrow">→</div>
+      <div class="trend-content">
+        <div class="trend-cn"><strong>DeepSeek 首次开门融资：</strong>打破两年"零外部资本"纪录，以 $10B+ 估值寻求 $300M 融资，标志中国 AI 头部公司进入资本化新阶段。</div>
+        <div class="trend-en"><em>DeepSeek opens funding for the first time: Breaking two years of zero external capital, seeking $300M at $10B+ valuation—marking a new capitalization phase for China's top AI companies.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Section nav ===== -->
+  <div class="section-nav">
+    <a href="#top-stories">🔥 头条 Top Stories</a>
+    <a href="#official">📢 官方发布 Official</a>
+    <a href="#research">🔬 研究技术 Research</a>
+    <a href="#policy">🏛 政策产业 Policy</a>
+    <a href="#open">🛠 开源生态 Open Source</a>
+  </div>
+
+  <!-- ===== Section 1: Top Stories ===== -->
+  <div id="top-stories" class="card">
+    <div class="card-title">
+      <span class="title-cn">🔥 今日头条</span>
+      <span class="title-en">Top Stories</span>
+    </div>
+
+    <!-- GPT-6 -->
+    <div class="news-item top-story us-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+          <span class="tag tag-policy">Flagship</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">OpenAI · 2026-04-14</span>
+      </div>
+      <div class="news-title-cn">OpenAI 正式发布 GPT-6（代号 Spud）：5 万亿参数、200 万 Token 上下文</div>
+      <div class="news-title-en">OpenAI Officially Launches GPT-6 (Codename "Spud"): 5 Trillion Parameters, 2M-Token Context Window</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 于 4 月 14 日发布 GPT-6，内部代号"Spud"（土豆）。新模型采用全新 Symphony 全模态架构，5 万亿参数规模，支持 200 万 Token 上下文窗口（约 100 万汉字），原生多模态 Agent 能力。性能较 GPT-5.4 提升约 40%，在代码生成、多步推理和 Agent 任务上显著领先。与此同时，OpenAI 经历了发布前夕的高管动荡和公关危机。</div>
+        <div class="news-summary-en">OpenAI released GPT-6 (codename "Spud") on April 14. The new model features the Symphony full-modal architecture, 5 trillion parameters, a 2M-token context window (~1M Chinese characters), and native multimodal agent capabilities. Performance improved ~40% over GPT-5.4 with significant leads in code generation, multi-step reasoning, and agent tasks. Simultaneously, OpenAI experienced executive turmoil and PR crises ahead of the launch.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>GPT-6 是近两年竞争格局最关键的旗舰发布，200 万 Token 上下文将重塑长文档处理和复杂任务编排的行业标准。</div>
+        <div class="why-en"><strong>Why it matters:</strong> GPT-6 is the most critical flagship release in two years; the 2M-token context window resets industry standards for long-document processing and complex task orchestration.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://openai.com/index/gpt-6/" class="news-link primary">OpenAI Blog →</a>
+      </div>
+    </div>
+
+    <!-- Claude Opus 4.7 -->
+    <div class="news-item top-story us-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+          <span class="tag tag-policy">Flagship</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Anthropic · 2026-04-16</span>
+      </div>
+      <div class="news-title-cn">Anthropic 发布 Claude Opus 4.7：最强通用可用模型 + Claude Design 视觉工具</div>
+      <div class="news-title-en">Anthropic Releases Claude Opus 4.7: Most Powerful GA Model + Claude Design Visual Tool</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic 发布 Claude Opus 4.7，主打高端软件开发能力，在编码、指令遵循和实际任务完成上全面超越前代。同期推出 Claude Design（Anthropic Labs 新产品），支持用户与 Claude 协作创建设计稿、原型、幻灯片，并一键交接给 Claude Code 进行开发。此外，Claude Code 进行桌面端全面重构，上线 Routines 功能（定时、API、GitHub 三路触发的云端编码 Agent），支持多会话并行。</div>
+        <div class="news-summary-en">Anthropic released Claude Opus 4.7, excelling at software engineering, instruction-following, and real-world tasks. Simultaneously launched Claude Design (Anthropic Labs) for collaborative visual design—prototypes, slides, one-pagers—with one-click handoff to Claude Code. Claude Code desktop app was completely redesigned with Routines (scheduled cloud coding agents via timer, API, or GitHub triggers) and multi-session parallel support.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Opus 4.7 + Claude Design + Code Routines 三连发，Anthropic 从"安全研究型"向"全栈平台型"转型信号明确，直接对标 OpenAI Codex 生态。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The triple release of Opus 4.7 + Claude Design + Code Routines signals Anthropic's clear pivot from "safety researcher" to "full-stack platform," directly competing with OpenAI's Codex ecosystem.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://www.anthropic.com/news" class="news-link primary">Anthropic Newsroom →</a>
+        <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" class="news-link">Claude Design →</a>
+        <a href="https://support.claude.com/en/articles/12138966-release-notes" class="news-link">Release Notes →</a>
+      </div>
+    </div>
+
+    <!-- DeepSeek Funding -->
+    <div class="news-item top-story cn-story policy">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-cn">🇨🇳 China</span>
+          <span class="tag tag-policy">Funding</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">DeepSeek · 2026-04-17</span>
+      </div>
+      <div class="news-title-cn">DeepSeek 首次寻求外部融资：目标 $300M，估值 $10B+，打破两年"零外部资本"纪录</div>
+      <div class="news-title-en">DeepSeek Seeks First External Funding: $300M Target at $10B+ Valuation, Ending Two-Year Zero External Capital Streak</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据 The Information 报道，DeepSeek 正洽谈成立两年多来的首次外部融资，目标募资不少于 3 亿美元，估值不低于 100 亿美元。此前 DeepSeek 曾多次拒绝红杉、高瓴、腾讯、阿里等头部机构投资。融资背景：V4 万亿参数模型即将发布、人才流失压力加剧、算力需求持续攀升。</div>
+        <div class="news-summary-en">Per The Information, DeepSeek is negotiating its first external funding round since founding, targeting $300M+ at a $10B+ valuation. DeepSeek previously declined investments from Sequoia, Hillhouse, Tencent, and Alibaba. Background: trillion-parameter V4 model imminent, talent retention pressure mounting, and compute costs escalating.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>DeepSeek 打破"技术理想主义"融资纪律，标志中国 AI 头部公司全面进入资本化竞争阶段，为 V4 发布储备弹药。</div>
+        <div class="why-en"><strong>Why it matters:</strong> DeepSeek breaks its "technological idealism" funding discipline, signaling that China's top AI companies have fully entered a capital-intensive competition phase, stockpiling for the V4 launch.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://www.theinformation.com/articles/chinas-deepseek-raising-money-first-time-10-billion-plus-valuation" class="news-link primary">The Information →</a>
+        <a href="https://deepseek.com/" class="news-link">DeepSeek →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Section 2: Official Releases ===== -->
+  <div id="official" class="card">
+    <div class="card-title">
+      <span class="title-cn">📢 官方发布</span>
+      <span class="title-en">Official Releases</span>
+    </div>
+
+    <!-- OpenAI Codex -->
+    <div class="news-item us-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">OpenAI · 2026-04-16</span>
+      </div>
+      <div class="news-title-cn">OpenAI Codex 全能升级：后台 Computer Use + 90 插件 + 多日自动化</div>
+      <div class="news-title-en">OpenAI Codex Platform Upgrade: Background Computer Use + 90 Plugins + Multi-Day Automation</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 将 Codex 从"编码助手"扩展为"全能开发伙伴"，核心更新包括：①后台计算机使用（模拟人类操作操控应用）；②90+ 新插件（JIRA、CircleCI、CodeRabbit 等）；③多日自动化（自动唤醒、跨越数天的任务延续）；④图像生成能力（gpt-image-1.5 集成）；⑤记忆功能（学习个人偏好与修正记录）。每周活跃用户超 300 万。</div>
+        <div class="news-summary-en">OpenAI expanded Codex from "coding assistant" to "full development partner." Key updates: ① background computer use (simulating human interaction with apps); ② 90+ new plugins (JIRA, CircleCI, CodeRabbit, etc.); ③ multi-day automation (auto-wake, cross-day task continuity); ④ image generation (gpt-image-1.5 integration); ⑤ memory (learns preferences and corrections). 3M+ weekly active users.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Codex 从"写代码"进化为"操控整个软件开发流程"，是 AI Agent 从辅助工具向自主开发者跃迁的关键一步。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Codex evolves from "writing code" to "managing the entire software development lifecycle"—a key step in AI agents transitioning from assistive tools to autonomous developers.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://openai.com/index/codex-for-almost-everything/" class="news-link primary">OpenAI Blog →</a>
+      </div>
+    </div>
+
+    <!-- GPT-5.4-Cyber -->
+    <div class="news-item us-story policy">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+          <span class="tag tag-policy">Security</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">OpenAI · 2026-04-14</span>
+      </div>
+      <div class="news-title-cn">OpenAI 发布 GPT-5.4-Cyber：网络安全专用模型，对标 Anthropic Mythos</div>
+      <div class="news-title-en">OpenAI Releases GPT-5.4-Cyber: Cybersecurity-Specialized Model, Rivaling Anthropic's Mythos</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 发布 GPT-5.4-Cyber，基于 GPT-5.4 的网络安全专用变体，降低拒绝边界，支持二进制逆向工程、漏洞分析等高级工作流。仅面向经认证的安全防御人员限量开放，标志着 AI 在网络安全领域的军备竞赛正式进入"双巨头时代"。</div>
+        <div class="news-summary-en">OpenAI released GPT-5.4-Cyber, a cybersecurity-specialized GPT-5.4 variant with lowered refusal boundaries, supporting binary reverse engineering, vulnerability analysis, and other advanced workflows. Available only to certified security professionals on a limited basis—marking the start of a "two-giant era" in AI-powered cybersecurity.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>继 Anthropic Mythos 后一周内跟进，AI 网络安全市场从"蓝海"快速转为"红海"，双巨头格局成型。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Following Anthropic's Mythos within a week, the AI cybersecurity market is rapidly shifting from blue ocean to red ocean—a two-giant格局 is taking shape.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://openai.com/news" class="news-link primary">OpenAI News →</a>
+      </div>
+    </div>
+
+    <!-- Claude Code Routines -->
+    <div class="news-item us-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Anthropic · 2026-04-14</span>
+      </div>
+      <div class="news-title-cn">Claude Code 桌面端全面重构：并行 Agent + Routines 云端定时任务</div>
+      <div class="news-title-en">Claude Code Desktop Redesigned: Parallel Agents + Routines Cloud-Scheduled Tasks</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic 对 Claude Code 桌面端进行全面重构，核心更新：①多会话侧边栏（并行 Agent 开发）；②Routines 功能（支持定时、API、GitHub 三路触发，关机也能执行任务）；③Git worktrees 支持并行开发；④拖拽式分栏、内置编辑器、Diff 查看器。Routines 本质是"排程云端编码 Agent Session"，区别于传统聊天机器人定时回复。</div>
+        <div class="news-summary-en">Anthropic completely redesigned Claude Code desktop: ① multi-session sidebar (parallel agent development); ② Routines (timer, API, or GitHub triggers—executes tasks even when machine is off); ③ Git worktrees for parallel development; ④ drag-and-drop split panes, built-in editor, diff viewer. Routines essentially schedule cloud-based coding agent sessions, fundamentally different from traditional chatbot scheduling.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Claude Code 从"手动编码助手"进化为"7×24 云端开发员工"，Agent 编程工作流进入自主执行阶段。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Claude Code evolves from "manual coding assistant" to "24/7 cloud development employee"—agentic coding workflows have entered the autonomous execution phase.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://support.claude.com/en/articles/12138966-release-notes" class="news-link primary">Release Notes →</a>
+        <a href="https://venturebeat.com/orchestration/we-tested-anthropics-redesigned-claude-code-desktop-app-and-routines-heres-what-enterprises-should-know" class="news-link">VentureBeat →</a>
+      </div>
+    </div>
+
+    <!-- Claude Design -->
+    <div class="news-item us-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Anthropic Labs · 2026-04-17</span>
+      </div>
+      <div class="news-title-cn">Claude Design：Anthropic Labs 新产品，AI 协作设计稿/原型一键交接开发</div>
+      <div class="news-title-en">Claude Design: Anthropic Labs' New Product for AI-Collaborative Design Prototypes with One-Click Dev Handoff</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic Labs 推出 Claude Design，由 Claude Opus 4.7 驱动，支持协作创建设计稿、原型、幻灯片和单页文档。核心能力：智能设计系统（读取代码库构建团队设计规范）、多元导入（文本/文件/代码库/网页捕获）、精细化调整（内联评论 + 实时旋钮）、多格式导出（Canva/PDF/PPTX/HTML）。设计完成后一键打包交接给 Claude Code 开发。</div>
+        <div class="news-summary-en">Anthropic Labs launched Claude Design, powered by Claude Opus 4.7, for collaborative design mockups, prototypes, slides, and one-pagers. Core capabilities: smart design systems (reads codebase to build team design specs), multi-format import (text/files/codebase/web capture), fine-tuned adjustments (inline comments + real-time knobs), multi-format export (Canva/PDF/PPTX/HTML). One-click handoff to Claude Code for development.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>填补"设计→开发"最后一公里，Claude 生态从编码扩展到视觉设计，形成完整的 AI 产品创建闭环。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Fills the "design-to-development" last mile. The Claude ecosystem expands from coding to visual design, forming a complete AI product creation closed loop.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" class="news-link primary">Anthropic Blog →</a>
+      </div>
+    </div>
+
+    <!-- Stanford HAI AI Index 2026 -->
+    <div class="news-item us-story policy">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+          <span class="tag tag-policy">Report</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Stanford HAI · 2026-04-14</span>
+      </div>
+      <div class="news-title-cn">Stanford HAI 发布《2026 AI Index 年度报告》：AI 研发成本指数级增长</div>
+      <div class="news-title-en">Stanford HAI Releases "AI Index 2026": AI R&D Costs Growing Exponentially</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">斯坦福以人为本 AI 研究所（HAI）发布 2026 年度 AI 指数报告。核心发现：前沿模型训练成本从 2023 年的数百万美元攀升至 2025 年的数亿美元；中国 AI 论文产出首次超越美国；AI Agent 技术从实验室走向生产环境；AI 治理框架在全球范围内加速立法。</div>
+        <div class="news-summary-en">Stanford HAI released the 2026 AI Index report. Key findings: frontier model training costs surged from millions (2023) to hundreds of millions of dollars (2025); China AI paper output surpassed the US for the first time; AI agent technology moved from labs to production; AI governance frameworks accelerated globally.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>AI Index 是全球 AI 产业最权威的年度综合报告，为政策制定者和投资者提供关键决策参考。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The AI Index is the world's most authoritative annual comprehensive AI report, providing critical decision-making references for policymakers and investors.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://hai.stanford.edu/ai-index-report/" class="news-link primary">Stanford HAI →</a>
+      </div>
+    </div>
+
+    <!-- Qwen 3.6 -->
+    <div class="news-item cn-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-cn">🇨🇳 China</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Qwen · 2026-04-17</span>
+      </div>
+      <div class="news-title-cn">通义千问发布 Qwen 3.6（35B-A3B MoE）：Agent 编码能力持续领先</div>
+      <div class="news-title-en">Alibaba's Qwen Releases Qwen 3.6 (35B-A3B MoE): Agent Coding Capabilities Continue to Lead</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">通义千问团队发布 Qwen 3.6，采用 35B 总参数 / 3B 激活参数的 MoE 架构，在 Agent 编码任务上表现突出。同期推出 Terminal-Bench 基准测试，专注评估模型在终端环境下的自主任务完成能力。</div>
+        <div class="news-summary-en">Qwen team released Qwen 3.6 with a 35B total / 3B active parameter MoE architecture, excelling at agent coding tasks. Simultaneously launched Terminal-Bench, a benchmark focused on evaluating autonomous task completion in terminal environments.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Qwen 3.6 继续在小参数高效架构上发力，MoE 路线在成本可控前提下逼近大模型能力。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Qwen 3.6 continues pushing small-parameter efficient architectures; the MoE route approaches large-model capability at controlled cost.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://qwen.ai/blog" class="news-link primary">Qwen Blog →</a>
+        <a href="https://github.com/QwenLM" class="news-link">GitHub →</a>
+      </div>
+    </div>
+
+    <!-- Meta Muse Spark -->
+    <div class="news-item cn-story open-src">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-cn">🇨🇳 China</span>
+          <span class="tag tag-open">Open Source</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Meta · 2026-04-09</span>
+      </div>
+      <div class="news-title-cn">Meta 发布 Muse Spark：AI 驱动的交互式原型生成工具</div>
+      <div class="news-title-en">Meta Releases Muse Spark: AI-Powered Interactive Prototype Generation Tool</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Meta 发布 Muse Spark，一款利用 AI 生成交互式原型的工具，允许设计师和开发者通过自然语言描述快速创建可交互的产品原型，支持 Web 和移动端预览。</div>
+        <div class="news-summary-en">Meta released Muse Spark, an AI-powered interactive prototype generation tool allowing designers and developers to quickly create interactive product prototypes from natural language descriptions, with web and mobile preview support.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>与 Claude Design、OpenAI Codex 图像生成形成三足鼎立的 AI 设计工具竞争格局。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Joins Claude Design and OpenAI Codex image generation to form a three-way competitive landscape in AI design tools.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://about.fb.com/news" class="news-link primary">Meta News →</a>
+      </div>
+    </div>
+
+    <!-- MiniMax M2.7 MaxHermes -->
+    <div class="news-item cn-story open-src">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-cn">🇨🇳 China</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">MiniMax · 2026-04-20</span>
+      </div>
+      <div class="news-title-cn">MiniMax 发布 M2.7 MaxHermes：超长上下文 + Agent 能力增强</div>
+      <div class="news-title-en">MiniMax Releases M2.7 MaxHermes: Ultra-Long Context + Enhanced Agent Capabilities</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">MiniMax 发布 M2.7 MaxHermes，主打超长上下文处理能力和增强的 Agent 能力。同期该模型在多项基准测试中表现优异，在中国开源模型中处于第一梯队。</div>
+        <div class="news-summary-en">MiniMax released M2.7 MaxHermes, featuring ultra-long context processing and enhanced agent capabilities. The model performs well across multiple benchmarks, ranking in China's top tier of open-source models.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>MiniMax 持续在超长上下文赛道深耕，为中国 Agent 生态提供差异化选择。</div>
+        <div class="why-en"><strong>Why it matters:</strong> MiniMax continues deep investment in the ultra-long context track, providing differentiated choices for China's agent ecosystem.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://www.minimaxi.com" class="news-link primary">MiniMax →</a>
+      </div>
+    </div>
+
+    <!-- Gemini 3.1 Flash TTS -->
+    <div class="news-item us-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-us">🇺🇸 US</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Google DeepMind · 2026-04-16</span>
+      </div>
+      <div class="news-title-cn">Google 发布 Gemini 3.1 Flash TTS：可控性、表现力与质量全面升级的语音合成模型</div>
+      <div class="news-title-en">Google Releases Gemini 3.1 Flash TTS: Next-Generation Expressive AI Speech Synthesis Model</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Google DeepMind 发布 Gemini 3.1 Flash TTS，通过细粒度音频标签实现 AI 语音表现力的精确控制。在 Artificial Analysis TTS 排行榜上获得 1211 的 Elo 高分，被评为"最具吸引力"的语音合成模型。支持多语言、情感控制和多种语音风格。</div>
+        <div class="news-summary-en">Google DeepMind released Gemini 3.1 Flash TTS with fine-grained audio tags for precise control over AI speech expressiveness. Scored 1211 Elo on the Artificial Analysis TTS leaderboard, rated "most engaging" speech synthesis model. Supports multi-language, emotion control, and various voice styles.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>TTS 技术进入"可编程情感"阶段，细粒度控制为 AI 语音应用（客服、配音、播客）开辟新场景。</div>
+        <div class="why-en"><strong>Why it matters:</strong> TTS technology enters the "programmable emotion" phase; fine-grained control opens new scenarios for AI voice applications (customer service, dubbing, podcasts).</div>
+      </div>
+      <div class="news-links">
+        <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-tts/" class="news-link primary">Google Blog →</a>
+        <a href="https://ai.google.dev/gemini-api/docs/changelog" class="news-link">API Changelog →</a>
+      </div>
+    </div>
+
+    <!-- Gemini Robotics-ER 1.6 -->
+    <div class="news-item research us-story">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-research">Research</span>
+          <span class="tag tag-us">🇺🇸 US</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Google DeepMind · 2026-04-14</span>
+      </div>
+      <div class="news-title-cn">DeepMind 发布 Gemini Robotics-ER 1.6：增强具身推理，新增仪器读取能力</div>
+      <div class="news-title-en">DeepMind Releases Gemini Robotics-ER 1.6: Enhanced Embodied Reasoning with New Instrument Reading Capability</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Google DeepMind 发布 Gemini Robotics-ER 1.6，核心升级包括：①指向能力（作为复杂任务推理中间步骤）；②成功检测（自主判断任务完成状态）；③仪器读取（新功能，可解读压力表、液位计、数字读数等复杂仪器）；④安全性大幅提升（物理安全约束遵循度优于前代）。可通过 Gemini API 和 Google AI Studio 访问。</div>
+        <div class="news-summary-en">Google DeepMind released Gemini Robotics-ER 1.6 with core upgrades: ① pointing capability (as intermediate reasoning step for complex tasks); ② success detection (autonomously judges task completion); ③ instrument reading (new—interprets pressure gauges, level indicators, digital readouts); ④ significantly improved safety (physical safety constraint compliance exceeds predecessors). Available via Gemini API and Google AI Studio.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>具身 AI 从实验室走向工业场景（设施巡检），仪器读取能力解决了机器人理解物理世界的关键瓶颈。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Embodied AI moves from labs to industrial scenarios (facility inspection). Instrument reading addresses a key bottleneck in robots understanding the physical world.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://deepmind.google/blog/gemini-robotics-er-16/" class="news-link primary">DeepMind Blog →</a>
+        <a href="https://ai.google.dev/gemini-api/docs/robotics-overview" class="news-link">API Docs →</a>
+      </div>
+    </div>
+
+    <!-- DeepSeek V4 -->
+    <div class="news-item cn-story research">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-research">Research</span>
+          <span class="tag tag-cn">🇨🇳 China</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">DeepSeek · 2026-04-10</span>
+      </div>
+      <div class="news-title-cn">DeepSeek V4 规格曝光：万亿参数、百万上下文、原生多模态，技术报告疑似流出</div>
+      <div class="news-title-en">DeepSeek V4 Specs Leaked: Trillion-Parameter, Million-Context, Native Multimodal</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">疑似 DeepSeek 内部技术报告截图流出，显示 V4 版本将具备万亿参数规模、100 万 Token 上下文和原生多模态能力。在 LiveCodeBench 上达到 72.1 分，编程和 Agent 任务表现突出。V4 发布日期尚未正式确认，但融资消息暗示即将发布。</div>
+        <div class="news-summary-en">Suspected internal DeepSeek technical report screenshot surfaced showing V4 with trillion-parameter scale, 1M-token context, and native multimodal capabilities. Scores 72.1 on LiveCodeBench with strong coding and agent performance. Official release date unconfirmed, but funding news suggests imminent launch.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>DeepSeek V4 是中国 AI 在"模型规模竞赛"中追赶 GPT-6 的关键一役，万亿参数 + 颠覆性性价比是其差异化武器。</div>
+        <div class="why-en"><strong>Why it matters:</strong> DeepSeek V4 is China AI's key battle in the "model scale race" against GPT-6—trillion parameters + disruptive cost-effectiveness are its differentiated weapons.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://deepseek.com/" class="news-link primary">DeepSeek →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Section 4: Policy & Industry ===== -->
+  <div id="policy" class="card">
+    <div class="card-title">
+      <span class="title-cn">🏛 政策与产业</span>
+      <span class="title-en">Policy &amp; Industry</span>
+    </div>
+
+    <!-- Singapore NAIRD -->
+    <div class="news-item sg-story policy">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-sg">🇸🇬 Singapore</span>
+          <span class="tag tag-policy">Policy</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">Singapore MDDI · 2026-04-17</span>
+      </div>
+      <div class="news-title-cn">新加坡追加超 10 亿新元投资国家 AI 研发计划（NAIRD 2025-2030）</div>
+      <div class="news-title-en">Singapore Commits Over S$1 Billion to National AI R&D Plan (NAIRD 2025-2030)</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">新加坡政府宣布在 2025-2030 年期间追加超过 10 亿新元投资，用于国家 AI 研发计划（NAIRD），加强 AI 研究能力并巩固新加坡作为全球 AI 枢纽的地位。同期，新加坡经济发展局（EDB）发布 Q1 AI 生态报告，显示新加坡在 AI 人才、投资和企业落地方面的持续增长。</div>
+        <div class="news-summary-en">Singapore announced over S$1 billion additional investment for 2025-2030 under the National AI R&D Plan (NAIRD) to strengthen AI research capabilities and solidify Singapore's position as a global AI hub. Concurrently, EDB released Q1 AI ecosystem report showing sustained growth in AI talent, investment, and enterprise adoption.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>新加坡在 AI 基础设施上的持续重金投入，巩固其作为东南亚 AI 中心的地缘优势。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Singapore's sustained heavy investment in AI infrastructure consolidates its geopolitical advantage as Southeast Asia's AI hub.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://www.mddi.gov.sg/newsroom/singapore-invests-over-s-1-billion-in-national-ai-research-and-development-plan-to-strengthen-ai-research-capabilities-and-our-position-as-global-ai-hub/" class="news-link primary">MDDI →</a>
+        <a href="https://www.edb.gov.sg/en/business-insights/insights/latest-in-singapores-ai-scene-that-businesses-should-know-a-round-up-from-january-to-march-2026.html" class="news-link">EDB Q1 Report →</a>
+      </div>
+    </div>
+
+    <!-- GovTech AI Strategy -->
+    <div class="news-item sg-story policy">
+      <div class="news-meta">
+        <div class="news-source-badges">
+          <span class="tag tag-sg">🇸🇬 Singapore</span>
+          <span class="tag tag-policy">GovTech</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);">GovTech Singapore · 2026-04-17</span>
+      </div>
+      <div class="news-title-cn">GovTech 发布公共部门 AI 安全战略：从刚性合规转向动态风险管控框架</div>
+      <div class="news-title-en">GovTech Outlines Public Sector AI Security Strategy: Shifting from Rigid Compliance to Dynamic Risk Management</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">GovTech Singapore 发布公共部门 AI 安全战略综合框架，核心转变：从传统的刚性合规模式转向动态风险管控（de-risking）框架。该策略覆盖 AI 系统全生命周期，从模型选择、部署到持续监控，强调"安全不是审批关卡，而是持续过程"的理念。同期，GovTech 继续推进 Agentic AI 在政府服务中的部署。</div>
+        <div class="news-summary-en">GovTech Singapore outlined a comprehensive public sector AI security strategy, shifting from traditional rigid compliance to a dynamic de-risking framework. The strategy covers the full AI system lifecycle—from model selection, deployment, to continuous monitoring—emphasizing "security is not an approval gate but a continuous process." GovTech continues advancing agentic AI deployment in government services.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>新加坡政府率先建立系统化 AI 安全治理框架，为全球公共部门 AI 采用提供实践参考。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Singapore becomes the first government to establish a systematic AI safety governance framework, providing a practical reference for global public sector AI adoption.</div>
+      </div>
+      <div class="news-links">
+        <a href="https://www.knowai.space/en/news/singapore-govtech-ai-security-strategy" class="news-link primary">KnowAI Analysis →</a>
+        <a href="https://www.smartnation.gov.sg/initiatives/national-ai-strategy/" class="news-link">NAIS 2.0 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SG GovTech Tools Watch ===== -->
+  <div class="card" style="background: rgba(249,115,22,0.04); border-color: rgba(249,115,22,0.2);">
+    <div class="card-title">
+      <span class="title-cn">🇸🇬 新加坡政府 AI 工具追踪</span>
+      <span class="title-en" style="color:var(--tag-sg);">SG GovTech AI Tools Watch</span>
+    </div>
+    <div style="font-size:13px; color:var(--text-muted); line-height: 1.8;">
+      <div class="news-summary-cn">本期检查结果：PAIR Chat 底层模型仍为 Claude Sonnet 4，暂无升级信号。AIBots、Transcribe 无新版本发布。无 PAIR 套件新产品公告。</div>
+      <div class="news-summary-en">This issue's check: PAIR Chat still uses Claude Sonnet 4, no upgrade signal detected. AIBots and Transcribe have no new versions. No new PAIR suite product announcements.</div>
+      <div style="margin-top:8px; font-size:11px; color:#64748b;">
+        ⚑ 待观察：Claude Opus 4.7 于 4/16 发布 → PAIR Chat 是否跟进升级（历史规律：1-3 个月内）
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Whitelist / New Sources Block ===== -->
+  <div class="whitelist-block">
+    <div class="whitelist-title-cn">🔍 当前追踪来源白名单</div>
+    <div class="whitelist-title-en">Active Source Whitelist</div>
+    <div class="whitelist-note-cn">🆕 = 本期新发现并自动加入</div>
+    <div class="whitelist-note-en">🆕 = Newly discovered and added this issue</div>
+    <div class="whitelist-grid">
+      <span class="wl-item">openai.com/news</span>
+      <span class="wl-item">openai.com/research</span>
+      <span class="wl-item">anthropic.com/news</span>
+      <span class="wl-item">anthropic.com/research</span>
+      <span class="wl-item">deepmind.google/blog</span>
+      <span class="wl-item">qwen.ai/blog</span>
+      <span class="wl-item">zhipuai.cn</span>
+      <span class="wl-item">open.bigmodel.cn</span>
+      <span class="wl-item">deepseek.com</span>
+      <span class="wl-item">moonshot.ai / kimi.com</span>
+      <span class="wl-item">minimaxi.com</span>
+      <span class="wl-item">huggingface.co/blog</span>
+      <span class="wl-item">arxiv.org/list/cs.AI</span>
+      <span class="wl-item">reuters.com/technology</span>
+      <span class="wl-item">technologyreview.com/ai</span>
+      <span class="wl-item">xinhuanet.com/english</span>
+      <span class="wl-item">about.fb.com/news</span>
+      <span class="wl-item">openbmb.org</span>
+      <span class="wl-item">a-star.edu.sg</span>
+      <span class="wl-item">aisingapore.org</span>
+      <span class="wl-item">tech.gov.sg</span>
+      <span class="wl-item">smartnation.gov.sg</span>
+      <span class="wl-item">pair.gov.sg</span>
+      <span class="wl-item">transcribe.gov.sg</span>
+      <span class="wl-item">hai.stanford.edu</span>
+      <span class="wl-item">pluralpolicy.com/blog</span>
+      <span class="wl-item">aisi.gov.uk/blog</span>
+      <span class="wl-item">seed.bytedance.com</span>
+    </div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <div class="report-footer">
+    <div class="footer-cn">🤖 <strong>AI 技术简报</strong> &nbsp;|&nbsp; 2026年04月21日</div>
+    <div class="footer-en">AI Daily Briefing &nbsp;|&nbsp; April 21, 2026</div>
+    <div class="footer-cn" style="margin-top:4px;">来源白名单：OpenAI · Anthropic · Google DeepMind · Qwen · 智谱 · DeepSeek · Moonshot/Kimi · MiniMax · Meta · Hugging Face · arXiv · Reuters · MIT Tech Review · Xinhua · A*STAR · AI Singapore · GovTech · Stanford HAI · Plural Policy · UK AISI · ByteDance Seed</div>
+    <div class="footer-en">Source Whitelist: OpenAI · Anthropic · Google DeepMind · Qwen · Zhipu · DeepSeek · Moonshot/Kimi · MiniMax · Meta · Hugging Face · arXiv · Reuters · MIT Tech Review · Xinhua · A*STAR · AI Singapore · GovTech · Stanford HAI · Plural Policy · UK AISI · ByteDance Seed</div>
+    <div class="footer-cn" style="margin-top:4px;">内容仅供参考，不构成投资建议</div>
+    <div class="footer-en">For reference only, does not constitute investment advice</div>
+    <div style="margin-top:8px;"><a href="https://kidultop.github.io/investment-reports/">kidultop.github.io/investment-reports</a></div>
+    <div class="dedupe-keys">
+      dedupe_keys: openai-gpt6-spud-20260414 | anthropic-claude-opus-4.7-20260416 | stanford-hai-ai-index-2026-20260414 | qwen-3.6-35b-a3b-20260417 | meta-muse-spark-20260409 | minimax-m2.7-maxhermes-20260420 | deepseek-v4-teaser-20260410 | deepseek-funding-300m-10b-20260417 | openai-codex-platform-20260416 | openai-gpt54-cyber-20260414 | claude-design-20260417 | claude-code-routines-20260414 | gemini-robotics-er-1.6-20260414 | gemini-3.1-flash-tts-20260416 | sgd-naird-1b-20260417 | sg-govtech-ai-security-20260417 | pairsg-no-upgrade-20260421
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 早报 2026-05-07 | AI Morning Briefing</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #334155;
+    --accent: #a78bfa;
+    --accent-dim: #7c3aed;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --border: #334155;
+    --us: #60a5fa;
+    --cn: #f87171;
+    --sg: #fb923c;
+    --research: #34d399;
+    --open: #c084fc;
+    --policy: #fbbf24;
+    --new-source: #06b6d4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 20px; }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 32px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+  .header-date-cn { font-size: 13px; color: var(--text-dim); margin-bottom: 4px; }
+  .header-date-en { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 12px; }
+  .header-title-cn { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .header-title-en { font-size: 14px; color: var(--text-dim); font-style: italic; margin-bottom: 16px; }
+  .header-subtitle-cn { font-size: 13px; color: var(--text-dim); }
+  .header-subtitle-en { font-size: 11px; color: var(--text-dim); font-style: italic; }
+  
+  /* Stats Bar */
+  .stats-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    flex: 1;
+    min-width: 120px;
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-label-cn { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .stat-label-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+  
+  /* Trends Card */
+  .trends-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .trends-title-cn { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 2px; }
+  .trends-title-en { font-size: 12px; color: var(--text-dim); font-style: italic; margin-bottom: 14px; }
+  .trend-item { padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .trend-item:last-child { border-bottom: none; }
+  .trend-cn { font-size: 13px; color: var(--text); }
+  .trend-en { font-size: 11px; color: var(--text-dim); font-style: italic; margin-top: 2px; }
+  
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .card-title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 16px;
+  }
+  .title-cn { font-size: 17px; font-weight: 700; color: var(--accent); }
+  .title-en { font-size: 12px; color: var(--text-dim); font-style: italic; }
+  
+  /* News Item */
+  .news-item {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    border-left: 3px solid var(--accent);
+    position: relative;
+  }
+  .news-item.headline { border-left-width: 4px; }
+  .news-item.tag-us { border-left-color: var(--us); }
+  .news-item.tag-cn { border-left-color: var(--cn); }
+  .news-item.tag-sg { border-left-color: var(--sg); }
+  .news-item.tag-research { border-left-color: var(--research); }
+  .news-item.tag-open { border-left-color: var(--open); }
+  .news-item.tag-policy { border-left-color: var(--policy); }
+  .news-item.tag-new { border-left-color: var(--new-source); }
+  
+  .news-title-cn { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .news-title-en { font-size: 12px; color: var(--text-dim); font-style: italic; margin-bottom: 10px; }
+  
+  .news-summary { display: flex; gap: 16px; margin-bottom: 10px; }
+  .news-summary-cn {
+    flex: 1;
+    padding-left: 12px;
+    border-left: 2px solid var(--accent);
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .news-summary-en {
+    flex: 1;
+    padding-left: 12px;
+    border-left: 2px solid var(--us);
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  
+  .why-matters { margin-top: 10px; padding: 10px 14px; background: rgba(167,139,250,0.08); border-radius: 6px; }
+  .why-cn { font-size: 12px; color: var(--text); margin-bottom: 4px; }
+  .why-en { font-size: 11px; color: var(--text-dim); font-style: italic; }
+  
+  .news-meta { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .tag-us { background: rgba(96,165,250,0.15); color: var(--us); }
+  .tag-cn { background: rgba(248,113,113,0.15); color: var(--cn); }
+  .tag-sg { background: rgba(251,146,60,0.15); color: var(--sg); }
+  .tag-research { background: rgba(52,211,153,0.15); color: var(--research); }
+  .tag-open { background: rgba(192,132,252,0.15); color: var(--open); }
+  .tag-policy { background: rgba(251,191,36,0.15); color: var(--policy); }
+  .tag-new { background: rgba(6,182,212,0.15); color: var(--new-source); }
+  
+  .source-link {
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    padding: 2px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .source-link:hover { background: var(--accent); color: #fff; }
+  
+  .new-source-callout {
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.3);
+    border-radius: 6px;
+    padding: 8px 14px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--new-source);
+  }
+  
+  /* Whitelist */
+  .whitelist-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 28px;
+  }
+  .whitelist-title-cn { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 2px; }
+  .whitelist-title-en { font-size: 12px; color: var(--text-dim); font-style: italic; margin-bottom: 12px; }
+  .whitelist-note-cn { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+  .whitelist-note-en { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 14px; }
+  .whitelist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+  .whitelist-item-cn { font-size: 11px; color: var(--text-dim); }
+  .whitelist-item-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+  
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px 0 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+  .footer-cn { font-size: 12px; color: var(--text-dim); margin-bottom: 2px; }
+  .footer-en { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 8px; }
+  
+  @media (max-width: 640px) {
+    .news-summary { flex-direction: column; }
+    .whitelist-grid { grid-template-columns: 1fr; }
+    .stats-bar { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-date-cn">2026 年 5 月 7 日 星期四 早报</div>
+    <div class="header-date-en">Thursday, May 7, 2026 — Morning Briefing</div>
+    <div class="header-title-cn">🤖 AI 早报</div>
+    <div class="header-title-en">AI Morning Briefing</div>
+    <div class="header-subtitle-cn">精选全球 AI 技术动态 · 中英双语</div>
+    <div class="header-subtitle-en">Curated Global AI Updates · Bilingual CN/EN</div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">5</div>
+      <div class="stat-label-cn">今日要闻</div>
+      <div class="stat-label-en">Top Stories</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">3</div>
+      <div class="stat-label-cn">官方发布</div>
+      <div class="stat-label-en">Official Releases</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">2</div>
+      <div class="stat-label-cn">研究动态</div>
+      <div class="stat-label-en">Research &amp; Tech</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">2</div>
+      <div class="stat-label-cn">政策产业</div>
+      <div class="stat-label-en">Policy &amp; Industry</div>
+    </div>
+  </div>
+
+  <!-- Trends Card -->
+  <div class="trends-card">
+    <div class="trends-title-cn">📌 今日核心趋势</div>
+    <div class="trends-title-en">Key Trends Today</div>
+    <div class="trend-item">
+      <div class="trend-cn">Anthropic 联合华尔街PE巨头成立 15 亿美元 AI 服务公司，企业 AI 落地争夺战升级</div>
+      <div class="trend-en">Anthropic partners with Wall Street PE giants on $1.5B AI services venture — enterprise AI deployment race intensifies</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">CAISI 扩大前沿 AI 国家安全测试范围，新增 Google DeepMind、Microsoft、xAI 三方协议</div>
+      <div class="trend-en">CAISI expands frontier AI national security testing to cover Google DeepMind, Microsoft, and xAI models</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">CAISI 独立评估 DeepSeek V4 Pro：综合能力落后美国前沿 8 个月，但成本效率更优</div>
+      <div class="trend-en">CAISI independent eval: DeepSeek V4 Pro lags US frontier by 8 months on aggregate, but offers superior cost efficiency</div>
+    </div>
+  </div>
+
+  <!-- Section: Top Stories -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">📰 头条 · Top Stories</span>
+      <span class="title-en">Top Stories</span>
+    </div>
+
+    <!-- Story 1 -->
+    <div class="news-item headline tag-us">
+      <div class="news-title-cn">Anthropic 联合高盛、黑石成立 15 亿美元 AI 合资公司</div>
+      <div class="news-title-en">Anthropic, Goldman Sachs, Blackstone Launch $1.5B AI Joint Venture</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic 于 5 月 4 日正式宣布与高盛（Goldman Sachs）、黑石集团（Blackstone）及私募巨头 Hellman &amp; Friedman 共同成立一家估值 15 亿美元的合资企业，旨在将 Claude AI 模型直接部署至合作方投资组合公司的核心业务流程中。该实体将派驻工程师入驻企业，重构工作流并整合 AI，而非传统咨询模式。高盛资产管理部门全球负责人 Marc Nachmann 表示：「仅有模型本身并不能改变工作流，你需要既懂技术又懂业务的人来落地变革。」</div>
+        <div class="news-summary-en">Anthropic announced on May 4, 2026 that it is partnering with Goldman Sachs, Blackstone, and Hellman &amp; Friedman to launch a $1.5 billion joint venture aimed at speeding AI adoption across their portfolio companies. The new entity will embed engineers inside businesses to redesign workflows and integrate Claude AI into core processes, rather than acting as a traditional consulting firm. Marc Nachmann, Goldman's global head of asset and wealth management, stated: "Having the model alone doesn't change your workflows or how you operate. You need people who can combine the technology with what's actually happening in the business."</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>此举标志着 Anthropic 在企业 AI 落地赛道上的重大押注，通过绑定 PE 巨头投资组合作为「试验场」，绕过传统销售周期直接获取企业客户。正值 Anthropic（ARR 超 440 亿美元）与 OpenAI（估值 8520 亿美元）酝酿 IPO 之际，本动作强化了 Anthropic 在企业市场的差异化定位。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This marks Anthropic's major bet on the enterprise AI deployment race. By embedding inside PE-owned companies as a proving ground, Anthropic bypasses traditional sales cycles and gains direct enterprise access. With both Anthropic (ARR &gt; $44B) and OpenAI (valuation $852B) eyeing IPOs in 2026, this move strengthens Anthropic's differentiated positioning in enterprise.</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-us">US</span>
+        <span class="tag tag-policy">Policy</span>
+        <a href="https://www.cnbc.com/2026/05/04/anthropic-goldman-blackstone-ai-venture.html" class="source-link" target="_blank">CNBC →</a>
+        <a href="https://www.mercurynews.com/2026/05/05/anthropic-ai-agents-financial-services-tasks/" class="source-link" target="_blank">Mercury News →</a>
+      </div>
+    </div>
+
+    <!-- Story 2 -->
+    <div class="news-item headline tag-us">
+      <div class="news-title-cn">Anthropic 发布面向金融服务业的 AI Agent 套件，覆盖投行至资产管理</div>
+      <div class="news-title-en">Anthropic Unveils AI Agents for Financial Services — Pitch Decks to Compliance</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">5 月 5 日，Anthropic 在纽约活动上发布 10 款面向金融服务业的 AI Agent，功能涵盖起草客户推介材料（Pitch Deck）、审查财务报表、将合规案例升级处理，并可跨 Excel、PowerPoint、Outlook 等第三方软件协作。数据层面已整合 Dun &amp; Bradstreet 和 Moody's 数据源。Anthropic 金融业务负责人 Nicholas Lin 表示：「金融是知识工作的蓝本，AI 在金融的应用仅比编码应用落后几个月。」消息公布后，FactSet 股价跌逾 8%，Morningstar 跌超 3%。</div>
+        <div class="news-summary-en">On May 5, 2026, Anthropic unveiled a suite of 10 AI agents for financial services at an event in New York. Capabilities include drafting client pitch decks, reviewing financial statements, escalating compliance cases, and working across third-party software including Excel, PowerPoint, and Outlook. Data partnerships include Dun &amp; Bradstreet and Moody's. Nicholas Lin, Anthropic's head of financial services product, stated: "Finance is a great blueprint for the rest of knowledge work... financial uses of AI are just a few months behind" coding applications. FactSet shares fell as much as 8.1% on the news; Morningstar dropped more than 3%.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是 Anthropic 迄今最激进的行业垂直化动作，直接冲击 FactSet、S&amp;P Global、Morningstar 等传统金融信息服务商。结合前两日宣布的 PE 合资公司，Anthropic 正以「模型 + 交付」双轮驱动切入华尔街，为其 IPO 前营收增长提供强劲动力（现有企业客户超 30 万家）。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This is Anthropic's most aggressive industry verticalization move to date, directly threating traditional financial data providers like FactSet, S&amp;P Global, and Morningstar. Combined with the PE joint venture announced days earlier, Anthropic is attacking Wall Street with a "model + deployment" dual-engine strategy, powering revenue growth ahead of its widely expected IPO (300,000+ business customers).</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-us">US</span>
+        <a href="https://www.mercurynews.com/2026/05/05/anthropic-ai-agents-financial-services-tasks/" class="source-link" target="_blank">Mercury News →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Official Releases -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🚀 官方发布 · Official Releases</span>
+      <span class="title-en">Official Releases</span>
+    </div>
+
+    <!-- Release 1 -->
+    <div class="news-item tag-cn">
+      <div class="news-title-cn">DeepSeek V4 发布：1.6T MoE 架构，100 万 Token 上下文</div>
+      <div class="news-title-en">DeepSeek V4 Released: 1.6T MoE, 1M-Token Context, Open Weights</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">DeepSeek 于 4 月 24 日正式发布 V4 系列，包含两款模型：deepseek-v4-pro（1.6T 总参数，49B 激活）和 deepseek-v4-flash（284B 总参数，13B 激活），均采用 MoE 架构。Pro 版本支持 100 万 token 上下文窗口，定价为 $1.74/百万输入 token，显著低于同级美国前沿模型。Hugging Face 博客于 4 月 24 日对此次发布进行了报道，社区反响热烈（42 次互动）。</div>
+        <div class="news-summary-en">DeepSeek officially released the V4 series on April 24, 2026, comprising two variants: deepseek-v4-pro (1.6T total params, 49B activated) and deepseek-v4-flash (284B total, 13B activated), both using MoE architecture. The Pro version supports a 1-million-token context window, with API pricing at $1.74 per million input tokens — significantly cheaper than comparable US frontier models. Hugging Face blog covered the release on April 24, with strong community engagement (42 reactions).</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>DeepSeek V4 延续了中国开源模型的高性价比路线。尽管 CAISI 评估显示其综合能力落后美国前沿约 8 个月，但在成本效率上优势明显（7 项基准中 5 项比 GPT-5.4 mini 更便宜），进一步巩固了全球开发者对中国开源 AI 的依赖。</div>
+        <div class="why-en"><strong>Why it matters:</strong> DeepSeek V4 continues China's open-weights cost-efficiency strategy. While CAISI evaluation shows its aggregate capability lags the US frontier by ~8 months, it demonstrates superior cost efficiency (beating GPT-5.4 mini on 5 of 7 benchmarks), further cementing global developer reliance on Chinese open-source AI foundations.</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-cn">CN</span>
+        <span class="tag tag-open">Open</span>
+        <a href="https://ofox.ai/blog/deepseek-v4-release-guide-2026/" class="source-link" target="_blank">Release Notes →</a>
+        <a href="https://huggingface.co/blog/deepseek-v4" class="source-link" target="_blank">Hugging Face →</a>
+      </div>
+    </div>
+
+    <!-- Release 2 -->
+    <div class="news-item tag-us">
+      <div class="news-title-cn">MIT Technology Review 发布 2026 年「AI 十大关键方向」权威报告</div>
+      <div class="news-title-en">MIT Technology Review Publishes "10 Things That Matter in AI Right Now" 2026 Edition</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">MIT Technology Review 于 4 月 21 日发布首份年度「AI 十大关键方向」清单，涵盖：人形机器人训练数据（Humanoid Data）、LLM+（大模型持续演进）、AI 增强诈骗、世界模型（World Models）、AI 科学家（Artificial Scientists）、军事 AI 指挥（The New War Room）、武器化 Deepfake、多 Agent 编排（Agent Orchestration）、中国开源押注，以及全球 AI 反弹浪潮（Resistance）。报告指出：「大语言模型远未被穷尽，这个世界还有很多果汁可以榨。」</div>
+        <div class="news-summary-en">MIT Technology Review published its inaugural annual list "10 Things That Matter in AI Right Now" on April 21, 2026, covering: Humanoid Data (videos training robots), LLMs+ (LLMs far from exhausted), Supercharged Scams, World Models, Artificial Scientists, The New War Room (military AI), Weaponized Deepfakes, Agent Orchestration, China's Open-Source Bet, and Resistance (global AI backlash). The report notes: "There's a lot of juice left to squeeze out of this technology" (referring to LLMs).</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是 MIT TR 首次以清单形式总结 AI 年度关键趋势，具有指标意义。报告明确指出「中国开源押注」已在全球产生实质影响（「世界正在中国基础上构建」），同时警告军事 AI 和 Deepfake 武器化已成为现实威胁，为行业从业者提供了权威的方向性参考。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This is MIT TR's first annual AI trends list, establishing an authoritative benchmark. The report explicitly names "China's Open-Source Bet" as already having global impact ("The world is already building on Chinese foundations"), while warning that military AI and weaponized deepfakes are active threats — providing essential directional guidance for practitioners.</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-us">US</span>
+        <span class="tag tag-research">Research</span>
+        <a href="https://www.technologyreview.com/2026/04/21/1135643/10-ai-artificial-intelligence-trends-technologies-research-2026/" class="source-link" target="_blank">MIT TR →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Research & Tech -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🔬 研究与技术 · Research &amp; Tech</span>
+      <span class="title-en">Research &amp; Tech</span>
+    </div>
+
+    <!-- Research 1 -->
+    <div class="news-item tag-research">
+      <div class="news-title-cn">arXiv cs.AI 五月趋势：Agent 编排、LLM 安全对齐、多 Agent 系统成最热方向</div>
+      <div class="news-title-en">arXiv cs.AI May 2026 Trends: Agent Orchestration, LLM Safety, Multi-Agent Systems Lead</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">5 月 arXiv cs.AI 分类已收录 687 篇论文（截至 5 月 7 日），主导趋势包括：① Agent 编排与工具调用（约 20+ 篇）；② LLM 安全对齐（Jailbreak 解释、非民用场景安全基准、涌现错位）；③ 强化学习用于 LLM/Agent 优化（DPO 变体、自适应熵调制）；④ 领域专用 AI（智能制造、临床对话、电池研发）；⑤ 神经符号 AI 与可解释性。其中 10 篇已被 ICML 2026、ACL 2026、CLeaR 2026 等顶会接收。</div>
+        <div class="news-summary-en">May 2026 cs.AI submissions on arXiv reached 687 papers (as of May 7), with dominant trends: ① Agent orchestration &amp; tool use (20+ papers); ② LLM safety &amp; alignment (jailbreak explanations, military-context safety benchmarks, emergent misalignment); ③ Reinforcement learning for LLM/agent optimization (DPO variants, adaptive entropy modulation); ④ Domain-specific AI (smart manufacturing, clinical chatbots, battery R&amp;D); ⑤ Neuro-symbolic AI &amp; explainability. 10 papers have been accepted to top venues including ICML 2026, ACL 2026, and CLeaR 2026.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Agent 编排论文的爆发式增长印证了 MIT TR「10 大方向」中对多 Agent 协作的趋势判断。ICML/ACL 接收的 Agent 论文（如 Bayes-consistent 编排框架、Neuro-Symbolic 长程任务技能归纳）预示着 Agent 研究正从「能否运行」迈向「能否可信协作」的新阶段，对产业级多 Agent 系统部署具有直接指导意义。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The explosion of agent orchestration papers validates MIT TR's "Agent Orchestration" trend. Top-venue accepted papers (e.g., Bayes-consistent orchestration, neuro-symbolic skill induction for long-horizon tasks) signal that agent research is moving from "can it run" to "can it be trusted to collaborate" — with direct implications for production multi-agent system deployments.</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-research">Research</span>
+        <a href="https://arxiv.org/list/cs.AI/current" class="source-link" target="_blank">arXiv cs.AI →</a>
+      </div>
+    </div>
+
+    <!-- Research 2 -->
+    <div class="news-item tag-open">
+      <div class="news-title-cn">Hugging Face 社区动态：vLLM V1 发布、ASR Leaderboard 反作弊升级</div>
+      <div class="news-title-en">Hugging Face Community Updates: vLLM V1 Correctness Fix, ASR Leaderboard Anti-Gaming</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Hugging Face 博客 5 月 6 日更新：ServiceNow AI 团队发布 vLLM V0→V1 迁移指南，重点修复了强化学习工作流中的正确性问题（「Correctness Before Corrections」）。同日，社区新增 Benchmaxxer Repellant 机制至 Open ASR Leaderboard，防止排行榜作弊行为。4 月下旬至今，Hugging Face 还收录了 IBM Granite 4.1、NVIDIA Nemotron 3 Nano Omni 多模态模型等重磅发布。</div>
+        <div class="news-summary-en">Hugging Face blog updates on May 6, 2026: ServiceNow AI team published vLLM V0→V1 migration guide, focusing on fixing correctness issues in RL workflows ("Correctness Before Corrections"). Same day, the community added Benchmaxxer Repellant to the Open ASR Leaderboard to prevent leaderboard gaming. Since late April, Hugging Face also featured IBM Granite 4.1 and NVIDIA Nemotron 3 Nano Omni multimodal model releases.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>vLLM 是开源 LLM 推理的基础设施，V1 的正确性修复直接影响所有依赖 vLLM 的部署场景（包括生产级 RL 训练）。ASR Leaderboard 反作弊机制的加入，反映了社区对评测可信度的重视，与大模型基准被「刷榜」的全球性问题相呼应。</div>
+        <div class="why-en"><strong>Why it matters:</strong> vLLM is foundational infrastructure for open-source LLM inference; V1's correctness fixes directly impact all vLLM-based deployments including production RL training. The ASR Leaderboard anti-gaming mechanism reflects growing community concern over benchmark contamination — echoing global concerns about leaderboard "gaming" in frontier model evaluation.</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-open">Open</span>
+        <span class="tag tag-research">Research</span>
+        <a href="https://huggingface.co/blog" class="source-link" target="_blank">Hugging Face Blog →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Policy & Industry -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🏛️ 政策与产业 · Policy &amp; Industry</span>
+      <span class="title-en">Policy &amp; Industry</span>
+    </div>
+
+    <!-- Policy 1 -->
+    <div class="news-item tag-policy">
+      <div class="news-title-cn">CAISI 扩大行业合作：与 Google DeepMind、Microsoft、xAI 签署前沿 AI 国家安全测试协议</div>
+      <div class="news-title-en">CAISI Expands Industry Collaboration: Signs Agreements with Google DeepMind, Microsoft, xAI for Frontier AI National Security Testing</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">美国国家标准与技术研究院（NIST）下属的 AI 标准与创新中心（CAISI）于 5 月 5 日宣布与 Google DeepMind、Microsoft、xAI 签署新协议，扩大其对前沿 AI 模型的国家安全评估范围。这些协议建立在早先与 Anthropic 和 OpenAI 的合作基础之上，并根据美国《AI 行动计划》重新谈判。CAISI 主任 Chris Fall 表示：「独立、严谨的测量科学对于理解前沿 AI 及其国家安全影响至关重要。这些扩大的行业合作帮助我们在这个关键时刻为公共利益扩大工作规模。」迄今 CAISI 已完成 40 次以上评估，包括对尚未发布的最先进模型的测试。</div>
+        <div class="news-summary-en">The Center for AI Standards and Innovation (CAISI) at NIST announced on May 5, 2026 new agreements with Google DeepMind, Microsoft, and xAI to expand frontier AI model national security evaluations. These agreements build on prior partnerships with Anthropic and OpenAI, renegotiated to reflect CAISI's directives from the Secretary of Commerce and America's AI Action Plan. CAISI Director Chris Fall stated: "Independent, rigorous measurement science is essential to understanding frontier AI and its national security implications. These expanded industry collaborations help us scale our work in the public interest at a critical moment." CAISI has completed 40+ evaluations to date, including on unreleased state-of-the-art models.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>此举标志着美国政府对前沿 AI 模型的监管覆盖从「自愿参与」迈向「全行业覆盖」——五大美国前沿 AI 实验室（Anthropic、OpenAI、Google DeepMind、Microsoft、xAI）现均需接受 CAISI 的预发布评估。协议允许 CAISI 在分类环境中测试「移除安全防护」的模型版本，这意味着美国政府已建立起对前沿 AI 能力的系统性监控能力，对全球 AI 治理具有示范效应。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This marks the US government's move from "voluntary participation" to "comprehensive industry coverage" in frontier AI oversight — all five major US frontier labs (Anthropic, OpenAI, Google DeepMind, Microsoft, xAI) are now subject to CAISI pre-deployment evaluation. The agreements allow CAISI to test models with safeguards removed in classified settings — signaling that the US has established systematic monitoring of frontier AI capabilities, setting a global precedent for AI governance.</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-policy">Policy</span>
+        <span class="tag tag-us">US</span>
+        <a href="https://www.nist.gov/news-events/news/2026/05/caisi-signs-agreements-regarding-frontier-ai-national-security-testing" class="source-link" target="_blank">NIST →</a>
+      </div>
+    </div>
+
+    <!-- Policy 2 -->
+    <div class="news-item tag-policy">
+      <div class="news-title-cn">CAISI 发布 DeepSeek V4 Pro 独立评估报告：综合能力落后美国前沿 8 个月</div>
+      <div class="news-title-en">CAISI Publishes Independent Evaluation of DeepSeek V4 Pro: 8 Months Behind US Frontier on Aggregate Capability</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">NIST CAISI 于 5 月 1 日（评估于 4 月进行）发布了 DeepSeek V4 Pro 的独立技术评估报告。核心发现：① DeepSeek V4 是 CAISI 评估过的最强 PRC 来源模型；② DeepSeek 自报基准结果高估了模型性能（自报显示与 2 个月前的 Opus 4.6/GPT-5.4 相当，CAISI 评估显示仅与 8 个月前的 GPT-5 相当）；③ 成本效率优于可比美国模型（7 项基准中 5 项比 GPT-5.4 mini 更便宜）。评估覆盖网络、软件工程、自然科学、抽象推理、数学五类领域，使用了 9 项主要基准（含 2 项未公开基准）。</div>
+        <div class="news-summary-en">NIST CAISI published an independent technical evaluation of DeepSeek V4 Pro on May 1, 2026 (evaluation conducted in April). Key findings: ① DeepSeek V4 is the most capable PRC-origin model evaluated by CAISI to date; ② DeepSeek's self-reported benchmark results overstate performance (self-reported positions V4 comparable to 2-month-old Opus 4.6/GPT-5.4; CAISI evaluation places V4 closer to 8-month-old GPT-5); ③ Cost efficiency surpasses comparable US models (cheaper than GPT-5.4 mini on 5 of 7 benchmarks). Evaluation covered 5 domains: cyber, software engineering, natural sciences, abstract reasoning, and mathematics, using 9 primary benchmarks including 2 held-out benchmarks.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是美国政府首次对 PRC 来源大模型进行公开、系统性的独立技术评估，具有重大地缘政治意义。报告揭露了模型自报基准与家长制评估之间的「性能差距」，为全球决策者提供了去泡沫化的中国 AI 能力参考。同时，成本效率优势的结论也为「中国开源模型为何在全球开发者中快速扩散」提供了数据支撑。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This is the first public, systematic US government independent technical evaluation of a PRC-origin large model — a geopolitically significant milestone. The report exposes the "performance gap" between developer-reported and independent benchmark results, providing global policymakers with a de-foamed reference on Chinese AI capabilities. Meanwhile, the cost-efficiency advantage conclusion provides data-backed explanation for "why Chinese open-source models are rapidly proliferating among global developers."</div>
+      </div>
+      <div class="news-meta">
+        <span class="tag tag-policy">Policy</span>
+        <span class="tag tag-us">US</span>
+        <span class="tag tag-cn">CN</span>
+        <a href="https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro" class="source-link" target="_blank">NIST CAISI →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Whitelist Section -->
+  <div class="whitelist-section">
+    <div class="whitelist-title-cn">📋 信源白名单 · Trusted Sources</div>
+    <div class="whitelist-title-en">Trusted Source Whitelist</div>
+    <div class="whitelist-note-cn">以下来源为本期简报引用或持续追踪的官方/权威渠道：</div>
+    <div class="whitelist-note-en">Sources cited or actively monitored in this briefing:</div>
+    <div class="whitelist-grid" style="margin-top: 14px;">
+      <div>
+        <div class="whitelist-item-cn"><strong>US 官方：</strong></div>
+        <div class="whitelist-item-en">OpenAI News (openai.com/news) · Anthropic Newsroom (anthropic.com/news) · Google DeepMind Blog (deepmind.google/blog)</div>
+      </div>
+      <div>
+        <div class="whitelist-item-cn"><strong>China 官方：</strong></div>
+        <div class="whitelist-item-en">Moonshot/Kimi (moonshot.ai, kimi.com) · MiniMax (minimaxi.com) · 智谱 (zhipuai.cn) · Qwen (qwen.ai/blog) · DeepSeek (deepseek.com)</div>
+      </div>
+      <div>
+        <div class="whitelist-item-cn"><strong>Singapore：</strong></div>
+        <div class="whitelist-item-en">A*STAR (a-star.edu.sg/aiml) · GovTech (tech.gov.sg) · NUS AI (nus.edu.sg) · MDDI (mddi.gov.sg)</div>
+      </div>
+      <div>
+        <div class="whitelist-item-cn"><strong>Media：</strong></div>
+        <div class="whitelist-item-en">Reuters (reuters.com/technology) · MIT Tech Review (technologyreview.com) · CNBC (cnbc.com) · IEEE Spectrum (spectrum.ieee.org)</div>
+      </div>
+      <div>
+        <div class="whitelist-item-cn"><strong>开源/研究：</strong></div>
+        <div class="whitelist-item-en">Hugging Face Blog (huggingface.co/blog) · arXiv CS.AI (arxiv.org/list/cs.AI) · OpenBMB (openbmb.org)</div>
+      </div>
+      <div>
+        <div class="whitelist-item-cn"><strong>政策/治理：</strong></div>
+        <div class="whitelist-item-en">CAISI/NIST (nist.gov) · Plural Policy (pluralpolicy.com) · Stanford HAI (hai.stanford.edu)</div>
+      </div>
+    </div>
+    <div style="margin-top: 14px; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); padding-top: 10px;">
+      🆕 本期新增来源：无（本期所有来源均已在白名单中）
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-cn">AI 早报 · 每日 08:00 SGT 自动发布</div>
+    <div class="footer-en">AI Morning Briefing · Auto-published daily at 08:00 SGT</div>
+    <div class="footer-cn">生成时间：2026-05-07 08:26 +08 | 数据窗口：2026-05-04 ~ 2026-05-07</div>
+    <div class="footer-en">Generated: 2026-05-07 08:26 +08 | Data window: 2026-05-04 ~ 2026-05-07</div>
+    <div class="footer-cn" style="margin-top: 8px;">⚠️ 本简报为自动化生成，仅供研究参考，不构成投资建议</div>
+    <div class="footer-en">Automatically generated for research purposes only. Not investment advice.</div>
+  </div>
+
+</div>
+</body>
+</html>

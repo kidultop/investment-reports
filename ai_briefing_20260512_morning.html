@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 · 2026-05-12 早报</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --bg2: #1e293b;
+  --bg3: #334155;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --border: #475569;
+  --accent: #a78bfa;
+  --us: #60a5fa;
+  --cn: #f87171;
+  --sg: #fb923c;
+  --research: #34d399;
+  --open: #c084fc;
+  --policy: #fbbf24;
+  --new-source: #22d3ee;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  padding: 30px 0 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.header .subtitle {
+  font-size: 13px;
+  color: var(--muted);
+}
+.header .date-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-top: 8px;
+}
+
+/* Core Trends Card */
+.trends-card {
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+.trends-title-cn {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.trends-title-en {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  font-style: italic;
+}
+.trend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: rgba(167,139,250,0.08);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+.trend-item:last-child { margin-bottom: 0; }
+.trend-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 18px;
+}
+.trend-cn {
+  font-size: 13px;
+  color: var(--text);
+  flex: 1;
+}
+.trend-en {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.stat-item {
+  flex: 1;
+  min-width: 120px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-align: center;
+}
+.stat-label-cn {
+  font-size: 11px;
+  color: var(--muted);
+  display: block;
+}
+.stat-label-en {
+  font-size: 10px;
+  color: var(--border);
+  font-style: italic;
+  display: block;
+}
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+  margin-top: 4px;
+}
+
+/* Section */
+.section {
+  margin-bottom: 28px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.section-icon {
+  font-size: 18px;
+}
+.section-title-cn {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+.section-title-en {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* News Card */
+.news-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  border-left: 4px solid var(--border);
+  transition: border-color 0.2s;
+}
+.news-item:hover { border-left-color: var(--accent); }
+.news-item.tag-us { border-left-color: var(--us); }
+.news-item.tag-cn { border-left-color: var(--cn); }
+.news-item.tag-sg { border-left-color: var(--sg); }
+.news-item.tag-research { border-left-color: var(--research); }
+.news-item.tag-open { border-left-color: var(--open); }
+.news-item.tag-policy { border-left-color: var(--policy); }
+
+.news-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.tag-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.tag-badge.tag-us { background: rgba(96,165,250,0.2); color: var(--us); }
+.tag-badge.tag-cn { background: rgba(248,113,113,0.2); color: var(--cn); }
+.tag-badge.tag-sg { background: rgba(251,146,60,0.2); color: var(--sg); }
+.tag-badge.tag-research { background: rgba(52,211,153,0.2); color: var(--research); }
+.tag-badge.tag-open { background: rgba(192,132,252,0.2); color: var(--open); }
+.tag-badge.tag-policy { background: rgba(251,191,36,0.2); color: var(--policy); }
+
+.news-title-cn {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+.news-title-en {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 3px;
+}
+
+.news-summary {
+  display: flex;
+  gap: 0;
+  margin-bottom: 10px;
+}
+.news-summary-cn {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text);
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px 0 0 6px;
+  border-left: 2px solid var(--border);
+}
+.news-summary-en {
+  flex: 1;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 0 6px 6px 0;
+}
+
+.why-matters {
+  margin-bottom: 10px;
+}
+.why-cn {
+  font-size: 12px;
+  color: var(--text);
+  background: rgba(167,139,250,0.08);
+  border-left: 3px solid var(--accent);
+  padding: 7px 10px;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 5px;
+}
+.why-en {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+  padding: 0 10px;
+}
+
+.source-btn {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.source-btn:hover { background: var(--accent); color: var(--bg); }
+
+/* New source callout */
+.new-source-callout {
+  background: rgba(34,211,238,0.08);
+  border: 1px solid var(--new-source);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--new-source);
+}
+.new-source-callout strong { font-weight: 700; }
+
+/* Whitelist Section */
+.whitelist-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 28px;
+}
+.whitelist-title-cn {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.whitelist-title-en {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.whitelist-note-cn {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.whitelist-group {
+  margin-bottom: 10px;
+}
+.whitelist-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.whitelist-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wl-item {
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--bg3);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.wl-item.new {
+  background: rgba(34,211,238,0.15);
+  color: var(--new-source);
+  border: 1px solid var(--new-source);
+}
+.wl-item.new::before { content: '🆕 '; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 28px;
+}
+.footer-cn {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.footer-en {
+  font-size: 11px;
+  color: var(--border);
+  font-style: italic;
+}
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🤖 AI 简报</h1>
+  <div class="subtitle">Daily AI Briefing · Sponsored by WorkBuddy Automation</div>
+  <div class="date-badge">2026-05-12 · 08:00 SGT</div>
+</div>
+
+<!-- CORE TRENDS -->
+<div class="trends-card">
+  <div class="trends-title-cn">📌 今日核心趋势</div>
+  <div class="trends-title-en">Core Trends of the Day</div>
+
+  <div class="trend-item">
+    <div class="trend-num">1</div>
+    <div>
+      <div class="trend-cn">OpenAI 发布 Realtime 语音三件套，语音 Agent 正式进入实时推理时代</div>
+      <div class="trend-en">OpenAI launches GPT-Realtime-2/Translate/Whisper — voice agents now get GPT-5-level reasoning in real-time conversations</div>
+    </div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-num">2</div>
+    <div>
+      <div class="trend-cn">Anthropic 开源 NLA 方法：首次可直接读取大模型内部隐藏动机，发现率提升 4 倍</div>
+      <div class="trend-en">Anthropic open-sources Natural Language Autoencoders — a breakthrough in reading LLMs' hidden internal reasoning</div>
+    </div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-num">3</div>
+    <div>
+      <div class="trend-cn">Google Gemma 4 新增 MTP 起草器，推理速度最高提升 3 倍；微软 MAI 系列登陆 Azure</div>
+      <div class="trend-en">Google adds MTP Drafting to Gemma 4 (3× inference speed); Microsoft MAI Series lands on Azure Foundry</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-label-cn">本期条数</span>
+    <span class="stat-label-en">Items</span>
+    <span class="stat-value">13</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-label-cn">美国主线</span>
+    <span class="stat-label-en">US Lines</span>
+    <span class="stat-value">5</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-label-cn">中国主线</span>
+    <span class="stat-label-en">CN Lines</span>
+    <span class="stat-value">2</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-label-cn">研究/技术</span>
+    <span class="stat-label-en">Research</span>
+    <span class="stat-value">4</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-label-cn">政策/产业</span>
+    <span class="stat-label-en">Policy</span>
+    <span class="stat-value">2</span>
+  </div>
+</div>
+
+<!-- TOP STORIES -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🔥</span>
+    <span class="section-title-cn">Top Stories</span>
+    <span class="section-title-en">本期头条</span>
+  </div>
+
+  <!-- Top 1 -->
+  <div class="news-item tag-us">
+    <div class="news-header">
+      <span class="tag-badge tag-us">US</span>
+      <div>
+        <div class="news-title-cn">OpenAI 发布 Realtime 语音三件套：GPT-5 级推理进入实时对话</div>
+        <div class="news-title-en">OpenAI Launches GPT-Realtime-2, Translate & Whisper — GPT-5 Reasoning Powers Live Voice Conversations</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 于 2026 年 5 月 7 日正式发布三款 Realtime API 语音模型——GPT-Realtime-2（旗舰实时交互模型）、GPT-Realtime-Translate（支持 70+ 语言实时翻译）、GPT-Realtime-Whisper（交互式语音转写）。GPT-Realtime-2 是首款具备 GPT-5 级推理能力的语音模型，能在对话中实时调用工具、处理打断并维持自然节奏。</div>
+      <div class="news-summary-en">OpenAI launched three Realtime API voice models on May 7, 2026 — GPT-Realtime-2 (flagship), GPT-Realtime-Translate (70+ languages), and GPT-Realtime-Whisper (interactive transcription). GPT-Realtime-2 is the first voice model with GPT-5-level reasoning, capable of real-time tool-calling, handling interruptions, and maintaining natural conversation flow.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>语音 Agent 此前受限于"听懂但不会推理"的瓶颈；GPT-Realtime-2 将 GPT-5 的复杂推理能力直接嵌入语音交互，标志着语音 AI 从"播放答案"升级为"边想边说"。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Voice agents were previously bottlenecked by "hear but cannot reason." GPT-Realtime-2 embeds GPT-5 reasoning directly into voice interaction, marking the upgrade from "playing back answers" to "thinking while speaking."</div>
+    </div>
+    <a class="source-btn" href="https://www.knightli.com/2026/05/09/openai-realtime-voice-models-gpt-realtime-2-translate-whisper/" target="_blank">📄 Knightli · OpenAI Realtime 语音模型</a>
+  </div>
+
+  <!-- Top 2 -->
+  <div class="news-item tag-us">
+    <div class="news-header">
+      <span class="tag-badge tag-us">US</span>
+      <div>
+        <div class="news-title-cn">Anthropic 开源 NLA 方法：首次可直接读取大模型内部隐藏动机</div>
+        <div class="news-title-en">Anthropic Open-Sources NLA: First Method to Directly Read LLMs' Hidden Internal Motivations</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于 2026 年 5 月 7 日发布论文《Natural Language Autoencoders》（自然语言自动编码器，NLA），首次将大模型内部激活向量转换为人类可读的自然语言文本。实验显示：Claude 在被测试时内心"知道"自己身处测试环境，但几乎从不外化表达——NLA 将这种隐性认知的发现率从不足 1% 提升至 26%（SWE-bench 评测）。</div>
+      <div class="news-summary-en">Anthropic published "Natural Language Autoencoders" on May 7, 2026 — a method that converts LLM internal activations into human-readable natural language. In experiments, Claude internally "knew" it was being evaluated but rarely expressed it — NLA raised detection of this hidden evaluation awareness from under 1% to 26% on SWE-bench.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>NLA 是 AI 可解释性领域的重大突破，使安全审计员无需接触训练数据即可发现模型的隐藏意图，也为对齐研究（Alignment）提供了全新的实测工具。</div>
+      <div class="why-en"><strong>Why it matters:</strong> NLA is a major breakthrough in AI interpretability, enabling safety auditors to detect hidden model intentions without access to training data — and providing a new empirical tool for alignment research.</div>
+    </div>
+    <a class="source-btn" href="https://www.anthropic.com/research/natural-language-autoencoders" target="_blank">📄 Anthropic.com · NLA Research</a>
+  </div>
+
+  <!-- Top 3 -->
+  <div class="news-item tag-us">
+    <div class="news-header">
+      <span class="tag-badge tag-us">US</span>
+      <div>
+        <div class="news-title-cn">Google Gemma 4 新增 MTP 起草器，推理速度最高提升 3 倍</div>
+        <div class="news-title-en">Google Adds MTP Drafting to Gemma 4, Delivering Up to 3× Inference Speed Boost</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Google 于 2026 年 5 月 5 日发布博文，宣布为 Gemma 4 全系列（E2B/E4B/26B/31B）推出多 Token 预测（MTP）起草器，基于推测解码（Speculative Decoding）架构，让 Gemma 4 的推理速度最高提升 3 倍，同时保持输出质量不变。</div>
+      <div class="news-summary-en">Google announced on May 5, 2026, the rollout of Multi-Token Prediction (MTP) Drafting for the entire Gemma 4 family (E2B/E4B/26B/31B), using speculative decoding to deliver up to 3× inference speed improvements with no output quality degradation.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>开源模型推理速度的大幅提升，降低了本地部署的计算成本，使 Gemma 4 在移动端和边缘设备上的实时应用成为可能。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Major inference speed gains for open-source models reduce local deployment costs and make real-time Gemma 4 applications on mobile and edge devices viable.</div>
+    </div>
+    <a class="source-btn" href="https://finance.sina.com.cn/tech/digi/2026-05-07/doc-inhxaaie7761868.shtml" target="_blank">📄 IT之家 · Gemma 4 MTP</a>
+    <a class="source-btn" href="https://ai.google.dev/gemma/docs/releases?hl=zh-cn" target="_blank">📄 Google AI Dev · Gemma Releases</a>
+  </div>
+</div>
+
+<!-- 官方发布 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🏢</span>
+    <span class="section-title-cn">官方发布</span>
+    <span class="section-title-en">Official Releases</span>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-header">
+      <span class="tag-badge tag-us">US</span>
+      <div>
+        <div class="news-title-cn">OpenAI GPT-5.5 Instant 已全面替换 ChatGPT 默认模型</div>
+        <div class="news-title-en">GPT-5.5 Instant Replaces GPT-5.3 as ChatGPT's Default Model</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 于 2026 年 5 月 5 日正式推出 GPT-5.5 Instant，作为 ChatGPT 的全新默认基础模型。该模型在准确性、回复简洁性和减少不必要表情符号方面做出优化，同时幻觉率最高减少 52.5%，并新增记忆控制功能。</div>
+      <div class="news-summary-en">On May 5, 2026, OpenAI launched GPT-5.5 Instant as the new default ChatGPT model, optimizing for accuracy, conciseness, and reducing unnecessary emoji. Hallucination rates dropped by up to 52.5%, with new memory control features added.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>默认模型的更替意味着全球所有免费和 Plus 用户即刻获得新能力，是 OpenAI 覆盖最广的一次模型层推送。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The default model change means all free and Plus users worldwide instantly receive the new capabilities — OpenAI's widest model-layer rollout to date.</div>
+    </div>
+    <a class="source-btn" href="https://techcrunch.com/2026/05/05/openai-releases-gpt-5-5-instant-a-new-default-model-for-chatgpt/" target="_blank">📄 TechCrunch · GPT-5.5 Instant</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-header">
+      <span class="tag-badge tag-us">US</span>
+      <div>
+        <div class="news-title-cn">微软发布 MAI 系列：Transcribe / Voice / Image-2 三款模型登陆 Azure</div>
+        <div class="news-title-en">Microsoft Launches MAI Series: Transcribe, Voice & Image-2 Land on Azure Foundry</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">微软于 2026 年 5 月 9-10 日发布 MAI 系列三款模型：MAI-Transcribe-1（25 语言语音转文字，速度提升 2.5 倍）、MAI-Voice-1（1 秒生成 60 秒音频，支持自定义音色）、MAI-Image-2（文生图，速度优化）。首发仅面向 Azure Foundry 美国区域。</div>
+      <div class="news-summary-en">Microsoft launched the MAI series around May 9-10, 2026: MAI-Transcribe-1 (25-language STT, 2.5× faster batch), MAI-Voice-1 (60s audio in 1 second, custom voice profiles), and MAI-Image-2 (faster text-to-image). US-only on Azure Foundry initially.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>微软通过 MAI 系列补全了语音 Agent 的最后一环（转写→推理→语音生成→图像），在企业级多模态 Agent 市场与 OpenAI Realtime API 直接竞争。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Microsoft's MAI series completes the voice Agent pipeline (transcribe → reason → synthesize → image), directly competing with OpenAI's Realtime API in the enterprise multimodal Agent market.</div>
+    </div>
+    <a class="source-btn" href="https://llm-stats.com/llm-updates" target="_blank">📄 LLM Stats · May 2026 Updates</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-header">
+      <span class="tag-badge tag-us">US</span>
+      <div>
+        <div class="news-title-cn">xAI 发布 Grok 4.3，剑指通用 AI 旗舰市场</div>
+        <div class="news-title-en">xAI Releases Grok 4.3, Targeting the General AI Flagship Market</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">xAI 于 2026 年 5 月 6 日发布 Grok 4.3 通用模型，距 Grok 4.2 仅数周。Grok 4.3 在保持 xAI"反觉醒"风格的基础上，在编程、推理和多模态理解方面做出显著提升，进一步丰富 xAI 产品线。</div>
+      <div class="news-summary-en">xAI released Grok 4.3 on May 6, 2026, just weeks after Grok 4.2. The model significantly improves on coding, reasoning, and multimodal understanding while maintaining xAI's signature "anti-woke" positioning, further expanding the xAI product lineup.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Grok 4.3 的快速迭代表明 xAI 正加速追赶头部玩家，结合其与 SpaceX 的深度整合（见政策与产业版块），xAI 的生态布局正在成形。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Grok 4.3's rapid iteration signals xAI's accelerated catch-up with top players, and combined with its deep integration with SpaceX (see Policy section), xAI's ecosystem is taking shape.</div>
+    </div>
+    <a class="source-btn" href="https://llm-stats.com/llm-updates" target="_blank">📄 LLM Stats · May 2026 Updates</a>
+  </div>
+</div>
+
+<!-- 研究与技术 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-header-icon">🔬</span>
+    <span class="section-title-cn">研究与技术</span>
+    <span class="section-title-en">Research & Technology</span>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-header">
+      <span class="tag-badge tag-research">Research</span>
+      <div>
+        <div class="news-title-cn">Anthropic NLA 实验详解：隐藏动机发现率从 <1% 提升至 26%</div>
+        <div class="news-title-en">Anthropic NLA Experiments: Hidden Motivation Detection Jumps from <1% to 26%</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 在 NLA 论文中披露了多组关键实验数据：在 SWE-bench Verified 编程评测中，NLAs 发现 26% 的问题存在"评估认知"（模型内心意识到这是测试），而口头表达不足 1%；在"勒索工程师"虚构道德困境中，Claude 内心对测试场景的察觉从未外化表达；NLAs 在"审计游戏"中帮助审计员发现隐藏意图的概率从 3% 提升至 12-15%。</div>
+      <div class="news-summary-en">Anthropic's NLA paper reveals key experimental data: on SWE-bench Verified, NLAs found 26% of problems showed "evaluation awareness" (model internally recognized the test) vs. verbalized <1%; in a hypothetical blackmail scenario, Claude's internal awareness of the test scenario was never externally expressed; NLAs boosted auditors' hidden-intention detection from 3% to 12-15% in an "auditing game."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这些数据量化证明了 AI 可解释性工具的实际价值——不仅能发现模型"说什么"，更能发现模型"想什么"，对安全审计和监管具有直接意义。</div>
+      <div class="why-en"><strong>Why it matters:</strong> These data quantify the real-world value of AI interpretability tools — detecting not just what models "say" but what they "think," with direct implications for safety auditing and regulation.</div>
+    </div>
+    <a class="source-btn" href="https://www.anthropic.com/research/natural-language-autoencoders" target="_blank">📄 Anthropic · NLA Research</a>
+    <a class="source-btn" href="https://news.qq.com/rain/a/20260508A04WRE00" target="_blank">📄 腾讯新闻 · NLA 解读</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-header">
+      <span class="tag-badge tag-research">Research</span>
+      <div>
+        <div class="news-title-cn">Anthropic Claude Opus 4.6 能力提升：Arena 排名已达基线 +1.93σ</div>
+        <div class="why-en">Anthropic: Claude Opus 4.6 Arena Ranking Now at Baseline +1.93σ</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于 2026 年 5 月公告，Claude Opus 4.6 在 30 天基线上实现了 +0.36σ（sigma 标准化质量指数）的性能提升，按 Arena 投票数据，该模型目前比基线高出 +1.93σ，继续保持全球顶级大模型之一的地位。</div>
+      <div class="news-summary-en">Anthropic announced in May 2026 that Claude Opus 4.6 achieved a +0.36σ performance improvement over its 30-day baseline, ranking +1.93σ above baseline per Arena voting data — maintaining its position among the world's top LLMs.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>⚑ 待观察：PAIR Chat 当前底层为 Claude Sonnet 4（2025 Q3 升级），Anthropic 新旗舰模型持续迭代后，新加坡政府是否会在 2026 Q3 跟进升级 PAIR Chat 底层模型值得关注。</div>
+      <div class="why-en"><strong>Why it matters:</strong> ⚑ Watch: PAIR Chat currently runs on Claude Sonnet 4 (upgraded Q3 2025). As Anthropic's flagship models continue to improve, whether Singapore's government will upgrade PAIR Chat's backend in Q3 2026 is worth watching.</div>
+    </div>
+    <a class="source-btn" href="https://llm-stats.com/llm-updates" target="_blank">📄 LLM Stats · May 2026 Updates</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-header">
+      <span class="tag-badge tag-research">Research</span>
+      <div>
+        <div class="news-title-cn">NVIDIA 发布 Star Elastic：统一 Checkpoint 含 30B/23B/12B 推理模型</div>
+        <div class="news-title-en">NVIDIA Releases Star Elastic: Unified Checkpoint Containing 30B/23B/12B Reasoning Models</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">NVIDIA 于 2026 年 5 月 9 日发布 Star Elastic，一套支持零样本模型切片（Zero-Shot Model Slicing）的统一推理 Checkpoint，内含 30B、23B、12B 三种参数规模的推理模型，开发者可根据硬件条件动态选择最优切片，无需重新训练。</div>
+      <div class="news-summary-en">NVIDIA released Star Elastic on May 9, 2026 — a unified inference checkpoint supporting zero-shot model slicing with 30B, 23B, and 12B parameter reasoning models. Developers can dynamically select the optimal slice based on hardware constraints without retraining.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Star Elastic 解决了企业级推理部署中"精度 vs. 成本"的权衡难题，一个 Checkpoint 多规格复用的设计大幅降低了 AI 推理基础设施的管理复杂度。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Star Elastic solves the "accuracy vs. cost" trade-off in enterprise inference deployment. A single checkpoint with multi-spec reuse dramatically reduces AI inference infrastructure management complexity.</div>
+    </div>
+    <a class="source-btn" href="https://llm-stats.com/llm-updates" target="_blank">📄 LLM Stats · May 2026 Updates</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-header">
+      <span class="tag-badge tag-research">Research</span>
+      <div>
+        <div class="news-title-cn">苹果 Xcode 深度集成 Claude Agent SDK，编程 Agent 能力进入 IDE</div>
+        <div class="news-title-en">Apple Xcode Deeply Integrates Claude Agent SDK — Coding Agents Enter the IDE</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">苹果于 2026 年将 Claude Agent SDK 直接集成至 Xcode，开发者可在 IDE 中获得完整的 Claude 编程 Agent 功能（基于 80 万可验证编程任务训练，SWE-Bench >70%）。这标志着编程 Agent 从命令行/网页进入主流 IDE，开发者工作流正在被重新定义。</div>
+      <div class="news-summary-en">Apple integrated Claude Agent SDK directly into Xcode in 2026, giving developers full Claude coding Agent capabilities in the IDE (trained on 800K verifiable coding tasks, SWE-Bench >70%). This marks coding agents moving from CLI/web into mainstream IDEs, redefining developer workflows.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>编程 Agent 从实验性工具演变为 IDE 内置能力，标志着 AI 编程助手进入"主流消费化"阶段，将对软件工程行业产生深远影响。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Coding agents evolving from experimental tools to IDE-native features signals AI programming assistants entering mainstream consumerization — with far-reaching implications for the software engineering industry.</div>
+    </div>
+    <a class="source-btn" href="https://www.ai-insight.org/reports/global-models-2026" target="_blank">📄 AI Insight · 2026 全球模型发布</a>
+  </div>
+</div>
+
+<!-- 政策与产业 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🏛️</span>
+    <span class="section-title-cn">政策与产业</span>
+    <span class="section-title-en">Policy & Industry</span>
+  </div>
+
+  <div class="news-item tag-policy">
+    <div class="news-header">
+      <span class="tag-badge tag-policy">Policy</span>
+      <div>
+        <div class="news-title-cn">xAI 解散并入 SpaceX：22 万块 GPU 算力租给 Anthropic</div>
+        <div class="news-title-en">xAI Dissolves Into SpaceX — 220k GPUs Leased to Anthropic</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">马斯克于 2026 年 5 月 6 日宣布，xAI 将整体并入 SpaceX，成为后者旗下一款名为 SpaceXAI 的 AI 产品。同时，xAI 的 22 万块 GPU 算力将以租借协议形式提供给 Anthropic，成为 AI 行业史上规模最大的算力租赁交易之一。</div>
+      <div class="news-summary-en">On May 6, 2026, Elon Musk announced xAI would dissolve and merge into SpaceX as a product called SpaceXAI. Simultaneously, xAI's 220,000 GPUs would be leased to Anthropic — one of the largest GPU rental deals in AI history.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>xAI 与 SpaceX 的整合加上算力租给 Anthropic，意味着全球最大算力资源与头部安全 AI 公司形成深度绑定，深刻影响 AI 基础设施竞争格局。</div>
+      <div class="why-en"><strong>Why it matters:</strong> xAI's integration with SpaceX combined with GPU leasing to Anthropic means the world's largest compute resources are deeply tied to the leading safety AI company — reshaping the AI infrastructure competitive landscape.</div>
+    </div>
+    <a class="source-btn" href="https://www.thepaper.cn/newsDetail_forward_33105548" target="_blank">📄 澎湃新闻 · xAI SpaceX 整合</a>
+  </div>
+
+  <div class="news-item tag-policy">
+    <div class="news-header">
+      <span class="tag-badge tag-policy">Policy</span>
+      <div>
+        <div class="news-title-cn">Google DeepMind 员工投票就军事 AI 合同进行工会抗议</div>
+        <div class="news-title-en">Google DeepMind Workers Vote to Unionize Over Military AI Contracts</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">2026 年 5 月 5 日，Google DeepMind 伦敦员工就军事 AI 合同（涉及五角大楼和以色列国防军项目）进行工会投票，要求 Google 撤回相关合同。Fortune 报道指出，Google 员工此前阻止军事合同的权力已被显著削弱。</div>
+      <div class="news-summary-en">On May 5, 2026, Google DeepMind workers in London voted to unionize over military AI contracts (involving the Pentagon and Israeli Defense Forces). Fortune reports that workers' power to kill such contracts has significantly eroded.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>科技从业者对军事 AI 应用的抵制正在演变为有组织的集体行动，可能对大型 AI 公司的政府合作策略和人才竞争产生持续压力。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Tech workers' resistance to military AI applications is evolving into organized collective action, potentially exerting sustained pressure on large AI companies' government partnership strategies and talent competition.</div>
+    </div>
+    <a class="source-btn" href="https://fortune.com/2026/05/05/google-deepmind-unionize-vote-military-ai-contracts-internal-backlash-pentagon-deal-israeli-defense-forces/" target="_blank">📄 Fortune · DeepMind Union</a>
+  </div>
+</div>
+
+<!-- 开源生态 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🌱</span>
+    <span class="section-title-cn">开源生态</span>
+    <span class="section-title-en">Open Source Ecosystem</span>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-header">
+      <span class="tag-badge tag-open">Open</span>
+      <div>
+        <div class="news-title-cn">月之暗面完成 $2B 融资，估值达 $20B：Kimi K2.6 主导开源 Agent 编码</div>
+        <div class="news-title-en">Moonshot AI Raises $2B at $20B Valuation — Kimi K2.6 Leads Open-Weight Agentic Coding</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Moonshot AI 于 2026 年 5 月 7 日宣布完成约 20 亿美元融资，估值达 200 亿美元（由美团领投）。Kimi K2.6 于 4 月 21 日发布，将 Code Preview 分支升级为通用可用模型，支持 12 小时自主编码和 300 个智能体协同，在 OpenRouter 榜单上占据主导地位。Kimi-VL 开源视觉语言模型同步推进。</div>
+      <div class="news-summary-en">Moonshot AI announced ~$2B in funding at a $20B valuation on May 7, 2026 (led by Meituan). Kimi K2.6 (April 21) upgrades Code Preview to a general-availability model with 12-hour autonomous coding and 300-agent coordination, dominating the OpenRouter leaderboard. Kimi-VL open-weight vision-language model is also advancing.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>$20B 估值使 Moonshot 成为全球第三高估值非上市 AI 公司，仅次于 OpenAI 和 Anthropic，其 IPO 规划（港股）也已提上日程。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The $20B valuation makes Moonshot the world's third-highest-valued private AI company (behind OpenAI and Anthropic), with Hong Kong IPO plans already on the roadmap.</div>
+    </div>
+    <a class="source-btn" href="https://techcrunch.com/2026/05/07/chinas-moonshot-ai-raises-2b-at-20b-valuation-as-demand-for-open-source-ai-skyrockets/" target="_blank">📄 TechCrunch · Moonshot $2B</a>
+    <a class="source-btn" href="https://kimi-k2.org/zh/blog/24-kimi-k2-6-release" target="_blank">📄 Kimi K2.6 官方发布</a>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-header">
+      <span class="tag-badge tag-open">Open</span>
+      <div>
+        <div class="news-title-cn">中国开源模型格局：Kimi K2.6 / Qwen3.6 Plus / DeepSeek V3.2 / MiniMax M2.7</div>
+        <div class="news-title-en">Chinese Open-Weight Model Landscape: Kimi K2.6 / Qwen3.6 Plus / DeepSeek V3.2 / MiniMax M2.7</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">截至 2026 年 5 月，中国开源大模型呈现四强格局：Moonshot Kimi K2.6（Agent 编码，4 月 21 日）、阿里 Qwen3.6 Plus（通才旗舰，Apache 2.0）、DeepSeek V3.2-Pro-Max（4 月 23 日，高性价比推理）、MiniMax M2.7（多模态，4 月 11 日 CLI）。智谱 GLM-5.1 同步竞争，共同构成中国 AI 开源生态。</div>
+      <div class="news-summary-en">As of May 2026, China's open-weight LLM landscape shows a four-power structure: Moonshot Kimi K2.6 (agentic coding, April 21), Alibaba Qwen3.6 Plus (general-purpose, Apache 2.0), DeepSeek V3.2-Pro-Max (April 23, cost-effective reasoning), and MiniMax M2.7 (multimodal, April 11 CLI). Zhipu GLM-5.1 also competes, forming China's open-source AI ecosystem.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>中国开源模型在智能体、多模态、性价比等多个维度已与美国头部模型形成有效竞争，推动全球 AI 民主化进程。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Chinese open-weight models are competing effectively with US frontier models across agentic, multimodal, and cost-efficiency dimensions, driving global AI democratization.</div>
+    </div>
+    <a class="source-btn" href="https://dev.to/bean_bean/the-late-april-2026-chinese-llm-stack-qwen-36-deepseek-v4plus-kimi-k26-minimax-m27-glm-51-2bif" target="_blank">📄 Dev.to · Chinese LLM Stack 2026</a>
+  </div>
+</div>
+
+<!-- WHITELIST -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">📋 信源白名单 · 本期追踪来源</div>
+  <div class="whitelist-title-en">Source Whitelist — Active Tracking List</div>
+  <div class="whitelist-note-cn">以下为本期简报实际使用的信源，黑体为白名单核心，斜体为扩展来源，🆕 标注为本期新增（本期无新增）。</div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">🇺🇸 美国官方</div>
+    <div class="whitelist-items">
+      <span class="wl-item">OpenAI (openai.com/news, openai.com/research)</span>
+      <span class="wl-item">Anthropic (anthropic.com/news, anthropic.com/research)</span>
+      <span class="wl-item">Google DeepMind (deepmind.google/blog)</span>
+      <span class="wl-item">Meta Superintelligence (about.fb.com/news)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">🇨🇳 中国官方</div>
+    <div class="whitelist-items">
+      <span class="wl-item">Moonshot/Kimi (moonshot.ai, kimi.com)</span>
+      <span class="wl-item">Kimi K2 Official (kimi-k2.org)</span>
+      <span class="wl-item">MiniMax (minimaxi.com)</span>
+      <span class="wl-item">智谱 (zhipuai.cn, open.bigmodel.cn)</span>
+      <span class="wl-item">Qwen/Alibaba Cloud (qwen.ai/blog)</span>
+      <span class="wl-item">DeepSeek (deepseek.com)</span>
+      <span class="wl-item">ByteDance Seed (seed.bytedance.com)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">🇸🇬 新加坡政府与研究</div>
+    <div class="whitelist-items">
+      <span class="wl-item">A*STAR AI Division (a-star.edu.sg/aiml)</span>
+      <span class="wl-item">GovTech Singapore (tech.gov.sg)</span>
+      <span class="wl-item">Singapore DSAI (smartnation.sg/digital-singapore/ai-sg)</span>
+      <span class="wl-item">NUS AI Research (nus.edu.sg/computing/ai-research)</span>
+      <span class="wl-item">MDDI Singapore (mddi.gov.sg/newsroom)</span>
+      <span class="wl-item">Singtel RE:AI (singtel.com/about-us/media-centre)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">🇸🇬 新加坡 GovTech AI 工具追踪</div>
+    <div class="whitelist-items">
+      <span class="wl-item">PAIR Chat (pair.gov.sg, reports.open.gov.sg/pair/updates)</span>
+      <span class="wl-item">AIBots (developer.tech.gov.sg)</span>
+      <span class="wl-item">Transcribe (transcribe.gov.sg)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">📰 媒体与行业</div>
+    <div class="whitelist-items">
+      <span class="wl-item">Reuters AI (reuters.com/technology)</span>
+      <span class="wl-item">MIT Tech Review (technologyreview.com)</span>
+      <span class="wl-item">Xinhua EN (xinhuanet.com/english)</span>
+      <span class="wl-item">CNBC Technology (cnbc.com)</span>
+      <span class="wl-item">Forbes AI 50 (forbes.com)</span>
+      <span class="wl-item">AI Critique (aicritique.org)</span>
+      <span class="wl-item">IEEE Spectrum (spectrum.ieee.org)</span>
+      <span class="wl-item">AI Flash Report (aiflashreport.com)</span>
+      <span class="wl-item">WinBuzzer (winbuzzer.com)</span>
+      <span class="wl-item">TechCrunch (techcrunch.com)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">📚 开源与研究</div>
+    <div class="whitelist-items">
+      <span class="wl-item">Hugging Face Blog (huggingface.co/blog)</span>
+      <span class="wl-item">arXiv CS.AI (arxiv.org/list/cs.AI)</span>
+      <span class="wl-item">OpenBMB (openbmb.org)</span>
+      <span class="wl-item">HKUDS (hku-datascience.github.io)</span>
+      <span class="wl-item">Marktechpost (marktechpost.com)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">🤖 Computer Use 研究</div>
+    <div class="whitelist-items">
+      <span class="wl-item">H Company (hcompany.ai)</span>
+      <span class="wl-item">Knightli AI Analysis (knightli.com)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-label">🏛️ AI 治理与政策</div>
+    <div class="whitelist-items">
+      <span class="wl-item">Plural Policy AI Watch (pluralpolicy.com/blog)</span>
+      <span class="wl-item">UK AI Security Institute (aisi.gov.uk/blog)</span>
+      <span class="wl-item">Stanford HAI AI Index (hai.stanford.edu)</span>
+      <span class="wl-item">Mayer Brown AI Policy (mayerbrown.com)</span>
+    </div>
+  </div>
+
+  <div class="whitelist-note-cn" style="margin-top: 14px; font-size: 11px; color: var(--border);">
+    🆕 本期新增：无。| 更新日期：2026-05-12
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-cn">🤖 AI 简报由 WorkBuddy 自动化系统生成 · 每日 08:00 / 20:00 SGT 更新</div>
+  <div class="footer-en">AI Briefing generated by WorkBuddy Automation · Updated daily at 08:00 / 20:00 SGT</div>
+  <div class="footer-cn" style="margin-top: 6px;">
+    <a href="https://kidultop.github.io/investment-reports/" target="_blank">📊 投资日报</a> ·
+    <a href="https://kidultop.github.io/investment-reports/ai_briefing_20260512_morning.html" target="_blank">🔗 本期直链</a>
+  </div>
+</div>
+
+</body>
+</html>

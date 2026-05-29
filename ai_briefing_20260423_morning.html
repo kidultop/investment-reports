@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 | 2026-04-23 AM</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #253449;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #a78bfa;
+  --accent-dim: rgba(167, 139, 250, 0.15);
+  --border: #334155;
+  --tag-us: #3b82f6;
+  --tag-cn: #ef4444;
+  --tag-research: #22c55e;
+  --tag-open: #a78bfa;
+  --tag-policy: #eab308;
+  --tag-sg: #f97316;
+  --tag-new: #06b6d4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 40px 0 30px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 30px;
+}
+.header-emoji { font-size: 48px; margin-bottom: 12px; }
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.header h2 {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 8px;
+}
+.header h2 em { font-style: italic; }
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 20px 0;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+.stat { text-align: center; }
+.stat-value { font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-label-cn { font-size: 12px; color: var(--text-secondary); display: block; }
+.stat-label-en { font-size: 11px; color: var(--text-muted); display: block; font-style: italic; }
+.stat-unit-cn { font-size: 11px; color: var(--text-muted); }
+.stat-unit-en { font-size: 10px; color: var(--text-muted); font-style: italic; }
+
+/* Trends Card */
+.trends-card {
+  background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(59,130,246,0.08));
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+.trends-title-cn { font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.trends-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 16px; display: block; }
+.trend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.trend-item:last-child { border-bottom: none; }
+.trend-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.trend-cn { font-size: 14px; color: var(--text); }
+.trend-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+
+/* Section Cards */
+.section-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.card-title .section-icon { font-size: 22px; }
+.title-cn { color: var(--text); }
+.title-en { color: var(--text-muted); font-size: 13px; font-style: italic; }
+
+/* News Item */
+.news-item {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-left: 3px solid var(--border);
+  padding-left: 16px;
+  margin-left: 8px;
+}
+.news-item.headline {
+  border-left-color: var(--accent);
+  background: var(--accent-dim);
+  border-radius: 0 8px 8px 0;
+  padding: 20px;
+  margin-left: 0;
+  margin-bottom: 16px;
+}
+.news-item.tag-us { border-left-color: var(--tag-us); }
+.news-item.tag-cn { border-left-color: var(--tag-cn); }
+.news-item.tag-research { border-left-color: var(--tag-research); }
+.news-item.tag-open { border-left-color: var(--tag-open); }
+.news-item.tag-policy { border-left-color: var(--tag-policy); }
+.news-item.tag-sg { border-left-color: var(--tag-sg); }
+.news-item:last-child { border-bottom: none; }
+
+.news-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.news-title-en {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.news-summary {
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
+  margin-bottom: 12px;
+}
+.news-summary-cn {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.news-summary-en {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.why-matters {
+  margin-bottom: 12px;
+}
+.why-cn {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.why-cn strong { color: var(--accent); }
+.why-en {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.why-en strong { color: var(--accent); font-style: normal; }
+
+.news-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.tag {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.tag-US { background: rgba(59,130,246,0.15); color: var(--tag-us); }
+.tag-CN { background: rgba(239,68,68,0.15); color: var(--tag-cn); }
+.tag-Research { background: rgba(34,197,94,0.15); color: var(--tag-research); }
+.tag-Open { background: rgba(167,139,250,0.15); color: var(--tag-open); }
+.tag-Policy { background: rgba(234,179,8,0.15); color: var(--tag-policy); }
+.tag-SG { background: rgba(249,115,22,0.15); color: var(--tag-sg); }
+
+.source-link {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 4px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.source-link:hover { background: var(--accent); color: var(--bg); }
+
+/* New Source Callout */
+.new-source-callout {
+  background: rgba(6,182,212,0.1);
+  border: 1px solid rgba(6,182,212,0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--tag-new);
+}
+.new-source-callout strong { color: var(--tag-new); }
+
+/* Whitelist Section */
+.whitelist-section {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+.whitelist-title-cn { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.whitelist-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 4px; display: block; }
+.whitelist-note-cn { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; display: block; }
+.whitelist-note-en { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 16px; display: block; }
+.whitelist-category { margin-bottom: 14px; }
+.whitelist-category-name { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+.whitelist-item { font-size: 12px; color: var(--text-muted); padding: 2px 0; }
+.whitelist-item .new-badge { color: var(--tag-new); font-weight: 600; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 30px 0 20px;
+  border-top: 1px solid var(--border);
+  margin-top: 30px;
+}
+.footer-cn { font-size: 12px; color: var(--text-muted); display: block; }
+.footer-en { font-size: 11px; color: var(--text-muted); font-style: italic; display: block; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-emoji">🤖</div>
+  <h1>AI 技术简报</h1>
+  <h2>2026 年 4 月 23 日 · 星期四 · 早报<br><em>Daily AI Briefing · Thursday, April 23, 2026 · Morning Edition</em></h2>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-value">9</div>
+    <span class="stat-label-cn">本日新闻</span>
+    <span class="stat-label-en">Stories Today</span>
+  </div>
+  <div class="stat">
+    <div class="stat-value">3</div>
+    <span class="stat-label-cn">头条</span>
+    <span class="stat-label-en">Headlines</span>
+  </div>
+  <div class="stat">
+    <div class="stat-value">4</div>
+    <span class="stat-label-cn">模型发布</span>
+    <span class="stat-label-en">Model Releases</span>
+  </div>
+  <div class="stat">
+    <div class="stat-value">5</div>
+    <span class="stat-label-cn">覆盖国家/地区</span>
+    <span class="stat-label-en">Regions</span>
+  </div>
+</div>
+
+<!-- Trends Card -->
+<div class="trends-card">
+  <div class="trends-title-cn">📊 本日核心趋势</div>
+  <span class="trends-title-en">Key Trends of the Day</span>
+  <div class="trend-item">
+    <span class="trend-icon">🏆</span>
+    <div>
+      <div class="trend-cn">中美 AI 模型性能差距基本消失 — 斯坦福 HAI 2026 AI 指数报告核心结论</div>
+      <div class="trend-en">US-China AI model performance gap has essentially vanished — Stanford HAI 2026 AI Index Report</div>
+    </div>
+  </div>
+  <div class="trend-item">
+    <span class="trend-icon">🔓</span>
+    <div>
+      <div class="trend-cn">Anthropic Mythos 遭未授权访问 — 强力 AI 网络安全模型安全管控引发担忧</div>
+      <div class="trend-en">Anthropic Mythos accessed by unauthorized group — security concerns around restricted AI cyber tool</div>
+    </div>
+  </div>
+  <div class="trend-item">
+    <span class="trend-icon">🌐</span>
+    <div>
+      <div class="trend-cn">开源编程模型集体爆发 — Kimi K2.6 (1T) 与 Qwen3.6-35B-A3B 同周发布</div>
+      <div class="trend-en">Open-source coding models surge — Kimi K2.6 (1T params) and Qwen3.6-35B-A3B released same week</div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 1: Top Stories -->
+<div class="section-card">
+  <div class="card-title">
+    <span class="section-icon">🔥</span>
+    <span class="title-cn">头条</span>
+    <span class="title-en">Top Stories</span>
+  </div>
+
+  <!-- Headline 1 -->
+  <div class="news-item headline">
+    <div class="news-title">Anthropic Mythos 遭未授权群体访问，安全管控引发广泛质疑</div>
+    <div class="news-title-en">Anthropic's Restricted Mythos Model Accessed by Unauthorized Group</div>
+    <div class="news-tags">
+      <span class="tag tag-US">US</span>
+      <span class="tag tag-Policy">Policy</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于 4 月 22 日证实，其强力网络安全模型 Claude Mythos 被一个未授权 Discord 群体通过第三方供应商环境获取了访问权限。Mythos 是 Anthropic 在 4 月 7 日发布的限制级模型，此前仅向英伟达、摩根大通、谷歌、苹果和微软等少数合作伙伴开放。Anthropic 表示正在进行调查，并正在评估该事件的影响范围。</div>
+      <div class="news-summary-en">Anthropic confirmed on April 22 that its powerful cybersecurity model Claude Mythos was accessed by an unauthorized Discord group through a third-party vendor environment. Mythos, announced April 7, was restricted to a select group of partners including Nvidia, JPMorgan, Google, Apple, and Microsoft. Anthropic stated it is investigating the breach and assessing the scope of impact.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Anthropic 此前将 Mythos 定位为"需要严格管控的 AI 网络安全工具"，此次泄露事件直接挑战了"限制访问 = 安全可控"的假设。白宫此前正推动将 Mythos 引入联邦机构，此事件或将影响审批进程。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Anthropic positioned Mythos as a "strictly controlled AI cybersecurity tool." This breach directly challenges the assumption that restricted access ensures safety. The White House was pushing to bring Mythos into federal agencies, which may now face delays.</div>
+    </div>
+    <a class="source-link" href="https://techcrunch.com/2026/04/21/unauthorized-group-has-gained-access-to-anthropics-exclusive-cyber-tool-mythos-report-claims/" target="_blank">TechCrunch →</a>
+  </div>
+
+  <!-- Headline 2 -->
+  <div class="news-item headline tag-cn">
+    <div class="news-title">月之暗面发布 Kimi K2.6：开源 1 万亿参数 MoE 模型，编程能力超越 Claude Opus 4.6</div>
+    <div class="news-title-en">Moonshot AI Releases Kimi K2.6: Open-Source 1T-Parameter MoE Model, Surpasses Claude Opus 4.6 in Coding</div>
+    <div class="news-tags">
+      <span class="tag tag-CN">CN</span>
+      <span class="tag tag-Open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">月之暗面于 4 月 21 日正式发布并开源 Kimi K2.6，采用混合专家架构（MoE），总参数量 1 万亿，激活参数 32B。该模型在 SWE-Bench Pro 上达到 58.6 分、BrowseComp 83.2 分，均超过 Claude Opus 4.6 和 GPT-5.4。K2.6 支持 256K 上下文窗口，原生视频输入，并引入了 Claw Groups 研究预览（智能体集群协作），支持 300 个智能体协同工作。</div>
+      <div class="news-summary-en">Moonshot AI officially released and open-sourced Kimi K2.6 on April 21, featuring a Mixture-of-Experts architecture with 1 trillion total parameters and 32B active. The model scores 58.6 on SWE-Bench Pro and 83.2 on BrowseComp, surpassing Claude Opus 4.6 and GPT-5.4. K2.6 supports 256K context, native video input, and introduces Claw Groups research preview for agent swarm collaboration supporting up to 300 agents.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Kimi K2.6 标志着中国开源模型在编程能力上首次全面超越美国闭源旗舰产品。1T 参数 + 256K 上下文 + 原生视频输入 + 智能体集群的组合，展示了开源路线在多模态和复杂推理上的竞争力。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Kimi K2.6 marks the first time a Chinese open-source model comprehensively surpasses US proprietary flagships in coding. The combination of 1T params, 256K context, native video input, and agent swarms demonstrates open-source competitiveness in multimodal and complex reasoning.</div>
+    </div>
+    <a class="source-link" href="https://www.kimi.com/blog/kimi-k2-6" target="_blank">Kimi Blog →</a>
+  </div>
+
+  <!-- Headline 3 -->
+  <div class="news-item headline tag-us">
+    <div class="news-title">Anthropic 发布 Claude Opus 4.7：编程与视觉能力显著提升</div>
+    <div class="news-title-en">Anthropic Releases Claude Opus 4.7 with Enhanced Coding and Vision Capabilities</div>
+    <div class="news-tags">
+      <span class="tag tag-US">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于 4 月 16 日发布 Claude Opus 4.7，距上次升级仅两个月。新模型在 SWE-bench Pro 上达到 64.3%（前代 53.4%），编程能力大幅提升。同时增强了视觉理解和指令执行精准度，并引入代码自我验证机制。Auto Mode 向 Max 用户开放，Routines 功能允许用户设定自动化任务流程。Anthropic 同时确认存在更强的未发布模型。</div>
+      <div class="news-summary-en">Anthropic released Claude Opus 4.7 on April 16, just two months after the previous update. The model achieves 64.3% on SWE-bench Pro (up from 53.4%), with major coding improvements. Enhanced vision understanding, more precise instruction following, and a code self-verification mechanism were introduced. Auto Mode is now available to Max users, and Routines enables automated task workflows. Anthropic confirmed a more powerful unreleased model exists.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Claude Opus 4.7 进一步巩固了 Anthropic 在高端编程领域的主导地位。值得注意的是，Anthropic 在 Opus 4.7 发布同时暗示存在更强的未公开模型，这与其限制性 Mythos 策略形成对比——公开模型稳步迭代，前沿模型严格管控。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Claude Opus 4.7 further solidifies Anthropic's dominance in high-end coding. Notably, Anthropic hinted at a more powerful unreleased model alongside Opus 4.7 — contrasting its public model cadence with the restricted Mythos strategy.</div>
+    </div>
+    <a class="source-link" href="https://www.ithome.com/0/940/099.htm" target="_blank">IT之家 →</a>
+    <div class="new-source-callout">
+      <strong>⚑ 待观察：</strong>PAIR Chat 当前底层为 Claude Sonnet 4（2025 Q3 升级），Anthropic 已发布 Opus 4.7（2026.4.16），按历史规律 PAIR Chat 或将在 1-3 个月内跟进升级。
+    </div>
+  </div>
+</div>
+
+<!-- Section 2: 官方发布 -->
+<div class="section-card">
+  <div class="card-title">
+    <span class="section-icon">📢</span>
+    <span class="title-cn">官方发布</span>
+    <span class="title-en">Official Releases</span>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title">OpenAI 推出生物学专用模型 GPT-Rosalind</div>
+    <div class="news-title-en">OpenAI Launches GPT-Rosalind: Biology-Specific AI Model</div>
+    <div class="news-tags">
+      <span class="tag tag-US">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 于 4 月 17 日宣布推出 GPT-Rosalind，以 DNA 双螺旋结构发现者罗莎琳德·富兰克林命名。该模型专为生物学工作流深度调优，针对 50 种生物学工作流优化，具备假设生成、实验设计和证据合成能力。可与 Codex 智能体及 50 余种科学工具集成。访问需通过安全与资格认证审核。</div>
+      <div class="news-summary-en">OpenAI announced GPT-Rosalind on April 17, named after DNA structure co-discoverer Rosalind Franklin. The model is fine-tuned for 50 biology workflows with hypothesis generation, experimental design, and evidence synthesis capabilities. It integrates with Codex agents and 50+ scientific tools. Access requires security and qualification certification.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GPT-Rosalind 标志着 AI 模型从通用向垂直领域深化的趋势加速。在生命科学领域与 Amazon Bio Discovery、英伟达 BioNeMo 形成竞争，但 OpenAI 的生态整合能力（Codex + 工具链）可能成为差异化优势。</div>
+      <div class="why-en"><strong>Why it matters:</strong>GPT-Rosalind signals the accelerating trend from generalist to domain-specific AI. It competes with Amazon Bio Discovery and Nvidia BioNeMo, but OpenAI's ecosystem integration (Codex + toolchain) could be a differentiator.</div>
+    </div>
+    <a class="source-link" href="https://www.ithome.com/0/940/115.htm" target="_blank">IT之家 →</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title">Google DeepMind 发布 Gemini 3.1 Flash TTS：支持 70+ 语言的文本转语音模型</div>
+    <div class="news-title-en">Google DeepMind Releases Gemini 3.1 Flash TTS: Text-to-Speech Model Supporting 70+ Languages</div>
+    <div class="news-tags">
+      <span class="tag tag-US">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">DeepMind 于 4 月 15 日发布 Gemini 3.1 Flash TTS，基于 Gemini 3 架构的新一代语音合成模型。核心创新在于引入细粒度音频标签（expressive audio tags），用户可通过文字指令精确控制语速、语调、停顿和情感表达。支持 70+ 语言，内置 SynthID 水印技术，开发者可通过 Google AI Studio 微调语音并导出设置。</div>
+      <div class="news-summary-en">DeepMind released Gemini 3.1 Flash TTS on April 15, a next-gen TTS model based on Gemini 3 architecture. The key innovation is fine-grained audio tags allowing text-based control over speed, pitch, pauses, and emotional expression. Supports 70+ languages with built-in SynthID watermarking. Developers can fine-tune voices via Google AI Studio.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>通过自然语言精确控制语音表现力是一个重要突破，让 TTS 从"生成语音"进化到"导演语音"。与 ElevenLabs 等专业 TTS 公司直接竞争，但 Google 的多语言覆盖和 SynthID 水印提供了差异化。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Precise voice control via natural language is a significant breakthrough, evolving TTS from "generating speech" to "directing speech." Competes with ElevenLabs, with Google's multilingual coverage and SynthID watermarking as differentiators.</div>
+    </div>
+    <a class="source-link" href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-tts/" target="_blank">Google Blog →</a>
+  </div>
+
+  <div class="news-item tag-cn">
+    <div class="news-title">通义千问开源 Qwen3.6-35B-A3B：35B 总参数仅激活 3B，编程能力对标旗舰模型</div>
+    <div class="news-title-en">Alibaba Qwen Open-Sources Qwen3.6-35B-A3B: 35B Total Params with Only 3B Active, Flagship-Level Coding</div>
+    <div class="news-tags">
+      <span class="tag tag-CN">CN</span>
+      <span class="tag tag-Open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">阿里通义千问团队于 4 月 17 日开源 Qwen3.6-35B-A3B，继 Qwen3.6-Plus 之后的权重开放版本。该 MoE 模型总参数 350 亿，激活参数仅 30 亿，但在智能体编程能力上大幅超越前代 Qwen3.5-35B-A3B，并可与 Qwen3.5-27B 和 GPT-4o 级别模型竞争。21GB 量化体积即可本地部署运行。</div>
+      <div class="news-summary-en">Alibaba's Qwen team open-sourced Qwen3.6-35B-A3B on April 17, the weight-released version following Qwen3.6-Plus. The MoE model has 35B total parameters with only 3B active, yet significantly outperforms its predecessor Qwen3.5-35B-A3B in agentic coding, competing with Qwen3.5-27B and GPT-4o class models. Runs locally with 21GB quantized size.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>3B 激活参数达到旗舰级编程能力，这在效率-性能比上树立了新标杆。对资源有限的开发者和企业来说，本地部署一个高效能编程模型变得切实可行。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Achieving flagship-level coding with only 3B active parameters sets a new benchmark for efficiency-performance ratio. Local deployment of a capable coding model becomes practical for resource-constrained developers and enterprises.</div>
+    </div>
+    <a class="source-link" href="https://qwen.ai/blog?id=qwen3.6-35b-a3b" target="_blank">Qwen Blog →</a>
+  </div>
+</div>
+
+<!-- Section 3: 研究与技术 -->
+<div class="section-card">
+  <div class="card-title">
+    <span class="section-icon">🔬</span>
+    <span class="title-cn">研究与技术</span>
+    <span class="title-en">Research & Technology</span>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title">DeepMind 发布 AI Agent Traps 研究：揭示六类智能体网络攻击框架</div>
+    <div class="news-title-en">DeepMind Publishes AI Agent Traps Research: Reveals Six Categories of Agent Cyberattacks</div>
+    <div class="news-tags">
+      <span class="tag tag-US">US</span>
+      <span class="tag tag-Research">Research</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Google DeepMind 研究团队发布论文《AI Agent Traps》，首次提出针对 AI 智能体的系统性威胁分类框架。研究揭示网站可通过"检测不对称性"——即区分访问者是人类还是 AI 智能体——向智能体展示恶意内容。论文定义了六种攻击类别，覆盖信息投毒、指令劫持等场景，并指出当前智能体安全防护远未跟上部署速度。</div>
+      <div class="news-summary-en">Google DeepMind researchers published "AI Agent Traps," the first systematic threat classification framework for AI agents. The study reveals websites can exploit "detection asymmetry" — distinguishing human vs. AI agent visitors — to serve malicious content to agents. The paper defines six attack categories covering information poisoning, instruction hijacking, etc., noting agent safety measures lag far behind deployment velocity.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>随着 AI 智能体越来越多地浏览网页、执行任务，这类攻击面的影响范围可能远超传统网络安全。研究指出的"检测不对称性"问题尤其值得关注——同一个网页可以对人类和 AI 展示完全不同的内容。</div>
+      <div class="why-en"><strong>Why it matters:</strong>As AI agents increasingly browse the web and execute tasks, this attack surface could far exceed traditional cybersecurity. The "detection asymmetry" problem is particularly concerning — the same webpage can show completely different content to humans vs. AI.</div>
+    </div>
+    <a class="source-link" href="https://cybersecuritynews.com/hackers-hijack-ai-agents/" target="_blank">CyberSecurityNews →</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title">DeepMind 发布 Gemini Robotics-ER 1.6：具身推理能力大幅提升</div>
+    <div class="news-title-en">DeepMind Releases Gemini Robotics-ER 1.6 with Major Embodied Reasoning Improvements</div>
+    <div class="news-tags">
+      <span class="tag tag-US">US</span>
+      <span class="tag tag-Research">Research</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Google DeepMind 于 4 月 14 日发布 Gemini Robotics-ER 1.6，专用于机器人的具身推理模型重大升级。仪表读数成功率从 ER 1.5 的 23% 跃升至 86%。新模型使机器人能够解读视觉输入、规划任务并判断完成状态，新增仪表读数能力（读取复杂仪表和液位计），DeepMind 称其为"迄今为止最安全的机器人模型"。</div>
+      <div class="news-summary-en">Google DeepMind released Gemini Robotics-ER 1.6 on April 14, a major upgrade to their embodied reasoning model for robots. Gauge reading success rate jumped from 23% (ER 1.5) to 86%. The model enables robots to interpret visual input, plan tasks, and judge completion states, with new instrument reading capabilities. DeepMind calls it "the safest robot model to date."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>机器人从"指令执行"向"自主推理"跨越的关键一步。86% 的仪表读数成功率意味着机器人在工业场景中可以独立完成质量检测等任务，而不需要人类辅助验证。</div>
+      <div class="why-en"><strong>Why it matters:</strong>A critical step in the transition from "command-following" to "autonomous reasoning" for robots. The 86% gauge reading success rate means robots can independently complete tasks like quality inspection in industrial settings without human verification.</div>
+    </div>
+    <a class="source-link" href="https://deepmind.google/blog/gemini-robotics-er-1-6/" target="_blank">DeepMind Blog →</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-title">Hugging Face 发布 ml-intern：自动化 LLM 后训练工作流的开源 AI Agent</div>
+    <div class="news-title-en">Hugging Face Releases ml-intern: Open-Source AI Agent for Automated LLM Post-Training Workflows</div>
+    <div class="news-tags">
+      <span class="tag tag-Research">Research</span>
+      <span class="tag tag-Open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Hugging Face 于 4 月 21 日发布 ml-intern，基于 smolagents 构建的开源 AI Agent，可端到端自动化 LLM 后训练工作流。该 Agent 能自动阅读 arXiv 论文、修复和创建数据集、运行训练任务、调试失败并自主迭代。实测结果：在 GPQA 基准上提升 22 分，能深度集成 Hugging Face 生态中的论文、数据集和云算力资源。</div>
+      <div class="news-summary-en">Hugging Face released ml-intern on April 21, an open-source AI agent built on smolagents that automates end-to-end LLM post-training workflows. The agent autonomously reads arXiv papers, fixes and creates datasets, runs training jobs, debugs failures, and iterates. Results: +22 points on GPQA benchmark, with deep integration into Hugging Face's ecosystem of papers, datasets, and cloud compute.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>"用 AI 训练 AI"正从概念走向实践。ml-intern 降低了模型微调和后训练的门槛，让没有 ML 工程背景的开发者也能通过自然语言指令完成复杂的模型优化流程。</div>
+      <div class="why-en"><strong>Why it matters:</strong>"AI training AI" is moving from concept to practice. ml-intern lowers the barrier for model fine-tuning and post-training, enabling developers without ML engineering backgrounds to complete complex optimization workflows via natural language instructions.</div>
+    </div>
+    <a class="source-link" href="https://github.com/huggingface/ml-intern" target="_blank">GitHub →</a>
+  </div>
+</div>
+
+<!-- Section 4: 政策与产业 -->
+<div class="section-card">
+  <div class="card-title">
+    <span class="section-icon">🏛️</span>
+    <span class="title-cn">政策与产业</span>
+    <span class="title-en">Policy & Industry</span>
+  </div>
+
+  <div class="news-item tag-sg">
+    <div class="news-title">新加坡宣布追加逾 10 亿新元投资国家 AI 研发计划（NAIRD）</div>
+    <div class="news-title-en">Singapore Announces Over S$1 Billion Investment in National AI R&D Plan (NAIRD)</div>
+    <div class="news-tags">
+      <span class="tag tag-SG">SG</span>
+      <span class="tag tag-Policy">Policy</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">新加坡政府于 4 月 21 日正式宣布，在 2025-2030 年期间追加逾 10 亿新元投资国家 AI 研发计划（NAIRD）。资金将聚焦三大方向：基础 AI 研究（建立研究卓越中心）、应用 AI 研究（面向公共利益的 AI 解决方案）、以及人才培养（目标将 AI 从业者扩充至 15,000 人，是目前的三倍）。</div>
+      <div class="news-summary-en">The Singapore government announced on April 21 an additional investment of over S$1 billion for 2025-2030 under the National AI R&D Plan (NAIRD). Funding focuses on three areas: fundamental AI research (establishing centers of research excellence), applied AI for public good, and talent development (tripling AI practitioners to 15,000).</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>在全球 AI 竞争白热化的背景下，新加坡以 10 亿新元级别的国家级投入巩固其作为亚洲 AI 枢纽的地位。与预算 2026 中的 AI 投资方向一脉相承，显示新加坡正从"数字化政府"向"AI 驱动型经济体"转型。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Amid intensifying global AI competition, Singapore's S$1B+ national investment solidifies its position as Asia's AI hub. Consistent with Budget 2026 directions, signaling a shift from "digital government" to "AI-driven economy."</div>
+    </div>
+    <a class="source-link" href="https://www.mddi.gov.sg/newsroom/singapore-invests-over-s-1-billion-in-national-ai-research-and-development-plan-to-strengthen-ai-research-capabilities-and-our-position-as-global-ai-hub/" target="_blank">MDDI →</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title">斯坦福 HAI 发布 2026 AI 指数报告：中美 AI 性能差距基本消失</div>
+    <div class="news-title-en">Stanford HAI Releases 2026 AI Index Report: US-China AI Performance Gap Has Essentially Vanished</div>
+    <div class="news-tags">
+      <span class="tag tag-US">US</span>
+      <span class="tag tag-Policy">Policy</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">斯坦福大学以人为本 AI 研究所（HAI）于 4 月 13 日发布第 9 期《AI 指数报告》，共 423 页。核心结论：中美顶级 AI 模型性能差距已基本消失，两国在基准测试榜首交替领跑。报告同时警告 AI 能力提升速度远超监管能力。Anthropic 年化收入突破 300 亿美元，首次超越 OpenAI（约 250 亿美元），但训练成本仅为 OpenAI 的四分之一。</div>
+      <div class="news-summary-en">Stanford HAI released the 9th AI Index Report (423 pages) on April 13. Core finding: the US-China top AI model performance gap has essentially vanished, with both countries alternating at the top of benchmarks. The report warns AI capability growth far outpaces regulatory capacity. Anthropic surpassed $30B ARR (vs. OpenAI's ~$25B) while spending 4x less on training.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这份年度报告是 AI 领域最权威的综合性数据来源。"中美 AI 性能差距基本消失"的结论将对全球 AI 政策辩论产生深远影响，特别是美国对华 AI 出口管制政策的实际效果面临审视。</div>
+      <div class="why-en"><strong>Why it matters:</strong>This annual report is the most authoritative comprehensive data source in AI. The "vanishing US-China gap" conclusion will profoundly influence global AI policy debates, particularly questioning the effectiveness of US AI export controls on China.</div>
+    </div>
+    <a class="source-link" href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank">Stanford HAI →</a>
+  </div>
+</div>
+
+<!-- Section 5: 开源生态 -->
+<div class="section-card">
+  <div class="card-title">
+    <span class="section-icon">💚</span>
+    <span class="title-cn">开源生态</span>
+    <span class="title-en">Open Source Ecosystem</span>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-title">Hugging Face 迎接 Google Gemma 4：前沿多模态智能端侧部署</div>
+    <div class="news-title-en">Hugging Face Welcomes Gemma 4: Frontier Multimodal Intelligence on Device</div>
+    <div class="news-tags">
+      <span class="tag tag-Open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Google 发布 Gemma 4 系列模型后，Hugging Face 于 4 月 2 日发布集成博客，确认 Gemma 4 可在 Hugging Face 平台上进行推理、微调和部署。Gemma 4 是 Google 最新的开源多模态模型，支持端侧部署，面向设备端 AI 应用场景优化。</div>
+      <div class="news-summary-en">Following Google's Gemma 4 release, Hugging Face published an integration blog on April 2, confirming Gemma 4 is available for inference, fine-tuning, and deployment on the Hugging Face platform. Gemma 4 is Google's latest open-source multimodal model optimized for on-device AI applications.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Google Gemma 系列与 Hugging Face 生态的深度整合，降低了前沿多模态模型的获取门槛。端侧部署能力的提升意味着手机、平板等设备将能运行更强大的本地 AI 模型。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Deep integration of Google Gemma with Hugging Face's ecosystem lowers the barrier to accessing frontier multimodal models. Improved on-device deployment means phones and tablets can run more powerful local AI models.</div>
+    </div>
+    <a class="source-link" href="https://huggingface.co/blog/gemma4" target="_blank">Hugging Face Blog →</a>
+  </div>
+</div>
+
+<!-- Whitelist Section -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">📋 来源白名单</div>
+  <span class="whitelist-title-en">Source Whitelist</span>
+  <span class="whitelist-note-cn">以下为本期简报追踪的所有官方来源。新增来源以 🆕 标注。</span>
+  <span class="whitelist-note-en">Official sources tracked for this briefing. New additions marked with 🆕.</span>
+
+  <div class="whitelist-category">
+    <div class="whitelist-category-name">🇺🇸 美国 US</div>
+    <div class="whitelist-item">OpenAI News/Research — openai.com/news, openai.com/research</div>
+    <div class="whitelist-item">Anthropic Newsroom/Research — anthropic.com/news, anthropic.com/research</div>
+    <div class="whitelist-item">Google DeepMind — deepmind.google/blog</div>
+    <div class="whitelist-item">Meta Superintelligence Labs — about.fb.com/news</div>
+  </div>
+
+  <div class="whitelist-category">
+    <div class="whitelist-category-name">🇨🇳 中国 China</div>
+    <div class="whitelist-item">Moonshot/Kimi — moonshot.ai, kimi.com</div>
+    <div class="whitelist-item">MiniMax — minimaxi.com</div>
+    <div class="whitelist-item">智谱 Zhipu — zhipuai.cn, open.bigmodel.cn</div>
+    <div class="whitelist-item">Qwen/Alibaba Cloud — qwen.ai/blog</div>
+    <div class="whitelist-item">DeepSeek — deepseek.com</div>
+    <div class="whitelist-item">ByteDance Seed — seed.bytedance.com</div>
+  </div>
+
+  <div class="whitelist-category">
+    <div class="whitelist-category-name">🇸🇬 新加坡 Singapore</div>
+    <div class="whitelist-item">A*STAR AI Division — a-star.edu.sg/aiml</div>
+    <div class="whitelist-item">GovTech Singapore — tech.gov.sg/</div>
+    <div class="whitelist-item">Singapore DSAI — smartnation.sg/digital-singapore/ai-sg</div>
+    <div class="whitelist-item">NUS AI Research — nus.edu.sg/computing/ai-research</div>
+    <div class="whitelist-item">PAIR Chat — pair.gov.sg, reports.open.gov.sg/pair/updates</div>
+    <div class="whitelist-item">AIBots — developer.tech.gov.sg/products/categories/productivity-tools/aibots</div>
+    <div class="whitelist-item">Transcribe — transcribe.gov.sg</div>
+  </div>
+
+  <div class="whitelist-category">
+    <div class="whitelist-category-name">📰 媒体 Media</div>
+    <div class="whitelist-item">Reuters AI — reuters.com/technology</div>
+    <div class="whitelist-item">MIT Tech Review — technologyreview.com/topic/artificial-intelligence</div>
+    <div class="whitelist-item">Xinhua EN — xinhuanet.com/english</div>
+  </div>
+
+  <div class="whitelist-category">
+    <div class="whitelist-category-name">🔧 开源/研究 Open Source/Research</div>
+    <div class="whitelist-item">Hugging Face Blog — huggingface.co/blog</div>
+    <div class="whitelist-item">arXiv CS.AI — arxiv.org/list/cs.AI</div>
+    <div class="whitelist-item">OpenBMB — openbmb.org</div>
+    <div class="whitelist-item">HKUDS — hku-datascience.github.io</div>
+  </div>
+
+  <div class="whitelist-category">
+    <div class="whitelist-category-name">🤖 计算机使用研究 Computer Use Research</div>
+    <div class="whitelist-item">H Company — hcompany.ai</div>
+  </div>
+
+  <div class="whitelist-category">
+    <div class="whitelist-category-name">📜 AI 治理/政策 AI Governance/Policy</div>
+    <div class="whitelist-item">Plural Policy — pluralpolicy.com/blog</div>
+    <div class="whitelist-item">UK AI Security Institute — aisi.gov.uk/blog</div>
+    <div class="whitelist-item">Stanford HAI — hai.stanford.edu</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <span class="footer-cn">🤖 AI 技术简报 · 由自动化系统生成 · 仅供参考，不构成投资建议</span>
+  <span class="footer-en">Daily AI Briefing · Auto-generated · For informational purposes only, not investment advice</span>
+  <br><br>
+  <span class="footer-cn">数据来源：各公司官方博客/新闻页、arXiv、Reuters、MIT Technology Review、Stanford HAI 等</span>
+  <span class="footer-en">Sources: Official company blogs/newsrooms, arXiv, Reuters, MIT Technology Review, Stanford HAI, etc.</span>
+  <br><br>
+  <span class="footer-cn">发布地址：kidultop.github.io/investment-reports</span>
+  <span class="footer-en">Published at: kidultop.github.io/investment-reports</span>
+</div>
+
+</body>
+</html>

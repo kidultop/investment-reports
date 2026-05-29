@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 早报 2026-05-11 | Daily AI Briefing</title>
+<style>
+  :root { --bg: #0f172a; --card: #1e293b; --accent: #a78bfa; --accent2: #7c3aed; --text: #e2e8f0; --muted: #94a3b8; --border: #334155; --us: #3b82f6; --cn: #ef4444; --sg: #f97316; --research: #22c55e; --open: #a78bfa; --policy: #eab308; --new-source: #06b6d4; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; min-height: 100vh; }
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 16px 60px; }
+  header { text-align: center; padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  header h1 { font-size: 1.6rem; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+  header .date { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+  header .subtitle { color: var(--muted); font-size: 0.78rem; margin-top: 4px; font-style: italic; }
+
+  /* Trends Card */
+  .trends-card { background: var(--card); border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; border: 1px solid var(--border); }
+  .trends-title-cn { font-size: 1.05rem; font-weight: 600; color: var(--accent); }
+  .trends-title-en { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 2px; margin-bottom: 14px; }
+  .trend-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .trend-item:last-child { border-bottom: none; }
+  .trend-num { background: var(--accent2); color: #fff; font-size: 0.7rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .trend-cn { font-size: 0.88rem; color: var(--text); line-height: 1.5; }
+  .trend-en { font-size: 0.75rem; color: var(--muted); font-style: italic; line-height: 1.4; margin-top: 2px; }
+
+  /* Stats Bar */
+  .stats-bar { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .stat-item { flex: 1; min-width: 100px; background: var(--card); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); text-align: center; }
+  .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+  .stat-label-cn { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+  .stat-label-en { font-size: 0.68rem; color: var(--muted); font-style: italic; }
+  .stat-unit-cn { font-size: 0.7rem; color: var(--accent); margin-top: 2px; }
+  .stat-unit-en { font-size: 0.62rem; color: var(--muted); font-style: italic; }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .card-title { display: flex; align-items: baseline; gap: 10px; padding-bottom: 10px; border-bottom: 2px solid var(--accent); margin-bottom: 16px; }
+  .title-cn { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+  .title-en { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+  /* News Item */
+  .news-item { background: var(--card); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; border-left: 4px solid var(--accent); position: relative; }
+  .news-item.top-story { border-left-width: 5px; border-left-color: var(--accent); }
+  .news-item.us { border-left-color: var(--us); }
+  .news-item.cn { border-left-color: var(--cn); }
+  .news-item.sg { border-left-color: var(--sg); }
+  .news-item.research { border-left-color: var(--research); }
+  .news-item.open { border-left-color: var(--open); }
+  .news-item.policy { border-left-color: var(--policy); }
+  .news-item.new-source { border-left-color: var(--new-source); }
+  .tag { display: inline-block; font-size: 0.65rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .tag-us { background: rgba(59,130,246,0.15); color: var(--us); }
+  .tag-cn { background: rgba(239,68,68,0.15); color: var(--cn); }
+  .tag-sg { background: rgba(249,115,22,0.15); color: var(--sg); }
+  .tag-research { background: rgba(34,197,94,0.15); color: var(--research); }
+  .tag-open { background: rgba(167,139,250,0.15); color: var(--open); }
+  .tag-policy { background: rgba(234,179,8,0.15); color: var(--policy); }
+  .news-title-cn { font-size: 1.02rem; font-weight: 600; color: var(--text); line-height: 1.5; }
+  .news-title-en { font-size: 0.8rem; color: var(--muted); font-style: italic; margin-top: 3px; line-height: 1.4; }
+  .news-summary { display: flex; gap: 16px; margin-top: 12px; }
+  .news-summary-cn { flex: 1; font-size: 0.85rem; color: var(--text); line-height: 1.7; padding-left: 12px; border-left: 2px solid rgba(255,255,255,0.1); }
+  .news-summary-en { flex: 1; font-size: 0.78rem; color: var(--muted); line-height: 1.6; padding-left: 12px; border-left: 2px solid rgba(255,255,255,0.08); font-style: italic; }
+  .why-matters { margin-top: 14px; background: rgba(167,139,250,0.06); border-radius: 8px; padding: 12px 14px; }
+  .why-cn { font-size: 0.82rem; color: var(--text); line-height: 1.6; }
+  .why-cn strong { color: var(--accent); }
+  .why-en { font-size: 0.75rem; color: var(--muted); font-style: italic; line-height: 1.5; margin-top: 4px; }
+  .why-en strong { color: var(--accent); }
+  .source-link { display: inline-block; margin-top: 12px; font-size: 0.75rem; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); padding: 4px 12px; border-radius: 6px; transition: all 0.2s; }
+  .source-link:hover { background: var(--accent); color: #fff; }
+  .new-source-callout { margin-top: 12px; background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.3); border-radius: 8px; padding: 10px 14px; font-size: 0.78rem; color: var(--new-source); }
+
+  /* Whitelist */
+  .whitelist { background: var(--card); border-radius: 10px; padding: 18px 20px; margin-top: 28px; border: 1px solid var(--border); }
+  .whitelist-title-cn { font-size: 0.95rem; font-weight: 600; color: var(--accent); }
+  .whitelist-title-en { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 2px; margin-bottom: 12px; }
+  .whitelist-note-cn { font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+  .whitelist-note-en { font-size: 0.7rem; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+  .whitelist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; }
+  .whitelist-item { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+  .whitelist-item .wl-tag { color: var(--accent); font-weight: 600; }
+  .whitelist-item .new-flag { color: var(--new-source); font-weight: 700; }
+
+  /* Footer */
+  footer { text-align: center; padding: 28px 0 0; border-top: 1px solid var(--border); margin-top: 32px; }
+  .footer-cn { font-size: 0.75rem; color: var(--muted); }
+  .footer-en { font-size: 0.68rem; color: var(--muted); font-style: italic; margin-top: 2px; }
+
+  @media (max-width: 600px) {
+    .news-summary { flex-direction: column; gap: 8px; }
+    .whitelist-grid { grid-template-columns: 1fr; }
+    .stats-bar { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🤖 AI 早报</h1>
+  <div class="date">2026 年 5 月 11 日（周一）早报 08:20 SGT</div>
+  <div class="subtitle">Daily AI Briefing — 技术动态 · 模型发布 · 产业观察</div>
+</header>
+
+<!-- Trends Card -->
+<div class="trends-card">
+  <div class="trends-title-cn">📌 今日核心趋势</div>
+  <div class="trends-title-en">Core Trends — 2026-05-11</div>
+  <div class="trend-item">
+    <span class="trend-num">1</span>
+    <div><div class="trend-cn">Moonshot AI 完成 200 亿美元融资，估值升至 200 亿美元，开源大模型融资纪录再刷新</div><div class="trend-en">Moonshot AI closes $2B round at $20B valuation — largest open-weight LLM raise in China to date.</div></div>
+  </div>
+  <div class="trend-item">
+    <span class="trend-num">2</span>
+    <div><div class="trend-cn">Anthropic 联合贝莱德、高盛组建企业 AI 服务公司，AI 金融化进入新阶段</div><div class="trend-en">Anthropic partners with Blackstone, Goldman Sachs to build enterprise AI services company — AI financialization accelerates.</div></div>
+  </div>
+  <div class="trend-item">
+    <span class="trend-num">3</span>
+    <div><div class="trend-cn">DeepMind AlphaEvolve 发布一年实战报告：覆盖基因分析、电网、量子计算等 10+ 领域</div><div class="trend-en">DeepMind AlphaEvolve one-year impact report: 30% fewer DNA mutation errors, 88% feasible power grid solutions, quantum circuit error reduction.</div></div>
+  </div>
+  <div class="trend-item">
+    <span class="trend-num">4</span>
+    <div><div class="trend-cn">arXiv cs.AI 本周趋势：Agent 编排（Orchestration）主导，LLM 工具调用研究激增</div><div class="trend-en">arXiv cs.AI weekly trend: Agent orchestration papers dominate; LLM tool-calling and multi-agent systems lead submissions.</div></div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value">$20B</div>
+    <div class="stat-label-cn">Moonshot AI 估值</div>
+    <div class="stat-label-en">Moonshot AI Valuation</div>
+    <div class="stat-unit-cn">本轮融资 20 亿美元</div>
+    <div class="stat-unit-en">$2B raised this round</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">30%</div>
+    <div class="stat-label-cn">DNA 突变检测错误率下降</div>
+    <div class="stat-label-en">DNA Mutation Error Reduction</div>
+    <div class="stat-unit-cn">DeepMind AlphaEvolve</div>
+    <div class="stat-unit-en">DeepMind AlphaEvolve</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">88%</div>
+    <div class="stat-label-cn">电网优化可行解比例</div>
+    <div class="stat-label-en">Power Grid Feasible Solutions</div>
+    <div class="stat-unit-cn">AC 最优潮流问题</div>
+    <div class="stat-unit-en">AC Optimal Power Flow</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">10+</div>
+    <div class="stat-label-cn">AlphaEvolve 应用领域</div>
+    <div class="stat-label-en">AlphaEvolve Domains</div>
+    <div class="stat-unit-cn">涵盖科研与产业</div>
+    <div class="stat-unit-en">Research & Industry</div>
+  </div>
+</div>
+
+<!-- Top Stories -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">📰 Top Stories</span>
+    <span class="title-en">Top Stories</span>
+  </div>
+
+  <div class="news-item top-story us">
+    <span class="tag tag-us">US · Top Story</span>
+    <div class="news-title-cn">Anthropic 联合贝莱德、高盛组建企业 AI 服务公司</div>
+    <div class="news-title-en">Anthropic builds new enterprise AI services company with Blackstone, Goldman Sachs</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于 5 月 4 日宣布，与 Blackstone、Hellman & Friedman 及 Goldman Sachs 共同组建一家新型企业 AI 服务公司，旨在将 Claude 模型深度整合进金融服务业核心工作流。此举是 Anthropic 迄今最大规模的行业垂直布局，标志着前沿 AI 实验室从「通用模型提供商」向「行业解决方案运营商」的战略转型。</div>
+      <div class="news-summary-en">Anthropic announced on May 4, 2026 that it is forming a new enterprise AI services company with Blackstone, Hellman & Friedman, and Goldman Sachs, aiming to deeply integrate Claude models into core financial services workflows. This is Anthropic's largest vertical industry move to date, signaling a strategic shift from "general-purpose model provider" to "industry solution operator."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Anthropic 通过绑定顶级金融机构，在企业 AI 市场正面挑战 OpenAI 和微软的联盟。金融服务业是 AI 落地付费意愿最强的垂直领域，此举将显著加速 Claude 在财富管理、风控、研报生成等场景的渗透。</div>
+      <div class="why-en"><strong>Why it matters:</strong> By locking in top-tier financial institutions, Anthropic directly challenges the OpenAI-Microsoft alliance in the enterprise AI market. Financial services is the vertical with the strongest willingness to pay for AI — this move will significantly accelerate Claude's penetration into wealth management, risk control, and research report generation.</div>
+    </div>
+    <a href="https://www.anthropic.com/news/enterprise-ai-services-company" class="source-link" target="_blank">Anthropic 官方公告 →</a>
+  </div>
+
+  <div class="news-item top-story cn">
+    <span class="tag tag-cn">CN · Top Story</span>
+    <div class="news-title-cn">Moonshot AI 完成 200 亿美元融资，估值翻倍至 200 亿美元</div>
+    <div class="news-title-en">Moonshot AI raises $2B at $20B valuation, doubling in six months</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">据 TechCrunch 报道，北京 Moonshot AI（Kimi 系列大模型开发商）完成约 200 亿美元融资，由美团旗下龙珠资本领投，清华资本、中国移动、CPE 源峰等参投。公司估值从 2025 年底的 43 亿美元跃升至 200 亿美元，过去六个月累计融资 39 亿美元。Kimi K2.6 当前是 OpenRouter 平台使用量第二大的 LLM。</div>
+      <div class="news-summary-en">According to TechCrunch, Beijing-based Moonshot AI (developer of the Kimi series of open-weight LLMs) has raised ~$2B at a $20B valuation, led by Meituan's Long-Z Investments, with participation from Tsinghua Capital, China Mobile, and CPE Yuanfeng. The company's valuation jumped from $4.3B at the end of 2025 to $20B — totaling $3.9B raised over the past six months. Kimi K2.6 is currently the second-most-used LLM on OpenRouter.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是中国企业级 AI 大模型领域迄今最大单轮融资，标志着国际资本对中国开源大模型的认可度显著提升。Moonshot 与 DeepSeek（传闻估值 450 亿美元）形成双雄格局，将推动中国开源 AI 生态在全球市场的份额扩张。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This is the largest single-round funding in China's enterprise AI model sector to date, signaling significantly increased international investor recognition of Chinese open-weight LLMs. Moonshot and DeepSeek (rumored $45B valuation) now form a dual-leader landscape, poised to expand the global market share of China's open-source AI ecosystem.</div>
+    </div>
+    <a href="https://techcrunch.com/2026/05/07/chinas-moonshot-ai-raises-2b-at-20b-valuation-as-demand-for-open-source-ai-skyrockets/" class="source-link" target="_blank">TechCrunch 报道 →</a>
+  </div>
+
+  <div class="news-item top-story us">
+    <span class="tag tag-us">US · Top Story</span>
+    <div class="news-title-cn">DeepMind AlphaEvolve 发布一年实战报告：算法发现 AI 跨 10+ 领域落地</div>
+    <div class="news-title-en">DeepMind AlphaEvolve: One-year impact report on Gemini-powered algorithm discovery</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Google DeepMind 于 5 月 8 日发布 AlphaEvolve 一年成果总结：这套由 Gemini 驱动的算法发现系统，在基因分析（DeepConsensus 错误率降低 30%）、电网优化（可行解比例从 14% 提升至 88%）、量子电路（Willow 处理器错误率降低 1/10）等领域取得可验证的突破。商业应用方面，Klarna 训练速度翻倍，WPP 广告 AI 准确度提升 10%。</div>
+      <div class="news-summary-en">Google DeepMind published a one-year impact report on AlphaEvolve on May 8, 2026. This Gemini-powered algorithm discovery system has achieved verifiable breakthroughs in DNA analysis (30% reduction in DeepConsensus mutation errors), power grid optimization (feasible solutions from 14% to 88%), and quantum circuits (1/10 fewer errors on Willow processor). Commercially, Klarna doubled training speed; WPP improved ad AI accuracy by 10%.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>AlphaEvolve 是首个实现「AI 发现算法并自我改进」的工业级系统，其跨领域泛化能力证明 LLM 不仅能生成文本，还能作为「元算法引擎」加速科学发现。这标志着 AI for Science 进入自动化算法设计新阶段。</div>
+      <div class="why-en"><strong>Why it matters:</strong> AlphaEvolve is the first industrial-grade system to achieve "AI discovers algorithms and self-improves." Its cross-domain generalization proves that LLMs can serve as "meta-algorithm engines" for scientific discovery, not just text generation. This marks a new phase of AI for Science: automated algorithm design.</div>
+    </div>
+    <a href="https://gigazine.net/gsc_news/en/20260508-google-deepmind-alphaevolve/" class="source-link" target="_blank">GIGAZINE 报道 →</a>
+    <a href="https://deepmind.google/blog/" class="source-link" target="_blank" style="margin-left:8px;">DeepMind Blog →</a>
+  </div>
+</div>
+
+<!-- 官方发布 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">🚀 官方发布</span>
+    <span class="title-en">Official Releases</span>
+  </div>
+
+  <div class="news-item us">
+    <span class="tag tag-us">US · Official</span>
+    <div class="news-title-cn">OpenAI 将 GPT-5.5 Instant 设为 ChatGPT 默认模型</div>
+    <div class="news-title-en">OpenAI upgrades ChatGPT default model to GPT-5.5 Instant</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 于 5 月 5 日宣布将 ChatGPT 默认模型升级为 GPT-5.5 Instant，重点提升准确性和简洁性，幻觉率最高降低 52.5%，并减少回复中不必要的表情符号。与此同时，GPT-5.5、Codex 和托管 Agent 三款产品同步进入 AWS Bedrock 限量预览，首次在微软 Azure 之外直接可用。</div>
+      <div class="news-summary-en">OpenAI announced on May 5, 2026 that it upgraded ChatGPT's default model to GPT-5.5 Instant, focusing on accuracy and conciseness — hallucination rate reduced by up to 52.5%, with fewer unnecessary emojis in responses. Simultaneously, GPT-5.5, Codex, and hosted Agents entered limited preview on AWS Bedrock — the first time these products are directly available outside Microsoft Azure.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>OpenAI 与 AWS 的合作打破了微软的独占格局，多云部署将显著降低企业客户的供应商锁定风险。GPT-5.5 Instant 的幻觉率改进是生产环境部署的关键瓶颈突破。</div>
+      <div class="why-en"><strong>Why it matters:</strong> OpenAI's partnership with AWS breaks Microsoft's exclusivity, and multi-cloud deployment significantly reduces vendor lock-in risk for enterprise customers. The hallucination reduction in GPT-5.5 Instant addresses a key bottleneck for production deployment.</div>
+    </div>
+    <a href="https://openai.com/news" class="source-link" target="_blank">OpenAI 官方 →</a>
+  </div>
+
+  <div class="news-item us">
+    <span class="tag tag-us">US · Official</span>
+    <div class="news-title-cn">Anthropic 发布金融服务业 AI Agent 套件</div>
+    <div class="news-title-en">Anthropic announces AI agents for financial services</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于 5 月 5 日在纽约举行仅限邀请的金融服务发布会上，推出面向金融行业的 Claude Agent 套件，涵盖研报自动生成、合规审查辅助、风险建模等场景。Jamie Dimon（摩根大通 CEO）出席活动，显示华尔街顶级机构对 Anthropic 企业 AI 能力的认可。</div>
+      <div class="news-summary-en">Anthropic unveiled its Claude Agent suite for financial services at an invite-only briefing in New York on May 5, 2026, covering research report generation, compliance review assistance, and risk modeling. JPMorgan Chase CEO Jamie Dimon attended the event, signaling top-tier Wall Street recognition of Anthropic's enterprise AI capabilities.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Anthropic 直接对标 OpenAI 的企业市场攻势，金融 Agent 的高付费意愿将为其带来稳定现金流。Jamie Dimon 的出席具有强烈信号意义，可能带动更多大型金融机构跟进采用 Claude。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Anthropic is directly countering OpenAI's enterprise push. High willingness to pay for financial agents will bring stable cash flow. Jamie Dimon's presence sends a strong signal that could drive more large financial institutions to adopt Claude.</div>
+    </div>
+    <a href="https://www.anthropic.com/news/finance-agents" class="source-link" target="_blank">Anthropic 官方公告 →</a>
+  </div>
+
+  <div class="news-item cn">
+    <span class="tag tag-cn">CN · Official</span>
+    <div class="news-title-cn">通义千问开源 Qwen3.6-35B-A3B，同步推进 Qwen3.6-Plus 企业部署</div>
+    <div class="news-title-en">Alibaba open-sources Qwen3.6-35B-A3B, advances Qwen3.6-Plus enterprise deployment</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">阿里云在 Qwen3.6-Plus 发布后，进一步开源 Qwen3.6-35B-A3B——一款稀疏 MoE 模型，在保持较强推理能力的同时大幅降低推理成本。Qwen3.6 系列主打 Agentic AI 场景，支持更长上下文和更稳定的工具调用，是企业级 Agent 部署的有力候选。</div>
+      <div class="news-summary-en">Following the Qwen3.6-Plus release, Alibaba Cloud open-sourced Qwen3.6-35B-A3B — a sparse MoE model that significantly reduces inference cost while maintaining strong reasoning. The Qwen3.6 series targets agentic AI scenarios with longer context and more stable tool-calling, making it a strong candidate for enterprise Agent deployment.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Qwen3.6-35B-A3B 的开源进一步丰富了高性价比 Agentic AI 模型的选择，与 DeepSeek V4、Kimi K2.6 形成三角竞争，推动中国开源模型生态的快速迭代。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Qwen3.6-35B-A3B's open-source release enriches the selection of cost-effective agentic AI models, forming a three-way competition with DeepSeek V4 and Kimi K2.6, driving rapid iteration in China's open-source model ecosystem.</div>
+    </div>
+    <a href="https://qwen.ai/blog?id=qwen3.6-35b-a3b" class="source-link" target="_blank">Qwen 官方博客 →</a>
+  </div>
+</div>
+
+<!-- 研究与技术 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">🔬 研究与技术</span>
+    <span class="title-en">Research & Technology</span>
+  </div>
+
+  <div class="news-item research">
+    <span class="tag tag-research">Research · arXiv</span>
+    <div class="news-title-cn">arXiv cs.AI 本周趋势：Agent 编排论文激增，LLM 工具调用成核心研究方向</div>
+    <div class="news-title-en">arXiv cs.AI weekly trend: Agent orchestration surges, LLM tool-use becomes core research direction</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">截至 5 月 10 日的 arXiv cs.AI 论文列表显示，Agent 编排（Orchestration）、LLM 工具调用优化、多智能体协作占据本周提交量的主要份额。代表性论文包括：TADI（油井现场 Agentic LLM 编排）、AgentReputation（去中心化 Agent 信誉框架）、AEM（多轮 Agent 强化学习自适应熵调制）。其中「Agentic AI Orchestration Should Be Bayes-Consistent」已被 ICML 2026 接收。</div>
+      <div class="news-summary-en">The arXiv cs.AI listing as of May 10, 2026 shows agent orchestration, LLM tool-calling optimization, and multi-agent collaboration dominating this week's submissions. Notable papers: TADI (Agentic LLM orchestration for wellsite data), AgentReputation (decentralized agentic AI reputation framework), AEM (Adaptive Entropy Modulation for multi-turn agentic RL). "Agentic AI Orchestration Should Be Bayes-Consistent" was accepted to ICML 2026.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Agent 编排正从「工程实践」上升为「理论研究」课题，ICML 2026 接收相关论文说明顶级会议已认可该方向的理论价值。这将吸引更多学者投入，加速 Agent 框架的标准化和可靠性提升。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Agent orchestration is rising from "engineering practice" to "theoretical research." ICML 2026 acceptance of related papers signals top conferences now recognize the theoretical value of this direction, which will attract more researchers and accelerate standardization and reliability improvements in agent frameworks.</div>
+    </div>
+    <a href="https://arxiv.org/list/cs.AI/current" class="source-link" target="_blank">arXiv cs.AI 本期列表 →</a>
+  </div>
+
+  <div class="news-item research">
+    <span class="tag tag-research">Research · LLM</span>
+    <div class="news-title-cn">「Are Tools All We Need?」：LLM Agent 工具调用成本分析研究发表</div>
+    <div class="news-title-en">"Are Tools All We Need? Unveiling the Tool-Use Tax in LLM Agents" — arXiv 2605.00136</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">最新 arXiv 论文（2605.00136）系统分析了 LLM Agent 工具调用中的「隐性成本」：频繁的工具调用会显著增加 token 消耗和延迟，而在某些任务中简化工具集反而提升最终效果。论文提出了工具调用效率的评估框架，为 Agent 设计者提供量化决策依据。</div>
+      <div class="news-summary-en">A new arXiv paper (2605.00136) systematically analyzes the "hidden tax" of LLM agent tool-calling: frequent tool invocations significantly increase token consumption and latency, while simplified tool sets sometimes improve final outcomes. The paper proposes an evaluation framework for tool-calling efficiency, providing quantitative guidance for agent designers.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>工具调用是 Agent 能力的核心，但「更多工具 = 更好效果」的假设正受到挑战。该研究为 Agent 系统的工具选择策略提供了首个系统化分析框架，对生产级 Agent 设计有直接指导意义。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Tool-calling is central to agent capabilities, but the "more tools = better performance" assumption is being challenged. This study provides the first systematic analysis framework for agent tool-selection strategy, with direct implications for production-grade agent design.</div>
+    </div>
+    <a href="https://arxiv.org/abs/2605.00136" class="source-link" target="_blank">arXiv 2605.00136 →</a>
+  </div>
+</div>
+
+<!-- 政策与产业 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">🏛️ 政策与产业</span>
+    <span class="title-en">Policy & Industry</span>
+  </div>
+
+  <div class="news-item policy">
+    <span class="tag tag-policy">Policy · Industry</span>
+    <div class="news-title-cn">Anthropic 扩充 Claude 使用限额并与 SpaceX 签署计算协议</div>
+    <div class="news-title-en">Anthropic raises Claude usage limits, signs compute deal with SpaceX</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于 5 月 6 日宣布提高 Claude 各订阅方案的使用限额，同时披露与 SpaceX 签署的计算基础设施合作协议。此举将显著提升 Claude 在高强度任务中的可用性，并为 SpaceX 的航天工程 AI 应用（如飞行控制代码生成、卫星数据分析）提供底层支持。</div>
+      <div class="news-summary-en">Anthropic announced on May 6, 2026 that it is raising usage limits across Claude subscription tiers and disclosed a compute infrastructure partnership with SpaceX. This will significantly improve Claude's availability for high-intensity tasks and provide underlying support for SpaceX's aerospace engineering AI applications (e.g., flight control code generation, satellite data analysis).</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>与 SpaceX 的合作是 Anthropic 首次公开确认与航天/硬科技领域巨头的计算合作，拓展了 Claude 的应用边界。使用限额提升则直接改善用户体验，减少付费用户的「限速焦虑」。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The SpaceX partnership is Anthropic's first publicly confirmed compute collaboration with an aerospace/hard-tech giant, expanding Claude's application boundaries. Usage limit increases directly improve user experience and reduce "rate limit anxiety" for paid subscribers.</div>
+    </div>
+    <a href="https://www.anthropic.com/news/higher-limits-spacex" class="source-link" target="_blank">Anthropic 官方公告 →</a>
+  </div>
+</div>
+
+<!-- 开源生态 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">🌐 开源生态</span>
+    <span class="title-en">Open Source Ecosystem</span>
+  </div>
+
+  <div class="news-item open">
+    <span class="tag tag-open">Open · Model</span>
+    <div class="news-title-cn">Qwen3.6-35B-A3B 开源发布，Apache 2.0 许可</div>
+    <div class="news-title-en">Qwen3.6-35B-A3B open-sourced under Apache 2.0 license</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">阿里云在 Qwen3.6 系列发布后，将 Qwen3.6-35B-A3B 正式开源，采用 Apache 2.0 许可，允许商业使用。该模型是稀疏 MoE 架构，推理时仅激活 3B 参数，在多个基准上接近 Qwen3.6-Plus（闭源版）的表现，是性价比最优的开源 Agentic AI 模型之一。</div>
+      <div class="news-summary-en">Alibaba Cloud officially open-sourced Qwen3.6-35B-A3B after the Qwen3.6 series launch, under the Apache 2.0 license allowing commercial use. The model uses sparse MoE architecture, activating only 3B parameters during inference, and approaches Qwen3.6-Plus (closed-source) performance on multiple benchmarks — one of the most cost-effective open-source agentic AI models.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Apache 2.0 许可的开源策略将加速 Qwen3.6 在企业场景的采用，尤其是需要商业部署的 Agentic AI 应用。与 DeepSeek V4、Kimi K2.6 的开源竞争将推动整个生态的推理成本持续下降。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The Apache 2.0 licensing strategy will accelerate Qwen3.6 adoption in enterprise scenarios, especially agentic AI applications requiring commercial deployment. Open-source competition with DeepSeek V4 and Kimi K2.6 will drive continued inference cost reductions across the ecosystem.</div>
+    </div>
+    <a href="https://qwen.ai/blog?id=qwen3.6-35b-a3b" class="source-link" target="_blank">Qwen 官方 →</a>
+    <a href="https://github.com/QwenLM/Qwen3.6" class="source-link" target="_blank" style="margin-left:8px;">GitHub →</a>
+  </div>
+</div>
+
+<!-- Whitelist -->
+<div class="whitelist">
+  <div class="whitelist-title-cn">📋 追踪来源白名单</div>
+  <div class="whitelist-title-en">Source Whitelist</div>
+  <div class="whitelist-note-cn">以下来源经筛选后纳入定期追踪，仅收录官方发布或权威媒体报道。本期无新增来源。</div>
+  <div class="whitelist-note-en">Sources below are curated for periodic tracking. Only official releases and authoritative media coverage are included. No new sources added in this issue.</div>
+  <div class="whitelist-grid">
+    <div class="whitelist-item"><span class="wl-tag">US：</span>OpenAI (openai.com/news), Anthropic (anthropic.com/news), Google DeepMind (deepmind.google/blog), Meta Superintelligence Labs (about.fb.com/news)</div>
+    <div class="whitelist-item"><span class="wl-tag">CN：</span>Moonshot/Kimi (moonshot.ai, kimi.com), MiniMax (minimaxi.com), 智谱 (zhipuai.cn), Qwen (qwen.ai/blog), DeepSeek (deepseek.com)</div>
+    <div class="whitelist-item"><span class="wl-tag">SG：</span>A*STAR (a-star.edu.sg/aiml), GovTech (tech.gov.sg), MDDI (mddi.gov.sg/newsroom), Singtel (singtel.com/media-centre)</div>
+    <div class="whitelist-item"><span class="wl-tag">SG Tools：</span>PAIR Chat (pair.gov.sg), AIBots (developer.tech.gov.sg), Transcribe (transcribe.gov.sg)</div>
+    <div class="whitelist-item"><span class="wl-tag">Media：</span>Reuters (reuters.com/technology), MIT TR (technologyreview.com), Xinhua EN (xinhuanet.com/english), CNBC (cnbc.com), Forbes AI 50 (forbes.com), IEEE Spectrum (spectrum.ieee.org)</div>
+    <div class="whitelist-item"><span class="wl-tag">Research：</span>Hugging Face (huggingface.co/blog), arXiv cs.AI (arxiv.org/list/cs.AI), OpenBMB (openbmb.org), Marktechpost (marktechpost.com)</div>
+    <div class="whitelist-item"><span class="wl-tag">Policy：</span>Plural Policy (pluralpolicy.com/blog), UK AISI (aisi.gov.uk/blog), Stanford HAI (hai.stanford.edu), Mayer Brown (mayerbrown.com)</div>
+    <div class="whitelist-item"><span class="wl-tag">CN Extended：</span>ByteDance Seed (seed.bytedance.com), Knightli (knightli.com), Kimi K2 Official (kimi-k2.org)</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-cn">由 AI 简报自动化系统生成 · 2026-05-11 08:20 SGT</div>
+  <div class="footer-en">Generated by AI Briefing Automation System · 2026-05-11 08:20 SGT</div>
+  <div class="footer-cn" style="margin-top:8px;">反馈联系：WorkBuddy AI · 数据来源见各条目标注</div>
+  <div class="footer-en" style="margin-top:2px;">Contact: WorkBuddy AI · Sources cited per item</div>
+</footer>
+
+</div>
+</body>
+</html>

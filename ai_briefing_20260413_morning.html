@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 简报 · 2026年4月13日早报</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg2: #1e293b;
+      --bg3: #334155;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #a78bfa;
+      --accent2: #818cf8;
+      --us-color: #60a5fa;
+      --cn-color: #f87171;
+      --sg-color: #fb923c;
+      --research-color: #4ade80;
+      --open-color: #c084fc;
+      --policy-color: #fbbf24;
+      --border: #334155;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; min-height: 100vh; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Header */
+    .header { text-align: center; padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+    .header-eyebrow { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .header h1 { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .header h1 .accent { color: var(--accent); }
+    .header-date { font-size: 13px; color: var(--muted); }
+
+    /* Trends Card */
+    .trends-card { background: linear-gradient(135deg, #1a1040 0%, #0f1a2e 100%); border: 1px solid var(--accent); border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; }
+    .trends-title-cn { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+    .trends-title-en { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+    .trend-item { display: flex; align-items: flex-start; margin-bottom: 10px; font-size: 13px; }
+    .trend-item:last-child { margin-bottom: 0; }
+    .trend-bullet { color: var(--accent); margin-right: 8px; flex-shrink: 0; }
+
+    /* Stats Bar */
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+    .stat-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
+    .stat-value { font-size: 20px; font-weight: 700; color: var(--accent); }
+    .stat-label-cn { font-size: 11px; color: var(--text); }
+    .stat-label-en { font-size: 10px; color: var(--muted); font-style: italic; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .card-title { font-size: 15px; font-weight: 700; color: var(--text); padding: 10px 16px; background: var(--bg2); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .card-title .title-cn { font-weight: 600; }
+    .card-title .title-en { font-size: 12px; color: var(--muted); font-style: italic; font-weight: 400; }
+    .card-title .section-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; letter-spacing: 0.5px; }
+    .badge-top { background: #a78bfa22; color: var(--accent); border: 1px solid var(--accent); }
+    .badge-official { background: #38bdf822; color: #38bdf8; border: 1px solid #38bdf8; }
+    .badge-research { background: #4ade8022; color: var(--research-color); border: 1px solid var(--research-color); }
+    .badge-policy { background: #fbbf2422; color: var(--policy-color); border: 1px solid var(--policy-color); }
+    .badge-open { background: #c084fc22; color: var(--open-color); border: 1px solid var(--open-color); }
+
+    /* News Item */
+    .news-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 14px; transition: border-color 0.2s; }
+    .news-item:hover { border-color: var(--accent); }
+    .news-item.headline { border-left: 4px solid var(--accent); }
+    .news-item.tag-us { border-left: 4px solid var(--us-color); }
+    .news-item.tag-cn { border-left: 4px solid var(--cn-color); }
+    .news-item.tag-research { border-left: 4px solid var(--research-color); }
+    .news-item.tag-open { border-left: 4px solid var(--open-color); }
+    .news-item.tag-policy { border-left: 4px solid var(--policy-color); }
+    .news-item.tag-sg { border-left: 4px solid var(--sg-color); }
+
+    .news-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .news-title-wrap { flex: 1; }
+    .news-title-cn { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .news-title-en { font-size: 12px; color: var(--muted); font-style: italic; }
+    .tag-chip { font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0; }
+    .chip-us { background: var(--us-color)22; color: var(--us-color); border: 1px solid var(--us-color); }
+    .chip-cn { background: var(--cn-color)22; color: var(--cn-color); border: 1px solid var(--cn-color); }
+    .chip-research { background: var(--research-color)22; color: var(--research-color); border: 1px solid var(--research-color); }
+    .chip-open { background: var(--open-color)22; color: var(--open-color); border: 1px solid var(--open-color); }
+    .chip-policy { background: var(--policy-color)22; color: var(--policy-color); border: 1px solid var(--policy-color); }
+    .chip-sg { background: var(--sg-color)22; color: var(--sg-color); border: 1px solid var(--sg-color); }
+
+    .news-summary { display: flex; gap: 0; margin-bottom: 10px; }
+    .news-summary-cn { flex: 1; font-size: 13px; color: var(--text); line-height: 1.7; padding-left: 12px; border-left: 2px solid var(--border); }
+    .news-summary-en { flex: 1; font-size: 13px; color: var(--muted); line-height: 1.7; padding-left: 12px; border-left: 2px solid var(--border); }
+
+    .why-matters { background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.2); border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; }
+    .why-cn { font-size: 12px; color: var(--text); margin-bottom: 4px; }
+    .why-en { font-size: 11px; color: var(--muted); font-style: italic; }
+    .why-matters strong { color: var(--accent); }
+
+    .source-btn { display: inline-block; font-size: 11px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); border-radius: 6px; padding: 4px 12px; transition: all 0.2s; }
+    .source-btn:hover { background: rgba(167,139,250,0.15); }
+
+    /* Whitelist */
+    .whitelist-section { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .whitelist-title-cn { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .whitelist-title-en { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+    .whitelist-note-cn { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+    .whitelist-note-en { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 12px; }
+    .whitelist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .whitelist-item { font-size: 11px; color: var(--muted); padding: 4px 8px; border-radius: 4px; background: var(--bg2); }
+    .whitelist-item .new-badge { color: #22d3ee; font-weight: 600; margin-right: 4px; }
+    .whitelist-item a { color: var(--muted); text-decoration: none; }
+    .whitelist-item a:hover { color: var(--accent); }
+
+    /* Footer */
+    .footer { text-align: center; padding: 24px 0; border-top: 1px solid var(--border); margin-top: 24px; }
+    .footer-cn { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .footer-en { font-size: 11px; color: var(--muted); font-style: italic; }
+
+    /* New source callout */
+    .new-source-callout { background: rgba(34,211,238,0.08); border: 1px solid #22d3ee; border-radius: 6px; padding: 8px 12px; margin-top: 8px; font-size: 11px; color: #22d3ee; }
+    .new-source-callout strong { }
+
+    @media (max-width: 640px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .news-summary { flex-direction: column; }
+      .whitelist-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-eyebrow">🤖 AI Daily Briefing · Morning Edition</div>
+    <h1><span class="accent">AI</span> 简报</h1>
+    <div class="header-date">2026年4月13日 星期一 · Monday, April 13, 2026 &nbsp;|&nbsp; 08:00 SGT</div>
+  </div>
+
+  <!-- Trends -->
+  <div class="trends-card">
+    <div class="trends-title-cn">📌 核心趋势</div>
+    <div class="trends-title-en">Core Trends</div>
+    <div class="trend-item">
+      <span class="trend-bullet">→</span>
+      <span><span class="trend-cn" style="color:var(--text);font-size:13px;">Meta 超级智能实验室发布 Muse Spark，首款模型进入 Meta 全生态</span></span>
+    </div>
+    <div class="trend-item">
+      <span class="trend-bullet">→</span>
+      <span><span style="color:var(--text);font-size:13px;">MiniMax M2.7 开源自我进化模型，编程能力逼近顶级闭源模型</span></span>
+    </div>
+    <div class="trend-item">
+      <span class="trend-bullet">→</span>
+      <span><span style="color:var(--text);font-size:13px;">DeepSeek-V4 万亿参数 MoE 开源，定价仅为 GPT 旗舰的 1%</span></span>
+    </div>
+    <div class="trend-item">
+      <span class="trend-bullet">→</span>
+      <span><span style="color:var(--text);font-size:13px;">美国 19 项新 AI 法律密集通过，监管框架加速成型</span></span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">12</div>
+      <div class="stat-label-cn">条精选新闻</div>
+      <div class="stat-label-en">Curated Stories</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">4</div>
+      <div class="stat-label-cn">美国主线</div>
+      <div class="stat-label-en">US Stories</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">5</div>
+      <div class="stat-label-cn">中国主线</div>
+      <div class="stat-label-en">China Stories</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">3</div>
+      <div class="stat-label-cn">研究/技术</div>
+      <div class="stat-label-en">Research & Tech</div>
+    </div>
+  </div>
+
+  <!-- Top Stories -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🔥 头条</span>
+      <span class="title-en">Top Stories</span>
+      <span class="section-badge badge-top">TOP</span>
+    </div>
+
+    <!-- TS1: Muse Spark -->
+    <div class="news-item headline">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">Meta 超级智能实验室发布 Muse Spark，首款模型覆盖全生态</div>
+          <div class="news-title-en">Meta Superintelligence Lab Unveils Muse Spark — First Model Across All Meta Platforms</div>
+        </div>
+        <span class="tag-chip chip-us">US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Meta 于 4 月 8 日正式发布 Muse Spark，这是 Meta  Superintelligence Labs 成立后的首款公开模型。该模型支持即时推理与思考推理双模式，可并行调用多个子智能体，支持视觉理解、视觉编程、购物推荐等功能。未来数周将陆续部署至 WhatsApp、Instagram、Facebook、Messenger 及 AI 眼镜。Meta 宣称这是其迈向"个人超级智能"战略的第一步。</div>
+        <div class="news-summary-en">Meta released Muse Spark on April 8, the first public model from its Meta Superintelligence Labs. Supporting instant and thinking modes with parallel sub-agent execution, the model offers visual understanding, visual programming, and shopping recommendation. It will roll out to WhatsApp, Instagram, Facebook, Messenger, and AI glasses in the coming weeks. Meta calls it the first step toward "personal superintelligence."</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是 Meta Superintelligence Labs 自成立以来的首次公开亮相，Muse Spark 的发布标志着 Meta 在 AI 领域从追赶者向定义者的角色转变。同时，该模型将 AI 直接嵌入 Meta 旗下所有核心产品，用户规模与分发能力远超任何独立 AI 公司。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This is the first public release from Meta's Superintelligence Lab, signaling a shift from AI follower to AI shaper. With deployment across all of Meta's core products, its distribution reach far exceeds any standalone AI company.</div>
+      </div>
+      <a class="source-btn" href="https://about.fb.com/news/2026/04/introducing-muse-spark-meta-superintelligence-labs/" target="_blank">来源 Source →</a>
+    </div>
+
+    <!-- TS2: MiniMax M2.7 -->
+    <div class="news-item headline">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">MiniMax M2.7 开源：全球首个具备深度自我进化能力的大模型</div>
+          <div class="news-title-en">MiniMax M2.7 Open-Sourced: World's First Large-Scale Self-Evolving AI Model</div>
+        </div>
+        <span class="tag-chip chip-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">MiniMax 于 4 月 12 日正式开源 M2.7，2290 亿参数，200K 上下文。核心突破在于"自我进化"能力：模型可自主运行 100 轮以上优化循环，自动定位失败原因、修改脚手架代码并验证效果。SWE-bench Verified 达 78%，SWE-Pro 多语言达 56.22%，定价 $0.30 / $1.20 每百万 token，采用自定义限制性许可。</div>
+        <div class="news-summary-en">MiniMax open-sourced M2.7 on April 12 with 229B parameters and 200K context. Its core breakthrough is "self-evolution": the model autonomously runs 100+ optimization loops, identifying failure causes, modifying scaffolding code, and verifying results. It scores 78% on SWE-bench Verified and 56.22% on SWE-Pro multilingual, priced at $0.30/$1.20 per million tokens under a custom restrictive license.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>M2.7 代表了 AI 发展的一个重要范式转折——模型不仅执行任务，还能自主改进自身。编程准确率接近顶级闭源模型，而价格仅为其一小部分，标志着 AI 工程化能力进入新阶段。</div>
+        <div class="why-en"><strong>Why it matters:</strong> M2.7 represents a paradigm shift: models that don't just execute tasks but improve themselves. With coding accuracy near top closed-source models at a fraction of the cost, it signals a new stage in AI engineering capability.</div>
+      </div>
+      <a class="source-btn" href="https://www.sohu.com/a/1008515910_122362510" target="_blank">来源 Source →</a>
+    </div>
+
+    <!-- TS3: DeepSeek-V4 -->
+    <div class="news-item headline">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">DeepSeek-V4 万亿参数 MoE 开源，定价仅为 GPT 旗舰的 1%</div>
+          <div class="news-title-en">DeepSeek-V4 Launches: 1-Trillion Parameter MoE Open-Source at 1% of GPT Pricing</div>
+        </div>
+        <span class="tag-chip chip-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">DeepSeek 于 4 月 10 日发布 V4，采用约 1 万亿参数 MoE 架构，每 token 仅激活 32 亿参数。配备 Engram 条件记忆架构，支持 100 万 token 超长上下文。输入定价 $0.30/百万 token，仅为 GPT 旗舰模型的约 1%。SWE-Bench Verified 达 81%，HumanEval+ 编程达 ~90%，完全基于华为昇腾芯片运行。</div>
+        <div class="news-summary-en">DeepSeek released V4 on April 10, a ~1T parameter MoE architecture activating only 3.2B parameters per token. Equipped with Engram conditional memory supporting 1M token context, priced at $0.30/1M input tokens — approximately 1% of GPT flagship pricing. Scores 81% on SWE-bench Verified and ~90% on HumanEval+, running entirely on Huawei Ascend chips.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>DeepSeek-V4 将开源大模型的能力边界推至与顶级闭源模型相当的水平，同时将推理成本降低至 GPT 的百分之一。其完全采用国产算力的选择，意味着中国 AI 生态在供应链自主方面迈出关键一步。</div>
+        <div class="why-en"><strong>Why it matters:</strong> DeepSeek-V4 pushes open-source models to parity with top closed-source models at 1% of GPT's cost. Running entirely on domestic Chinese silicon signals a major step in supply chain independence for China's AI ecosystem.</div>
+      </div>
+      <a class="source-btn" href="https://technews.tw/2026/04/10/deepseek-v4/" target="_blank">来源 Source →</a>
+    </div>
+
+  </div>
+
+  <!-- Official Releases -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">📢 官方发布</span>
+      <span class="title-en">Official Releases</span>
+      <span class="section-badge badge-official">US / CN</span>
+    </div>
+
+    <!-- OR1: Claude Mythos -->
+    <div class="news-item tag-us">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">Anthropic 发布 Claude Mythos Preview，网络安全漏洞复现率超人类专家</div>
+          <div class="news-title-en">Anthropic Releases Claude Mythos Preview — Cybersecurity Vulnerability Replication Exceeds Human Experts</div>
+        </div>
+        <span class="tag-chip chip-us">US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic 于 4 月 7 日随 Project Glasswing 发布 Claude Mythos Preview，迄今能力最强模型。在网络安全漏洞复现任务中达 83.1%，较 Claude Opus 4.6 提升 16.5 个百分点。已在 OpenBSD（存在 27 年）、FFmpeg（16 年）、Linux 内核等多个系统中发现此前未知的高危漏洞。API 定价 $25/$125 每百万 token，为 Opus 4.6 的 5 倍，目前仅限邀请制。</div>
+        <div class="news-summary-en">Anthropic released Claude Mythos Preview alongside Project Glasswing on April 7 — its most capable model to date. It scores 83.1% on cybersecurity vulnerability replication, 16.5pp above Claude Opus 4.6. It has uncovered previously unknown critical vulnerabilities in OpenBSD (27-year-old), FFmpeg (16-year-old), and Linux kernel. API pricing is $25/$125 per million tokens, 5× Opus 4.6, available by invitation only.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Claude Mythos 的出现标志着 AI 在安全领域首次实现对人类专家的规模化超越。其先发制人的防御策略明确：在对手获得类似能力用于进攻之前，将技术优势投入防御。历史上攻守不对称首次被打破。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Claude Mythos marks the first time AI has achieved scalable superiority over human experts in security. Its preemptive defense strategy is explicit: deploy these capabilities defensively before adversaries gain similar offensive capabilities. The historical offense-defense asymmetry has been broken for the first time.</div>
+      </div>
+      <a class="source-btn" href="https://www.anthropic.com/glasswing" target="_blank">来源 Source →</a>
+    </div>
+
+    <!-- OR2: Gemma 4 -->
+    <div class="news-item tag-us">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">Google DeepMind 发布 Gemma 4 四款模型，全系开源可商用</div>
+          <div class="news-title-en">Google DeepMind Releases Gemma 4: Four-Model Series with Full Open-Source Commercial Use</div>
+        </div>
+        <span class="tag-chip chip-us">US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Google DeepMind 于 2026 年 4 月发布 Gemma 4 系列，包含四款模型：Gemma 4 E2B（2.3B）、E4B（4.5B）、26B-A4B MoE（活跃 3.8B）、31B（30.7B）。全系原生多模态，E 系列支持音频处理，最长支持 256K 上下文。AIME 2026 达 89.2%，MMLU Pro 达 85.2%，采用 Apache 2.0 许可，可免费商用。发布 5 天内 Gemma 4-31B 下载超 67.9 万次。</div>
+        <div class="news-summary-en">Google DeepMind released Gemma 4 in April 2026 with four models: E2B (2.3B), E4B (4.5B), 26B-A4B MoE (3.8B active), and 31B (30.7B). All natively multimodal, E-series with audio support, up to 256K context. Scores 89.2% on AIME 2026 and 85.2% on MMLU Pro, Apache 2.0 licensed. Gemma 4-31B crossed 679K downloads within 5 days of release.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Gemma 4 在 AIME 数学竞赛基准上达到 89.2%，进入开源模型顶尖行列。其 E 系列边缘优化和音频能力的加入，使开源模型从云端延伸到端侧设备，拓宽了实际应用场景。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Gemma 4's 89.2% on AIME places it among the top open-source models. The E-series edge optimization and audio capabilities extend open-source AI from cloud to devices, significantly broadening real-world use cases.</div>
+      </div>
+      <a class="source-btn" href="https://deepmind.google/blog/" target="_blank">来源 Source →</a>
+    </div>
+
+    <!-- OR3: Qwen3.6-Plus -->
+    <div class="news-item tag-cn">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">通义千问发布 Qwen3.6-Plus，100 万 token 上下文加 Agentic Coding</div>
+          <div class="news-title-en">Alibaba Releases Qwen3.6-Plus: 1M Token Context with Agentic Coding Capabilities</div>
+        </div>
+        <span class="tag-chip chip-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">阿里巴巴于 4 月 2 日发布 Qwen3.6-Plus，通过阿里云百炼平台开放 API 调用。核心亮点包括：100 万 token 超长上下文、业界领先 Agentic Coding 能力、原生多模态理解。编程能力直逼 Claude 水平，在多项编码基准测试中刷新国产模型纪录。</div>
+        <div class="news-summary-en">Alibaba released Qwen3.6-Plus on April 2 via the Alibaba Cloud Bailian platform. Key highlights: 1M token context, industry-leading Agentic Coding capabilities, and native multimodal understanding. Coding ability rivals Claude, setting new records for Chinese models across multiple coding benchmarks.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Qwen3.6-Plus 将阿里通义系列推向国产编程模型的最高水平。百万 token 上下文可直接处理整代码库、文档集合等超长内容，Agentic Coding 能力标志着国产模型在 AI 工程化方向上进入第一梯队。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Qwen3.6-Plus positions Alibaba's Qwen series at the top tier of Chinese coding models. The 1M token context enables processing of entire codebases and document collections, while Agentic Coding signals first-tier AI engineering capability for domestic models.</div>
+      </div>
+      <a class="source-btn" href="https://qwen.ai/blog?id=qwen3.6" target="_blank">来源 Source →</a>
+    </div>
+
+    <!-- OR4: Kimi K2.5 -->
+    <div class="news-item tag-cn">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">Moonshot 开源 Kimi K2.5：千亿参数原生多模态 Agent 模型</div>
+          <div class="news-title-en">Moonshot Open-Sources Kimi K2.5: Trillion-Parameter Native Multimodal Agent Model</div>
+        </div>
+        <span class="tag-chip chip-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Moonshot AI 于 3 月 29 日正式开源 Kimi K2.5，权重与代码已在 GitHub 和 Hugging Face 公开。采用 1T 总参数 / 32B 激活参数 MoE 架构，256K 上下文，原生多模态（Moonshot 自研 MoonViT 400M 视觉编码器）。支持 Agent Swarm 最多 100 个子智能体并行，AIME 2025 达 96.1%，SWE-Bench Verified 达 76.8%，采用 Modified MIT License。</div>
+        <div class="news-summary-en">Moonshot AI open-sourced Kimi K2.5 on March 29, with weights and code on GitHub and Hugging Face. Using 1T total / 32B active MoE parameters, 256K context, native multimodal (proprietary MoonViT 400M visual encoder). Supports Agent Swarm with up to 100 parallel sub-agents; scores 96.1% on AIME 2025 and 76.8% on SWE-bench Verified under a Modified MIT License.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Kimi K2.5 是月之暗面首款完全开源的千亿参数多模态模型，Agent Swarm 架构突破了单一模型的能力上限。其 Modified MIT License 对商业场景有一定限制，但对学术研究和开源社区具有重要意义。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Kimi K2.5 is Moonshot AI's first fully open-sourced trillion-parameter multimodal model, with Agent Swarm architecture breaking the ceiling of single-model capability. The Modified MIT License restricts commercial use above 100M MAU but remains significant for research and open-source communities.</div>
+      </div>
+      <a class="source-btn" href="https://platform.moonshot.cn/" target="_blank">来源 Source →</a>
+    </div>
+
+    <!-- OR5: GLM-5.1 -->
+    <div class="news-item tag-cn">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">智谱 AI 发布 GLM-5.1，8 小时自主执行复杂 Agent 任务</div>
+          <div class="news-title-en">Zhipu AI Releases GLM-5.1: Flagship Reasoning Model with 8-Hour Autonomous Execution</div>
+        </div>
+        <span class="tag-chip chip-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">智谱 AI 于 2026 年持续迭代 GLM-5 系列，推出 GLM-5.1 旗舰推理模型，具备 202K 上下文窗口和 8 小时自主执行循环能力，适用于复杂系统工程与长程 Agent 任务。GLM-5 基础模型在华为昇腾芯片上基于 MindSpore 训练，参数量达 7450 亿，2026 年初已完成香港 IPO 募资约 43.5 亿港元。</div>
+        <div class="news-summary-en">Zhipu AI continues iterating the GLM-5 series with GLM-5.1 — its flagship reasoning model with a 202K context window and 8-hour autonomous execution loops for complex agentic engineering tasks. GLM-5 (745B parameters) was trained on Huawei Ascend chips via MindSpore; Zhipu completed a HK IPO in early 2026 raising ~HK$4.35 billion.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>GLM-5.1 的 8 小时自主执行能力使 AI 真正能够承接复杂系统工程任务，标志着国产大模型在 Agentic Engineering 方向上实现长程推理与执行能力的突破。</div>
+        <div class="why-en"><strong>Why it matters:</strong> GLM-5.1's 8-hour autonomous execution enables AI to take on complex system engineering tasks, marking a breakthrough in long-horizon reasoning and execution capability for Chinese foundation models.</div>
+      </div>
+      <a class="source-btn" href="https://docs.bigmodel.cn/cn/guide/models/text/glm-5" target="_blank">来源 Source →</a>
+    </div>
+
+  </div>
+
+  <!-- Research & Tech -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🔬 研究与技术</span>
+      <span class="title-en">Research & Technology</span>
+      <span class="section-badge badge-research">RESEARCH</span>
+    </div>
+
+    <!-- RT1: OpenAI AI Economy -->
+    <div class="news-item tag-research">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">OpenAI 发布 AI 经济蓝图：机器人税、四天工作周、公共财富基金</div>
+          <div class="news-title-en">OpenAI Proposes AI Economy Blueprint: Robot Tax, Four-Day Week, Public Wealth Fund</div>
+        </div>
+        <span class="tag-chip chip-us">US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 于 4 月 6 日发布 AI 经济政策蓝图，提出三大核心目标：更广泛分配 AI 繁荣成果、建立系统性风险保障、确保 AI 能力普惠。核心建议包括：对替代人类的 AI 系统征收"机器人税"；建立公共财富基金让所有美国人获得 AI 基础设施股份；推动四天工作周并提升退休金匹配。蓝图同时呼吁扩大电力基础设施、推动 AI 作为公用事业定位。</div>
+        <div class="news-summary-en">OpenAI published an AI economy policy blueprint on April 6 with three core goals: broader distribution of AI prosperity, systemic risk safeguards, and universal AI access. Key proposals include a "robot tax" on AI systems replacing human labor; a public wealth fund giving all Americans equity in AI infrastructure; and incentives for four-day work weeks with enhanced retirement matching. It also calls for expanded power infrastructure and positioning AI as a utility.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是 AI 巨头首次系统性地提出经济再分配框架，试图在 AI 飞速发展与劳动者利益保护之间建立政策桥梁。然而，将劳动者保护框定为企业自愿责任而非政府强制保障，引发对其真实意图的质疑。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This is the first systematic economic redistribution framework from an AI major, attempting to build a policy bridge between rapid AI advancement and worker protections. However, framing worker protections as corporate voluntary responsibility rather than government-mandated safeguards raises questions about its true intent.</div>
+      </div>
+      <a class="source-btn" href="https://techcrunch.com/2026/04/06/openais-vision-for-the-ai-economy-public-wealth-funds-robot-taxes-and-a-four-day-work-week/" target="_blank">来源 Source →</a>
+    </div>
+
+    <!-- RT2: arXiv trending -->
+    <div class="news-item tag-open">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">arXiv 本周热门：万亿参数模型、神经符号机器人、预测崩溃数学</div>
+          <div class="news-title-en">arXiv Weekly: Trillion-Parameter Models, Neuro-Symbolic Robotics, Mathematics of Forecast Collapse</div>
+        </div>
+        <span class="tag-chip chip-open">OPEN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">本周 arXiv cs.AI 领域投稿活跃，热门方向包括：万亿参数规模架构探索（与 DeepSeek-V4 发布相互印证）、神经符号融合的机器人控制（结合深度学习与符号推理）、预测崩溃（Forecast Collapse）现象的数学形式化分析。此外 AI Agent 系统方向持续火热，多智能体协作与长期记忆架构成为研究热点。</div>
+        <div class="news-summary-en">This week's arXiv cs.AI submissions feature hot topics: trillion-parameter architecture exploration (corroborating DeepSeek-V4's release), neuro-symbolic robotic control (combining deep learning with symbolic reasoning), and mathematical formalization of forecast collapse. AI Agent systems remain a dominant research theme, with multi-agent collaboration and long-horizon memory architectures as key focus areas.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>arXiv 论文趋势是 AI 发展方向的最前沿晴雨表。万亿参数、开源生态竞争与 AI Agent 架构成为本周绝对主线，反映出模型能力 scaling 与自主执行能力仍是行业核心研究方向。</div>
+        <div class="why-en"><strong>Why it matters:</strong> arXiv trends are the leading indicator of AI research directions. Trillion-parameter scaling, open-source competition, and AI Agent architectures dominated this week, reflecting that capability scaling and autonomous execution remain the industry's core research focus.</div>
+      </div>
+      <a class="source-btn" href="https://arxiv.org/list/cs.AI/recent" target="_blank">来源 Source →</a>
+    </div>
+
+  </div>
+
+  <!-- Policy & Industry -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">⚖️ 政策与产业</span>
+      <span class="title-en">Policy & Industry</span>
+      <span class="section-badge badge-policy">POLICY</span>
+    </div>
+
+    <!-- PO1: 19 AI Laws -->
+    <div class="news-item tag-policy">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">美国两周内 19 项新 AI 法律通过，监管框架加速成型</div>
+          <div class="news-title-en">US States Pass 19 New AI Laws in Two Weeks; Regulatory Framework Accelerates</div>
+        </div>
+        <span class="tag-chip chip-policy">POLICY</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据 PluralPolicy 追踪，2026 年 4 月上半月美国已有 19 项新 AI 法律通过，年度总数达 25 项（此前为 6 项），另有 27 项已通过两院即将签署。犹他州最为激进（9 项新法，含学校 AI 素养教育、AI 深度伪造禁令、保险 AI 披露要求等），纽约州针对大规模 AI 开发者建立问责框架，科罗拉多、俄勒冈、华盛顿等州各有立法推进。AI 开发者监管类法案过去两周新增 12 项。</div>
+        <div class="news-summary-en">Per PluralPolicy tracking, 19 new AI laws passed in the first half of April 2026, bringing the annual total to 25 (up from 6). Utah leads with 9 new laws including AI literacy in schools, deepfake bans, and insurance AI disclosure requirements; New York establishes an accountability framework for large-scale AI developers. Legislation on AI developer regulation increased by 12 in the past two weeks.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>美国 AI 立法正从早期的原则性框架进入具体的可执行监管阶段。多个州同步推进且侧重点各异（教育、医疗、内容监管），意味着 AI 企业未来需应对碎片化的合规要求，这对创新速度和监管协调提出双重挑战。</div>
+        <div class="why-en"><strong>Why it matters:</strong> US AI legislation is evolving from early principle-based frameworks into enforceable regulations. Multiple states advancing simultaneously with different focuses (education, healthcare, content moderation) means AI companies will face fragmented compliance requirements — a dual challenge for both innovation speed and regulatory coordination.</div>
+      </div>
+      <a class="source-btn" href="https://pluralpolicy.com/blog/the-ai-governance-watch-april-2026-nineteen-new-ai-bills-passed-into-law/" target="_blank">来源 Source →</a>
+    </div>
+
+  </div>
+
+  <!-- Open Source Ecosystem -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🌱 开源生态</span>
+      <span class="title-en">Open Source Ecosystem</span>
+      <span class="section-badge badge-open">OPEN</span>
+    </div>
+
+    <!-- OS1: HF State of Open Source -->
+    <div class="news-item tag-open">
+      <div class="news-header">
+        <div class="news-title-wrap">
+          <div class="news-title-cn">Hugging Face 发布 2026 春季开源现状报告：开源生态持续壮大</div>
+          <div class="news-title-en">Hugging Face Publishes Spring 2026 State of Open Source Report: Ecosystem Continues to Grow</div>
+        </div>
+        <span class="tag-chip chip-open">OPEN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Hugging Face 于 3 月 17 日发布《2026 年春季开源现状》报告，指出开源大模型生态在过去半年持续壮大，DeepSeek-V4、Llama 4 等模型持续冲击闭源模型的市场地位。企业级大模型应用正快速普及，开源模型在推理能力、编程能力和多模态理解上不断缩小与顶级闭源模型的差距。</div>
+        <div class="news-summary-en">Hugging Face published the "State of Open Source Spring 2026" report on March 17, noting continued growth in the open-source LLM ecosystem over the past six months. DeepSeek-V4 and Llama 4 continue to pressure closed-source models' market position. Enterprise adoption of open-source models is accelerating, with narrowing gaps in reasoning, coding, and multimodal capabilities.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>开源与闭源之争正在实质性改变 AI 产业的竞争格局。当开源模型的性能接近闭源模型但成本低一到两个数量级，中小型企业和开发者获得顶级 AI 能力的门槛将大幅降低。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The open-source vs. closed-source competition is materially reshaping AI industry dynamics. When open-source models approach closed-source performance at 1-2 orders of magnitude lower cost, the barrier for SMEs and developers to access top-tier AI capabilities drops significantly.</div>
+      </div>
+      <a class="source-btn" href="https://huggingface.co/blog/huggingface/state-of-os-hf-spring-2026" target="_blank">来源 Source →</a>
+    </div>
+
+  </div>
+
+  <!-- Whitelist -->
+  <div class="whitelist-section">
+    <div class="whitelist-title-cn">📋 当前追踪来源白名单</div>
+    <div class="whitelist-title-en">📋 Current Source Whitelist</div>
+    <div class="whitelist-note-cn">本白名单动态维护，遇新公司重要动态自动追加，🆕 标注为本期新增</div>
+    <div class="whitelist-note-en">Whitelist dynamically maintained; new sources added when significant company updates are found; 🆕 marks new additions this edition</div>
+
+    <div class="whitelist-grid">
+      <div class="whitelist-item"><strong>🇺🇸 US：</strong><a href="https://openai.com/news" target="_blank">OpenAI News</a> · <a href="https://anthropic.com/news" target="_blank">Anthropic Newsroom</a> · <a href="https://deepmind.google/blog" target="_blank">Google DeepMind</a> · <a href="https://about.fb.com/news" target="_blank">Meta News</a></div>
+      <div class="whitelist-item"><strong>🇨🇳 CN：</strong><a href="https://moonshot.ai" target="_blank">Moonshot AI</a> · <a href="https://minimaxi.com" target="_blank">MiniMax</a> · <a href="https://zhipuai.cn" target="_blank">智谱 AI</a> · <a href="https://qwen.ai/blog" target="_blank">Qwen Blog</a> · <a href="https://deepseek.com" target="_blank">DeepSeek</a></div>
+      <div class="whitelist-item"><strong>🇸🇬 SG：</strong><a href="https://a-star.edu.sg/aiml" target="_blank">A*STAR AI</a> · <a href="https://tech.gov.sg/" target="_blank">GovTech SG</a> · <a href="https://smartnation.sg/digital-singapore/ai-sg" target="_blank">Singapore DSAI</a> · <a href="https://nus.edu.sg/computing/ai-research" target="_blank">NUS AI Research</a></div>
+      <div class="whitelist-item"><strong>📰 Media：</strong><a href="https://reuters.com/technology" target="_blank">Reuters Tech</a> · <a href="https://technologyreview.com/topic/artificial-intelligence" target="_blank">MIT Tech Review</a> · <a href="https://xinhuanet.com/english" target="_blank">Xinhua EN</a></div>
+      <div class="whitelist-item"><strong>🔬 Research：</strong><a href="https://huggingface.co/blog" target="_blank">Hugging Face Blog</a> · <a href="https://arxiv.org/list/cs.AI" target="_blank">arXiv CS.AI</a> · <a href="https://openbmb.org" target="_blank">OpenBMB</a> · <a href="https://hku-datascience.github.io" target="_blank">HKUDS</a></div>
+      <div class="whitelist-item"><strong>🤖 Compute：</strong><a href="https://hcompany.ai" target="_blank">H Company</a> · <a href="https://huggingface.co/blog/Hcompany/holo3" target="_blank">Holo3 on HF</a></div>
+      <div class="whitelist-item"><strong>⚖️ Policy：</strong><a href="https://pluralpolicy.com/blog" target="_blank">PluralPolicy AI Gov Watch</a></div>
+      <div class="whitelist-item"><strong>🆕 本期无新增来源</strong>（All sources already in whitelist）</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-cn">由 AI 技术简报生成器自动生成 · 每工作日 08:00 / 20:00 SGT 更新</div>
+    <div class="footer-en">Auto-generated by AI Briefing Generator · Updated weekdays at 08:00 / 20:00 SGT</div>
+    <div class="footer-cn" style="margin-top:8px;">联系 / Contact: <a href="https://kidultop.github.io/investment-reports/" style="color:var(--accent);">GitHub Pages</a></div>
+  </div>
+
+</div>
+</body>
+</html>

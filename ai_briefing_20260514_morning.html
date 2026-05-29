@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 · 2026-05-14 早报</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --bg2: #1e293b;
+    --bg3: #334155;
+    --accent: #a78bfa;
+    --accent2: #818cf8;
+    --text: #f1f5f9;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --border: #334155;
+    --tag-us: #3b82f6;
+    --tag-cn: #ef4444;
+    --tag-sg: #f97316;
+    --tag-research: #22c55e;
+    --tag-open: #a855f7;
+    --tag-policy: #eab308;
+    --tag-new: #06b6d4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: 0 auto; }
+  .header { text-align: center; padding: 30px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+  .header h1 { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .header .subtitle { color: var(--text2); font-size: 13px; }
+  .trends-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; }
+  .trends-title-cn { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .trends-title-en { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 14px; }
+  .trend-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .trend-item:last-child { border-bottom: none; }
+  .trend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 7px; }
+  .trend-cn { font-size: 14px; color: var(--text); }
+  .trend-en { font-size: 12px; color: var(--text3); font-style: italic; }
+  .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .stat-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-label-cn { font-size: 12px; color: var(--text2); display: block; }
+  .stat-label-en { font-size: 11px; color: var(--text3); font-style: italic; display: block; }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--accent); display: block; margin: 4px 0; }
+  .stat-unit-cn { font-size: 11px; color: var(--text3); }
+  .stat-unit-en { font-size: 10px; color: var(--text3); font-style: italic; }
+  .section { margin-bottom: 32px; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+  .section-icon { font-size: 18px; }
+  .card-title { font-size: 16px; font-weight: 600; color: var(--text); }
+  .title-en { font-size: 12px; color: var(--text3); font-style: italic; font-weight: 400; margin-left: 8px; }
+  .news-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; position: relative; }
+  .news-item.top-story { border-left: 4px solid var(--accent); }
+  .news-item.tag-us { border-left: 4px solid var(--tag-us); }
+  .news-item.tag-cn { border-left: 4px solid var(--tag-cn); }
+  .news-item.tag-sg { border-left: 4px solid var(--tag-sg); }
+  .news-item.tag-research { border-left: 4px solid var(--tag-research); }
+  .news-item.tag-open { border-left: 4px solid var(--tag-open); }
+  .news-item.tag-policy { border-left: 4px solid var(--tag-policy); }
+  .news-item.tag-new { border-left: 4px solid var(--tag-new); }
+  .news-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .news-title-wrap { flex: 1; }
+  .news-title-cn { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .news-title-en { font-size: 12px; color: var(--text3); font-style: italic; margin-top: 2px; }
+  .tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; color: #fff; flex-shrink: 0; }
+  .tag-us { background: var(--tag-us); }
+  .tag-cn { background: var(--tag-cn); }
+  .tag-sg { background: var(--tag-sg); }
+  .tag-research { background: var(--tag-research); }
+  .tag-open { background: var(--tag-open); }
+  .tag-policy { background: var(--tag-policy); }
+  .tag-new { background: var(--tag-new); }
+  .news-summary { margin: 10px 0; }
+  .news-summary-cn { font-size: 13px; color: var(--text2); padding-left: 12px; border-left: 3px solid var(--accent); margin-bottom: 6px; line-height: 1.6; }
+  .news-summary-en { font-size: 12px; color: var(--text3); font-style: italic; padding-left: 12px; border-left: 3px solid var(--accent2); line-height: 1.5; }
+  .why-matters { background: var(--bg3); border-radius: 8px; padding: 10px 14px; margin-top: 10px; }
+  .why-cn { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .why-en { font-size: 11px; color: var(--text3); font-style: italic; line-height: 1.5; margin-top: 4px; }
+  .source-btn { display: inline-flex; align-items: center; gap: 4px; background: var(--bg3); border: 1px solid var(--border); color: var(--accent); font-size: 12px; padding: 4px 10px; border-radius: 6px; text-decoration: none; margin-top: 10px; transition: background 0.2s; }
+  .source-btn:hover { background: var(--accent); color: var(--bg); }
+  .new-source-callout { background: rgba(6,182,212,0.1); border: 1px solid var(--tag-new); border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size: 12px; color: var(--tag-new); }
+  .new-source-callout strong { font-weight: 600; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  .whitelist-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-top: 32px; }
+  .whitelist-title-cn { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .whitelist-title-en { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 12px; }
+  .whitelist-note-cn { font-size: 12px; color: var(--text2); margin-bottom: 2px; }
+  .whitelist-note-en { font-size: 11px; color: var(--text3); font-style: italic; margin-bottom: 14px; }
+  .whitelist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+  .whitelist-item { font-size: 11px; color: var(--text3); padding: 4px 8px; background: var(--bg3); border-radius: 4px; }
+  .whitelist-item.new-item { color: var(--tag-new); border: 1px solid var(--tag-new); background: rgba(6,182,212,0.08); }
+  .footer { text-align: center; padding: 24px 0 16px; border-top: 1px solid var(--border); margin-top: 32px; }
+  .footer-cn { font-size: 12px; color: var(--text3); }
+  .footer-en { font-size: 11px; color: var(--text3); font-style: italic; }
+  .pm-note { background: rgba(234,179,8,0.1); border: 1px solid var(--tag-policy); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: var(--tag-policy); text-align: center; }
+  @media (max-width: 600px) {
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .news-header { flex-direction: column; }
+    .whitelist-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 AI 简报</h1>
+  <div class="subtitle">2026-05-14 · 早间版 · SGT 08:15</div>
+</div>
+
+<!-- 核心趋势 -->
+<div class="trends-card">
+  <div class="trends-title-cn">📌 核心趋势</div>
+  <div class="trends-title-en">Key Trends This Issue</div>
+  <div class="trend-item">
+    <div class="trend-dot"></div>
+    <div>
+      <div class="trend-cn">OpenAI 成立 Deployment Company 子公司，40 亿美元收购 Tomoro，进军企业 AI 部署服务市场</div>
+      <div class="trend-en">OpenAI forms Deployment Company subsidiary, acquires Tomoro for $4B to enter enterprise AI services market</div>
+    </div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-dot"></div>
+    <div>
+      <div class="trend-cn">Google DeepMind 发布 Magic Pointer，用 AI 重新定义鼠标指针交互范式</div>
+      <div class="trend-en">DeepMind unveils Magic Pointer — AI-powered pointer that understands "this" and "that" gestures</div>
+    </div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-dot"></div>
+    <div>
+      <div class="trend-cn">Hugging Face Transformers v5.8.1 正式发布（May 13）；与 AWS 合作推出 Foundation Model Building Blocks</div>
+      <div class="trend-en">Hugging Face ships Transformers v5.8.1 (May 13) and launches AWS Foundation Model Building Blocks partnership</div>
+    </div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-dot"></div>
+    <div>
+      <div class="trend-cn">Claude Mythos Preview 成为首个通过 AISI 双赛博靶场评估的 AI 模型</div>
+      <div class="trend-en">Claude Mythos Preview becomes first AI model to complete both AISI cyber ranges assessments</div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-label-cn">美国主线</span>
+    <span class="stat-label-en">US Main Story</span>
+    <span class="stat-value">4</span>
+    <span class="stat-unit-cn">条</span>
+    <span class="stat-unit-en">items</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-label-cn">中国主线</span>
+    <span class="stat-label-en">CN Main Story</span>
+    <span class="stat-value">1</span>
+    <span class="stat-unit-cn">条</span>
+    <span class="stat-unit-en">item</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-label-cn">研究/技术</span>
+    <span class="stat-label-en">Research & Tech</span>
+    <span class="stat-value">3</span>
+    <span class="stat-unit-cn">条</span>
+    <span class="stat-unit-en">items</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-label-cn">开源生态</span>
+    <span class="stat-label-en">Open Source</span>
+    <span class="stat-value">2</span>
+    <span class="stat-unit-cn">条</span>
+    <span class="stat-unit-en">items</span>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- Top Stories -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🔥</span>
+    <div>
+      <div class="card-title">Top Stories</div>
+      <span class="title-en">本期头条 · 官方或权威媒体确认</span>
+    </div>
+  </div>
+
+  <div class="news-item top-story">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">OpenAI 成立 Deployment Company，40 亿美元收购 Tomoro 进军企业 AI 服务</div>
+        <div class="news-title-en">OpenAI Forms $4B Deployment Company Subsidiary, Acquires Tomoro for Enterprise AI</div>
+      </div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 11 日，OpenAI 宣布成立全资子公司"OpenAI Deployment Company"，初始承诺资本超 40 亿美元，估值 100 亿美元切入企业 AI 部署服务市场。同日宣布收购英国 AI 顾问公司 Tomoro，将引入 150 名专业 AI 工程师。该子公司将整合 Tomoro 在金融、医疗、制造业等领域的咨询能力，加速大模型在企业端的实质性落地。</div>
+      <div class="news-summary-en">On May 11, OpenAI announced the formation of OpenAI Deployment Company — a wholly-owned subsidiary with over $4B in committed capital and a $10B valuation — targeting enterprise AI deployment services. The company simultaneously acquired UK-based AI consultancy Tomoro, bringing 150 specialized AI engineers to accelerate enterprise LLM adoption across finance, healthcare, and manufacturing sectors.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>此举标志着 OpenAI 与 Anthropic 在企业 AI 服务赛道正式正面竞争。Anthropic 于 5 月初宣布了类似的金融服务 AI Agent 套件，OpenAI 以更高资本量跟进，AI 企业服务市场进入双寡头格局。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This marks OpenAI's direct competition with Anthropic in enterprise AI services. Anthropic launched its own financial-sector AI agent suite in early May; OpenAI's higher-capital response signals a duopoly forming in the enterprise AI market.</div>
+    </div>
+    <a class="source-btn" href="https://www.crn.com/news/ai/2026/openai-launches-professional-services-business-on-heels-of-similar-anthropic-announcement" target="_blank">🔗 来源：CRN</a>
+  </div>
+
+  <div class="news-item top-story">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Google DeepMind 发布 Magic Pointer，用 AI 重新定义鼠标指针交互范式</div>
+        <div class="news-title-en">DeepMind Unveils Magic Pointer: AI That Understands "This" and "That" Gestures</div>
+      </div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 12 日，Google DeepMind 在 AndroidShow | I/O Edition 活动上发布 Magic Pointer 博文，详细介绍了重新设计 AI 时代鼠标指针的核心理念。系统融合四大交互原则：维持操作流（在所有应用中无缝工作）、展示即告知（自动捕获屏幕视觉语义）、"这/那"自然手势理解、以及像素到可操作实体的转换。目前 Chrome 已上线指针唤起 Gemini 功能，Googlebook（新款笔记本电脑系列）即将推送 Magic Pointer。</div>
+      <div class="news-summary-en">On May 12, Google DeepMind published "Reimagining the Mouse Pointer for the AI Era," outlining four core interaction principles: maintaining workflow, auto-capturing visual-semantic context, understanding "this/that" gestures, and converting pixels to actionable entities. Chrome already has Gemini-powered pointer features live; Magic Pointer is rolling out to Googlebook laptops soon.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>50 年来鼠标指针的功能几乎未变，该项目将 AI 能力嵌入操作系统底层交互层，用自然手势替代复杂的文本提示，标志着 AI 从独立工具向操作系统原生组件的深度融合。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The mouse pointer has seen no functional evolution in 50+ years. Embedding AI into the OS's fundamental interaction layer — replacing complex text prompts with natural gestures — signals AI's shift from standalone tools to native OS components.</div>
+    </div>
+    <a class="source-btn" href="https://deepmind.google/blog/ai-pointer/" target="_blank">🔗 来源：Google DeepMind Blog</a>
+  </div>
+
+  <div class="news-item top-story">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Claude Mythos Preview 成为首个通过 AISI 双赛博靶场评估的 AI 模型</div>
+        <div class="news-title-en">Claude Mythos Preview First AI to Complete Both AISI Cyber Ranges Assessments</div>
+      </div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">英国 AI 安全研究所（AISI）5 月 13-14 日确认，Claude Mythos Preview 成为首个同时通过 AISI 两大赛博攻击能力靶场评估的 AI 模型。参与评估的竞品 GPT-5.5 仅通过其中一个靶场。该评估衡量 AI 模型在网络安全场景中的攻击与防御能力，被视为 AI 安全领域的关键基准测试。</div>
+      <div class="news-summary-en">The UK's AI Security Institute (AISI) confirmed that Claude Mythos Preview is the first AI model to complete both of AISI's cyber range assessments measuring AI cyberattack capabilities. Competitor model GPT-5.5 solved only one of the two ranges. The evaluation is considered a key benchmark in AI safety and security capabilities.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>AISI 的赛博评估正在成为 AI 安全能力的权威认证，Claude Mythos 的全通为 Anthropic 在安全信任度上建立差异化优势，也对政府采购和企业合规采购有重要参考价值。</div>
+      <div class="why-en"><strong>Why it matters:</strong> AISI's cyber range evaluation is becoming a key credential for AI security; Claude Mythos's full pass gives Anthropic a differentiated trust advantage, with significant implications for government procurement and enterprise compliance.</div>
+    </div>
+    <a class="source-btn" href="https://www.aisi.gov.uk" target="_blank">🔗 来源：UK AISI（via Techmeme）</a>
+  </div>
+
+</div>
+
+<!-- 官方发布 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">📢</span>
+    <div>
+      <div class="card-title">官方发布</div>
+      <span class="title-en">Official Releases</span>
+    </div>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Hugging Face 发布 Transformers v5.8.1（May 13）与 AWS Foundation Model Building Blocks</div>
+        <div class="news-title-en">Hugging Face Releases Transformers v5.8.1 & AWS Foundation Model Building Blocks Partnership</div>
+      </div>
+      <span class="tag tag-open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 13 日，Hugging Face 正式发布 Transformers v5.8.1（stable），同时于 5 月 11 日宣布与 AWS 合作推出"Foundation Model Training and Inference Building Blocks"项目，为 AWS 上的大模型训练与推理提供标准化的构建模块集成方案，降低企业部署开源模型的门槛。</div>
+      <div class="news-summary-en">On May 13, Hugging Face released Transformers v5.8.1 (stable), following the May 11 announcement of a new AWS partnership to provide "Building Blocks for Foundation Model Training and Inference" — standardized integration modules for training and serving large models on AWS, lowering the barrier for enterprise open-source AI deployment.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Transformers v5.8.1 是该库的最新稳定版，AWS 合作则将 Hugging Face 的开源生态与云基础设施深度绑定，进一步挤压自建 ML 平台的需求。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Transformers v5.8.1 is the latest stable release of the most widely-used ML library; the AWS partnership tightly integrates Hugging Face's open ecosystem with cloud infrastructure, further commoditizing self-hosted ML platforms.</div>
+    </div>
+    <a class="source-btn" href="https://github.com/huggingface/transformers/releases/tag/v5.8.1" target="_blank">🔗 来源：GitHub Transformers v5.8.1</a>
+    <a class="source-btn" href="https://huggingface.co/blog" target="_blank">🔗 来源：Hugging Face Blog</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">DeepMind AlphaEvolve 一周年实战报告：已进入 Google TPU 设计、Google Cloud 商用的 Gemini 驱动编码 Agent</div>
+        <div class="news-title-en">DeepMind AlphaEvolve 1-Year Impact: Gemini-Powered Coding Agent Now Inside TPU Design & Google Cloud</div>
+      </div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 7 日，Google DeepMind 发布 AlphaEvolve 一周年实战报告，覆盖四大领域成果：社会影响（DNA 测序误差降低 30%、电网可行解率从 14% 提升至 88%）；科研前沿（量子电路误差降低 10 倍、与陶哲轩合作解决 Erdős 问题）；AI 基础设施（直接提出被纳入下一代 TPU 的电路设计、2 天完成原本需数月的缓存优化）；商业落地（Klarna 训练速度翻倍、Semiconductor 制造仿真提速数倍、药物发现周期从数月压缩至数天）。</div>
+      <div class="news-summary-en">On May 7, DeepMind published a comprehensive 1-year AlphaEvolve impact report: 30% error reduction in DNA sequencing, power grid feasible solution rate improved from 14% to 88%, 10x lower quantum circuit error rates, direct TPU circuit design contributions for next-gen silicon, 2-day cache optimization vs. months of human effort, and verified enterprise wins at Klarna, semiconductor manufacturing, and drug discovery (shortening R&D cycles from months to days).</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>AlphaEvolve 已从研究项目升级为 Google 内部核心基础设施工具，其直接参与 TPU 芯片设计标志着 AI for AI 闭环的里程碑。</div>
+      <div class="why-en"><strong>Why it matters:</strong> AlphaEvolve has graduated from research project to core internal infrastructure at Google — its direct contributions to TPU chip design marks a milestone in AI-for-AI closed-loop development.</div>
+    </div>
+    <a class="source-btn" href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank">🔗 来源：Google DeepMind Blog</a>
+  </div>
+
+</div>
+
+<!-- 研究与技术 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🔬</span>
+    <div>
+      <div class="card-title">研究与技术</div>
+      <span class="title-en">Research & Technology</span>
+    </div>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Cerebras 定价 IPO $185/股，募资 $55.5 亿，估值 $564 亿 — AI 芯片格局生变</div>
+        <div class="news-title-en">Cerebras Prices IPO at $185/Share, Raises $5.55B, $56.4B Valuation — AI Chip Landscape Shifts</div>
+      </div>
+      <span class="tag tag-research">Research</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Cerebras 于 5 月 13-14 日以每股 $185 定价 IPO（预期区间 $150-$160），超出区间上限超 15%，募资规模超过 $55.5 亿美元，完全摊薄估值达 $564 亿美元。Cerebras 以其单晶圆级 AI 芯片（WSE-3）著称，此次 IPO 超额定价反映市场对专用 AI 推理芯片的强烈需求。</div>
+      <div class="news-summary-en">Cerebras priced its IPO at $185/share (vs. $150–$160 expected range), raising over $5.55B at a fully diluted valuation of $56.4B. The oversubscription reflects strong market appetite for specialized AI inference chips. Cerebras is known for its wafer-scale AI chip (WSE-3), a dramatically different architecture from mainstream GPU clusters.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>$564 亿估值使 Cerebras 成为 AI 芯片领域的重要玩家，与 NVIDIA 的 H100/GPU 路线形成差异化竞争；其 IPO 超额定价表明市场认为 AI 推理芯片的专用化路线有独立价值。</div>
+      <div class="why-en"><strong>Why it matters:</strong> At $56.4B, Cerebras becomes a significant player in AI silicon — its oversubscribed IPO signals that specialized AI inference architectures have independent market value beyond NVIDIA's GPU mainstream.</div>
+    </div>
+    <a class="source-btn" href="https://www.cnbc.com" target="_blank">🔗 来源：CNBC（via Techmeme）</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Anthropic 推出 Claude Agent SDK Credits，第三方 Agent 可调用 Claude（6 月 15 日生效）</div>
+        <div class="news-title-en">Anthropic Launches Claude Agent SDK Credits: Third-Party Agents Can Now Program Against Claude</div>
+      </div>
+      <span class="tag tag-research">Research</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 宣布为付费 Claude 用户推出 Agent SDK Credits，允许将 Claude credits 分配给第三方编程 Agent（如 OpenClaw 等）进行程序化调用。该功能将于 6 月 15 日正式上线，标志着 Claude 从对话工具向底层 AI 能力平台转型。</div>
+      <div class="news-summary-en">Anthropic announced Claude Agent SDK Credits for paid plan users — enabling allocation of Claude credits to programmatic use by third-party coding agents like OpenClaw. The feature goes live June 15, 2026, marking Claude's evolution from conversational tool to foundational AI capability platform.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Anthropic 通过 credits 机制将 Claude 能力开放给 Agent 生态，既保持商业化控制又扩大开发者渗透率；这与 OpenAI 的 API 路线不同，Anthropic 选择更精细的分发管控。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Anthropic's credit mechanism opens Claude capabilities to the agent ecosystem while maintaining commercial control — a different distribution strategy from OpenAI's open API approach, offering more granular governance over AI usage.</div>
+    </div>
+    <a class="source-btn" href="https://www.anthropic.com/news" target="_blank">🔗 来源：Anthropic News（via VentureBeat/Techmeme）</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Mistral Medium 3.5 发布：128B 稠密模型 + Vibe 远程编码 Agent + Le Chat Work 模式</div>
+        <div class="news-title-en">Mistral Medium 3.5: 128B Dense Model + Vibe Remote Coding Agents + Le Chat Work Mode</div>
+      </div>
+      <span class="tag tag-open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 29 日，Mistral AI 发布 Mistral Medium 3.5，一款 1280 亿参数的稠密多模态模型（256K 上下文），同步推出 Vibe 远程编码 Agent（云端异步 AI Agent）和 Le Chat 新增 Work 模式用于复杂长程任务。该版本反映了 AI Agent 从对话向云端异步服务转型的行业趋势。</div>
+      <div class="news-summary-en">On April 29, Mistral AI released Mistral Medium 3.5 — a 128B-parameter dense multimodal model with 256K context — alongside Vibe remote coding agents (cloud-based async AI agents) and a new Work mode in Le Chat for complex long-horizon tasks. The release reflects the industry shift toward cloud-native async AI agent services.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Mistral 选择稠密架构（vs. MoE）对抗主流，Vibe 的云端 Agent 编排模式代表了 Agent 部署的新范式，开源友好且部署灵活。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Mistral's choice of dense architecture (vs. MoE) differentiates from mainstream; Vibe's cloud-native agent orchestration represents a new deployment paradigm with open-friendly flexibility.</div>
+    </div>
+    <a class="source-btn" href="https://mistral.ai/news/vibe-remote-agents-mistral-medium-3-5" target="_blank">🔗 来源：Mistral AI</a>
+    <a class="source-btn" href="https://www.infoq.com/news/2026/05/mistral-agents-lechat/" target="_blank">🔗 来源：InfoQ</a>
+  </div>
+
+</div>
+
+<!-- 政策与产业 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🏛️</span>
+    <div>
+      <div class="card-title">政策与产业</div>
+      <span class="title-en">Policy & Industry</span>
+    </div>
+  </div>
+
+  <div class="news-item tag-policy">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">调研：63% 企业缺乏正式 AI 治理政策，影子 AI 已广泛渗透企业技术栈</div>
+        <div class="news-title-en">Enterprise AI Governance 2026: 63% of Organizations Lack Formal AI Policies; Shadow AI Widespread</div>
+      </div>
+      <span class="tag tag-policy">Policy</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Planet AI 与 TechCrunch 联合调研显示，2026 年大多数企业仍未建立正式 AI 治理框架：63% 的组织没有正式的 AI 使用政策，影子 AI（未经 IT 部门批准的 AI 工具）已在企业技术栈中广泛渗透。这一数据为 AI governance tooling 和合规审计工具创造了巨大市场空间。</div>
+      <div class="news-summary-en">A Planet AI / TechCrunch joint survey finds that in 2026, 63% of organizations lack formal AI usage policies, with shadow AI already widely present across corporate tech stacks. This creates significant market opportunity for AI governance tooling and compliance auditing solutions.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>AI 治理空白带来数据泄露、合规风险和模型漂移等系统性风险，企业级 AI governance 软件市场将在 2026 年加速扩张。</div>
+      <div class="why-en"><strong>Why it matters:</strong> AI governance gaps create systemic risks around data leaks, compliance violations, and model drift — enterprise AI governance software market is set for significant expansion in 2026.</div>
+    </div>
+    <a class="source-btn" href="https://techcrunch.com" target="_blank">🔗 来源：Planet AI / TechCrunch</a>
+  </div>
+
+  <div class="news-item tag-policy">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Microsoft 洽谈收购 LLM 开发商 Inception（求购价超 $10 亿）；SpaceX 同样参与竞购</div>
+        <div class="news-title-en">Microsoft in Talks to Acquire LLM Developer Inception for Over $1B; SpaceX Also Courting the Company</div>
+      </div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">据 Reuters 报道，Microsoft 正在洽谈收购 LLM 开发商 Inception，报价超 10 亿美元；SpaceX 同样参与了收购谈判。Inception 是一家专注于大模型开发与应用部署的 AI 初创公司，若交易达成将显著增强 Microsoft 的 AI 能力组合。</div>
+      <div class="news-summary-en">Per Reuters, Microsoft is in discussions to acquire LLM developer Inception for over $1B; SpaceX is also competing for the deal. Inception is an AI startup focused on LLM development and deployment; a Microsoft acquisition would significantly strengthen its AI capabilities portfolio.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Microsoft 在 OpenAI 之外持续多元布局 AI 投资，Inception 收购若成功将扩大其自有模型能力；SpaceX 的参与表明 Musk 旗下企业也在 AI 领域积极并购。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Microsoft's pursuit of Inception alongside SpaceX signals active AI M&A competition. A successful Microsoft deal would expand its non-OpenAI model capabilities; SpaceX's involvement reflects Musk's broader AI acquisition strategy.</div>
+    </div>
+    <a class="source-btn" href="https://www.reuters.com" target="_blank">🔗 来源：Reuters（via Techmeme）</a>
+  </div>
+
+</div>
+
+<!-- 开源生态 -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-icon">🌱</span>
+    <div>
+      <div class="card-title">开源生态</div>
+      <span class="title-en">Open Source Ecosystem</span>
+    </div>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Meta 正式放弃 Llama 转向闭源 Muse Spark — 开源社区面临路线抉择</div>
+        <div class="news-title-en">Meta Formally Abandons Llama for Proprietary Muse Spark — Open-Source Community Faces Fork Decision</div>
+      </div>
+      <span class="tag tag-open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">据 The New Stack 4 月 30 日报道，Meta 已正式从 Llama 路线转向闭源 Muse Spark 模型，标志着 Meta AI 战略的根本性转变。Llama 曾是开源大模型的事实标准，此次闭源转型引发了开源社区对替代路线的探索需求。</div>
+      <div class="news-summary-en">Per The New Stack (April 30), Meta has formally shifted from the open-weight Llama lineage to its proprietary Muse Spark model — a fundamental strategic pivot. Llama was the de facto standard for open-weight LLMs; its closure creates an open community demand for viable alternatives like Qwen, DeepSeek, and Mistral.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Meta 的闭源转型将推动开源 AI 的重心向中国系模型（Qwen/DeepSeek/Kimi）和欧洲系模型（Mistral）转移，开源 AI 格局进入后 Llama 时代。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Meta's closure shifts the center of open AI gravity toward Chinese labs (Qwen/DeepSeek/Kimi) and European players (Mistral) — the open AI landscape enters a post-Llama era.</div>
+    </div>
+    <a class="source-btn" href="https://thenewstack.io/meta-abandons-llama-spark/" target="_blank">🔗 来源：The New Stack</a>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">2026 年开源大模型格局：Llama 4 / Qwen 3.6 Plus / DeepSeek V4 / Gemma 4 / Mistral Medium 3.5 五强格局</div>
+        <div class="news-title-en">Best Open-Source LLMs May 2026: Llama 4 vs Qwen 3.6 Plus vs DeepSeek V4 vs Gemma 4 vs Mistral Medium 3.5</div>
+      </div>
+      <span class="tag tag-open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Codersera 5 月 3 日综合评测显示，2026 年 4 月密集发布季中，五个前沿级开源模型在 30 天内集中发布：Llama 4（MoE，多模态）、Qwen 3.6 Plus（Agent 专用，阿里 4 月 2 日发布）、DeepSeek V4（推理优化）、Gemma 4（MTP 起草器，速度提升 3 倍）、Mistral Medium 3.5（稠密 128B）。各大模型在不同 benchmark 上各有优势，Llama 4 仍是参数量最大的开源模型之一。</div>
+      <div class="news-summary-en">Per Codersera (May 3), five frontier-class open-weight LLMs shipped within 30 days in April 2026: Llama 4 (MoE, multimodal), Qwen 3.6 Plus (agentic, Alibaba, April 2), DeepSeek V4 (inference-optimized), Gemma 4 (MTP drafters, 3x speed), Mistral Medium 3.5 (dense 128B). Each leads on different benchmarks; Llama 4 remains one of the largest open-weight models by parameter count.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>开源模型竞争进入多极化阶段，不同架构（MoE vs. Dense）、不同侧重点（Agent vs. 推理 vs. 多模态）的模型满足不同细分需求，企业和开发者有更多选择。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Open-weight AI has entered a multipolar era — different architectures (MoE vs. dense) and focus areas (agentic vs. inference vs. multimodal) serve different niche needs, giving enterprises and developers more diverse choices.</div>
+    </div>
+    <a class="source-btn" href="https://codersera.com/blog/best-open-source-llm-2026-llama-4-qwen-3-5-deepseek-v4-gemma-4-mistral/" target="_blank">🔗 来源：Codersera</a>
+  </div>
+
+</div>
+
+<!-- 白名单 -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">📋 本期追踪来源白名单</div>
+  <div class="whitelist-title-en">Sources Tracked This Issue</div>
+  <div class="whitelist-note-cn">🆕 = 本期新增来源 &nbsp;|&nbsp; 来源按 US / CN / SG / Media / Open / Policy 分组</div>
+  <div class="whitelist-note-en">🆕 = New source added this issue &nbsp;|&nbsp; Grouped by US / CN / SG / Media / Open / Policy</div>
+  <div class="whitelist-grid">
+    <div class="whitelist-item">🔵 US：OpenAI (openai.com/news)</div>
+    <div class="whitelist-item">🔵 US：Anthropic (anthropic.com/news)</div>
+    <div class="whitelist-item">🔵 US：Google DeepMind (deepmind.google/blog)</div>
+    <div class="whitelist-item">🔵 US：Meta Superintelligence (about.fb.com/news)</div>
+    <div class="whitelist-item">🔴 CN：Moonshot/Kimi (moonshot.ai, kimi.com)</div>
+    <div class="whitelist-item">🔴 CN：MiniMax (minimaxi.com)</div>
+    <div class="whitelist-item">🔴 CN：智谱 (zhipuai.cn, open.bigmodel.cn)</div>
+    <div class="whitelist-item">🔴 CN：Qwen/Alibaba Cloud (qwen.ai/blog)</div>
+    <div class="whitelist-item">🔴 CN：DeepSeek (deepseek.com)</div>
+    <div class="whitelist-item">🟠 SG：A*STAR AI (a-star.edu.sg/aiml)</div>
+    <div class="whitelist-item">🟠 SG：GovTech Singapore (tech.gov.sg)</div>
+    <div class="whitelist-item">🟠 SG：NUS AI Research (nus.edu.sg/computing/ai-research)</div>
+    <div class="whitelist-item">🟠 SG：MDDI Singapore (mddi.gov.sg/newsroom)</div>
+    <div class="whitelist-item">🟠 SG：Singtel RE:AI (singtel.com/about-us/media-centre)</div>
+    <div class="whitelist-item">🟡 Media：Reuters AI (reuters.com/technology)</div>
+    <div class="whitelist-item">🟡 Media：MIT Tech Review (technologyreview.com)</div>
+    <div class="whitelist-item">🟡 Media：CNBC Technology (cnbc.com)</div>
+    <div class="whitelist-item">🟡 Media：Forbes AI 50 (forbes.com)</div>
+    <div class="whitelist-item">🟡 Media：AI Critique (aicritique.org)</div>
+    <div class="whitelist-item">🟡 Media：IEEE Spectrum (spectrum.ieee.org)</div>
+    <div class="whitelist-item">🟡 Media：AI Flash Report (aiflashreport.com)</div>
+    <div class="whitelist-item">🟡 Media：WinBuzzer (winbuzzer.com)</div>
+    <div class="whitelist-item">🟡 Media：The New Stack (thenewstack.io)</div>
+    <div class="whitelist-item">🟣 Open：Hugging Face (huggingface.co/blog)</div>
+    <div class="whitelist-item">🟣 Open：arXiv CS.AI (arxiv.org/list/cs.AI)</div>
+    <div class="whitelist-item">🟣 Open：OpenBMB (openbmb.org)</div>
+    <div class="whitelist-item">🟣 Open：HKUDS (hkuds.github.io)</div>
+    <div class="whitelist-item">🟣 Open：Marktechpost (marktechpost.com)</div>
+    <div class="whitelist-item">🟣 Open：Mistral AI (mistral.ai/news)</div>
+    <div class="whitelist-item">🟣 Open：Codersera (codersera.com)</div>
+    <div class="🟡 Policy：Plural Policy (pluralpolicy.com/blog)">🟡 Policy：Plural Policy (pluralpolicy.com/blog)</div>
+    <div class="whitelist-item">🟡 Policy：UK AI Security Institute (aisi.gov.uk)</div>
+    <div class="whitelist-item">🟡 Policy：Stanford HAI (hai.stanford.edu)</div>
+    <div class="whitelist-item">🟡 Policy：Mayer Brown AI Policy (mayerbrown.com)</div>
+    <div class="whitelist-item">🟡 Policy：TechCrunch (techcrunch.com)</div>
+    <div class="whitelist-item">🟡 Policy：VentureBeat (venturebeat.com)</div>
+    <div class="whitelist-item">🔵 Research：Cerebras (cerebras.net)</div>
+    <div class="whitelist-item">🔵 Research：Planet AI (planetai.com)</div>
+  </div>
+  <div class="whitelist-note-cn" style="margin-top:14px;">⚠️ 本期无新增白名单来源</div>
+  <div class="whitelist-note-en">⚠️ No new sources added this issue</div>
+</div>
+
+<div class="footer">
+  <div class="footer-cn">生成时间：2026-05-14 08:15 SGT &nbsp;|&nbsp; 数据截至 2026-05-14 08:00</div>
+  <div class="footer-en">Generated: 2026-05-14 08:15 SGT &nbsp;|&nbsp; Data as of 2026-05-14 08:00</div>
+  <div class="footer-cn" style="margin-top:6px;">所有新闻均附原始链接，标题克制不夸张</div>
+  <div class="footer-en">All articles linked to original sources; headlines are restrained and factual</div>
+</div>
+
+</body>
+</html>

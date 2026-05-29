@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 日报 · 2026-04-29 AM | AI Daily Briefing</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #a78bfa;
+            --accent-dim: rgba(167, 139, 250, 0.15);
+            --border: #334155;
+            --us-color: #38bdf8;
+            --cn-color: #f87171;
+            --sg-color: #fb923c;
+            --research-color: #4ade80;
+            --open-color: #a78bfa;
+            --policy-color: #facc15;
+            --new-source-color: #22d3ee;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* Header */
+        .header { text-align: center; margin-bottom: 32px; }
+        .header-emoji { font-size: 36px; margin-bottom: 8px; }
+        .header-title {
+            font-size: 28px; font-weight: 700; color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+        .header-subtitle {
+            font-size: 14px; color: var(--text-muted); margin-top: 4px;
+        }
+        .header-date {
+            font-size: 13px; color: var(--text-secondary); margin-top: 8px;
+            padding: 4px 12px; background: var(--bg-card); border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 12px; margin-bottom: 28px;
+        }
+        .stat-item {
+            background: var(--bg-card); border-radius: 12px; padding: 16px;
+            text-align: center; border: 1px solid var(--border);
+        }
+        .stat-value {
+            font-size: 24px; font-weight: 700; color: var(--accent);
+        }
+        .stat-label-cn { font-size: 12px; color: var(--text-secondary); }
+        .stat-label-en { font-size: 10px; color: var(--text-muted); }
+        .stat-unit-cn { font-size: 11px; color: var(--text-muted); }
+        .stat-unit-en { font-size: 9px; color: var(--text-muted); }
+
+        /* Trends Card */
+        .trends-card {
+            background: linear-gradient(135deg, rgba(167,139,250,0.12) 0%, rgba(167,139,250,0.04) 100%);
+            border: 1px solid rgba(167,139,250,0.3); border-radius: 16px;
+            padding: 24px; margin-bottom: 28px;
+        }
+        .trends-title-cn { font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+        .trends-title-en { font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
+        .trend-item { padding: 8px 0; border-bottom: 1px solid rgba(167,139,250,0.1); }
+        .trend-item:last-child { border-bottom: none; }
+        .trend-cn { font-size: 13px; color: var(--text-primary); }
+        .trend-en { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        /* Section */
+        .section { margin-bottom: 28px; }
+        .card-title {
+            font-size: 18px; font-weight: 700; margin-bottom: 16px;
+            padding-bottom: 8px; border-bottom: 2px solid var(--border);
+        }
+        .title-cn { color: var(--text-primary); }
+        .title-en { font-size: 12px; color: var(--text-muted); margin-left: 8px; font-style: italic; }
+
+        /* News Item */
+        .news-item {
+            background: var(--bg-card); border-radius: 12px; padding: 20px;
+            margin-bottom: 14px; border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            transition: transform 0.15s, border-color 0.15s;
+        }
+        .news-item:hover { transform: translateY(-1px); border-color: var(--accent); }
+        .news-item.tag-US { border-left-color: var(--us-color); }
+        .news-item.tag-CN { border-left-color: var(--cn-color); }
+        .news-item.tag-SG { border-left-color: var(--sg-color); }
+        .news-item.tag-Research { border-left-color: var(--research-color); }
+        .news-item.tag-Open { border-left-color: var(--open-color); }
+        .news-item.tag-Policy { border-left-color: var(--policy-color); }
+
+        .news-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .news-title-group { flex: 1; }
+        .news-title-cn { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+        .news-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+        .news-tags { display: flex; gap: 6px; flex-shrink: 0; margin-top: 2px; }
+        .tag {
+            font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .tag-US { background: rgba(56,189,248,0.15); color: var(--us-color); }
+        .tag-CN { background: rgba(248,113,113,0.15); color: var(--cn-color); }
+        .tag-SG { background: rgba(251,146,60,0.15); color: var(--sg-color); }
+        .tag-Research { background: rgba(74,222,128,0.15); color: var(--research-color); }
+        .tag-Open { background: rgba(167,139,250,0.15); color: var(--open-color); }
+        .tag-Policy { background: rgba(250,204,21,0.15); color: var(--policy-color); }
+
+        .news-summary {
+            margin-top: 12px; padding: 12px; border-radius: 8px;
+            background: rgba(15,23,42,0.6);
+        }
+        .news-summary-cn {
+            font-size: 13px; color: var(--text-primary); line-height: 1.7;
+            padding-left: 12px; border-left: 2px solid var(--border);
+        }
+        .news-summary-en {
+            font-size: 12px; color: var(--text-secondary); line-height: 1.7;
+            margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--border);
+            font-style: italic;
+        }
+
+        .why-matters {
+            margin-top: 10px; font-size: 12px; line-height: 1.6;
+        }
+        .why-cn { color: var(--text-secondary); margin-bottom: 4px; }
+        .why-en { color: var(--text-muted); font-style: italic; }
+
+        .news-link {
+            display: inline-flex; align-items: center; gap: 4px;
+            margin-top: 10px; font-size: 12px; color: var(--accent);
+            text-decoration: none; padding: 4px 12px; border-radius: 8px;
+            background: var(--accent-dim); transition: background 0.15s;
+        }
+        .news-link:hover { background: rgba(167,139,250,0.25); }
+
+        /* New source callout */
+        .new-source-callout {
+            margin-top: 10px; padding: 8px 12px; border-radius: 8px;
+            background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.2);
+            font-size: 11px; color: var(--new-source-color);
+        }
+
+        /* Whitelist */
+        .whitelist-section {
+            background: var(--bg-card); border-radius: 16px; padding: 24px;
+            border: 1px solid var(--border); margin-top: 32px;
+        }
+        .whitelist-title-cn { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .whitelist-title-en { font-size: 11px; color: var(--text-muted); font-style: italic; }
+        .whitelist-note-cn { font-size: 11px; color: var(--text-secondary); margin: 8px 0 16px; }
+        .whitelist-note-en { font-size: 10px; color: var(--text-muted); }
+        .whitelist-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+        .whitelist-item {
+            font-size: 11px; color: var(--text-secondary); padding: 4px 0;
+        }
+        .whitelist-item .new-badge {
+            background: var(--new-source-color); color: #0f172a;
+            font-size: 9px; font-weight: 700; padding: 1px 6px;
+            border-radius: 6px; margin-left: 6px;
+        }
+        .wl-category {
+            font-size: 12px; font-weight: 600; color: var(--accent);
+            margin-top: 12px; margin-bottom: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center; margin-top: 40px; padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-cn { font-size: 12px; color: var(--text-secondary); }
+        .footer-en { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .footer-links { margin-top: 12px; }
+        .footer-links a {
+            color: var(--accent); text-decoration: none; font-size: 12px; margin: 0 8px;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 16px 12px; }
+            .stats-bar { grid-template-columns: 1fr; }
+            .whitelist-grid { grid-template-columns: 1fr; }
+            .header-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-emoji">🤖</div>
+    <div class="header-title">AI 日报</div>
+    <div class="header-subtitle">AI Daily Briefing</div>
+    <div class="header-date">2026-04-29 · 星期三 · SGT 08:30 · Morning Edition</div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="stat-value">8</div>
+        <div class="stat-label-cn">本期条目</div>
+        <div class="stat-label-en">Stories Today</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">$400亿</div>
+        <div class="stat-label-cn">最大单笔投资</div>
+        <div class="stat-label-en">Largest Deal</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label-cn">新增来源</div>
+        <div class="stat-label-en">New Sources</div>
+    </div>
+</div>
+
+<!-- Trends Card -->
+<div class="trends-card">
+    <div class="trends-title-cn">📊 核心趋势</div>
+    <div class="trends-title-en">Key Trends</div>
+    <div class="trend-item">
+        <div class="trend-cn">🤝 OpenAI-微软独家合作终结，AI 产业进入"多云+多伙伴"时代</div>
+        <div class="trend-en">OpenAI-Microsoft exclusive partnership ends, marking the start of a multi-cloud, multi-partner AI era</div>
+    </div>
+    <div class="trend-item">
+        <div class="trend-cn">💰 Anthropic 获谷歌 $400 亿投资，AI 算力军备竞赛持续升级</div>
+        <div class="trend-en">Anthropic lands $40B from Google as AI compute arms race escalates</div>
+    </div>
+    <div class="trend-item">
+        <div class="trend-cn">🔬 开源生态加速：DeepSeek V4 百万上下文开源、Hugging Face 发布 ML 工程师智能体</div>
+        <div class="trend-en">Open-source ecosystem accelerates: DeepSeek V4 open-weights with 1M context, HF ships ML engineer agent</div>
+    </div>
+    <div class="trend-item">
+        <div class="trend-cn">🇸🇬 新加坡追加 S$10 亿 AI 研发投资，NAIRD 计划 2025-2030 落地</div>
+        <div class="trend-en">Singapore adds S$1B to National AI R&D Plan (NAIRD) for 2025-2030</div>
+    </div>
+</div>
+
+<!-- Top Stories -->
+<div class="section">
+    <div class="card-title">
+        <span class="title-cn">🔥 头条</span>
+        <span class="title-en">Top Stories</span>
+    </div>
+
+    <!-- Story 1: OpenAI + Microsoft -->
+    <div class="news-item tag-US">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">OpenAI 与微软重构合作：终结独家绑定，开放多云战略</div>
+                <div class="news-title-en">OpenAI and Microsoft restructure partnership: ending exclusive lock-in, embracing multi-cloud</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-US">US</span>
+                <span class="tag tag-Policy">Policy</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">4 月 27 日，OpenAI 与微软宣布大幅修订合作协议。核心变更包括：微软对 OpenAI 模型的 IP 许可权从"独家"改为"非独家"（延续至 2032 年）；微软不再向 OpenAI 支付收入分成；OpenAI 继续向微软支付 20% 收入分成但设总上限，至 2030 年止。OpenAI 现可通过任何云服务商（包括 AWS、Google Cloud）向客户提供服务，不再受限于 Azure 独家部署。</div>
+            <div class="news-summary-en">On April 27, OpenAI and Microsoft announced a sweeping revision of their partnership. Key changes: Microsoft's IP license for OpenAI models shifts from exclusive to non-exclusive (through 2032); Microsoft stops paying revenue share to OpenAI; OpenAI continues paying 20% revenue share to Microsoft with a total cap, through 2030. OpenAI can now serve customers through any cloud provider (including AWS, Google Cloud), no longer restricted to Azure-exclusive deployment.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>这是自 2019 年微软 130 亿美元投资以来双方关系的根本性转变。OpenAI 获得了此前一直寻求的商业化自由度，为与亚马逊（500 亿美元投资承诺）等合作伙伴的深度合作扫清法律障碍。AI 产业的"独家绑定"范式正在瓦解，多云+多伙伴成为新常态。</div>
+            <div class="why-en"><strong>Why it matters:</strong>This is a fundamental shift in the partnership since Microsoft's $13B investment in 2019. OpenAI gains the commercial freedom it has sought, clearing legal obstacles for deeper collaboration with Amazon ($50B commitment) and others. The "exclusive lock-in" paradigm in AI is collapsing; multi-cloud + multi-partner is the new normal.</div>
+        </div>
+        <a class="news-link" href="https://www.cnbc.com/2026/04/27/openai-microsoft-partnership-revenue-cap.html" target="_blank">🔗 CNBC 报道 →</a>
+        <a class="news-link" href="https://blogs.microsoft.com/blog/2026/04/27/the-next-phase-of-the-microsoft-openai-partnership/" target="_blank">🔗 微软官方博客 →</a>
+    </div>
+
+    <!-- Story 2: Google + Anthropic -->
+    <div class="news-item tag-US">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">谷歌宣布最高 400 亿美元投资 Anthropic</div>
+                <div class="news-title-en">Google commits up to $40 billion investment in Anthropic</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-US">US</span>
+                <span class="tag tag-Policy">Policy</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">4 月 24 日，Alphabet 宣布将向 Anthropic 投资最高 400 亿美元。首期 100 亿美元立即投入，基于 Anthropic 最新 3800 亿美元估值；后续最高 300 亿美元与特定业绩里程碑挂钩。投资形式包括现金与 TPU 算力。Anthropic 本月已锁定 5 吉瓦（gigawatts）计算容量，通过与谷歌和博通的三方合作预计明年上线。Anthropic 年化收入已突破 300 亿美元。</div>
+            <div class="news-summary-en">On April 24, Alphabet announced up to $40B investment in Anthropic. $10B immediate cash injection based on Anthropic's $380B valuation; up to $30B more tied to performance milestones. Investment includes cash and TPU compute. Anthropic has secured 5 gigawatts of compute capacity this month, via a Google-Broadcom partnership expected to come online next year. Anthropic's annualized revenue has surpassed $30B.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>这是除微软-OpenAI 之外单一 AI 公司获得的最大单笔投资承诺。Anthropic 采用"多巨头绑定"策略（此前亚马逊也承诺 50 亿+200 亿美元），使其在基础设施和算力上不依赖单一供应商。谷歌的 TPU 成为英伟达 GPU 的替代方案，进一步推动了 AI 芯片多元化格局。</div>
+            <div class="why-en"><strong>Why it matters:</strong>The largest single financial commitment to an AI startup outside Microsoft-OpenAI. Anthropic's "multi-giant binding" strategy (Amazon also committed $5B + $20B) ensures infrastructure independence from any single provider. Google's TPU emerges as a viable alternative to NVIDIA GPUs, further diversifying the AI chip landscape.</div>
+        </div>
+        <a class="news-link" href="https://www.cnbc.com/2026/04/24/google-to-invest-up-to-40-billion-in-anthropic-as-search-giant-spreads-its-ai-bets.html" target="_blank">🔗 CNBC 报道 →</a>
+        <a class="news-link" href="https://techcrunch.com/2026/04/24/google-to-invest-up-to-40b-in-anthropic-in-cash-and-compute/" target="_blank">🔗 TechCrunch →</a>
+    </div>
+</div>
+
+<!-- 官方发布 -->
+<div class="section">
+    <div class="card-title">
+        <span class="title-cn">📢 官方发布</span>
+        <span class="title-en">Official Releases</span>
+    </div>
+
+    <!-- DeepSeek V4 -->
+    <div class="news-item tag-CN">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">DeepSeek 发布 V4 预览版：百万 Token 上下文，1.6T 参数开源</div>
+                <div class="news-title-en">DeepSeek releases V4 Preview: 1M token context, 1.6T parameter open-weights</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-CN">CN</span>
+                <span class="tag tag-Open">Open</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">4 月 24 日，深度求索正式发布 DeepSeek-V4 预览版并同步开源。两个版本：V4-Pro（1.6T 总参数，49B 激活）和 V4-Flash（284B 总参数，13B 激活），均采用 MIT 许可证。核心升级包括百万 Token 超长上下文窗口、增强的 Agent 能力和推理性能。API 定价大幅低于西方竞品一个数量级。旧版 deepseek-chat 和 deepseek-reasoner 将于 2026 年 7 月 24 日停用。</div>
+            <div class="news-summary-en">On April 24, DeepSeek released V4 Preview with open-weights under MIT license. Two variants: V4-Pro (1.6T total params, 49B active) and V4-Flash (284B total, 13B active). Key upgrades: 1M token context window, enhanced agent capabilities, and improved reasoning. API pricing undercuts Western competitors by an order of magnitude. Legacy deepseek-chat/reasoner models will be deprecated on July 24, 2026.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>DeepSeek V4 再次证明中国开源 AI 的竞争力——以 49B 激活参数在多项基准上匹敌或超越更大的闭源模型。MIT 许可证+超低价 API 的组合将继续压低行业定价。百万 Token 上下文窗口的实现在 Agent 应用场景中具有实际意义。</div>
+            <div class="why-en"><strong>Why it matters:</strong>DeepSeek V4 reaffirms Chinese open-source AI competitiveness — matching or surpassing larger closed-source models with just 49B active parameters. The MIT license + ultra-low API pricing combo continues to compress industry pricing. The 1M context window has practical implications for agent use cases.</div>
+        </div>
+        <a class="news-link" href="https://huggingface.co/blog/deepseekv4" target="_blank">🔗 Hugging Face 博客 →</a>
+        <a class="news-link" href="https://www.knightli.com/en/2026/04/24/deepseek-v4-preview-release/" target="_blank">🔗 详细解读 →</a>
+    </div>
+
+    <!-- Qwen 3.6 35B-A3B -->
+    <div class="news-item tag-CN">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">通义千问开源 Qwen3.6-35B-A3B：MoE 架构，SWE-bench 73.4</div>
+                <div class="news-title-en">Alibaba open-sources Qwen3.6-35B-A3B: MoE architecture, SWE-bench 73.4</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-CN">CN</span>
+                <span class="tag tag-Open">Open</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">4 月 16 日，阿里云 Qwen 团队在 Qwen3.6-Plus 之后开源了 Qwen3.6-35B-A3B，这是一个稀疏 MoE 模型，总计 350 亿参数但仅激活 30 亿。Apache 2.0 许可证。在 SWE-bench Verified 上达到 73.4 分，与更大规模的模型表现相当。该模型面向智能体编程场景优化，降低了开源编程模型的硬件门槛。</div>
+            <div class="news-summary-en">On April 16, Alibaba's Qwen team open-sourced Qwen3.6-35B-A3B following Qwen3.6-Plus — a sparse MoE model with 35B total and 3B active parameters. Apache 2.0 license. Achieves 73.4 on SWE-bench Verified, matching much larger models. Optimized for agentic coding scenarios, lowering the hardware barrier for open-source coding models.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>仅 3B 激活参数即可达到旗舰级编程能力，意味着开发者可以在消费级硬件上运行高质量的 AI 编程助手。这与 Qwen3.6-27B（Dense）共同构成完整的开源编程工具链。</div>
+            <div class="why-en"><strong>Why it matters:</strong>Flagship-level coding with only 3B active parameters means developers can run high-quality AI coding assistants on consumer hardware. Together with Qwen3.6-27B (Dense), it forms a complete open-source coding toolkit.</div>
+        </div>
+        <a class="news-link" href="https://qwen.ai/blog?id=qwen3.6-35b-a3b" target="_blank">🔗 Qwen 官方博客 →</a>
+    </div>
+
+    <!-- OpenAI Images 2.0 (Brief mention as it was covered before but new angle) -->
+    <div class="news-item tag-US">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">OpenAI 发布 ChatGPT Images 2.0：推理驱动的图像生成架构</div>
+                <div class="news-title-en">OpenAI releases ChatGPT Images 2.0: reasoning-driven image generation</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-US">US</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">4 月 21 日，OpenAI 发布基于 GPT Image 2 模型的 ChatGPT Images 2.0。核心升级：引入"思考能力"（reasoning），可实现复杂多步图像生成任务；文字渲染准确率约 99%，大幅改善中文字体乱码问题；支持最高 4K 分辨率和多宽高比输出。这标志着图像生成从扩散模型向推理驱动架构的转变。</div>
+            <div class="news-summary-en">On April 21, OpenAI launched ChatGPT Images 2.0 powered by GPT Image 2. Key upgrades: "thinking" capability for complex multi-step image generation; ~99% text rendering accuracy, fixing Chinese character garbling; supports up to 4K resolution and multiple aspect ratios. This marks the shift from diffusion models to reasoning-driven image generation architecture.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>Sam Altman 称其飞跃"相当于图像生成领域的 GPT-3 到 GPT-5"。推理驱动架构意味着 AI 图像生成从"风格模仿"走向"精确理解和执行"，在设计和商业应用场景中具有颠覆性意义。</div>
+            <div class="why-en"><strong>Why it matters:</strong>Altman describes the leap as "GPT-3 to GPT-5 in image generation." Reasoning-driven architecture means AI image generation moves from "style mimicry" to "precise understanding and execution," with disruptive implications for design and commercial applications.</div>
+        </div>
+        <a class="news-link" href="https://www.thepaper.cn/newsDetail_forward_33027423" target="_blank">🔗 澎湃新闻 →</a>
+    </div>
+</div>
+
+<!-- 研究与技术 -->
+<div class="section">
+    <div class="card-title">
+        <span class="title-cn">🔬 研究与技术</span>
+        <span class="title-en">Research & Technology</span>
+    </div>
+
+    <!-- Hugging Face ml-intern -->
+    <div class="news-item tag-Open">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">Hugging Face 开源 ml-intern：从论文阅读到模型部署的全自动化 AI 智能体</div>
+                <div class="news-title-en">Hugging Face open-sources ml-intern: end-to-end autonomous ML engineer agent</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-Open">Open</span>
+                <span class="tag tag-Research">Research</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">4 月 20 日，Hugging Face 在 GitHub 开源 ml-intern 项目（7.2k ⭐），定位为"开源机器学习工程师"。基于 smolagents 框架构建，包含 Reader、Trainer 等模块，可自主执行论文阅读、方案设计、模型训练到评估部署的完整 ML 工作流。架构特色包括：最多 300 次迭代的 Agentic Loop、170K token 自动上下文压缩、Doom Loop 检测器防重复循环。实测将 Qwen3-1.7B 的 GPQA 评分从 10% 提升至 32%。</div>
+            <div class="news-summary-en">On April 20, Hugging Face open-sourced ml-intern on GitHub (7.2k ⭐), positioned as an "open-source ML engineer." Built on smolagents framework with Reader, Trainer modules for autonomous paper reading, solution design, model training, and deployment. Architecture features: up to 300 iterations in Agentic Loop, 170K token auto context compression, Doom Loop detector. Benchmarked boosting Qwen3-1.7B GPQA score from 10% to 32%.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>ml-intern 将 AI 智能体从"编码助手"提升到"ML 研究工程师"层面。这意味着论文复现、模型微调等此前需要专业工程师数天完成的工作，可以在数小时内自动化完成。开源社区对此反响热烈，7.2k 星标反映了开发者对 ML 自动化工作流的强烈需求。</div>
+            <div class="why-en"><strong>Why it matters:</strong>ml-intern elevates AI agents from "coding assistant" to "ML research engineer." Tasks that previously required professional engineers for days — paper reproduction, model fine-tuning — can now be automated in hours. The enthusiastic community response (7.2k stars) reflects strong demand for automated ML workflows.</div>
+        </div>
+        <a class="news-link" href="https://github.com/huggingface/ml-intern" target="_blank">🔗 GitHub 仓库 →</a>
+    </div>
+
+    <!-- arXiv Agent Trends (new findings since last report) -->
+    <div class="news-item tag-Research">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">arXiv 研究前沿：工具注意力机制可减少 95% Token 消耗</div>
+                <div class="news-title-en">arXiv highlights: Tool Attention mechanism cuts token usage by 95%</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-Research">Research</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">4 月 25 日 arXiv cs.AI 多篇论文揭示 Agent 研究新方向。亮点论文 "Tool Attention Is All You Need"（arXiv:2604.21816）提出 Intent Schema Overlap (ISO) 分数和两阶段懒加载器，将 MCP 协议的工具 Token 消耗从 47.3K 降至 2.4K（减少 95%），上下文利用率从 24% 提升至 91%。另一篇 "Learning to Communicate"（arXiv:2604.21794）提出 DiffMAS 框架，通过潜在空间通信替代文本协议，实现多智能体端到端联合优化。</div>
+            <div class="news-summary-en">Multiple April 25 arXiv cs.AI papers reveal new Agent research directions. Standout paper "Tool Attention Is All You Need" (arXiv:2604.21816) proposes Intent Schema Overlap (ISO) scoring and two-phase lazy loader, reducing MCP tool tokens from 47.3K to 2.4K (95% reduction), improving context utilization from 24% to 91%. Another paper "Learning to Communicate" (arXiv:2604.21794) proposes DiffMAS for latent-space communication replacing text protocols in multi-agent systems.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>随着 AI Agent 接入的工具数量指数级增长，"协议级效率"而非"原始上下文长度"已成为核心瓶颈。Tool Attention 证明通过智能工具筛选，可以在不牺牲性能的前提下大幅降低成本，这对大规模 Agent 部署具有实际工程意义。</div>
+            <div class="why-en"><strong>Why it matters:</strong>As AI Agents connect to exponentially more tools, "protocol-level efficiency" rather than "raw context length" has become the core bottleneck. Tool Attention proves intelligent tool filtering can dramatically reduce costs without sacrificing performance, with practical engineering implications for large-scale agent deployment.</div>
+        </div>
+        <a class="news-link" href="https://arxiv.org/list/cs.AI/current" target="_blank">🔗 arXiv cs.AI →</a>
+        <a class="news-link" href="https://www.daoyuly.cn/2026/arxiv-agent-trends-2026-04-25/" target="_blank">🔗 趋势解读 →</a>
+    </div>
+</div>
+
+<!-- 政策与产业 -->
+<div class="section">
+    <div class="card-title">
+        <span class="title-cn">🏛️ 政策与产业</span>
+        <span class="title-en">Policy & Industry</span>
+    </div>
+
+    <!-- Singapore NAIRD -->
+    <div class="news-item tag-SG">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">新加坡政府追加 S$10 亿投资 AI 研发：NAIRD 计划 2025-2030</div>
+                <div class="news-title-en">Singapore adds S$1B for AI R&D: NAIRD Plan 2025-2030</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-SG">SG</span>
+                <span class="tag tag-Policy">Policy</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">新加坡数字发展与信息部部长杨莉明在 2026 年新加坡 AI 研究周（SGAIRW）上宣布，政府将在 2025-2030 年间为国家 AI 研发计划（NAIRD）追加超过 10 亿新元投资。NAIRD 三大重点领域：基础 AI 研究（负责任 AI、资源高效型 AI、通用人工智能）、应用 AI 研究（行业采用）、人才培养（从大学预科到教职人员）。SGAIRW 与第 40 届 AAAI 会议同期举办，超过 25 个合作伙伴组织了 40 场活动。</div>
+            <div class="news-summary-en">Singapore's Minister for Digital Development & Information Josephine Teo announced at SGAIRW 2026 an additional S$1B+ investment in the National AI R&D Plan (NAIRD) for 2025-2030. Three focus areas: foundational AI research (responsible AI, efficient AI, general-purpose AI), applied AI research (industry adoption), and talent development. SGAIRW coincided with the 40th AAAI conference, with 40+ events organized by 25+ partners.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>这是新加坡 NAIS 2.0 战略的具体落地，10 亿新元的投资力度在全球国家 AI 研发投入中位居前列。以"卓越研究中心"模式吸引全球顶尖研究者，配合 AAAI 级学术会议的同期举办，显示出新加坡争夺全球 AI 研究枢纽地位的明确意图。</div>
+            <div class="why-en"><strong>Why it matters:</strong>Concrete implementation of Singapore's NAIS 2.0 strategy, with S$1B+ positioning Singapore among top global AI R&D investors. The "Research Centres of Excellence" model to attract world-class researchers, combined with co-locating with AAAI, signals clear intent to become a global AI research hub.</div>
+        </div>
+        <a class="news-link" href="https://www.mddi.gov.sg/newsroom/singapore-invests-over-s-1-billion-in-national-ai-research-and-development-plan-to-strengthen-ai-research-capabilities-and-our-position-as-global-ai-hub/" target="_blank">🔗 新加坡数字部官网 →</a>
+    </div>
+
+    <!-- Forbes AI 50 -->
+    <div class="news-item tag-Policy">
+        <div class="news-header">
+            <div class="news-title-group">
+                <div class="news-title-cn">福布斯发布 2026 AI 50 榜单：OpenAI、Anthropic 领衔，20 家新上榜</div>
+                <div class="news-title-en">Forbes releases 2026 AI 50 list: OpenAI, Anthropic lead, 20 new entrants</div>
+            </div>
+            <div class="news-tags">
+                <span class="tag tag-Policy">Policy</span>
+            </div>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">福布斯发布第八届 AI 50 强榜单（最具潜力非上市 AI 企业）。OpenAI 与 Anthropic 累计融资 2426 亿美元，占上榜企业总融资额 3056 亿美元的约 80%。本届共有 20 家新公司首次上榜。榜单涵盖基础模型、AI 基础设施、企业应用等多个细分领域，反映了 AI 行业的资本集中趋势。</div>
+            <div class="news-summary-en">Forbes published its 8th AI 50 list (most promising private AI companies). OpenAI and Anthropic's combined $242.6B in funding accounts for ~80% of the total $305.6B across all listed companies. 20 companies are new to the list this year. The list spans foundation models, AI infrastructure, enterprise applications, reflecting capital concentration in the AI industry.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>80% 的融资集中在两家公司，说明 AI 行业已进入"赢家通吃"的成熟阶段。但 20 家新上榜公司也表明底层创新仍在持续——尤其是 AI 基础设施和企业应用层的增量机会。</div>
+            <div class="why-en"><strong>Why it matters:</strong>80% of funding concentrated in two companies signals the AI industry has entered a "winner-take-all" maturation phase. Yet 20 new entrants show underlying innovation continues — particularly incremental opportunities in AI infrastructure and enterprise applications.</div>
+        </div>
+        <a class="news-link" href="https://www.ithome.com/0/941/759.htm" target="_blank">🔗 IT 之家报道 →</a>
+    </div>
+</div>
+
+<!-- Whitelist -->
+<div class="whitelist-section">
+    <div class="whitelist-title-cn">📋 追踪来源白名单</div>
+    <div class="whitelist-title-en">Tracked Sources Whitelist</div>
+    <div class="whitelist-note-cn">本简报仅从以下官方/权威来源获取信息，确保内容可溯源性。</div>
+    <div class="whitelist-note-en">This briefing only sources from the following official/authoritative channels for traceability.</div>
+
+    <div class="wl-category">🇺🇸 US · 美国</div>
+    <div class="whitelist-grid">
+        <div class="whitelist-item">OpenAI News / Research — openai.com/news</div>
+        <div class="whitelist-item">Anthropic Newsroom — anthropic.com/news</div>
+        <div class="whitelist-item">Google DeepMind — deepmind.google/blog</div>
+        <div class="whitelist-item">Meta Superintelligence Labs — about.fb.com/news</div>
+    </div>
+
+    <div class="wl-category">🇨🇳 China · 中国</div>
+    <div class="whitelist-grid">
+        <div class="whitelist-item">Moonshot / Kimi — moonshot.ai, kimi.com</div>
+        <div class="whitelist-item">MiniMax — minimaxi.com</div>
+        <div class="whitelist-item">智谱 Z.ai — zhipuai.cn, open.bigmodel.cn</div>
+        <div class="whitelist-item">Qwen / Alibaba Cloud — qwen.ai/blog</div>
+        <div class="whitelist-item">DeepSeek — deepseek.com</div>
+    </div>
+
+    <div class="wl-category">🇸🇬 Singapore · 新加坡</div>
+    <div class="whitelist-grid">
+        <div class="whitelist-item">A*STAR AI — a-star.edu.sg/aiml</div>
+        <div class="whitelist-item">GovTech Singapore — tech.gov.sg</div>
+        <div class="whitelist-item">MDDI Singapore — mddi.gov.sg <span class="new-badge">🆕</span></div>
+        <div class="whitelist-item">Singapore DSAI — smartnation.sg</div>
+        <div class="whitelist-item">NUS AI Research — nus.edu.sg</div>
+    </div>
+
+    <div class="wl-category">🌐 Media · 媒体</div>
+    <div class="whitelist-grid">
+        <div class="whitelist-item">CNBC Technology — cnbc.com</div>
+        <div class="whitelist-item">TechCrunch — techcrunch.com</div>
+        <div class="whitelist-item">MIT Tech Review — technologyreview.com</div>
+        <div class="whitelist-item">Reuters AI — reuters.com/technology</div>
+        <div class="whitelist-item">Forbes — forbes.com <span class="new-badge">🆕</span></div>
+    </div>
+
+    <div class="wl-category">🔓 Open Source / Research · 开源与研究</div>
+    <div class="whitelist-grid">
+        <div class="whitelist-item">Hugging Face Blog — huggingface.co/blog</div>
+        <div class="whitelist-item">arXiv CS.AI — arxiv.org/list/cs.AI</div>
+        <div class="whitelist-item">OpenBMB — openbmb.org</div>
+        <div class="whitelist-item">HKUDS — hku-datascience.github.io</div>
+    </div>
+
+    <div class="wl-category">🏛️ AI Governance / Policy · AI 治理与政策</div>
+    <div class="whitelist-grid">
+        <div class="whitelist-item">Plural Policy — pluralpolicy.com</div>
+        <div class="whitelist-item">UK AI Security Institute — aisi.gov.uk</div>
+        <div class="whitelist-item">Stanford HAI — hai.stanford.edu</div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="footer-cn">🤖 AI 日报 · 2026-04-29 AM · 自动生成</div>
+    <div class="footer-en">AI Daily Briefing · 2026-04-29 AM · Auto-generated</div>
+    <div class="footer-links">
+        <a href="https://kidultop.github.io/investment-reports/">📊 简报列表</a>
+        <a href="https://github.com/kidultop/investment-reports">GitHub</a>
+    </div>
+    <div class="footer-cn" style="margin-top:8px; font-size:11px; color:var(--text-muted);">免责声明：本简报内容仅供参考，不构成任何投资建议。信息来源均已标注，请以官方原文为准。</div>
+    <div class="footer-en" style="font-size:10px; color:var(--text-muted);">Disclaimer: This briefing is for informational purposes only and does not constitute investment advice. All sources are cited; please refer to official originals.</div>
+</div>
+
+</body>
+</html>

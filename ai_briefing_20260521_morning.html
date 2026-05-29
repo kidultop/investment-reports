@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 2026-05-21 早报</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #334155;
+    --accent: #a78bfa;
+    --accent-dim: #7c3aed;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --border: #334155;
+    --us: #3b82f6;
+    --cn: #ef4444;
+    --sg: #f97316;
+    --research: #22c55e;
+    --open: #a78bfa;
+    --policy: #eab308;
+    --new-source: #06b6d4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 20px; }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 32px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .header h1 en, .header h1 .en {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .header-meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  /* Core Trends Card */
+  .trends-card {
+    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(167,139,250,0.02));
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .trends-title-cn { font-size: 15px; font-weight: 700; color: var(--accent); }
+  .trends-title-en { font-size: 11px; color: var(--accent); opacity: 0.7; font-style: italic; margin-bottom: 14px; }
+  .trend-item { padding: 8px 0; border-bottom: 1px solid rgba(167,139,250,0.08); }
+  .trend-item:last-child { border-bottom: none; }
+  .trend-cn { font-size: 13px; color: var(--text); }
+  .trend-en { font-size: 11px; color: var(--text-dim); font-style: italic; }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    flex: 1;
+    min-width: 140px;
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-label-cn { font-size: 11px; color: var(--text-dim); }
+  .stat-label-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+  .stat-unit-cn { font-size: 10px; color: var(--text-dim); }
+  .stat-unit-en { font-size: 9px; color: var(--text-dim); font-style: italic; }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .card-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 16px;
+  }
+  .title-cn { font-size: 16px; font-weight: 700; color: #fff; }
+  .title-en { font-size: 12px; color: var(--text-dim); font-style: italic; }
+
+  /* News Item */
+  .news-item {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    border-left: 3px solid var(--accent);
+    position: relative;
+  }
+  .news-item.us { border-left-color: var(--us); }
+  .news-item.cn { border-left-color: var(--cn); }
+  .news-item.sg { border-left-color: var(--sg); }
+  .news-item.research { border-left-color: var(--research); }
+  .news-item.open { border-left-color: var(--open); }
+  .news-item.policy { border-left-color: var(--policy); }
+  .news-item.new-source { border-left-color: var(--new-source); }
+
+  .news-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+  }
+  .tag-us { background: rgba(59,130,246,0.15); color: var(--us); }
+  .tag-cn { background: rgba(239,68,68,0.15); color: var(--cn); }
+  .tag-sg { background: rgba(249,115,22,0.15); color: var(--sg); }
+  .tag-research { background: rgba(34,197,94,0.15); color: var(--research); }
+  .tag-open { background: rgba(167,139,250,0.15); color: var(--open); }
+  .tag-policy { background: rgba(234,179,8,0.15); color: var(--policy); }
+  .tag-new { background: rgba(6,182,212,0.15); color: var(--new-source); }
+
+  .news-title-cn { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.4; }
+  .news-title-en { font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: 2px; }
+
+  .news-summary {
+    display: flex;
+    margin: 12px 0;
+    border-left: 3px solid var(--border);
+    padding-left: 14px;
+  }
+  .news-summary-cn { flex: 1; padding-right: 14px; font-size: 13px; color: var(--text); line-height: 1.7; }
+  .news-summary-en { flex: 1; padding-left: 14px; border-left: 1px solid var(--border); font-size: 12px; color: var(--text-dim); line-height: 1.7; font-style: italic; }
+
+  .why-matters { margin: 12px 0; padding: 10px 14px; background: rgba(167,139,250,0.05); border-radius: 6px; }
+  .why-cn { font-size: 12px; color: var(--text); line-height: 1.6; margin-bottom: 4px; }
+  .why-en { font-size: 11px; color: var(--text-dim); line-height: 1.6; font-style: italic; }
+
+  .news-source { margin-top: 10px; }
+  .source-btn {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(167,139,250,0.3);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .source-btn:hover { background: rgba(167,139,250,0.1); }
+
+  .new-source-callout {
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.25);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--new-source);
+  }
+
+  /* Whitelist */
+  .whitelist-section {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-top: 28px;
+  }
+  .whitelist-title-cn { font-size: 14px; font-weight: 700; color: var(--accent); }
+  .whitelist-title-en { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 12px; }
+  .whitelist-note-cn { font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+  .whitelist-note-en { font-size: 11px; color: var(--text-dim); font-style: italic; margin-bottom: 12px; }
+  .whitelist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+  }
+  .whitelist-item { font-size: 11px; color: var(--text-dim); }
+  .whitelist-item new { color: var(--new-source); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .footer-cn { margin-bottom: 2px; }
+  .footer-en { font-style: italic; }
+
+  @media (max-width: 640px) {
+    .news-summary { flex-direction: column; }
+    .news-summary-en { border-left: none; padding-left: 0; padding-top: 8px; border-top: 1px solid var(--border); }
+    .whitelist-grid { grid-template-columns: 1fr; }
+    .stats-bar { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge">🤖 AI 简报 · 早报</div>
+    <h1>AI 简报 2026-05-21<span class="en">AI Daily Briefing — 2026-05-21 Morning Edition</span></h1>
+    <div class="header-meta">新加坡时间 SGT 08:20 · 2026年5月21日（周四）</div>
+  </div>
+
+  <!-- Core Trends -->
+  <div class="trends-card">
+    <div class="trends-title-cn">📌 今日核心趋势</div>
+    <div class="trends-title-en">Today's Core Trends</div>
+    <div class="trend-item">
+      <div class="trend-cn">Google I/O 2026 发布 Gemini 3.5 Flash/Pro、Gemini Spark Agent 及 Omni 世界模型，AI agents 进入主流消费者场景</div>
+      <div class="trend-en">Google I/O 2026 unveils Gemini 3.5 Flash/Pro, Gemini Spark Agent, and Omni world model — AI agents enter mainstream consumer workflows</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">白宫召集 OpenAI、Anthropic 等 AI 公司，预告 AI 模型发布前政府审查行政令，中美 AI 监管博弈升级</div>
+      <div class="trend-en">White House briefs OpenAI, Anthropic on planned executive order for pre-release AI model government review — US-China AI regulation tensions escalate</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">Anthropic 收购 API 工具公司 Stainless，强化 MCP 生态与 Agent 连接能力；Moonshot AI 启动香港 IPO 架构重组</div>
+      <div class="trend-en">Anthropic acquires API tooling company Stainless to strengthen MCP ecosystem and agent connectivity; Moonshot AI initiates Hong Kong IPO restructuring</div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">4</div>
+      <div class="stat-label-cn">美国主线动态</div>
+      <div class="stat-label-en">US Main Developments</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">3</div>
+      <div class="stat-label-cn">中国主线动态</div>
+      <div class="stat-label-en">CN Main Developments</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">12</div>
+      <div class="stat-label-cn">arXiv Agent 论文</div>
+      <div class="stat-label-en">arXiv Agent Papers</div>
+      <div class="stat-unit-cn">本周趋势</div>
+      <div class="stat-unit-en">This Week's Trend</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">10</div>
+      <div class="stat-label-cn">MIT 年度 AI 趋势</div>
+      <div class="stat-label-en">MIT Annual AI Trends</div>
+    </div>
+  </div>
+
+  <!-- Section: Top Stories -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">📰 Top Stories</span>
+      <span class="title-en">Top Stories</span>
+    </div>
+
+    <!-- Story 1: Google I/O 2026 -->
+    <div class="news-item us">
+      <span class="news-tag tag-us">US · Google</span>
+      <div class="news-title-cn">Google I/O 2026：Gemini 3.5 Flash 成默认模型，Omni 世界模型与 Gemini Spark Agent 亮相</div>
+      <div class="news-title-en">Google I/O 2026: Gemini 3.5 Flash becomes default model; Omni world model and Gemini Spark Agent debut</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Google 在 I/O 2026（5月19-20日，山景城）发布多项 AI 重磅更新：Gemini 3.5 Flash 即日起成为全球 Gemini App 及搜索 AI 模式的默认模型，价格仅为同级前沿模型的 1/2 至 1/3，且"不再需要在质量与延迟之间妥协"。Gemini 3.5 Pro 目前在内部使用，预计 6 月广泛发布。新推出的 Gemini Spark 是一款通用 AI Agent，可在连接的应用中跨信息推理并"在你的指示下代表你采取行动"，目前正向可信测试者和 Google AI Ultra 订阅用户推送。Omni 是一款新的世界模型，能够模拟物理环境并基于用户行动预测下一步，支持图像和音频，还可编辑视频——用户可"对自己拍摄的视频要求 Omni 改变正在发生的动作，添加新角色或物体"。</div>
+        <div class="news-summary-en">Google unveiled multiple major AI updates at I/O 2026 (May 19-20, Mountain View): Gemini 3.5 Flash is now the default model for the Gemini app and AI mode in Search globally, costing 1/2 to 1/3 of comparable frontier models with "no more trade-offs between quality and latency." Gemini 3.5 Pro is currently for internal use, with wider release expected in June. Gemini Spark is a new general-purpose AI agent that reasons across connected apps and "takes action on your behalf while under your direction," now rolling out to trusted testers and Google AI Ultra subscribers. Omni is a new world model that simulates physical environments and predicts what happens next based on user actions, supports images and audio, and can edit videos.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Gemini 3.5 Flash 的低价高质策略直接冲击 OpenAI 和 Anthropic 的 API 定价体系；Omni 世界模型是 Google 在物理 AI 和机器人领域的重要布局，与 Meta 的触觉传感器、NVIDIA 的宇宙模型形成三足鼎立之势。</div>
+        <div class="why-en"><strong>Why it matters:</strong>Gemini 3.5 Flash's low-cost, high-quality strategy directly challenges OpenAI and Anthropic's API pricing; Omni world model represents Google's major push into physical AI and robotics, forming a three-way race with Meta's tactile sensors and NVIDIA's universe models.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.cnbc.com/2026/05/19/google-ai-ultra-gemini-spark-omni.html" class="source-btn" target="_blank">CNBC ↗</a>
+        <a href="https://deepmind.google/blog/" class="source-btn" target="_blank">DeepMind Blog ↗</a>
+      </div>
+    </div>
+
+    <!-- Story 2: White House AI Model Review -->
+    <div class="news-item policy">
+      <span class="news-tag tag-policy">Policy · US</span>
+      <div class="news-title-cn">白宫召集 OpenAI、Anthropic通报 AI 模型审查行政令：发布前须接受政府评估，审查期最长 90 天</div>
+      <div class="news-title-en">White House briefs OpenAI, Anthropic on AI model review executive order: pre-release government assessment required, up to 90-day review period</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据 The Information 报道（5月20日），白宫国家网络主任办公室（ONCD）于5月19日（周二）召集领先 AI 公司举行通报会，讨论一项拟议的行政令。该行政令将为"前沿"AI 模型建立自愿审查框架：先进 AI 模型的开发者须在重大发布前通知美国政府，并可能被要求将模型提交美国情报和其他政府机构审查，审查期最长可达发布前 90 天。受通报的公司包括 OpenAI、Anthropic 和 Reflection AI。报道称特朗普总统最早可能于5月21日（周四）签署该行政令。此举标志着美国在 AI 安全监管方面的重大政策转向，也是中美 AI 竞争背景下的国内布局。</div>
+        <div class="news-summary-en">According to The Information (May 20), the White House Office of the National Cyber Director (ONCD) hosted a briefing for leading AI companies on Tuesday, May 19, to discuss a planned executive order. The order would establish a voluntary framework for "frontier" AI models: developers would be required to notify the U.S. government ahead of major releases and could be required to share models with U.S. intelligence and other agencies for review, with a review period of up to 90 days before public launch. Briefed companies include OpenAI, Anthropic, and Reflection AI. President Trump could sign the order as soon as Thursday, May 21. This marks a major U.S. policy shift on AI safety oversight.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>若行政令签署，将是美国首次对 AI 模型发布实施事前政府审查，直接影响 OpenAI、Anthropic 等公司的产品节奏和竞争优势；也可能成为国会未来立法的基础框架。</div>
+        <div class="why-en"><strong>Why it matters:</strong>If signed, this would be the U.S.'s first pre-release government review of AI models, directly impacting OpenAI and Anthropic's product timelines and competitive positioning; it may also serve as the foundation for future congressional legislation.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.thestar.com.my/tech/tech-news/2026/05/21/white-house-briefs-ai-firms-on-plans-for-model-review-the-information-reports" class="source-btn" target="_blank">Reuters/The Star ↗</a>
+      </div>
+    </div>
+
+    <!-- Story 3: OpenAI Discrete Geometry Breakthrough -->
+    <div class="news-item research">
+      <span class="news-tag tag-research">Research · OpenAI</span>
+      <div class="news-title-cn">OpenAI 模型证伪离散几何核心猜想，AI 数学推理能力再获里程碑式突破</div>
+      <div class="news-title-en">OpenAI model disproves central conjecture in discrete geometry — another milestone in AI mathematical reasoning</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 于5月20日宣布，其 AI 模型成功证伪了离散几何领域的一个核心猜想（此前该猜想被认为可能为真）。这是继 Google DeepMind 的 FunSearch 解决组合数学问题之后，AI 在数学研究领域的又一重大突破。OpenAI 表示，这一成果展示了前沿模型在形式化数学推理和猜想验证方面的能力正在快速提升，为 AI 辅助基础研究开辟了新路径。详细技术报告将在未来数周内发布。</div>
+        <div class="news-summary-en">OpenAI announced on May 20 that its AI model successfully disproved a central conjecture in discrete geometry (previously believed to potentially be true). This follows Google DeepMind's FunSearch solving combinatorial mathematics problems as another major breakthrough in AI mathematical research. OpenAI stated that this achievement demonstrates rapidly improving capabilities of frontier models in formal mathematical reasoning and conjecture verification, opening new pathways for AI-assisted fundamental research. A detailed technical report will be released in the coming weeks.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>AI 自主完成数学猜想的真伪判定，标志着 AI for Math 从"辅助计算"迈向"自主发现"的关键跃迁；对基础研究资助模式和科学人才培养均有长远影响。</div>
+        <div class="why-en"><strong>Why it matters:</strong>AI autonomously determining the truth of a mathematical conjecture marks the transition from "assisted computation" to "autonomous discovery" in AI for Math, with long-term implications for basic research funding models and scientific talent development.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://openai.com/news/" class="source-btn" target="_blank">OpenAI News ↗</a>
+      </div>
+    </div>
+
+    <!-- Story 4: Anthropic acquires Stainless -->
+    <div class="news-item us">
+      <span class="news-tag tag-us">US · Anthropic</span>
+      <div class="news-title-cn">Anthropic 收购 API 工具公司 Stainless，强化 MCP 生态与 Agent 连接能力战略整合</div>
+      <div class="news-title-en">Anthropic acquires API tooling company Stainless, strategically integrating MCP ecosystem and agent connectivity</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic 于5月18日正式宣布收购 Stainless——一家专注于为 API 生成高质量多语言 SDK、CLI 和 MCP 服务器的软件基础设施公司，交易金额约 2.8 亿欧元（约 3.2 亿美元）。Stainless 成立于2022年，由 Alex Rattray 创立，其 SDK 覆盖 TypeScript、Python、Go、Java 等主流语言，以"快速、可靠、原生感"著称，数百家公司依赖其产品。Anthropic 表示："AI 的前沿正从回答型模型转向行动型 Agent——而 Agent 的能力上限取决于它们能连接到什么系统。"Stainless 自 Anthropic API 早期阶段就是其官方 SDK 的提供商。此次收购将直接增强 Claude 的工具调用能力和 MCP 生态完整性。</div>
+        <div class="news-summary-en">Anthropic officially announced the acquisition of Stainless on May 18 — a software infrastructure company focused on generating high-quality multi-language SDKs, CLIs, and MCP servers from API specifications, for approximately €280M (~$320M). Founded in 2022 by Alex Rattray, Stainless supports TypeScript, Python, Go, Java, and more, known for being "fast, reliable, and built to feel native." Hundreds of companies rely on its products. Anthropic stated: "The frontier of AI is shifting from models that answer to agents that act — and agents are only as capable as the systems they can reach." Stainless has been the provider of every official Anthropic SDK since the earliest days of their API.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是 Anthropic 首次收购开发者工具基础设施公司，直接对标 OpenAI 的 GPT-5.5-Cyber 和 Codex 生态；通过掌控 SDK 生成入口，Anthropic 可以深度优化 Claude 与第三方系统的集成体验，构筑开发者生态护城河。</div>
+        <div class="why-en"><strong>Why it matters:</strong>This is Anthropic's first acquisition of a developer tooling infrastructure company, directly competing with OpenAI's GPT-5.5-Cyber and Codex ecosystem; by controlling the SDK generation entry point, Anthropic can deeply optimize Claude's integration experience with third-party systems, building a developer ecosystem moat.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.anthropic.com/news/anthropic-acquires-stainless" class="source-btn" target="_blank">Anthropic Official ↗</a>
+        <a href="https://finance.sina.com.cn/tech/digi/2026-05-19/doc-inhyksxt2337150.shtml" class="source-btn" target="_blank">新浪科技 ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: 官方发布 Official Releases -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">📢 官方发布</span>
+      <span class="title-en">Official Releases</span>
+    </div>
+
+    <!-- OpenAI + Dell -->
+    <div class="news-item us">
+      <span class="news-tag tag-us">US · OpenAI</span>
+      <div class="news-title-cn">OpenAI 与 Dell 达成战略合作，将 Codex 带入混合云和企业本地环境</div>
+      <div class="news-title-en">OpenAI and Dell Technologies partner to bring Codex to hybrid and on-premises enterprise environments</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 于5月18日宣布与 Dell Technologies 达成战略合作，将 Codex 开发平台部署至企业混合云和本地环境中。这标志着 OpenAI 在企业级 AI 开发工具市场的重要扩张，直接挑战 GitHub Copilot 和 Anthropic Claude for Enterprise 的领地。Dell 的基础设施将支持 Codex 在隔离网络环境中的安全运行，满足金融、医疗等高度监管行业的需求。</div>
+        <div class="news-summary-en">OpenAI announced a strategic partnership with Dell Technologies on May 18 to deploy the Codex development platform into enterprise hybrid cloud and on-premises environments. This marks OpenAI's significant expansion into the enterprise AI development tools market, directly challenging GitHub Copilot and Anthropic Claude for Enterprise. Dell's infrastructure will support secure Codex operation in air-gapped network environments, meeting the needs of highly regulated industries such as finance and healthcare.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>企业本地部署 AI 编程工具是2026年竞争最激烈的企业 AI 赛道；OpenAI 通过 Dell 渠道快速触达传统企业客户，与 Anthropic 的"Claude for Small Business"形成正面竞争。</div>
+        <div class="why-en"><strong>Why it matters:</strong>On-premises AI coding tools are the most competitive enterprise AI赛道 in 2026; OpenAI rapidly reaches traditional enterprise customers through Dell channels, directly competing with Anthropic's "Claude for Small Business."</div>
+      </div>
+      <div class="news-source">
+        <a href="https://openai.com/news/" class="source-btn" target="_blank">OpenAI News ↗</a>
+      </div>
+    </div>
+
+    <!-- Anthropic + KPMG -->
+    <div class="news-item us">
+      <span class="news-tag tag-us">US · Anthropic</span>
+      <div class="news-title-cn">Anthropic 与 KPMG 达成战略联盟，Claude 将覆盖 KPMG 全球 27.6 万名员工</div>
+      <div class="news-title-en">Anthropic and KPMG form strategic alliance — Claude to cover KPMG's 276,000 global employees</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic 于5月19日宣布与全球四大会计师事务所之一 KPMG 达成战略联盟，Claude 将集成至 KPMG 核心业务和全体员工工作流中。这是继 PwC（5月14日宣布扩大合作）之后，Anthropic 本月在第二周再度拿下大型专业服务公司的全公司级 AI 部署订单。KPMG 表示将利用 Claude 进行审计自动化、税务研究和客户服务优化。此举进一步巩固了 Anthropic 在企业市场的领先地位。</div>
+        <div class="news-summary-en">Anthropic announced a strategic alliance with KPMG, one of the Big Four accounting firms, on May 19, integrating Claude across KPMG's core business and entire workforce of over 276,000 employees. This is Anthropic's second major professional services firm-wide AI deployment this month, following PwC (expanded partnership announced May 14). KPMG stated it will use Claude for audit automation, tax research, and client service optimization, further cementing Anthropic's leading position in the enterprise market.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Anthropic 正在专业服务赛道（会计师事务所、咨询公司）形成事实标准；四大中有两家已深度绑定 Claude，OpenAI 在该垂直市场面临严峻挑战。</div>
+        <div class="why-en"><strong>Why it matters:</strong>Anthropic is establishing a de facto standard in the professional services赛道 (accounting firms, consultancies); two of the Big Four are now deeply integrated with Claude, presenting a serious challenge to OpenAI in this vertical market.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.anthropic.com/news" class="source-btn" target="_blank">Anthropic News ↗</a>
+      </div>
+    </div>
+
+    <!-- Moonshot HK IPO -->
+    <div class="news-item cn">
+      <span class="news-tag tag-cn">CN · Moonshot</span>
+      <div class="news-title-cn">Moonshot AI（Kimi）启动上市架构重组，拆除 VIE 结构为香港 IPO 铺路</div>
+      <div class="news-title-en">Moonshot AI (Kimi) initiates IPO structure restructuring, dismantling VIE framework to pave way for Hong Kong IPO</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据 CnTechPost 5月19日报道，Kimi 的开发商 Moonshot AI 本周正式通知投资者，公司正在推进企业架构重组，以拆除红筹架构（离岸实体持有国内资产的架构），为在香港进行首次公开募股（IPO）做好准备。此前 Moonshot 曾尝试保留 VIE（可变利益实体）结构并寻求监管豁免，但目前获得豁免的可能性已变得"渺茫"。中国证监会近期加强了对离岸实体的审查。此次重组不会影响公司获取美元计价资金的能力，公司计划建立合资企业架构，使阿里巴巴、腾讯、IDG、HSG 等外国投资者能够保持投资并满足合规要求。Moonshot 当前正在进行约 20 亿美元的融资，投后估值超过 200 亿美元。</div>
+        <div class="news-summary-en">According to CnTechPost (May 19), Kimi's developer Moonshot AI formally notified investors this week that the company is advancing corporate structure restructuring to dismantle its red-chip structure (where offshore entities hold domestic assets), paving the way for an IPO in Hong Kong. Moonshot previously attempted to retain its VIE (Variable Interest Entity) structure and seek a regulatory exemption, but chances of securing a waiver are now "slim." The China Securities Regulatory Commission has stepped up scrutiny of offshore entities. The restructuring will not affect the company's access to US dollar-denominated funds; Moonshot plans to establish a joint venture structure allowing foreign backers including Alibaba, Tencent, IDG, and HSG to maintain investments while meeting compliance requirements. Moonshot is currently raising approximately $2 billion, with post-money valuation exceeding $20 billion.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Moonshot 若成功在香港 IPO，将成为"中国开源 AI 第一股"，为国内外开源 AI 公司上市树立标杆；拆除 VIE 也反映出中国 AI 监管环境的变化趋势。</div>
+        <div class="why-en"><strong>Why it matters:</strong>If Moonshot successfully IPOs in Hong Kong, it would become the "first Chinese open-source AI public listing," setting a benchmark for domestic and international open-source AI companies; dismantling the VIE also reflects shifting trends in China's AI regulatory environment.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://cntechpost.com/2026/05/19/kimi-creator-moonshot-revamps-corporate-structure-prepare-hong-kong-ipo/" class="source-btn" target="_blank">CnTechPost ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: 研究与技术 Research & Technology -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🔬 研究与技术</span>
+      <span class="title-en">Research & Technology</span>
+    </div>
+
+    <!-- arXiv Agent Trends -->
+    <div class="news-item research">
+      <span class="news-tag tag-research">Research · arXiv</span>
+      <div class="news-title-cn">arXiv cs.AI 周报：Agent 工程化成核心趋势，微软 Orchard 框架统一 SWE/GUI/Agent 基础设施</div>
+      <div class="news-title-en">arXiv cs.AI Weekly: Agent industrialization is the core trend — Microsoft's Orchard framework unifies SWE/GUI/agent infrastructure</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">5月17日发布的 arXiv cs.AI Agent 趋势报告显示，本周（5月14日发布）共有约 25 篇新论文，其中 Agent 直接相关约 12 篇。核心趋势包括：（1）Agent 基础设施向开源工业化转型——微软 Jianfeng Gao 团队的 Orchard 框架统一了 SWE、GUI 和个人助手场景，Orchard-SWE 达到 SWE-bench Verified 67.5%（30B 级开源 SOTA），Orchard-GUI 达到 WebVoyager 74.1%；（2）测试时计算从暴力搜索转向智能分配——OpenDeepThink 通过成对 Bradley-Terry 比较实现并行推理，Gemini 3.1 Pro Codeforces Elo +405 分；（3）Agent 工作流可靠性工程成为"最后一公里"——GraphFlow 通过可形式化验证的工作流图在 3 个临床站点完成 8,728 次工作流运行，完成率 97.08%；（4）记忆与个性化成为差异化竞争点。</div>
+        <div class="news-summary-en">The arXiv cs.AI Agent Trends report (released May 17) shows approximately 25 new papers this week (released May 14), with ~12 directly related to AI Agents. Core trends: (1) Agent infrastructure transitioning to open-source industrialization — Microsoft's Jianfeng Gao team's Orchard framework unifies SWE, GUI, and personal assistant scenarios, with Orchard-SWE reaching SWE-bench Verified 67.5% (30B-class open-source SOTA), Orchard-GUI reaching WebVoyager 74.1%; (2) Test-time compute shifting from brute-force search to intelligent allocation — OpenDeepThink achieves parallel reasoning via pairwise Bradley-Terry comparisons, Gemini 3.1 Pro Codeforces Elo +405 points; (3) Agent workflow reliability engineering is the "last mile" — GraphFlow achieved 97.08% completion rate across 8,728 workflow runs at 3 clinical sites via formally verifiable workflow graphs; (4) Memory and personalization as differentiators.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Agent 从"演示原型"迈向"生产级系统"的关键转折正在发生；微软 Orchard 的开源发布将显著降低企业构建多场景 Agent 系统的门槛，预计将引发一波基于 Orchard 的垂直领域 Agent 产品浪潮。</div>
+        <div class="why-en"><strong>Why it matters:</strong>The critical transition from "demo prototypes" to "production-grade systems" for agents is happening now; Microsoft's open-sourcing of Orchard will significantly lower the barrier for enterprises to build multi-scenario agent systems, expected to trigger a wave of vertical-domain agent products based on Orchard.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.daoyuly.cn/2026/2026-05-17-arxiv-csai-agent-trends/" class="source-btn" target="_blank">DaoLyul AI Workshop ↗</a>
+        <a href="https://arxiv.org/list/cs.AI/recent" class="source-btn" target="_blank">arXiv cs.AI ↗</a>
+      </div>
+    </div>
+
+    <!-- MIT 10 AI Trends -->
+    <div class="news-item research">
+      <span class="news-tag tag-research">Research · MIT</span>
+      <div class="news-title-cn">MIT Technology Review 发布 2026 年十大 AI 趋势：人形数据、世界模型、多 Agent 编排领衔</div>
+      <div class="news-title-en">MIT Technology Review releases 2026 "10 Things That Matter in AI": humanoid data, world models, multi-agent orchestration lead the list</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">MIT Technology Review 于4月21日正式发布年度 AI 趋势报告"10 Things That Matter in AI Right Now"，旨在剔除行业泡沫，精准识别正在发生的十大 AI 趋势：（1）人形数据——通过收集人类动作视频训练人形机器人；（2）LLMs+——大语言模型仍有潜力可挖；（3）超级诈骗——AI 降低诈骗门槛；（4）世界模型——AI 公司竞相构建理解物理世界的系统；（5）新作战室——生成式 AI 进入军事规划和行动；（6）武器化深伪——Grok 大规模生成非自愿性图像等事件已成现实威胁；（7）Agent 编排——多 Agent 协作执行复杂目标；（8）中国开源押注——中国实验室免费发布前沿模型，全球开发者正在这些基础上构建；（9）人工科学家——AI Agent 自主开展研究任务；（10）反抗力量——全球对无节制 AI 发展的反弹正在汇聚。</div>
+        <div class="news-summary-en">MIT Technology Review officially released its annual AI trends report "10 Things That Matter in AI Right Now" on April 21, aiming to cut through industry hype and identify ten AI trends actually happening: (1) Humanoid Data — training humanoid robots via collected human movement videos; (2) LLMs+ — large language models still have untapped potential; (3) Supercharged Scams — AI lowers barriers for scammers; (4) World Models — AI companies racing to build systems that understand the physical world; (5) The New War Room — generative AI entering military planning and operations; (6) Weaponized Deepfakes — incidents like Grok's mass generation of non-consensual images are now real threats; (7) Agent Orchestration — multi-agent collaboration for complex goals; (8) China's Open-Source Bet — Chinese labs giving away frontier models for free, global developers building on these foundations; (9) Artificial Scientists — AI agents autonomously conducting research; (10) Resistance — growing global backlash against unfettered AI development.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>MIT Technology Review 的年度趋势报告是业界权威参考，其中"中国开源押注"和"世界模型"两项趋势与本期简报的多个头条直接呼应，可作为投资和研究方向的宏观指引。</div>
+        <div class="why-en"><strong>Why it matters:</strong>MIT Technology Review's annual trends report is an industry authority; the "China's Open-Source Bet" and "World Models" trends directly echo multiple headlines in this briefing, serving as macro guidance for investment and research directions.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.technologyreview.com/2026/04/21/1135643/10-ai-artificial-intelligence-trends-technologies-research-2026/" class="source-btn" target="_blank">MIT Technology Review ↗</a>
+      </div>
+    </div>
+
+    <!-- OpenAI Content Provenance -->
+    <div class="news-item us">
+      <span class="news-tag tag-us">US · OpenAI</span>
+      <div class="news-title-cn">OpenAI 推进内容溯源机制，称致力于构建更安全、更透明的 AI 生态系统</div>
+      <div class="news-title-en">OpenAI advances content provenance mechanisms, committing to a safer, more transparent AI ecosystem</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 于5月19日发布博文，详细介绍了其在内容溯源（Content Provenance）方面的工作进展。内容溯源技术通过在 AI 生成内容中嵌入不可见的水印或元数据，使接收方能够判断内容是否由 AI 生成、由哪个模型生成、以及生成的时间和参数。OpenAI 表示这将"为更安全、更透明的 AI 生态系统铺平道路"。此举是对全球 AI 内容监管压力的直接回应，也与白宫可能发布的 AI 模型审查行政令形成政策协同。</div>
+        <div class="news-summary-en">OpenAI published a blog post on May 19 detailing its progress on content provenance mechanisms. Content provenance technology embeds invisible watermarks or metadata into AI-generated content, enabling recipients to determine whether content was AI-generated, which model generated it, and when and with what parameters. OpenAI stated this "paves the way for a safer, more transparent AI ecosystem." This is a direct response to global regulatory pressure on AI content, and also forms policy synergy with the potential White House AI model review executive order.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>内容溯源是 AI 生成内容监管的技术基础，也是中美 AI 治理竞争的关键技术领域；OpenAI 主动推进该标准，有助于在未来监管框架中掌握话语权。</div>
+        <div class="why-en"><strong>Why it matters:</strong>Content provenance is the technical foundation for AI-generated content regulation and a key technical area in U.S.-China AI governance competition; OpenAI's proactive advancement of this standard helps secure discourse power in future regulatory frameworks.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://openai.com/news/" class="source-btn" target="_blank">OpenAI News ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: 政策与产业 Policy & Industry -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🏛️ 政策与产业</span>
+      <span class="title-en">Policy & Industry</span>
+    </div>
+
+    <!-- Anthropic Frontier AI -->
+    <div class="news-item policy">
+      <span class="news-tag tag-policy">Policy · Anthropic</span>
+      <div class="news-title-cn">Anthropic 发表《拓展前沿 AI 对话》立场文件，呼吁扩大 AI 安全讨论参与范围</div>
+      <div class="news-title-en">Anthropic publishes "Widening the conversation on frontier AI" position paper, calling for broader participation in AI safety discussions</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic 于5月19日发布题为《拓展前沿 AI 对话》（Widening the conversation on frontier AI）的立场文件，呼吁产业界、学术界、政策制定者和公民社会共同扩大关于前沿 AI 发展的公共讨论范围。文件强调，AI 安全不仅仅是技术问题，更是社会技术问题，需要多元利益相关方的参与。此文发布正值美国白宫筹备 AI 模型审查行政令之际，被视为 Anthropic 在 AI 治理话语权争夺中的主动布局。</div>
+        <div class="news-summary-en">Anthropic published a position paper titled "Widening the conversation on frontier AI" on May 19, calling on industry, academia, policymakers, and civil society to collectively expand public discussion on frontier AI development. The paper emphasizes that AI safety is not just a technical issue but a socio-technical one requiring multi-stakeholder participation. This publication comes as the White House prepares an AI model review executive order, seen as Anthropic's proactive move in the competition for AI governance discourse.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Anthropic 在 AI 治理话语权方面的主动出击，与 OpenAI 相对低调的姿态形成对比；两家公司在 AI 安全监管立场上的分化，将影响未来美国 AI 政策的走向。</div>
+        <div class="why-en"><strong>Why it matters:</strong>Anthropic's proactive stance on AI governance discourse contrasts with OpenAI's relatively low-profile posture; the divergence between the two companies on AI safety regulation will influence the direction of future U.S. AI policy.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.anthropic.com/news" class="source-btn" target="_blank">Anthropic News ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: 开源生态 Open Source Ecosystem -->
+  <div class="section">
+    <div class="card-title">
+      <span class="title-cn">🌐 开源生态</span>
+      <span class="title-en">Open Source Ecosystem</span>
+    </div>
+
+    <!-- MiniMax Mavis -->
+    <div class="news-item cn">
+      <span class="news-tag tag-cn">CN · MiniMax</span>
+      <div class="news-title-cn">MiniMax 正式将 Agent 产品更名为 Mavis，推出 Agent Teams 多智能体团队协作功能</div>
+      <div class="news-title-en">MiniMax officially rebrands Agent product to Mavis, launches Agent Teams multi-agent collaboration feature</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">MiniMax 于5月13日正式宣布旗下 Agent 产品全面升级并全新命名为 Mavis，同时推出 Agent Teams 多智能体团队协作功能。Agent Teams 允许用户同时召唤一组拥有不同角色分工的 AI 智能体，让它们并行工作、各司其职，解决单个 AI 在协同、功能分散和成本上的短板。此次升级还整合了 TokenPlan 与 Agent Plan 订阅体系，一份订阅即可打通全部功能。MiniMax 此举标志着其从"单一模型厂商"向"产品化 AI 平台"的战略转型。</div>
+        <div class="news-summary-en">MiniMax officially announced a comprehensive upgrade of its Agent product and a complete rebranding to Mavis on May 13, simultaneously launching the Agent Teams multi-agent team collaboration feature. Agent Teams allows users to simultaneously summon a group of AI agents with different role assignments, enabling them to work in parallel and specialize, addressing the shortcomings of a single AI in collaboration, fragmented functionality, and cost. The upgrade also integrates the TokenPlan and Agent Plan subscription systems into one subscription for all features. This move marks MiniMax's strategic transformation from a "single model vendor" to a "productized AI platform."</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Multi-Agent 协作是中国 AI 应用层差异化竞争的核心方向；MiniMax Mavis 的 Agent Teams 功能与微软 Orchard 框架形成"产品-基础设施"的上下呼应关系。</div>
+        <div class="why-en"><strong>Why it matters:</strong>Multi-agent collaboration is the core direction of differentiation in China's AI application layer; MiniMax Mavis's Agent Teams feature forms an "application-infrastructure" echo with Microsoft's Orchard framework.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.minimaxi.com/news" class="source-btn" target="_blank">MiniMax News ↗</a>
+        <a href="https://tech.ifeng.com/c/8t5nbuliDzf" class="source-btn" target="_blank">凤凰网科技 ↗</a>
+      </div>
+    </div>
+
+    <!-- Qwen3.6-Plus -->
+    <div class="news-item cn">
+      <span class="news-tag tag-cn">CN · Alibaba</span>
+      <div class="news-title-cn">通义千问 Qwen3.6-Plus 持续推广中：Agentic 编程能力跃升，企业部署加速</div>
+      <div class="news-title-en">Qwen3.6-Plus continues rollout: agentic coding capabilities leap forward, enterprise deployment accelerates</div>
+      <div class="news-summary">
+        <div class="news-summary-cn">阿里巴巴于4月2日正式发布 Qwen3.6-Plus，这是通义千问旗舰大模型系列的最新迭代版本，在 Agentic 编程、长上下文推理和执行能力方面实现全面进阶。Qwen3.6-Plus 现已通过阿里云 API 立即提供，并已在 Fireworks AI 等国际推理平台上线，标志着中国开源模型首次进入国际主流推理平台。业界分析认为 Qwen3.6-Plus 在代码生成和 Agent 编排方面的能力已接近 GPT-5.5-Instant 水平，且 Apache 2.0 开源协议为企业采用提供了法律保障。</div>
+        <div class="news-summary-en">Alibaba officially released Qwen3.6-Plus on April 2, the latest iteration of its flagship Qwen large language model series, delivering comprehensive advancements in agentic coding, long-context reasoning, and execution capabilities. Qwen3.6-Plus is now immediately available via Alibaba Cloud API and has launched on international inference platforms including Fireworks AI, marking the first entry of a Chinese open-source model into mainstream international inference platforms. Industry analysis suggests Qwen3.6-Plus's capabilities in code generation and agent orchestration are approaching GPT-5.5-Instant levels, and the Apache 2.0 open-source license provides legal assurance for enterprise adoption.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Qwen3.6-Plus 上架 Fireworks AI 是中美 AI 推理平台首次官方合作，打破了"中国模型只能在中国平台跑"的壁垒，对全球 AI 开源生态格局有深远影响。</div>
+        <div class="why-en"><strong>Why it matters:</strong>Qwen3.6-Plus on Fireworks AI marks the first official China-U.S. AI inference platform collaboration, breaking the "Chinese models can only run on Chinese platforms" barrier, with profound implications for the global AI open-source ecosystem.</div>
+      </div>
+      <div class="news-source">
+        <a href="https://www.alibabacloud.com/blog/alibaba-unveils-qwen3-6-plus-to-accelerate-agentic-ai-deployment-for-enterprises-and-alibaba%E2%80%99s-ai-applications_603000" class="source-btn" target="_blank">Alibaba Cloud Blog ↗</a>
+        <a href="https://qwen.ai/blog?id=qwen3.6" class="source-btn" target="_blank">Qwen Blog ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Whitelist -->
+  <div class="whitelist-section">
+    <div class="whitelist-title-cn">📋 本期追踪来源白名单</div>
+    <div class="whitelist-title-en">Whitelist of Tracked Sources — This Issue</div>
+    <div class="whitelist-note-cn">以下来源均为官方或权威媒体，确保信息准确性。🆕 标注为本期为新增来源。</div>
+    <div class="whitelist-note-en">All sources below are official or authoritative media ensuring information accuracy. 🆕 indicates newly added sources in this issue.</div>
+    <div class="whitelist-grid">
+      <div class="whitelist-item">🇺🇸 OpenAI Newsroom · openai.com/news</div>
+      <div class="whitelist-item">🇺🇸 Anthropic Newsroom · anthropic.com/news</div>
+      <div class="whitelist-item">🇺🇸 Google DeepMind Blog · deepmind.google/blog</div>
+      <div class="whitelist-item">🇺🇸 Meta AI · about.fb.com/news</div>
+      <div class="whitelist-item">🇨🇳 通义千问 · qwen.ai/blog · alibabacloud.com</div>
+      <div class="whitelist-item">🇨🇳 Moonshot/Kimi · moonshot.ai · kimi.com</div>
+      <div class="whitelist-item">🇨🇳 MiniMax · minimaxi.com/news</div>
+      <div class="whitelist-item">🇨🇳 智谱 AI · zhipuai.cn · open.bigmodel.cn</div>
+      <div class="whitelist-item">🇨🇳 DeepSeek · deepseek.com</div>
+      <div class="whitelist-item">🇸🇬 A*STAR AI · a-star.edu.sg/aiml</div>
+      <div class="whitelist-item">🇸🇬 GovTech SG · tech.gov.sg</div>
+      <div class="whitelist-item">🇸🇬 NUS AI Research · nus.edu.sg/computing/ai-research</div>
+      <div class="whitelist-item">📰 Reuters Technology · reuters.com/technology</div>
+      <div class="whitelist-item">📰 MIT Tech Review · technologyreview.com</div>
+      <div class="whitelist-item">📰 Xinhua EN · xinhuanet.com/english</div>
+      <div class="whitelist-item">📰 CNBC Technology · cnbc.com</div>
+      <div class="whitelist-item">📰 Forbes AI 50 · forbes.com</div>
+      <div class="whitelist-item">🌐 Hugging Face Blog · huggingface.co/blog</div>
+      <div class="whitelist-item">🌐 arXiv CS.AI · arxiv.org/list/cs.AI</div>
+      <div class="whitelist-item">🌐 OpenBMB · openbmb.org</div>
+      <div class="whitelist-item">🌐 HKUDS · hku-datascience.github.io</div>
+      <div class="whitelist-item">🏛️ Plural Policy AI · pluralpolicy.com/blog</div>
+      <div class="whitelist-item">🏛️ UK AISI · aisi.gov.uk/blog</div>
+      <div class="whitelist-item">🏛️ Stanford HAI · hai.stanford.edu</div>
+      <div class="whitelist-item">🏛️ Mayer Brown · mayerbrown.com</div>
+      <div class="whitelist-item">🆕 📰 AI Flash Report · aiflashreport.com</div>
+      <div class="whitelist-item">🆕 📰 WinBuzzer · winbuzzer.com</div>
+      <div class="whitelist-item">🆕 🌐 Marktechpost · marktechpost.com</div>
+      <div class="whitelist-item">🆕 🇨🇳 ByteDance Seed · seed.bytedance.com</div>
+      <div class="whitelist-item">🆕 🇨🇳 Knightli AI · knightli.com</div>
+      <div class="whitelist-item">🆕 🇨🇳 Kimi K2 Official · kimi-k2.org</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-cn">AI 简报由 WorkBuddy 自动生成 · 数据来源见各条新闻来源按钮</div>
+    <div class="footer-en">AI Daily Briefing auto-generated by WorkBuddy · Data sources listed in source buttons above</div>
+    <div class="footer-cn" style="margin-top:8px;">阅读即同意：本简报仅供研究参考，不构成任何投资或行动建议</div>
+    <div class="footer-en">By reading: This briefing is for research reference only and does not constitute any investment or action advice</div>
+  </div>
+
+</div>
+</body>
+</html>

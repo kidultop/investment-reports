@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 早报 2026-05-15 | AI Morning Briefing</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #a78bfa;
+            --accent-light: #c4b5fd;
+            --us: #3b82f6;
+            --cn: #ef4444;
+            --sg: #f97316;
+            --research: #22c55e;
+            --open: #a78bfa;
+            --policy: #eab308;
+            --new-source: #06b6d4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 960px; margin: 0 auto; padding: 24px 20px; }
+        
+        /* Header */
+        .header { text-align: center; padding: 40px 0 32px; }
+        .header h1 { font-size: 28px; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
+        .header .subtitle { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+        .header .date-en { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-style: italic; }
+        
+        /* Core Trends Card */
+        .trends-card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 28px; border: 1px solid var(--border); }
+        .trends-title-cn { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 2px; }
+        .trends-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 16px; }
+        .trend-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .trend-item:last-child { border-bottom: none; }
+        .trend-cn { font-size: 14px; color: var(--text); }
+        .trend-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+        
+        /* Stats Bar */
+        .stats-bar { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+        .stat-item { background: var(--card); border-radius: 10px; padding: 16px; flex: 1; min-width: 140px; border: 1px solid var(--border); text-align: center; }
+        .stat-value { font-size: 24px; font-weight: 700; color: var(--accent); }
+        .stat-label-cn { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .stat-label-en { font-size: 11px; color: var(--text-muted); font-style: italic; }
+        
+        /* Section */
+        .section { margin-bottom: 32px; }
+        .card-title { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+        .title-cn { font-size: 18px; font-weight: 700; color: var(--text); }
+        .title-en { font-size: 13px; color: var(--text-muted); font-style: italic; }
+        
+        /* News Item */
+        .news-item { background: var(--card); border-radius: 10px; padding: 20px; margin-bottom: 14px; border-left: 4px solid var(--accent); position: relative; }
+        .news-item.us { border-left-color: var(--us); }
+        .news-item.cn { border-left-color: var(--cn); }
+        .news-item.sg { border-left-color: var(--sg); }
+        .news-item.research { border-left-color: var(--research); }
+        .news-item.open { border-left-color: var(--open); }
+        .news-item.policy { border-left-color: var(--policy); }
+        .news-item.newsource { border-left-color: var(--new-source); }
+        
+        .news-title-cn { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .news-title-en { font-size: 13px; color: var(--text-muted); font-style: italic; margin-bottom: 12px; }
+        
+        .news-summary { display: flex; gap: 16px; margin-bottom: 12px; }
+        .news-summary-cn { flex: 1; font-size: 14px; line-height: 1.7; color: var(--text); padding-left: 12px; border-left: 2px solid var(--border); }
+        .news-summary-en { flex: 1; font-size: 13px; line-height: 1.7; color: var(--text-muted); padding-left: 12px; border-left: 2px solid var(--border); font-style: italic; }
+        
+        .why-matters { background: rgba(167, 139, 250, 0.08); border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; }
+        .why-cn { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+        .why-en { font-size: 12px; color: var(--text-muted); font-style: italic; }
+        
+        .news-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+        .tag-us { background: rgba(59,130,246,0.15); color: var(--us); }
+        .tag-cn { background: rgba(239,68,68,0.15); color: var(--cn); }
+        .tag-sg { background: rgba(249,115,22,0.15); color: var(--sg); }
+        .tag-research { background: rgba(34,197,94,0.15); color: var(--research); }
+        .tag-open { background: rgba(167,139,250,0.15); color: var(--open); }
+        .tag-policy { background: rgba(234,179,8,0.15); color: var(--policy); }
+        .tag-new { background: rgba(6,182,212,0.15); color: var(--new-source); }
+        
+        .source-link { font-size: 12px; color: var(--accent); text-decoration: none; }
+        .source-link:hover { text-decoration: underline; }
+        
+        /* New Source Callout */
+        .new-source-callout { background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--new-source); }
+        .new-source-callout strong { color: var(--new-source); }
+        
+        /* Whitelist */
+        .whitelist { background: var(--card); border-radius: 10px; padding: 20px; margin-top: 32px; border: 1px solid var(--border); }
+        .whitelist-title-cn { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 2px; }
+        .whitelist-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 12px; }
+        .whitelist-note-cn { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+        .whitelist-note-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 12px; }
+        .whitelist-items { display: flex; flex-wrap: wrap; gap: 8px; }
+        .whitelist-item { font-size: 11px; padding: 4px 10px; background: rgba(167,139,250,0.1); border-radius: 20px; color: var(--text-muted); }
+        .whitelist-item.new { border: 1px solid var(--new-source); color: var(--new-source); }
+        
+        /* Footer */
+        .footer { text-align: center; padding: 32px 0 16px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 40px; }
+        .footer-cn { margin-bottom: 2px; }
+        .footer-en { font-style: italic; }
+        
+        @media (max-width: 640px) {
+            .news-summary { flex-direction: column; gap: 8px; }
+            .stats-bar { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🤖 AI 早报</h1>
+        <div class="subtitle">2026年5月15日 星期五 · 早间简报</div>
+        <div class="date-en">Friday, May 15, 2026 · AI Morning Briefing</div>
+    </div>
+
+    <!-- Core Trends Card -->
+    <div class="trends-card">
+        <div class="trends-title-cn">📊 今日核心趋势</div>
+        <div class="trends-title-en">Core Trends Today</div>
+        <div class="trend-item">
+            <div class="trend-cn">OpenAI 发布 Daybreak 网络安全平台，直接对标 Anthropic Claude Mythos，AI 安全竞争进入白热化</div>
+            <div class="trend-en">OpenAI launches Daybreak cybersecurity platform, directly challenging Anthropic Claude Mythos; AI security competition intensifies</div>
+        </div>
+        <div class="trend-item">
+            <div class="trend-cn">Anthropic 双线出击：2亿美元盖茨基金会合作 + Claude for Small Business 进军中小企业市场</div>
+            <div class="trend-en">Anthropic doubles down: $200M Gates Foundation partnership + Claude for Small Business targeting SMBs</div>
+        </div>
+        <div class="trend-item">
+            <div class="trend-cn">DeepSeek 寻求史上最大规模融资：700亿人民币（约100亿美元），估值冲击500亿美元</div>
+            <div class="trend-en">DeepSeek seeks record $7B+ funding round; valuation could reach near $50B, challenging OpenAI/Anthropic</div>
+        </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value">5</div>
+            <div class="stat-label-cn">头条资讯</div>
+            <div class="stat-label-en">Top Stories</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">3</div>
+            <div class="stat-label-cn">官方发布</div>
+            <div class="stat-label-en">Official Releases</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">2</div>
+            <div class="stat-label-cn">研究/技术</div>
+            <div class="stat-label-en">Research / Tech</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">3</div>
+            <div class="stat-label-cn">政策/产业</div>
+            <div class="stat-label-en">Policy / Industry</div>
+        </div>
+    </div>
+
+    <!-- Section 1: Top Stories -->
+    <div class="section">
+        <div class="card-title">
+            <span class="title-cn">📰 头条 · Top Stories</span>
+            <span class="title-en">Today's Key Headlines</span>
+        </div>
+
+        <!-- Story 1: OpenAI Daybreak -->
+        <div class="news-item us">
+            <div class="news-title-cn">OpenAI 发布 Daybreak 网络安全平台，剑指 Anthropic 安全市场霸主地位</div>
+            <div class="news-title-en">OpenAI Launches Daybreak Cybersecurity Platform, Challenging Anthropic's Dominance</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月12日，OpenAI 正式发布 Daybreak —— 一套基于 GPT-5.5 和 Codex Security 的先进网络安全平台。Daybreak 可在攻击者利用漏洞前完成识别、验证与修补，核心策略是将前沿 AI 建模与严格验证、人工监督相结合。平台提供三层模型接入：默认 GPT-5.5（通用防护）、Trusted Access for Cyber（授权环境防御工作流）、GPT-5.5-Cyber（专业红队/渗透测试）。已有 Cloudflare、Cisco、CrowdStrike、Palo Alto Networks、Oracle、Zscaler、Akamai、Fortinet 等安全巨头信任并使用该平台。</div>
+                <div class="news-summary-en">On May 12, OpenAI officially launched Daybreak — an advanced cybersecurity platform built on GPT-5.5 and Codex Security. Daybreak identifies vulnerabilities, validates fixes, and accelerates patch workflows before attackers can exploit them. The platform offers three tiers: default GPT-5.5 (general-purpose safeguards), Trusted Access for Cyber (authorized defensive workflows), and GPT-5.5-Cyber (specialized red-teaming). Leading security organizations including Cloudflare, Cisco, CrowdStrike, Palo Alto Networks, Oracle, Zscaler, Akamai, and Fortinet are already trusted users.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Daybreak 是 OpenAI 对 Anthropic Claude Mythos 和 Project Glasswing 的直接回应，标志着 AI 安全从「事后补救」转向「设计即安全」的新范式。AI 正成为国家和企业战略防御资产的核心基础设施。</div>
+                <div class="why-en"><strong>Why it matters:</strong> Daybreak is OpenAI's direct response to Anthropic Claude Mythos and Project Glasswing, signaling a paradigm shift in AI security from "fix after breach" to "secure by design." AI is becoming core infrastructure for national and corporate strategic defense assets.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-us">US</span>
+                <span class="tag tag-new">🆕 New Detail</span>
+                <a href="https://openai.com/daybreak/" class="source-link">🔗 OpenAI Daybreak 官方页</a>
+                <a href="https://www.linkedin.com/pulse/ai-global-news-briefing-may-13-2026-nayeon-kim-rstyf" class="source-link">🔗 LinkedIn 报道</a>
+            </div>
+        </div>
+
+        <!-- Story 2: OpenAI Codex Mobile -->
+        <div class="news-item us">
+            <div class="news-title-cn">OpenAI Codex 登陆移动端：随时随地保持开发工作流不断线</div>
+            <div class="news-title-en">OpenAI Codex Goes Mobile: Stay Connected to Your Development Workflow Anywhere</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月14日，OpenAI 宣布 Codex 正式登陆 ChatGPT 移动应用（iOS/Android），目前处于预览阶段。用户可在手机上连接到运行 Codex 的任何设备（笔记本、Mac mini 或远程托管环境），实时同步活跃线程、审批、插件和项目上下文。每周已有超过 400 万人使用 Codex。新功能包括：Remote SSH 正式发布、Programmatic Access Tokens（Enterprise/Business）、Hooks 正式发布、HIPAA 合规支持。适用场景：等待咖啡时调查 bug、通勤途中做决策、快速准备客户沟通、灵感闪现时快速启动任务。</div>
+                <div class="news-summary-en">On May 14, OpenAI announced Codex is now available in the ChatGPT mobile app (iOS/Android), currently in preview. Users can connect to any device running Codex (laptop, Mac mini, or remote hosting) and sync active threads, approvals, plugins, and project context in real time. Over 4 million people now use Codex weekly. New features: Remote SSH (GA), Programmatic Access Tokens (Enterprise/Business), Hooks (GA), HIPAA-compliant usage. Use cases: investigate bugs while waiting for coffee, make decisions during commute, prepare client updates, start tasks when inspiration strikes.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Codex 移动端将 AI 编程助手从桌面束缚中解放出来，意味着开发者可在任何地点保持与代码库的实时同步，是 AI 编程工作流走向「随时随地」的关键一步。</div>
+                <div class="why-en"><strong>Why it matters:</strong>Bringing Codex to mobile frees AI coding assistants from desktop constraints, allowing developers to stay in sync with their codebase from anywhere — a key step toward truly location-independent AI-assisted development.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-us">US</span>
+                <a href="https://openai.com/index/work-with-codex-from-anywhere/" class="source-link">🔗 OpenAI 官方博客</a>
+            </div>
+        </div>
+
+        <!-- Story 3: Anthropic Gates Foundation -->
+        <div class="news-item us">
+            <div class="news-title-cn">Anthropic 与盖茨基金会达成 2 亿美元合作，将 Claude 引入全球健康与教育</div>
+            <div class="news-title-en">Anthropic Forms $200 Million Partnership with Gates Foundation to Bring Claude to Global Health and Education</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月14日，Anthropic 宣布与比尔及梅琳达·盖茨基金会达成 2 亿美元、为期 4 年的合作承诺，用于推进全球健康、生命科学、教育、经济流动性领域的 AI 公益项目。资金形式包括赠款、Claude 使用额度和技术支持。具体方向：① 全球健康——加速疫苗/疗法研发，优化疾病预测模型（疟疾、结核病），推进小儿麻痹症/HPV/子痫前期研究；② 教育——为美/撒哈拉以南非洲/印度 K12 学生开发 AI 教育工具；③ 经济流动性——为 20 亿小农开发农业 AI 工具，在美国开发技能认证和就业指导系统。Anthropic 的「有益部署（Beneficial Deployments）」团队将牵头执行。</div>
+                <div class="news-summary-en">On May 14, Anthropic announced a $200 million, 4-year partnership with the Bill & Melinda Gates Foundation to advance AI for public good in global health, life sciences, education, and economic mobility. Funding includes grants, Claude usage credits, and technical support. Key focus areas: ① Global health — accelerate vaccine/therapy R&D, optimize disease prediction models (malaria, TB), advance polio/HPV/preeclampsia research; ② Education — develop AI education tools for K12 students in US/South Asia/Africa; ③ Economic mobility — build AI tools for 2 billion smallholder farmers, develop skills certification and career guidance systems in the US. Led by Anthropic's Beneficial Deployments team.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>这是 Anthropic 迄今为止最大规模的公益合作，标志着前沿 AI 公司正式将「有益部署」作为核心战略方向。Claude 进入中低收入国家的健康与教育场景，将验证 AI 在公益领域的实际价值。</div>
+                <div class="why-en"><strong>Why it matters:</strong>This is Anthropic's largest public-good partnership to date, signaling that frontier AI companies are formalizing "beneficial deployment" as a core strategic pillar. Claude's entry into health and education in low- and middle-income countries will validate AI's real-world impact for public good.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-us">US</span>
+                <a href="https://www.anthropic.com/news/gates-foundation-partnership" class="source-link">🔗 Anthropic 官方公告</a>
+                <a href="https://www.gatesfoundation.org/ideas/media-center/press-releases/2026/05/ai-anthropic-partnership" class="source-link">🔗 盖茨基金会官宣</a>
+            </div>
+        </div>
+
+        <!-- Story 4: Anthropic Claude for Small Business -->
+        <div class="news-item us">
+            <div class="news-title-cn">Anthropic 推出 Claude for Small Business，AI 应用战场从大企业转向中小企业</div>
+            <div class="news-title-en">Anthropic Launches Claude for Small Business, Shifting AI Adoption Battleground to SMBs</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月13日，Anthropic 正式推出 Claude for Small Business —— 一套包含 15 个预置智能体工作流和 15 项定制技能的解决方案，将 Claude 直接集成到小企业日常使用的工具中（QuickBooks、PayPal、HubSpot、Canva、DocuSign、Google Workspace、Microsoft 365）。小企业贡献了美国 44% 的 GDP，吸纳了近一半的私营部门劳动力，但 AI 采用速度明显落后于大型企业。所有任务和工作流均由用户主动发起，用户可先审核执行方案，现有工具权限严格对齐，商业数据默认不用于模型训练。配套推出《小企业 AI 素养》免费课程，并于 5月14日从芝加哥站开始启动全美 10 城巡回培训。</div>
+                <div class="news-summary-en">On May 13, Anthropic launched Claude for Small Business — a package with 15 ready-to-run agentic workflows and 15 custom skills that integrate Claude directly into tools SMBs use daily (QuickBooks, PayPal, HubSpot, Canva, DocuSign, Google Workspace, Microsoft 365). Small businesses contribute 44% of US GDP and employ nearly half of the private sector workforce, yet their AI adoption lags far behind large enterprises. All tasks user-initiated; users can review before execution; existing tool permissions strictly enforced; business data not used for training by default. Includes free "AI Fluency for Small Businesses" course; 10-city US tour launched May 14 starting in Chicago.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>AI 平台竞争焦点正从大型企业转向中小企业这一长期被忽视的市场。Claude for Small Business 的推出，意味着 Anthropic 在「AI 民主化」道路上迈出了实质性一步。</div>
+                <div class="why-en"><strong>Why it matters:</strong>The AI platform competition is shifting from large enterprises to SMBs — a long-underserved market. Claude for Small Business represents Anthropic's substantive step toward "democratizing AI" beyond elite enterprises.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-us">US</span>
+                <a href="https://www.anthropic.com/news/claude-for-small-business" class="source-link">🔗 Anthropic 官方公告</a>
+                <a href="https://techcrunch.com/2026/05/13/anthropic-courts-a-new-kind-of-customer-small-business-owners/" class="source-link">🔗 TechCrunch 报道</a>
+            </div>
+        </div>
+
+        <!-- Story 5: DeepSeek $7B Funding -->
+        <div class="news-item cn">
+            <div class="news-title-cn">DeepSeek 寻求史上最大规模融资：700 亿人民币（约 100 亿美元），估值冲击 500 亿美元</div>
+            <div class="news-title-en">DeepSeek Seeks Record $7B+ Funding Round; Valuation Could Reach Near $50 Billion</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月8日，The Information 援引两位知情人士消息报道，DeepSeek（深度求索）正寻求筹集最多 500 亿人民币（约 73.5 亿美元），这将是迄今为止中国 AI 领域最大规模的融资轮次。本轮融资由中国国家 AI 基金领投，DeepSeek 估值有望达到近 500 亿美元。DeepSeek 于 2026 年 4 月 24 日正式发布 V4 系列（V4-Pro 1.6T 参数、V4-Flash 284B），采用 Apache 2.0 协议开源，支持 1M token 上下文，在 Agentic Coding 评测中达到开源模型最佳水平。此轮融资将用于扩大算力基础设施和全球市场拓展，直接挑战 OpenAI 和 Anthropic 的领先地位。</div>
+                <div class="news-summary-en">On May 8, The Information reported that DeepSeek is seeking to raise up to 500 billion yuan (~$7.35B), which would be the largest AI funding round in China to date. The round is led by China's state AI fund; DeepSeek's valuation could reach near $50 billion. DeepSeek officially released V4 series (V4-Pro 1.6T params, V4-Flash 284B) on Apr 24, 2026, open-sourced under Apache 2.0, with 1M token context, achieving top-tier performance among open-source models on agentic coding benchmarks. Proceeds will fund compute infrastructure expansion and global market reach, directly challenging OpenAI and Anthropic's leading positions.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>DeepSeek 若完成此轮融资，将跻身全球估值最高的 AI 公司行列，仅次于 OpenAI 和 Anthropic。这标志着中国 AI 独角兽从「技术追赶到资本突围」的战略转折点。</div>
+                <div class="why-en"><strong>Why it matters:</strong>If completed, this round would catapult DeepSeek into the ranks of the world's highest-valued AI companies, trailing only OpenAI and Anthropic. It marks a strategic turning point for Chinese AI unicorns — from "technological catch-up" to "capital breakout."</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-cn">CN</span>
+                <a href="https://www.theinformation.com/articles/deepseek-funding" class="source-link">🔗 The Information 报道</a>
+                <a href="https://cntechpost.com/2026/05/08/deepseek-seeks-over-7-billion-usd-funding/" class="source-link">🔗 CN Tech Post</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Official Releases -->
+    <div class="section">
+        <div class="card-title">
+            <span class="title-cn">🚀 官方发布 · Official Releases</span>
+            <span class="title-en">Official Announcements & Product Launches</span>
+        </div>
+
+        <!-- Release 1: OpenAI Codex Windows Sandbox -->
+        <div class="news-item us">
+            <div class="news-title-cn">OpenAI 详解 Codex Windows 沙箱设计：双账户隔离 + DPAPI 凭证保护</div>
+            <div class="news-title-en">OpenAI Details Codex Windows Sandbox: Dual-Account Isolation + DPAPI Credential Protection</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月13日，OpenAI 发布了 Codex Windows 沙箱的详细技术说明。新设计使用两个本地用户账户运行：CodexSandBoxOffline（默认无出站网络）和 CodexSandBoxOnline，在系统层面隔离网络访问。在最终子进程启动前，完成 DPAPI 凭证保护、防火墙状态检查、codex-command-runner.exe 命令中转四层执行路径校验。2026 年 3 月 Windows 版 Codex 首次推出时缺少沙箱机制，5月 8 日公布的新设计优化了沙箱严格度，同时不影响常规开发效率。企业管理员可通过集中策略管理沙箱权限，满足大规模部署需求。</div>
+                <div class="news-summary-en">On May 13, OpenAI published detailed technical documentation for the Codex Windows sandbox. The new design uses two local user accounts: CodexSandBoxOffline (no outbound network by default) and CodexSandBoxOnline, isolating network access at the system level. Before final subprocess launch, four layers of enforcement are applied: DPAPI credential protection, firewall status check, codex-command-runner.exe command handoff. The March 2026 Windows Codex release initially shipped without sandboxing; the May 8 update optimized strictness without impacting regular development efficiency. Enterprise admins can manage sandbox permissions via centralized policies for large-scale deployments.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>编码智能体的竞争核心正从「自动补全能力」转向「安全治理能力」。OpenAI 的 Windows 沙箱方案若能被开发者广泛接受，将为 Codex 在企业市场的全面落地扫清关键障碍。</div>
+                <div class="why-en"><strong>Why it matters:</strong>The core competition in coding agents is shifting from "autocomplete capability" to "security governance capability." If OpenAI's Windows sandbox solution gains broad developer acceptance, it would clear a key barrier for Codex's full-scale enterprise market entry.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-us">US</span>
+                <a href="https://winbuzzer.com/2026/05/14/building-a-safe-effective-sandbox-to-enable-codex-xcxwbn/" class="source-link">🔗 WinBuzzer 报道</a>
+            </div>
+        </div>
+
+        <!-- Release 2: Qwen3.6-Plus -->
+        <div class="news-item cn">
+            <div class="news-title-cn">通义千问 Qwen3.6-Plus 发布：编程智能体、通用智能体、工具调用全面升级</div>
+            <div class="news-title-en">Qwen3.6-Plus Released: Comprehensive Upgrades in Coding Agents, General Agents, and Tool Usage</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">阿里巴巴通义实验室正式发布 Qwen3.6-Plus，在 Qwen3.5 系列基础上，深度整合推理、记忆与执行能力，实现编程智能体、通用智能体和工具调用能力的全面升级。Qwen3.6 系列优先考虑稳定性和实际效用，为开发者提供更直观、更可靠的 AI 模型。Qwen3.6-Plus 在多项权威评测中表现突出，已成为全球开发者关注的热点模型。配套提供详细的 API 接入指南和最佳实践，支持开发者快速上手。</div>
+                <div class="news-summary-en">Alibaba Tongyi Lab officially released Qwen3.6-Plus, building on the Qwen3.5 series with deeply integrated reasoning, memory, and execution capabilities — achieving comprehensive upgrades in coding agents, general agents, and tool usage. The Qwen3.6 family prioritizes stability and real-world utility, providing developers with more intuitive and reliable AI models. Qwen3.6-Plus performs prominently across multiple authoritative benchmarks and has become a focus of global developer attention. Detailed API access guides and best practices are provided for rapid developer onboarding.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Qwen3.6-Plus 代表中国开源大模型从「参数竞赛」转向「稳定实用」的重要转折。与 DeepSeek V4、Kimi K2.6、GLM-5 共同构成中国开源 AI 的全新竞争格局。</div>
+                <div class="why-en"><strong>Why it matters:</strong>Qwen3.6-Plus represents a key turning point for Chinese open-source LLMs — from "parameter competition" to "stability and real-world utility." Together with DeepSeek V4, Kimi K2.6, and GLM-5, it forms a new competitive landscape for Chinese open-source AI.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-cn">CN</span>
+                <a href="https://qwen.ai/blog?id=qwen3.6" class="source-link">🔗 Qwen 官方博客</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Research & Technology -->
+    <div class="section">
+        <div class="card-title">
+            <span class="title-cn">🔬 研究与技术 · Research & Technology</span>
+            <span class="title-en">Academic Research & Technical Breakthroughs</span>
+        </div>
+
+        <!-- Research 1: Microsoft Global AI Diffusion Report Q1 2026 -->
+        <div class="news-item research">
+            <div class="news-title-cn">微软 2026 年 Q1 全球 AI 扩散报告：AI 辅助编码同比增长 78%，代理工作流成标准配置</div>
+            <div class="news-title-en">Microsoft Q1 2026 Global AI Diffusion Report: AI-Assisted Coding Up 78% YoY, Agent Workflows Now Standard</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">微软发布 2026 年第一季度全球 AI 扩散报告。数据显示：截至 Q1 2026，全球劳动年龄人口中使用生成式 AI 的比例达到 17.8%，较上一季度增长 1.5 个百分点。国家渗透率梯队：阿联酋以 70.1% 领跑全球，美国达 31.3%。亚洲市场（日本、泰国）渗透率加速提升，主要由本地化语言能力增强的模型推出驱动。AI 辅助编码大幅增长：通过 AI 代理生成的代码量同比增长 78%，证实代理工作流已成为专业开发环境的标准配置。HuggingFace 平台同期上线 Granite Embedding Multilingual R2（Apache 2.0 多语言嵌入模型，32K 上下文）和「Unlocking Asynchronicity in Continuous Batching」优化方案。</div>
+                <div class="news-summary-en">Microsoft released its Q1 2026 Global AI Diffusion Report. Data shows: as of Q1 2026, 17.8% of the global working-age population uses generative AI, up 1.5pp from the previous quarter. Country penetration leaderboard: UAE at 70.1% (overwhelming lead), US at 31.3%. Asian markets (Japan, Thailand) seeing accelerated penetration, mainly driven by models with enhanced localization language capabilities. AI-assisted coding surged: code generated by AI agents up 78% YoY, confirming agentic workflows have become standard configuration in professional development environments. HuggingFace platform concurrently launched Granite Embedding Multilingual R2 (Apache 2.0, 32K context) and "Unlocking Asynchronicity in Continuous Batching" optimization.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>AI 代理工作流从「实验性功能」升级为「专业开发标准配置」，意味着软件开发行业的生产方式正在发生结构性变化。78% 的同比增长是最直接的证据。</div>
+                <div class="why-en"><strong>Why it matters:</strong>AI agent workflows upgrading from "experimental feature" to "standard configuration in professional development" means the software development industry's production model is undergoing structural change. 78% YoY growth is the most direct evidence.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-research">Research</span>
+                <a href="https://blogs.microsoft.com/on-the-issues/2026/05/07/the-state-of-global-ai-diffusion-in-2026/" class="source-link">🔗 Microsoft 官方博客</a>
+            </div>
+        </div>
+
+        <!-- Research 2: arXiv AI Papers Trend -->
+        <div class="news-item research">
+            <div class="news-title-cn">arXiv cs.AI 本周论文趋势：Agent 无监督训练、记忆机制改进、跨领域应用成为三大热点</div>
+            <div class="news-title-en">arXiv cs.AI Weekly Trend: Unsupervised Agent Training, Memory Mechanism Improvements, and Cross-Domain Applications Lead Research</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">2026 年 5 月第二周 arXiv cs.AI 类别中，Agent 相关研究呈现三大趋势：① Agent 无监督训练——研究者探索无需人工标注的 Agent 能力提升路径；② 记忆机制改进——多项研究聚焦如何让 Agent 在长期任务中保持和检索关键信息；③ 跨领域应用——Agent 技术向医疗、金融、教育等垂直领域渗透。代表性论文：「Are Tools All We Need? Unveiling the Tool-Use Tax in LLM Agents」（arXiv:2605.00136）定量分析了工具调用带来的额外计算开销；「Predicting Decisions of AI Agents from Limited Interaction」探索通过有限交互预测 Agent 决策行为的新方法。</div>
+                <div class="news-summary-en">For the second week of May 2026, arXiv cs.AI category shows three major trends in agent-related research: ① Unsupervised agent training — researchers explore paths to improve agent capabilities without human annotations; ② Memory mechanism improvements — multiple studies focus on how agents can retain and retrieve key information in long-horizon tasks; ③ Cross-domain applications — agent technologies penetrating vertical domains like healthcare, finance, and education. Representative papers: "Are Tools All We Need? Unveiling the Tool-Use Tax in LLM Agents" (arXiv:2605.00136) quantitatively analyzes computational overhead from tool use; "Predicting Decisions of AI Agents from Limited Interaction" explores predicting agent decision-making from limited interaction data.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>arXiv 论文趋势是 AI 研究方向的早期风向标。Agent 无监督训练和记忆机制的集中研究，预示着下一代 AI 智能体将具备更强的自主性和长期任务执行能力。</div>
+                <div class="why-en"><strong>Why it matters:</strong>arXiv paper trends are early wind vanes of AI research directions. Concentrated research on unsupervised agent training and memory mechanisms foreshadows that next-generation AI agents will possess stronger autonomy and long-horizon task execution capabilities.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-research">Research</span>
+                <a href="https://arxiv.org/list/cs.AI/recent" class="source-link">🔗 arXiv cs.AI 近期论文</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Policy & Industry -->
+    <div class="section">
+        <div class="card-title">
+            <span class="title-cn">🏛️ 政策与产业 · Policy & Industry</span>
+            <span class="title-en">Regulation, Policy & Industry Developments</span>
+        </div>
+
+        <!-- Policy 1: EU AI Act -->
+        <div class="news-item policy">
+            <div class="news-title-cn">欧盟《AI 法案》高风险系统合规倒计时：2026 年 8 月 2 日强制生效，全球企业须提前布局</div>
+            <div class="news-title-en">EU AI Act High-Risk System Compliance Countdown: Mandatory Enforcement on August 2, 2026; Global Companies Must Prepare Now</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">根据欧盟《AI 法案》既定路线图，2026 年 8 月 2 日是部分高风险 AI 系统的严格强制要求、有限风险 AI 的透明度规则正式生效的日期。欧盟委员会已发布首份《AI 生成内容透明度实践准则》草案，鼓励科技企业自愿强化治理框架。随着各国逐步实施素养要求、通用 AI 规则和处罚条款，这些要求正在成为国际企业在欧洲市场运营必须遵守的全球 AI 治理基准。对于企业而言，合规准备期仅剩不到 3 个月，需立即启动内部审计和流程调整。</div>
+                <div class="news-summary-en">According to the EU AI Act roadmap, August 2, 2026 is the effective date for strict mandatory requirements for certain high-risk AI systems and transparency rules for limited-risk AI. The European Commission has released the first draft "AI-Generated Content Transparency Practice Guidelines," encouraging tech companies to voluntarily strengthen governance frameworks. As countries progressively implement literacy requirements, general-purpose AI rules, and penalty clauses, these requirements are becoming the global AI governance baseline that international companies must comply with to operate in the European market. For businesses, the compliance preparation window is less than 3 months; internal audits and process adjustments must begin immediately.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>欧盟《AI 法案》是全球首个全面 AI 监管法规，其生效将直接影响所有在欧运营的国际 AI 公司。合规成本将成为中小型 AI 公司的重大进入壁垒。</div>
+                <div class="why-en"><strong>Why it matters:</strong>The EU AI Act is the world's first comprehensive AI regulatory framework; its enforcement will directly impact all international AI companies operating in Europe. Compliance costs will become a significant entry barrier for small and medium-sized AI companies.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-policy">Policy</span>
+                <a href="https://www.mayerbrown.com/en/insights/publications/2026/05/global-ai-regulatory-monthly-briefing-may-2026" class="source-link">🔗 Mayer Brown AI 监管月报</a>
+            </div>
+        </div>
+
+        <!-- Policy 2: Anthropic Stainless Acquisition -->
+        <div class="news-item policy">
+            <div class="news-title-cn">Anthropic 洽谈收购开发者工具初创公司 Stainless，估值至少 3 亿美元</div>
+            <div class="news-title-en">Anthropic in Talks to Acquire Developer Tools Startup Stainless at $300M+ Valuation</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月10日，The Information 报道，Anthropic 已就收购开发者工具初创公司 Stainless 进入深度谈判阶段，交易估值至少 3 亿美元。Stainless 提供的软件可帮助模型开发者、非技术人员和 AI 代理更快地访问 AI 模型并与其交互，目前已有 OpenAI、谷歌等主要行业参与者作为客户。此次收购被解读为 Anthropic 的战略举措，旨在拓宽其模型开发生态系统、打造更友好的开发者环境，从而增强其在大型语言模型市场的平台竞争力。同期 Anthropic 还在深化与 SAP 等全球企业的合作，推出专业 AI 产品组合。</div>
+                <div class="news-summary-en">On May 10, The Information reported that Anthropic has entered advanced negotiations to acquire developer tools startup Stainless, at a valuation of at least $300 million. Stainless provides software that helps model developers, non-technical personnel, and AI agents access and interact with AI models faster; current customers include OpenAI, Google, and other major industry players. The acquisition is interpreted as a strategic move by Anthropic to broaden its model development ecosystem, create a more developer-friendly environment, and enhance its platform competitiveness in the LLM market. Anthropic is also deepening partnerships with global enterprises like SAP and launching specialized AI product suites.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>若收购完成，Anthropic 将从「模型提供商」升级为「全栈 AI 开发平台」，直接对标 OpenAI 的类似布局。开发者工具生态的掌控权，将是下一阶段 AI 平台竞争的核心战场。</div>
+                <div class="why-en"><strong>Why it matters:</strong>If completed, Anthropic would upgrade from "model provider" to "full-stack AI development platform," directly rivaling OpenAI's similar战略布局. Control over the developer tools ecosystem will be the core battlefield of the next-phase AI platform competition.</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-policy">Policy</span>
+                <span class="tag tag-us">US</span>
+                <a href="https://www.theinformation.com/articles/anthropic-stainless-acquisition" class="source-link">🔗 The Information 报道</a>
+            </div>
+        </div>
+
+        <!-- Policy 3: Appian AI Process -->
+        <div class="news-item policy">
+            <div class="news-title-cn">Appian 发布平台重大更新：集成 MCP 标准，AI 代理深度嵌入企业业务流程</div>
+            <div class="news-title-en">Appian Advances AI in Process: MCP Standard Integration Enables Deep AI Agent Embedding into Enterprise Business Processes</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">5月13日，企业自动化公司 Appian 发布重大平台更新，核心亮点是集成模型上下文协议（MCP）标准，使 AI 代理能够安全地与外部企业系统交互。这让 AI 代理可以访问统一数据 fabric 实时读写信息，实现更智能、更协调的工作执行。用户现在可以跟踪代理性能，并将代理的记忆应用于多个流程，以提高决策质量。这标志着代理 AI 时代的正式到来，AI 从回答问题的功能升级为深度集成到业务流程中，交付可衡量的企业价值。</div>
+                <div class="news-summary-en">On May 13, enterprise automation company Appian announced a major platform update, with the core highlight being integration of the Model Context Protocol (MCP) standard, enabling AI agents to securely interact with external enterprise systems. This allows AI agents to access unified data fabric for real-time read/write, enabling smarter, more coordinated task execution. Users can now track agent performance and apply agent memory across multiple processes to improve decision quality. This marks the official arrival of the agentic AI era: AI upgrading from question-answering functionality to deep integration into business processes, delivering measurable enterprise value.</div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>MCP 标准的产业采纳正在加速。Appian 作为企业流程自动化领域的主流平台，其 MCP 集成意味着 AI 代理将大规模进入企业核心业务系统，而不仅仅是作为「聊天助手」存在。</div>
+                <div class="why-en"><strong>Why it matters:</strong>Industrial adoption of the MCP standard is accelerating. Appian, as a mainstream platform in enterprise process automation, integrating MCP means AI agents will enter enterprise core business systems at scale — no longer merely existing as "chat assistants."</div>
+            </div>
+            <div class="news-meta">
+                <span class="tag tag-policy">Policy</span>
+                <a href="https://www.prnewswire.com/news-releases/appian-advances-ai-in-process-to-deliver-enterprise-outcomes-at-scale-302766677.html" class="source-link">🔗 PR Newswire</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Whitelist Footer -->
+    <div class="whitelist">
+        <div class="whitelist-title-cn">📋 追踪来源白名单 · Trusted Source Whitelist</div>
+        <div class="whitelist-title-en">Currently Tracking {26} Trusted Sources</div>
+        <div class="whitelist-note-cn">以下来源均在每次简报中主动检索。新增来源用 🆕 标注。</div>
+        <div class="whitelist-note-en">Sources below are actively monitored in every briefing. New additions marked with 🆕.</div>
+        <div class="whitelist-items">
+            <span class="whitelist-item">OpenAI News</span>
+            <span class="whitelist-item">OpenAI Research</span>
+            <span class="whitelist-item">Anthropic Newsroom</span>
+            <span class="whitelist-item">Anthropic Research</span>
+            <span class="whitelist-item">Google DeepMind Blog</span>
+            <span class="whitelist-item">Meta Superintelligence Labs</span>
+            <span class="whitelist-item">Moonshot/Kimi</span>
+            <span class="whitelist-item">MiniMax</span>
+            <span class="whitelist-item">Zhipu AI / GLM</span>
+            <span class="whitelist-item">Qwen/Alibaba Cloud</span>
+            <span class="whitelist-item">DeepSeek</span>
+            <span class="whitelist-item">A*STAR AI</span>
+            <span class="whitelist-item">GovTech Singapore</span>
+            <span class="whitelist-item">Singapore DSAI</span>
+            <span class="whitelist-item">NUS AI Research</span>
+            <span class="whitelist-item">MDDI Singapore</span>
+            <span class="whitelist-item">Singtel RE:AI</span>
+            <span class="whitelist-item">Reuters AI</span>
+            <span class="whitelist-item">MIT Tech Review</span>
+            <span class="whitelist-item">Xinhua EN</span>
+            <span class="whitelist-item">CNBC Technology</span>
+            <span class="whitelist-item">Forbes AI 50</span>
+            <span class="whitelist-item">AI Critique</span>
+            <span class="whitelist-item">IEEE Spectrum</span>
+            <span class="whitelist-item">AI Flash Report</span>
+            <span class="whitelist-item">WinBuzzer</span>
+            <span class="whitelist-item">Hugging Face Blog</span>
+            <span class="whitelist-item">arXiv cs.AI</span>
+            <span class="whitelist-item">OpenBMB</span>
+            <span class="whitelist-item">HKUDS</span>
+            <span class="whitelist-item">Marktechpost</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-cn">由 WorkBuddy AI 自动生成 · 2026年5月15日 08:18 SGT</div>
+        <div class="footer-en">Auto-generated by WorkBuddy AI · May 15, 2026 08:18 SGT</div>
+        <div class="footer-cn" style="margin-top:8px;">🤖 Daily AI Briefing 系列 · 每个工作日早8点更新</div>
+        <div class="footer-en">🤖 Daily AI Briefing Series · Updated weekdays at 08:00 SGT</div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceX IPO 深度分析报告 | Purchase Plan 2026</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg2: #161b22;
+            --bg3: #21262d;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --red: #f85149;
+            --yellow: #d29922;
+            --orange: #f0883e;
+            --purple: #bc8cff;
+            --cyan: #39d2c0;
+            --pink: #ff7b72;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:'Inter','Segoe UI',sans-serif; font-size:15px; line-height:1.6; }
+        .container { max-width:1100px; margin:0 auto; padding:24px 16px; }
+
+        /* Header */
+        .report-header { background:linear-gradient(135deg,#1a1040 0%,#0d2040 50%,#0a1a2a 100%);
+            border:1px solid var(--border); border-radius:16px; padding:32px 40px; margin-bottom:24px;
+            position:relative; overflow:hidden; }
+        .report-header::before { content:''; position:absolute; top:-60px; right:-60px;
+            width:200px; height:200px; background:radial-gradient(circle,rgba(88,166,255,0.15),transparent);
+            border-radius:50%; }
+        .report-header::after { content:''; position:absolute; bottom:-80px; left:-40px;
+            width:300px; height:300px; background:radial-gradient(circle,rgba(63,185,80,0.1),transparent);
+            border-radius:50%; }
+        .report-title { font-size:28px; font-weight:700; color:#fff; margin-bottom:6px; }
+        .report-title span { color:var(--accent); }
+        .report-subtitle { color:var(--text-muted); font-size:14px; }
+        .header-badges { display:flex; gap:12px; margin-top:16px; flex-wrap:wrap; }
+        .badge { padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+        .badge-red { background:rgba(248,81,73,0.15); color:var(--red); border:1px solid rgba(248,81,73,0.3); }
+        .badge-yellow { background:rgba(210,153,34,0.15); color:var(--yellow); border:1px solid rgba(210,153,34,0.3); }
+        .badge-blue { background:rgba(88,166,255,0.15); color:var(--accent); border:1px solid rgba(88,166,255,0.3); }
+        .badge-green { background:rgba(63,185,80,0.15); color:var(--green); border:1px solid rgba(63,185,80,0.3); }
+        .badge-purple { background:rgba(188,140,255,0.15); color:var(--purple); border:1px solid rgba(188,140,255,0.3); }
+
+        /* Cards */
+        .card { background:var(--bg2); border:1px solid var(--border); border-radius:12px;
+            padding:24px; margin-bottom:20px; }
+        .card-title { font-size:16px; font-weight:700; color:var(--text); margin-bottom:16px;
+            padding-bottom:12px; border-bottom:1px solid var(--border);
+            display:flex; align-items:center; gap:8px; }
+        .en-label { font-weight:400; color:var(--text-muted); font-size:13px; }
+
+        /* Info boxes */
+        .alert-box { padding:16px 20px; border-radius:8px; margin-bottom:12px; font-size:14px; }
+        .alert-red { background:rgba(248,81,73,0.1); border-left:4px solid var(--red); color:var(--text); }
+        .alert-yellow { background:rgba(210,153,34,0.1); border-left:4px solid var(--yellow); color:var(--text); }
+        .alert-green { background:rgba(63,185,80,0.1); border-left:4px solid var(--green); color:var(--text); }
+        .alert-blue { background:rgba(88,166,255,0.1); border-left:4px solid var(--accent); color:var(--text); }
+        .alert-purple { background:rgba(188,140,255,0.1); border-left:4px solid var(--purple); color:var(--text); }
+        .alert-orange { background:rgba(240,136,62,0.1); border-left:4px solid var(--orange); color:var(--text); }
+        .alert-title { font-weight:700; margin-bottom:4px; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; }
+        .alert-red .alert-title { color:var(--red); }
+        .alert-yellow .alert-title { color:var(--yellow); }
+        .alert-green .alert-title { color:var(--green); }
+        .alert-blue .alert-title { color:var(--accent); }
+        .alert-purple .alert-title { color:var(--purple); }
+        .alert-orange .alert-title { color:var(--orange); }
+        .alert-body { color:var(--text-muted); font-size:13px; line-height:1.5; }
+
+        /* Tables */
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        th { text-align:left; padding:10px 12px; background:var(--bg3); color:var(--text-muted);
+            font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:0.5px;
+            border-bottom:1px solid var(--border); }
+        td { padding:10px 12px; border-bottom:1px solid rgba(48,54,61,0.5); }
+        tr:last-child td { border-bottom:none; }
+        tr:hover td { background:rgba(88,166,255,0.04); }
+        .up { color:var(--green); font-weight:600; }
+        .down { color:var(--red); font-weight:600; }
+        .neutral { color:var(--text-muted); }
+        .highlight { color:var(--accent); font-weight:600; }
+        .warn { color:var(--yellow); }
+        .danger { color:var(--red); font-weight:600; }
+        .success { color:var(--green); font-weight:600; }
+
+        /* Grid */
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+        .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+
+        /* KPI boxes */
+        .kpi-box { background:var(--bg3); border:1px solid var(--border); border-radius:10px;
+            padding:20px; text-align:center; }
+        .kpi-label { font-size:11px; color:var(--text-muted); text-transform:uppercase;
+            letter-spacing:0.5px; margin-bottom:8px; }
+        .kpi-value { font-size:24px; font-weight:700; color:var(--text); }
+        .kpi-note { font-size:11px; color:var(--text-muted); margin-top:4px; }
+
+        /* Phase timeline */
+        .phase { background:var(--bg3); border:1px solid var(--border); border-radius:12px;
+            padding:20px; margin-bottom:16px; }
+        .phase-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+        .phase-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center;
+            justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; }
+        .phase-1 .phase-num { background:rgba(63,185,80,0.2); color:var(--green); }
+        .phase-2 .phase-num { background:rgba(88,166,255,0.2); color:var(--accent); }
+        .phase-3 .phase-num { background:rgba(240,136,62,0.2); color:var(--orange); }
+        .phase-4 .phase-num { background:rgba(188,140,255,0.2); color:var(--purple); }
+        .phase-title { font-weight:700; font-size:15px; }
+        .phase-title span { color:var(--text-muted); font-weight:400; font-size:13px; margin-left:8px; }
+        .phase-date { font-size:12px; color:var(--text-muted); }
+        .phase-body { font-size:13px; color:var(--text-muted); line-height:1.7; padding-left:44px; }
+        .phase-body ul { margin-top:8px; padding-left:20px; }
+        .phase-body li { margin-bottom:4px; }
+        .phase-body li::marker { color:var(--accent); }
+
+        /* Footer */
+        .footer { text-align:center; padding:24px; color:var(--text-muted); font-size:12px;
+            border-top:1px solid var(--border); margin-top:32px; }
+        .footer strong { color:var(--text); }
+
+        /* Rating */
+        .rating-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:13px; }
+        .rating-label { width:120px; color:var(--text-muted); flex-shrink:0; }
+        .rating-bar { flex:1; height:8px; background:var(--bg3); border-radius:4px; overflow:hidden; }
+        .rating-fill { height:100%; border-radius:4px; }
+        .rating-val { width:40px; text-align:right; font-weight:600; font-size:12px; }
+
+        @media (max-width:768px) {
+            .grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="report-header">
+        <div class="report-title">🚀 <span>SpaceX IPO</span> 深度分析与购买方案</div>
+        <div class="report-subtitle">Investment Analysis & Purchase Plan | 生成日期：2026年4月25日</div>
+        <div class="header-badges">
+            <span class="badge badge-red">🔴 史上最大IPO</span>
+            <span class="badge badge-purple">预计2026年6月上市</span>
+            <span class="badge badge-blue">目标估值 $1.75T-$2T</span>
+            <span class="badge badge-yellow">路演窗口：6月8日起</span>
+            <span class="badge badge-green">订阅监控已激活</span>
+        </div>
+    </div>
+
+    <!-- 免责声明 -->
+    <div class="alert-box alert-orange" style="margin-bottom:20px;">
+        <div class="alert-title">⚠️ 法律免责声明 Legal Disclaimer</div>
+        <div class="alert-body">
+            本报告仅供参考，不构成任何投资建议。SpaceX 尚未完成IPO，所有估值、定价信息均为基于公开报道的估算值。
+            实际IPO条款、发行价及上市时间以SpaceX官方披露为准。投资涉及风险，请务必在做出任何投资决策前咨询持牌金融顾问。
+            Past performance is not indicative of future results.
+        </div>
+    </div>
+
+    <!-- 1. SpaceX IPO 关键数据 -->
+    <div class="card">
+        <div class="card-title">📋 SpaceX IPO 关键数据速览 <span class="en-label">Key IPO Facts</span></div>
+
+        <div class="grid-4" style="margin-bottom:20px;">
+            <div class="kpi-box">
+                <div class="kpi-label">预计估值 Valuation</div>
+                <div class="kpi-value" style="color:var(--orange);">$1.75T</div>
+                <div class="kpi-note">约$1.75-2万亿美元</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">募资规模 Raise</div>
+                <div class="kpi-value" style="color:var(--accent);">$75B</div>
+                <div class="kpi-note">约750亿美元（史上最大）</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">路演时间 Roadshow</div>
+                <div class="kpi-value" style="color:var(--green);">6月8日起</div>
+                <div class="kpi-note">2026年6月8日那周</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">预计上市 IPO</div>
+                <div class="kpi-value" style="color:var(--purple);">6月中下旬</div>
+                <div class="kpi-note">2026年6月中下旬</div>
+            </div>
+        </div>
+
+        <table>
+            <thead><tr>
+                <th>项目 Item</th><th>详情 Details</th><th>来源 Source</th>
+            </tr></thead>
+            <tbody>
+                <tr><td class="highlight">IPO时间表 IPO Timeline</td><td>路演6月8日起，零售活动6月11日，上市6月中下旬</td><td>Reuters, CNBC (2026-04-07)</td></tr>
+                <tr><td>当前估值 Current Valuation</td><td>$7500亿（2025年12月secondary）；路演前估值或达$1.75T-$2T</td><td>Fortune (2025-12-13)</td></tr>
+                <tr><td>S-1草案提交</td><td>2026年4月1日已提交SEC</td><td>Techi.com (2026-03-27)</td></tr>
+                <tr><td>Starlink年化营收</td><td>约$100亿（持续高速增长）</td><td>Reuters</td></tr>
+                <tr><td>xAI合并可能性</td><td>$1.25万亿合并案曾被讨论（最终方案待定）</td><td>TechMarketBriefs</td></tr>
+                <tr><td>主承销商</td><td>Morgan Stanley, Goldman Sachs（待官方确认）</td><td>业界传闻</td></tr>
+                <tr><td>历史估值轨迹</td><td>$350B(2022) → $460B(2023) → $800B(2025-12)</td><td>公开报道</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 2. 投资逻辑 -->
+    <div class="card">
+        <div class="card-title">🧠 投资逻辑：为什么值得关注 <span class="en-label">Investment Thesis</span></div>
+
+        <div class="grid-2">
+            <div>
+                <div class="alert-box alert-green">
+                    <div class="alert-title">✅ 利好因素 Bull Case</div>
+                    <ul style="padding-left:16px;margin-top:8px;font-size:13px;color:var(--text-muted);">
+                        <li><strong style="color:var(--text);"> Starlink 商业化高速增长：</strong>年化营收$100亿+，已有数百万付费用户，护城河深厚</li>
+                        <li><strong style="color:var(--text);"> 竞争格局清晰：</strong>OneWeb基本失败，Amazon Kuiper尚未成熟，SpaceX在低轨卫星互联网处绝对领先地位</li>
+                        <li><strong style="color:var(--text);"> 军事/政府合同：</strong>Starlink已成为美国及盟国国防基础设施一部分，现金流稳定且高毛利</li>
+                        <li><strong style="color:var(--text);"> Starship持续降本：</strong>星舰每次成功试飞都降低发射成本，长期竞争力持续增强</li>
+                        <li><strong style="color:var(--text);"> xAI 生态协同：</strong>与xAI大模型深度整合，想象空间巨大（$1.25T合并概念）</li>
+                        <li><strong style="color:var(--text);"> 史上最大IPO效应：</strong>将吸引全球机构及零售资金关注，流动性溢价显著</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="alert-box alert-red">
+                    <div class="alert-title">❌ 利空因素 Bear Case</div>
+                    <ul style="padding-left:16px;margin-top:8px;font-size:13px;color:var(--text-muted);">
+                        <li><strong style="color:var(--text);"> Elon Musk 政治风险：</strong>马斯克担任DOGE政府效率官员，与政治深度绑定，一旦政治生涯出现负面，股价剧烈波动</li>
+                        <li><strong style="color:var(--text);"> 政府合同依赖：</strong>营收过度依赖美国政府，若政策变化或预算削减，营收面临断崖风险</li>
+                        <li><strong style="color:var(--text);"> IPO时机存疑：</strong>$1.75T-$2T估值极高，Starlink估值已超越全球多数科技巨头</li>
+                        <li><strong style="color:var(--text);"> 估值修正风险：</strong>若xAI合并失败，或Starlink增速不及预期，估值可能大幅下修</li>
+                        <li><strong style="color:var(--text);"> 政治不确定性：</strong>若马斯克政治立场影响SpaceX政府合同，营收可持续性存疑</li>
+                        <li><strong style="color:var(--text);"> 锁定期后抛压：</strong>史上最大IPO，锁定期结束后或有天量解禁抛压</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 关键风险评分 -->
+    <div class="card">
+        <div class="card-title">⚖️ 关键风险维度评估 <span class="en-label">Risk Assessment</span></div>
+
+        <div style="max-width:700px;">
+            <div class="rating-row">
+                <div class="rating-label">竞争风险 Competition</div>
+                <div class="rating-bar"><div class="rating-fill" style="width:15%;background:var(--green);"></div></div>
+                <div class="rating-val" style="color:var(--green);">低 Low</div>
+            </div>
+            <div class="rating-row">
+                <div class="rating-label">监管风险 Regulatory</div>
+                <div class="rating-bar"><div class="rating-fill" style="width:65%;background:var(--yellow);"></div></div>
+                <div class="rating-val" style="color:var(--yellow);">中高 Med-High</div>
+            </div>
+            <div class="rating-row">
+                <div class="rating-label">政治风险 Political</div>
+                <div class="rating-bar"><div class="rating-fill" style="width:80%;background:var(--red);"></div></div>
+                <div class="rating-val" style="color:var(--red);">高 High</div>
+            </div>
+            <div class="rating-row">
+                <div class="rating-label">估值风险 Valuation</div>
+                <div class="rating-bar"><div class="rating-fill" style="width:75%;background:var(--orange);"></div></div>
+                <div class="rating-val" style="color:var(--orange);">高 High</div>
+            </div>
+            <div class="rating-row">
+                <div class="rating-label">流动性 Liquidity</div>
+                <div class="rating-bar"><div class="rating-fill" style="width:40%;background:var(--green);"></div></div>
+                <div class="rating-val" style="color:var(--green);">中低 Med-Low</div>
+            </div>
+            <div class="rating-row">
+                <div class="rating-label">增长潜力 Growth</div>
+                <div class="rating-bar"><div class="rating-fill" style="width:85%;background:var(--green);"></div></div>
+                <div class="rating-val" style="color:var(--green);">极高 Very High</div>
+            </div>
+        </div>
+
+        <div class="alert-box alert-yellow" style="margin-top:20px;">
+            <div class="alert-title">⚡ 政治风险特别警示</div>
+            <div class="alert-body">
+                <strong>马斯克当前身兼SpaceX CEO和DOGE政府官员</strong>，其政治活动与SpaceX商业利益深度绑定。若DOGE工作引发政治争议，
+                或马斯克卸任政府职位引发政策反弹，SpaceX可能面临政府合同变更风险。这是SpaceX IPO有别于普通科技股的<strong>最大特殊风险因子</strong>，
+                需要在仓位配置时给予更高权重。
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 购买方案 -->
+    <div class="card">
+        <div class="card-title">📋 分阶段购买方案 <span class="en-label">Phased Purchase Plan</span></div>
+
+        <div class="phase phase-1">
+            <div class="phase-header">
+                <div class="phase-num">1</div>
+                <div>
+                    <div class="phase-title">预热期 <span class="phase-title" style="font-weight:400;">Pre-IPO Monitoring</span></div>
+                    <div class="phase-date">📅 现在起 → 上市前  |  策略：持续监控，不入场</div>
+                </div>
+            </div>
+            <div class="phase-body">
+                <strong>行动 Action：</strong>激活日报中的SpaceX IPO监控，每日期报自动追踪S-1披露、路演动态、估值区间
+                <ul>
+                    <li>每日早报/晚报中持续推送SpaceX IPO最新动态（S-1更新、估值区间、承销商信息）</li>
+                    <li>跟踪Starlink营收增长数据、政府合同变化、xAI合并进展</li>
+                    <li>确认承销商团队名单及最终估值区间（$1.75T vs $2T vs 其他）</li>
+                    <li>评估最终发行价是否在合理区间（建议：若PE超过50x需特别谨慎）</li>
+                </ul>
+                <strong style="color:var(--yellow);">💡 决策门槛：</strong>若估值区间确认且基本面无重大负面变化，进入阶段2
+            </div>
+        </div>
+
+        <div class="phase phase-2">
+            <div class="phase-header">
+                <div class="phase-num">2</div>
+                <div>
+                    <div class="phase-title">IPO当日 <span class="phase-title" style="font-weight:400;">IPO Day (~$June 2026)</span></div>
+                    <div class="phase-date">📅 上市当日  |  策略：<strong style="color:var(--yellow);">不建议IPO当日追入</strong></div>
+                </div>
+            </div>
+            <div class="phase-body">
+                <strong style="color:var(--red);">❌ IPO当日操作：</strong>历史上大型IPO（Facebook, Uber, Rivian等）首日暴涨后往往经历数周至数月的回调
+                <ul>
+                    <li>SpaceX为史上最大IPO，机构定价可能一步到位，早期溢价极高</li>
+                    <li>零售投资者在IPO当日往往难以获得合理配置价格（开盘价vs发行价差过大）</li>
+                    <li>建议等待5-10个交易日观察市场情绪和价格企稳情况</li>
+                </ul>
+                <strong style="color:var(--yellow);">💡 决策门槛：</strong>若上市后5个交易日内出现 >15% 回调，进入阶段3
+            </div>
+        </div>
+
+        <div class="phase phase-3">
+            <div class="phase-header">
+                <div class="phase-num">3</div>
+                <div>
+                    <div class="phase-title">首轮建仓（回调后） <span class="phase-title" style="font-weight:400;">First Position on Pullback</span></div>
+                    <div class="phase-date">📅 上市后5-20个交易日  |  策略：分批建仓，不超过总仓位上限</div>
+                </div>
+            </div>
+            <div class="phase-body">
+                <strong>建议配置方案 Recommended Allocation：</strong>
+                <ul>
+                    <li><strong style="color:var(--accent);">总股票仓位上限：</strong>SpaceX占个人整体股票组合的<strong>不超过5-10%</strong>（极高不确定性，单一个股集中度风险）</li>
+                    <li><strong style="color:var(--accent);">首轮建仓比例：</strong>目标仓位的<strong>40-50%</strong>（2.5-5%总仓位）</li>
+                    <li><strong style="color:var(--accent);">入场时机：</strong>从IPO价格回调 ≥10-15% 时开始分批买入</li>
+                    <li><strong style="color:var(--accent);">建仓方式：</strong>3天内分3笔等额买入（每天一笔），摊平入场成本</li>
+                    <li><strong style="color:var(--accent);">止损线：</strong>从入场价最大回撤 <strong>-20% 止损离场</strong></li>
+                </ul>
+                <strong style="color:var(--yellow);">💡 计算示例：</strong>
+                若IPO发行价$200/股，首轮计划投入$10,000
+                → 在股价回调至$170-$180区间时分3天各买入约$3,333（约18股）
+            </div>
+        </div>
+
+        <div class="phase phase-4">
+            <div class="phase-header">
+                <div class="phase-num">4</div>
+                <div>
+                    <div class="phase-title">长期持有 & 动态调整 <span class="phase-title" style="font-weight:400;">Long-Term Hold & Rebalance</span></div>
+                    <div class="phase-date">📅 建仓后持有  |  策略：季度评估，灵活调整</div>
+                </div>
+            </div>
+            <div class="phase-body">
+                <strong>持有逻辑 Hold Thesis：</strong>
+                <ul>
+                    <li>Starlink月费用户数增长 → 营收增长 → 估值重评（若PE从80x降至30x，仍有显著上涨空间）</li>
+                    <li>Starship完全可复用后，发射成本大幅下降，新业务（太空旅游、NASA合同）持续拓展</li>
+                    <li>xAI与Starlink整合（Starlink提供AI数据管道） → 生态护城河加深</li>
+                </ul>
+                <strong>季度评估触发条件：</strong>
+                <ul>
+                    <li>🔴 <strong>减仓/离场：</strong>马斯克卸任CEO | 政府合同被大幅削减 | xAI合并失败且Starlink增速放缓</li>
+                    <li>🟡 <strong>持有：</strong>季度符合预期，无重大负面事件</li>
+                    <li>🟢 <strong>加仓：</strong>季报超预期 + Starlink用户数持续高增 + 无重大政治风险</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 仓位配置总览 -->
+    <div class="card">
+        <div class="card-title">💼 参考仓位配置建议 <span class="en-label">Portfolio Allocation Reference</span></div>
+
+        <div class="alert-box alert-blue">
+            <div class="alert-title">📊 基于您现有投资组合的配置参考</div>
+            <div class="alert-body">
+                您目前美股+ETF组合约含12只标的，SpaceX作为<strong>超高风险超额配置机会</strong>，建议单独考虑，不挤占现有核心持仓。
+                以下方案以"额外增量资金"为前提假设。
+            </div>
+        </div>
+
+        <table style="margin-top:16px;">
+            <thead><tr>
+                <th>方案 Scenario</th>
+                <th>占总股票仓位 %</th>
+                <th>投资金额参考 (USD)</th>
+                <th>适用人群 Suitable For</th>
+                <th>风险等级 Risk</th>
+            </tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong style="color:var(--green);">保守配置 Conservative</strong></td>
+                    <td><strong>2-3%</strong></td>
+                    <td>$1,000-$2,000</td>
+                    <td>首次接触SpaceX，风险厌恶型投资者</td>
+                    <td class="up">低-中 Low-Med</td>
+                </tr>
+                <tr>
+                    <td><strong style="color:var(--accent);">标准配置 Standard ⭐推荐</strong></td>
+                    <td><strong>5%</strong></td>
+                    <td>$3,000-$5,000</td>
+                    <td>有一定科技股投资经验，接受高风险高回报</td>
+                    <td class="warn">中 Medium</td>
+                </tr>
+                <tr>
+                    <td><strong style="color:var(--orange);">积极配置 Aggressive</strong></td>
+                    <td><strong>8-10%</strong></td>
+                    <td>$5,000-$10,000</td>
+                    <td>高风险偏好，坚信Starlink长期价值，愿意承受大幅波动</td>
+                    <td class="danger">高 High</td>
+                </tr>
+                <tr>
+                    <td><strong style="color:var(--red);">禁止超过 Do NOT Exceed</strong></td>
+                    <td><strong>>10%</strong></td>
+                    <td>—</td>
+                    <td colspan="2">单一个股超过总组合10%风险过于集中，不建议</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid-3" style="margin-top:20px;">
+            <div class="kpi-box">
+                <div class="kpi-label">建议首次建仓量</div>
+                <div class="kpi-value" style="font-size:18px;">50-100股</div>
+                <div class="kpi-note">视发行价而定（假设$150-250/股区间）</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">最大单次亏损承受</div>
+                <div class="kpi-value" style="font-size:18px;color:var(--red);">-20%</div>
+                <div class="kpi-note">触及止损线无条件离场</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">建议持有周期</div>
+                <div class="kpi-value" style="font-size:18px;color:var(--green);">3-5年</div>
+                <div class="kpi-note">长期投资逻辑：Starlink增长 + Starship降本</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. 上市前核查清单 -->
+    <div class="card">
+        <div class="card-title">✅ IPO前必查清单 <span class="en-label">Pre-IPO Checklist</span></div>
+
+        <div class="alert-box alert-yellow">
+            <div class="alert-title">📝 在下单买入SpaceX前，请逐项确认以下条件</div>
+        </div>
+
+        <table style="margin-top:8px;">
+            <thead><tr>
+                <th style="width:30px;">☑</th><th>检查项 Checklist</th><th>预期值 Target</th><th>重要性</th>
+            </tr></thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td>最终IPO估值区间确认</td>
+                    <td>不超过$2T（理想$1.5T以内）</td>
+                    <td><span class="badge badge-yellow">高</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td>xAI合并是否完成/取消</td>
+                    <td>合并完成则更优；取消则需重新评估</td>
+                    <td><span class="badge badge-yellow">高</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td>发行价（与估值区间对比）</td>
+                    <td>发行价不应比估值区间上限溢价>10%</td>
+                    <td><span class="badge badge-yellow">高</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td>路演反应（机构认购情况）</td>
+                    <td>机构超额认购倍数（越高越好，但需防过热）</td>
+                    <td><span class="badge badge-blue">中</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td>S-1披露的关键财务数据</td>
+                    <td>Starlink营收增速、利润率、政府合同占比</td>
+                    <td><span class="badge badge-yellow">高</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td> Musk CEO身份是否维持</td>
+                    <td>若宣布卸任CEO，立即取消买入计划</td>
+                    <td><span class="badge badge-red">极高</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td>最近30天是否有重大负面政治新闻</td>
+                    <td>无重大负面（若DOGE争议扩大，延迟决策）</td>
+                    <td><span class="badge badge-red">极高</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" disabled></td>
+                    <td>首5日收盘价是否出现合理回调</td>
+                    <td>回调≥10%再考虑入场，不追IPO首日高价</td>
+                    <td><span class="badge badge-yellow">高</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 7. 上市后追踪 -->
+    <div class="card">
+        <div class="card-title">📈 上市后追踪指标 <span class="en-label">Post-IPO Monitoring KPIs</span></div>
+
+        <div class="grid-3">
+            <div class="kpi-box">
+                <div class="kpi-label">核心追踪指标 1</div>
+                <div class="kpi-value" style="font-size:14px;color:var(--accent);">Starlink付费用户数</div>
+                <div class="kpi-note">季度披露，重点关注同比增长是否>50%</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">核心追踪指标 2</div>
+                <div class="kpi-value" style="font-size:14px;color:var(--accent);">政府合同规模</div>
+                <div class="kpi-note">美国国防部及其他国家政府合同金额变化</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">核心追踪指标 3</div>
+                <div class="kpi-value" style="font-size:14px;color:var(--accent);">Starship发射频率</div>
+                <div class="kpi-note">发射成本下降进度 = 长期护城河核心指标</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">核心追踪指标 4</div>
+                <div class="kpi-value" style="font-size:14px;color:var(--accent);">xAI合并/合作进展</div>
+                <div class="kpi-note">Starlink + xAI生态整合深度</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">核心追踪指标 5</div>
+                <div class="kpi-value" style="font-size:14px;color:var(--red);">Musk政治动态</div>
+                <div class="kpi-note">任何政治立场激化 → 评估是否触发减仓</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-label">核心追踪指标 6</div>
+                <div class="kpi-value" style="font-size:14px;color:var(--orange);">分析师评级覆盖</div>
+                <div class="kpi-note">上市3个月内机构分析师首次覆盖的评级和目标价</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. 总结 -->
+    <div class="card">
+        <div class="card-title">🎯 总结与行动建议 <span class="en-label">Summary & Action Plan</span></div>
+
+        <div class="grid-2">
+            <div>
+                <div class="alert-box alert-green">
+                    <div class="alert-title">🚀 SpaceX IPO 总体评价</div>
+                    <div class="alert-body">
+                        SpaceX IPO是一次<strong>千载难逢的投资机会</strong>——低轨卫星互联网的绝对领导者，
+                        Starlink商业化高速增长，护城河深厚。若成功上市，将是全球最具战略价值的科技股之一。
+                        <br><br>
+                        然而，<strong>$1.75T-$2T估值处于极高水位</strong>，且马斯克政治风险是普通科技股所不具备的特殊风险因子。
+                        建议以"超额收益机会"而非"核心持仓"的心态参与，严守仓位上限（≤总仓位10%）。
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="alert-box alert-purple">
+                    <div class="alert-title">📌 您的行动清单 Immediate Actions</div>
+                    <div class="alert-body">
+                        <ol style="padding-left:16px;margin-top:8px;font-size:13px;">
+                            <li style="margin-bottom:8px;"><strong>✅ 已完成：</strong>SpaceX IPO监控已添加到每日投资报告中</li>
+                            <li style="margin-bottom:8px;"><strong>📋 待确认：</strong>明确您计划的最高配置比例（建议5%，不超过10%）</li>
+                            <li style="margin-bottom:8px;"><strong>💰 待准备：</strong>确认IPO专用资金池金额（建议预留$3,000-$5,000）</li>
+                            <li><strong>⏰ 持续监控：</strong>每日早报/晚报中将自动推送SpaceX IPO最新进展</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert-box alert-blue" style="margin-top:16px;">
+            <div class="alert-title">📬 下一步：当SpaceX正式上市后</div>
+            <div class="alert-body">
+                每日报告将自动追踪SpaceX上市动态。一旦SpaceX正式挂牌，我将在当日晚报中<strong>第一时间提供买入建议</strong>，
+                包含：当日收盘价分析、与预期估值对比、以及基于回调幅度的具体买入价位建议。
+                无需您手动询问——报告将自动包含SpaceX专版分析。
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>📊 <strong>SpaceX IPO 分析报告</strong> | 生成日期：2026年4月25日（周六）</p>
+        <p>🔗 每日追踪：每日早报/晚报自动监控 SpaceX IPO 动态 | <a href="https://kidultop.github.io/investment-reports/" style="color:var(--accent);">投资报告主页</a></p>
+        <p style="margin-top:8px;">⚠️ 本报告仅供参考，不构成投资建议。投资涉及风险，请咨询持牌金融顾问。</p>
+    </div>
+
+</div>
+</body>
+</html>

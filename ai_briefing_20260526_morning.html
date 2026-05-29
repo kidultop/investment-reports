@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Briefing — 2026-05-26 Morning</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #263348;
+  --accent: #a78bfa;
+  --accent-dim: rgba(167,139,250,0.15);
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --border: #334155;
+  --tag-us: #3b82f6;
+  --tag-cn: #ef4444;
+  --tag-research: #22c55e;
+  --tag-open: #a855f7;
+  --tag-policy: #eab308;
+  --tag-sg: #f97316;
+  --tag-new: #06b6d4;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.header-icon { font-size: 40px; margin-bottom: 8px; }
+.header-title { font-size: 28px; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
+.header-sub { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+.header-sub a { color: var(--accent); text-decoration: none; }
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 20px 0 28px;
+  flex-wrap: wrap;
+}
+.stat-item { text-align: center; }
+.stat-value { font-size: 22px; font-weight: 700; color: var(--accent); }
+.stat-label-cn { font-size: 11px; color: var(--text-muted); }
+.stat-label-en { font-size: 10px; color: var(--text-dim); }
+.stat-unit-cn, .stat-unit-en { font-size: 9px; color: var(--text-dim); }
+
+/* Trends Card */
+.trends-card {
+  background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(59,130,246,0.08));
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+}
+.trends-title-cn { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+.trends-title-en { font-size: 11px; color: var(--text-dim); margin-bottom: 14px; }
+.trend-item { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.trend-item:last-child { border-bottom: none; }
+.trend-cn { font-size: 13px; color: var(--text); }
+.trend-en { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+/* Section */
+.section { margin-bottom: 32px; }
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 10px 16px;
+  background: var(--bg-card);
+  border-radius: 8px 8px 0 0;
+  border-left: 4px solid var(--accent);
+  margin-bottom: 1px;
+}
+.card-title .title-en { font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: 8px; }
+
+/* News Item */
+.news-item {
+  background: var(--bg-card);
+  padding: 18px 20px;
+  border-left: 4px solid var(--accent);
+  border-top: none;
+  transition: background 0.2s;
+}
+.news-item:hover { background: var(--bg-card-hover); }
+.news-item.top-story { border-left-color: var(--accent); }
+.news-item.tag-us { border-left-color: var(--tag-us); }
+.news-item.tag-cn { border-left-color: var(--tag-cn); }
+.news-item.tag-research { border-left-color: var(--tag-research); }
+.news-item.tag-open { border-left-color: var(--tag-open); }
+.news-item.tag-policy { border-left-color: var(--tag-policy); }
+.news-item.tag-sg { border-left-color: var(--tag-sg); }
+.news-item.tag-new { border-left-color: var(--tag-new); }
+
+.news-title-cn { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.news-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 10px; }
+
+.news-summary { margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--border); }
+.news-summary-cn { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+.news-summary-en { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+.why-matters { background: rgba(167,139,250,0.08); border-radius: 6px; padding: 10px 14px; margin-bottom: 12px; }
+.why-matters .why-cn { font-size: 12px; color: var(--text); margin-bottom: 4px; }
+.why-matters .why-en { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+.news-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+}
+.tag-us { background: var(--tag-us); }
+.tag-cn { background: var(--tag-cn); }
+.tag-research { background: var(--tag-research); }
+.tag-open { background: var(--tag-open); }
+.tag-policy { background: var(--tag-policy); }
+.tag-sg { background: var(--tag-sg); }
+.tag-new { background: var(--tag-new); }
+.news-date { font-size: 10px; color: var(--text-dim); }
+
+.source-link {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 3px 10px;
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.source-link:hover { background: var(--accent-dim); }
+
+.new-source-callout {
+  background: rgba(6,182,212,0.1);
+  border: 1px solid rgba(6,182,212,0.3);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--tag-new);
+}
+
+/* Whitelist */
+.whitelist-section {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.whitelist-title-cn { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.whitelist-title-en { font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+.whitelist-note-cn, .whitelist-note-en { font-size: 10px; color: var(--text-dim); margin-bottom: 10px; }
+.whitelist-group { margin-bottom: 12px; }
+.whitelist-group-title { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.whitelist-item { font-size: 11px; color: var(--text-muted); padding: 1px 0; }
+.whitelist-item .new-badge { color: var(--tag-new); font-weight: 600; }
+
+/* Footer */
+.footer {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.footer-cn { font-size: 11px; color: var(--text-muted); }
+.footer-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+.footer-gap { height: 4px; }
+
+@media (max-width: 640px) {
+  body { padding: 12px; }
+  .header-title { font-size: 22px; }
+  .stats-bar { gap: 16px; }
+  .news-item { padding: 14px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">&#x1F916;</div>
+  <div class="header-title">AI Daily Briefing</div>
+  <div class="header-sub">
+    2026&#52477;5&#26376;26&#26085; &#32;&#183;&#32; Monday Morning Edition<br>
+    <a href="https://kidultop.github.io/investment-reports/">GitHub Pages</a>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value">15+</div>
+    <div class="stat-label-cn">本周重要动态</div>
+    <div class="stat-label-en">Key Updates This Week</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">$30B</div>
+    <div class="stat-label-cn">Anthropic 融资规模</div>
+    <div class="stat-label-en">Anthropic Round Size</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">75%</div>
+    <div class="stat-label-cn">DeepSeek 永久降价</div>
+    <div class="stat-unit-cn">V4-Pro API</div>
+    <div class="stat-label-en">DeepSeek Permanent Cut</div>
+    <div class="stat-unit-en">V4-Pro API</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">$5.7B</div>
+    <div class="stat-label-cn">OpenAI Q1 营收</div>
+    <div class="stat-label-en">OpenAI Q1 Revenue</div>
+  </div>
+</div>
+
+<!-- Trends Card -->
+<div class="trends-card">
+  <div class="trends-title-cn">&#x1F4CA; 本周核心趋势</div>
+  <div class="trends-title-en">Key Trends This Week</div>
+  <div class="trend-item">
+    <div class="trend-cn">&#x1F4C8; Anthropic 完成 $300 亿融资、估值突破 $9000 亿，首度超越 OpenAI，Q2 预计首次盈利</div>
+    <div class="trend-en">Anthropic closes $30B round at $900B+ valuation, surpassing OpenAI; projects first-ever quarterly profit</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">&#x1F4B0; OpenAI 正式向 SEC 提交保密 S-1，目标 2026 Q4 上市，可能成为全球最大 IPO</div>
+    <div class="trend-en">OpenAI files confidential S-1 with SEC, targeting Q4 2026 IPO — potentially the largest in history</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">&#x1F30D; 中国开源模型占 OpenRouter 60% 流量，DeepSeek V4-Pro 永久降价 75%</div>
+    <div class="trend-en">Chinese open-weight models reach 60% share on OpenRouter; DeepSeek V4-Pro permanently cuts prices by 75%</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">&#x1F4CA; NVIDIA Vera CPU 首批交付 Anthropic/OpenAI/SpaceX，专为 Agentic AI 设计</div>
+    <div class="trend-en">NVIDIA Vera CPU ships to Anthropic, OpenAI, SpaceX — first processor purpose-built for Agentic AI</div>
+  </div>
+</div>
+
+<!-- TOP STORIES -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">&#x1F525; Top Stories</span>
+    <span class="title-en">Headlines</span>
+  </div>
+
+  <div class="news-item top-story">
+    <div class="news-title-cn">Anthropic 完成 $300 亿融资，估值突破 $9000 亿，首度超越 OpenAI</div>
+    <div class="news-title-en">Anthropic Closes $30B Round at $900B+ Valuation, Surpassing OpenAI for the First Time</div>
+    <div class="news-meta">
+      <span class="tag tag-us">US</span>
+      <span class="news-date">May 22-25, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 完成史上最大 AI 融资轮，由 Sequoia、Dragoneer、Greenoaks、Altimeter 联合领投。Q2 预计营收 $109 亿（环比翻倍），运营利润约 $5.59 亿——比原计划提前两年实现季度盈利。估值从 2 月的 $3800 亿飙升至 $9000 亿+，首度超越 OpenAI 3 月的 $8520 亿估值。</div>
+      <div class="news-summary-en">Anthropic closed the largest AI funding round in history, co-led by Sequoia, Dragoneer, Greenoaks, and Altimeter. Q2 revenue projected at $10.9B (up 130% from $4.8B in Q1), with ~$559M operating profit — two years ahead of schedule. Valuation surged from $380B in February to $900B+, surpassing OpenAI's $852B March valuation for the first time.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>AI 双寡头格局正式确立。Anthropic 凭借 Claude 企业端需求和利润率逆转估值，与 OpenAI 形成真正的双雄竞争。投资者定价 18 个月内年营收 $500 亿+，AI 商业化进入规模化盈利阶段。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The AI duopoly is now official. Anthropic reversed its valuation gap with enterprise Claude demand and improving margins. Investors price in $50B+ annual revenue within 18 months, signaling AI commercialization has entered a scalable profitability phase.</div>
+    </div>
+    <a class="source-link" href="https://winbuzzer.com/2026/05/21/anthropic-targets-first-profit-as-revenue-hits-109b-xcxwbn/" target="_blank">&#x1F517; WinBuzzer</a>
+    <a class="source-link" href="https://aitoolsrecap.com/Blog/anthropic-first-profit-2026-revenue-breakdown" target="_blank">&#x1F517; AIToolsRecap</a>
+    <a class="source-link" href="https://zhuanlan.zhihu.com/p/2041286926154589819" target="_blank">&#x1F517; Zhihu</a>
+  </div>
+
+  <div class="news-item top-story">
+    <div class="news-title-cn">OpenAI 正式提交保密 S-1 文件，冲刺万亿美元 IPO</div>
+    <div class="news-title-en">OpenAI Files Confidential S-1, Targeting Trillion-Dollar IPO</div>
+    <div class="news-meta">
+      <span class="tag tag-us">US</span>
+      <span class="news-date">May 22, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 正式向美国 SEC 提交保密 S-1 注册文件，由高盛和摩根士丹利担任主承销商。Q1 营收达 $57 亿，月营收运行率达 $20 亿，领先 Anthropic 约 $10 亿。保密文件通常在公开 IPO 前 4-6 个月提交，目标窗口为 2026 Q4 或 2027 Q1。</div>
+      <div class="news-summary-en">OpenAI filed a confidential S-1 registration statement with the SEC, with Goldman Sachs and Morgan Stanley as lead underwriters. Q1 revenue reached $5.7B with a $2B monthly run rate, ~$1B ahead of Anthropic. Confidential filings typically precede public offerings by 4-6 months, targeting a Q4 2026 or Q1 2027 public listing window.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>OpenAI 从非营利向上市公司的历史性转型正式启动。S-1 文件将首次披露完整财务数据（营收、亏损、股权结构）。若成功上市，将成为全球最大规模的科技 IPO 之一，标志着 AI 产业资本化的里程碑。</div>
+      <div class="why-en"><strong>Why it matters:</strong>OpenAI's historic transition from nonprofit to publicly traded company is officially underway. The S-1 will reveal full financials for the first time. A successful listing would be among the largest tech IPOs in history, marking a milestone in AI industry capitalization.</div>
+    </div>
+    <a class="source-link" href="https://greyjournal.net/news/openai-confidential-ipo-filing-trillion-valuation/" target="_blank">&#x1F517; Grey Journal</a>
+    <a class="source-link" href="https://aitoolsrecap.com/Blog/openai-ipo-2026-valuation-timeline-what-investors-need-to-know" target="_blank">&#x1F517; AIToolsRecap</a>
+    <a class="source-link" href="https://www.theinformation.com/articles/openai-held-1-billion-revenue-lead-anthropic-first-quarter" target="_blank">&#x1F517; The Information</a>
+  </div>
+
+  <div class="news-item top-story">
+    <div class="news-title-cn">OpenAI GPT-5.6 泄露：150 万 Token 上下文窗口，代号 iris-alpha，预计 6 月发布</div>
+    <div class="news-title-en">OpenAI GPT-5.6 Leaked: 1.5M Token Context, Codename iris-alpha, Expected June</div>
+    <div class="news-meta">
+      <span class="tag tag-us">US</span>
+      <span class="news-date">May 25-26, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">多位开发者在 OpenAI Codex 后端日志中发现未发布的 GPT-5.6 模型踪迹，内部代号 iris-alpha。该模型支持高达 150 万 Token 上下文窗口（较 GPT-5.5 提升显著），并有开发者成功跑通超长上下文测试。距 GPT-5.5 发布仅三周，OpenAI 加速迭代的意图明显。</div>
+      <div class="news-summary-en">Multiple developers discovered traces of an unreleased GPT-5.6 model in OpenAI Codex backend logs, internal codename iris-alpha. The model supports up to 1.5M token context window (significant upgrade over GPT-5.5), with some developers successfully testing the extended context. Just three weeks after GPT-5.5's release, OpenAI's accelerated iteration cadence is evident.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>150 万 Token 意味着 AI Agent 可处理超大规模代码库、完整法律文书或长篇科研资料，无需分段。若 6 月如期发布，将进一步拉开与竞品的上下文能力差距。</div>
+      <div class="why-en"><strong>Why it matters:</strong>1.5M tokens means AI agents can handle entire codebases, full legal documents, or lengthy research papers without chunking. If released in June as expected, it would further widen the context capability gap with competitors.</div>
+    </div>
+    <a class="source-link" href="https://m.36kr.com/p/3824591808352645" target="_blank">&#x1F517; 36Kr</a>
+    <a class="source-link" href="https://www.ithome.com/tags/openai/" target="_blank">&#x1F517; IT&#x4E4B;&#x5BB6;</a>
+  </div>
+
+  <div class="news-item top-story">
+    <div class="news-title-cn">梵蒂冈发布史上首份 AI 教谕，Anthropic 联合创始人 Olah 参与呈现</div>
+    <div class="news-title-en">Vatican Releases First-Ever AI Encyclical, Co-Presented by Anthropic Co-Founder Olah</div>
+    <div class="news-meta">
+      <span class="tag tag-policy">Policy</span>
+      <span class="news-date">May 25, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">教宗良十四世发布题为《Magnifica Humanitas》（壮美人性）的首份 AI 专题教谕，聚焦"人工智能时代的人格保护"。教谕刻意参照 1891 年《新事通谕》（工业革命劳工权利），将 AI 定位为可比拟工业革命的变革时代。Anthropic 联合创始人 Christopher Olah 参与联合呈现，体现了梵蒂冈对 Anthropic AI 安全理念的认可。</div>
+      <div class="news-summary-en">Pope Leo XIV issued "Magnifica Humanitas," the Vatican's first-ever encyclical on AI, focusing on "the protection of the human person in the age of artificial intelligence." The document intentionally parallels the 1891 Rerum Novarum encyclical on workers' rights during the Industrial Revolution. Anthropic co-founder Christopher Olah co-presented the encyclical, signaling the Vatican's recognition of Anthropic as a credible AI safety leader.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>全球最具影响力的道德权威首次就 AI 发表正式教谕。选择 Anthropic 而非 OpenAI 作为合作伙伴，凸显 AI 安全在伦理层面的竞争已从商业领域延伸到全球治理舞台。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The world's most influential moral authority issued its first formal teaching on AI. Choosing Anthropic over OpenAI as a partner highlights that AI safety competition has extended from business into global governance.</div>
+    </div>
+    <a class="source-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-may-25-2026" target="_blank">&#x1F517; BuildFastWithAI</a>
+  </div>
+</div>
+
+<!-- OFFICIAL RELEASES -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">&#x1F3D7; &#x5B98;&#x65B9;&#x53D1;&#x5E03;</span>
+    <span class="title-en">Official Releases</span>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title-cn">OpenAI ChatGPT 解锁 AI 填表功能：图像识别 + 语音输入 + 自动补全</div>
+    <div class="news-title-en">ChatGPT Gains AI Form-Filling: Image Recognition, Voice Input, and Auto-Complete</div>
+    <div class="news-meta">
+      <span class="tag tag-us">US</span>
+      <span class="news-date">May 23, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 发布公告，ChatGPT 新增表单智能填写能力。用户上传表单图片后，可通过语音或文字描述所需填写内容，系统自动识别字段并完成补全。该功能结合了图像识别、语音输入和自动补全三大能力，从对话式 AI 向实际生产力工具迈出重要一步。</div>
+      <div class="news-summary-en">OpenAI announced ChatGPT's new form-filling capability. Users upload a form image, describe what to fill via voice or text, and the system auto-recognizes fields and completes them. Combining image recognition, voice input, and auto-completion, this marks a significant step from conversational AI to practical productivity tools.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>AI Agent 从"聊天"走向"办事"的典型案例。填表是高频办公场景，自动识别 + 语音指令大幅降低使用门槛，有望成为企业用户付费转化的关键功能。</div>
+      <div class="why-en"><strong>Why it matters:</strong>A textbook case of AI agents moving from "chatting" to "doing." Form-filling is a high-frequency office scenario; auto-recognition plus voice commands dramatically lowers the usage barrier, potentially becoming a key driver for enterprise user conversion.</div>
+    </div>
+    <a class="source-link" href="https://news.qq.com/rain/a/20260523A065V000" target="_blank">&#x1F517; IT&#x4E4B;&#x5BB6;/QQ</a>
+    <a class="source-link" href="https://thewincentral.com/chatgpt-can-now-fill-out-forms-for-you-using-voice-and-images-and-its-wildly-good-at-it/" target="_blank">&#x1F517; The Win Central</a>
+  </div>
+
+  <div class="news-item tag-cn">
+    <div class="news-title-cn">DeepSeek V4-Pro API 永久降价 75%，创全球大模型最低价</div>
+    <div class="news-title-en">DeepSeek V4-Pro API Permanently Cuts Prices by 75%, Setting Global Low</div>
+    <div class="news-meta">
+      <span class="tag tag-cn">CN</span>
+      <span class="news-date">May 22, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">DeepSeek 官方宣布，V4-Pro API 在 5 月 31 日限时 2.5 折优惠结束后，将永久锁定为原价的 1/4。新价格：缓存未命中输入 $0.435/百万 Token（原 $1.74），输出 $0.87/百万 Token（原 $3.48），缓存命中输入仅 $0.003625/百万 Token。相比 Claude Opus 4.7 输入便宜约 8 倍，输出便宜约 10 倍。</div>
+      <div class="news-summary-en">DeepSeek announced V4-Pro API will permanently drop to 25% of original pricing after the May 31 promotional period ends. New rates: $0.435/M uncached input tokens (from $1.74), $0.87/M output (from $3.48), $0.003625/M cached input. That's ~8x cheaper than Claude Opus 4.7 on input and ~10x on output.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>永久性降价而非促销，表明 DeepSeek 在国产芯片上的训练成本已大幅降低。中国模型在性价比上持续领先，OpenRouter 数据显示中国开源模型已占 60% 流量，AI 定价权的重心正在东移。</div>
+      <div class="why-en"><strong>Why it matters:</strong>A permanent cut (not a promotion) signals DeepSeek's training costs on domestic chips have dropped significantly. Chinese models continue to lead on price-performance; OpenRouter data shows Chinese open-weight models now account for 60% of traffic. The center of AI pricing power is shifting east.</div>
+    </div>
+    <a class="source-link" href="https://notes.kamacoder.com/llm/news/deepseek-v4-pro-permanent-price-cut.html" target="_blank">&#x1F517; Kamacoder</a>
+    <a class="source-link" href="https://www.cnblogs.com/itech/p/20131311" target="_blank">&#x1F517; CNBlogs</a>
+  </div>
+
+  <div class="news-item tag-cn">
+    <div class="news-title-cn">DeepSeek 组建 Harness 团队，入局编程智能体，直接对标 Claude Code</div>
+    <div class="news-title-en">DeepSeek Forms Harness Team for Coding Agents, Directly Competing with Claude Code</div>
+    <div class="news-meta">
+      <span class="tag tag-cn">CN</span>
+      <span class="news-date">May 20, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">DeepSeek 在内部组建代号 Harness 的新团队，主攻代码智能体产品研发，直接对标 Anthropic 的 Claude Code。资深研究员陈德里在社交媒体侧面证实了该消息。Harness 团队旨在通过工程基础设施将大模型转化为可靠智能体，聚焦代码生成、智能协作和 Agent 编排能力。</div>
+      <div class="news-summary-en">DeepSeek has formed an internal "Harness" team dedicated to building coding agent products, directly competing with Anthropic's Claude Code. Senior researcher Chen Deli confirmed the news on social media. The team aims to transform LLMs into reliable agents through engineering infrastructure, focusing on code generation, intelligent collaboration, and agent orchestration.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>编程智能体（Coding Agent）赛道竞争白热化。继 Claude Code、OpenAI Codex、Cursor 之后，中国头部厂商正式入局。Harness 团队的成立标志着 DeepSeek 从纯模型厂商向"模型 + 工具 + 平台"综合服务商转型。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The coding agent race is intensifying. Following Claude Code, OpenAI Codex, and Cursor, China's top AI lab officially enters the arena. The Harness team's formation signals DeepSeek's pivot from pure model provider to a comprehensive "model + tools + platform" service.</div>
+    </div>
+    <a class="source-link" href="https://news.qq.com/rain/a/20260520A07LNK00" target="_blank">&#x1F517; QQ News</a>
+    <a class="source-link" href="https://www.agentren.cn/2026/0520/15634.shtml" target="_blank">&#x1F517; AgentRen</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title-cn">OpenAI Codex 可控制锁屏 Mac，无需保持设备唤醒</div>
+    <div class="news-title-en">OpenAI Codex Can Now Control Locked Macs, No Need to Keep Devices Awake</div>
+    <div class="news-meta">
+      <span class="tag tag-us">US</span>
+      <span class="news-date">May 25, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI Codex 编程 Agent 获得控制锁屏 Mac 的能力，用户无需保持设备唤醒即可运行长时间自主工作流。这是自主 Agent 能力的重大升级，意味着 AI 可以在无人值守状态下完成大规模代码重构、测试套件运行等任务。</div>
+      <div class="news-summary-en">OpenAI Codex coding agent gained the ability to control a locked Mac, removing the need for users to keep devices active for long autonomous workflows. This is a major upgrade for autonomous agent capabilities, meaning AI can complete large-scale code refactoring, test suite execution, and other tasks unattended.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>AI Agent 无人值守运行是企业级应用的关键前提。锁屏控制能力消除了实际部署中的最大障碍之一——用户需要保持电脑开启。这将加速 AI Agent 在 CI/CD、自动化运维等场景的落地。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Unattended AI agent operation is a prerequisite for enterprise-grade deployment. Lock-screen control eliminates one of the biggest practical barriers — users needing to keep their computers on. This will accelerate AI agent adoption in CI/CD, automated ops, and similar scenarios.</div>
+    </div>
+    <a class="source-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-may-25-2026" target="_blank">&#x1F517; BuildFastWithAI</a>
+  </div>
+</div>
+
+<!-- RESEARCH & TECH -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">&#x1F52C; &#x7814;&#x7A76;&#x4E0E;&#x6280;&#x672F;</span>
+    <span class="title-en">Research & Technology</span>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-title-cn">NVIDIA Vera CPU 首批交付：首款专为 Agentic AI 设计的处理器</div>
+    <div class="news-title-en">NVIDIA Vera CPU First Delivery: World's First Processor Purpose-Built for Agentic AI</div>
+    <div class="news-meta">
+      <span class="tag tag-research">Research</span>
+      <span class="news-date">May 19, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">NVIDIA 正式交付首批 Vera CPU，搭载 88 个 Olympus 核心，1.2 TB/s 内存带宽。首批客户包括 Anthropic、OpenAI、SpaceX AI 和甲骨文云。Vera 专为 Agentic AI 设计，负责编排、工具调用、强化学习和长上下文状态管理，将部分工作从 GPU 卸载到 CPU。甲骨文承诺部署数十万颗。</div>
+      <div class="news-summary-en">NVIDIA delivered the first batch of Vera CPU with 88 Olympus cores and 1.2 TB/s memory bandwidth. First customers include Anthropic, OpenAI, SpaceX AI, and Oracle Cloud. Vera is purpose-built for Agentic AI, handling orchestration, tool-calls, reinforcement learning, and long-context state management — offloading work from GPUs. Oracle committed to deploying hundreds of thousands of units.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3E;&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>黄仁勋将 Vera 定位为"下一个数十亿美元级业务"。Agentic AI 对 CPU 的需求（编排、工具调用、状态管理）与传统的 GPU 计算完全不同，Vera 填补了这个空白。甲骨文数十万颗的部署承诺表明市场对专用 AI CPU 的需求是真实的。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Jensen Huang positioned Vera as NVIDIA's "next $10B business." Agentic AI's CPU demands (orchestration, tool-calls, state management) differ fundamentally from traditional GPU compute, and Vera fills that gap. Oracle's commitment to deploy hundreds of thousands validates real market demand for AI-dedicated CPUs.</div>
+    </div>
+    <a class="source-link" href="https://nvidianews.nvidia.com/news/nvidia-launches-vera-cpu-purpose-built-for-agentic-ai" target="_blank">&#x1F517; NVIDIA News</a>
+    <a class="source-link" href="https://www.ithome.com/0/952/080.htm" target="_blank">&#x1F517; IT&#x4E4B;&#x5BB6;</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-title-cn">DeepMind Co-Scientist 系统：多 Agent 协作科研工作流加速器</div>
+    <div class="news-title-en">DeepMind Co-Scientist: Multi-Agent Collaborative Research Workflow Accelerator</div>
+    <div class="news-meta">
+      <span class="tag tag-research">Research</span>
+      <span class="news-date">May 22, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">DeepMind 发布 Co-Scientist 系统，结合迭代假设生成、辩论和实验规划的多 Agent 协作架构。早期生物医学应用案例包括候选药物识别和多组学分析。DeepMind 强调该系统定位为"科研加速器"而非替代品，旨在帮助科学家加速重复性研究流程。</div>
+      <div class="news-summary-en">DeepMind released Co-Scientist, a multi-agent system combining iterative hypothesis generation, debate, and experiment planning. Early biomedical use cases include candidate drug identification and multi-omic analyses. DeepMind positions it as a "research workflow accelerator" rather than a lab replacement, designed to help scientists accelerate repetitive research processes.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A;</strong>AI 在科研领域的应用从"辅助分析"升级到"主动假设生成"。多 Agent 辩论机制确保假设的多样性和严谨性，是 AI for Science 的关键突破方向。</div>
+      <div class="why-en"><strong>Why it matters:</strong>AI applications in research are upgrading from "assisted analysis" to "active hypothesis generation." Multi-agent debate mechanisms ensure diversity and rigor of hypotheses — a critical breakthrough direction for AI for Science.</div>
+    </div>
+    <a class="source-link" href="https://aiagentstore.ai/ai-agent-news/2026-may" target="_blank">&#x1F517; AI Agent Store</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-title-cn">NIST 发布 Report 800-5：AI Agent 安全分析报告</div>
+    <div class="news-title-en">NIST Publishes Report 800-5: AI Agent Security Analysis</div>
+    <div class="news-meta">
+      <span class="tag tag-policy">Policy</span>
+      <span class="news-date">May 19, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">美国国家标准与技术研究院（NIST）发布 Report 800-5，汇总 AI Agent 安全公共征求意见的反馈分析。报告综合了常见威胁模型，建议将传统网络安全实践适配到自主 AI 系统中。这标志着美国政府在 Agent 安全标准化方面的方向性指导。</div>
+      <div class="news-summary-en">NIST published Report 800-5, summarizing public responses to its RFI on AI agent security. The report synthesizes common threat models and recommends adapting traditional cybersecurity practices for agentic systems. This signals where U.S. government standards for agent security may be heading.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>NIST 报告是联邦标准的先行指标。随着 AI Agent 进入企业关键任务场景，安全标准的缺失是最大隐患。800-5 系列报告将成为 Agent 安全合规的基石。</div>
+      <div class="why-en"><strong>Why it matters:</strong>NIST reports are leading indicators for federal standards. As AI agents enter mission-critical enterprise scenarios, the absence of security standards is the biggest risk. The 800-5 series will become the foundation for agent security compliance.</div>
+    </div>
+    <a class="source-link" href="https://aiagentstore.ai/ai-agent-news/2026-may" target="_blank">&#x1F517; AI Agent Store</a>
+  </div>
+</div>
+
+<!-- POLICY & INDUSTRY -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">&#x1F4C8; &#x653F;&#x7B56;&#x4E0E;&#x4EA7;&#x4E1A;</span>
+    <span class="title-en">Policy & Industry</span>
+  </div>
+
+  <div class="news-item tag-policy">
+    <div class="news-title-cn">特朗普取消 AI 安全行政令签署，前沿模型审查机制搁浅</div>
+    <div class="news-title-en">Trump Cancels AI Safety Executive Order, Pre-Deployment Review Stalls</div>
+    <div class="news-meta">
+      <span class="tag tag-policy">Policy</span>
+      <span class="news-date">May 21, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">特朗普总统取消了 AI 行政令的签署，该行政令原计划为前沿 AI 模型建立发布前审查机制。据报道，Zuckerberg、Musk 和 David Sacks 在签署前数小时直接致电总统施压。白宫消息人士称特朗普"就是不喜欢监管"。此举短期内利好 AI 实验室（加速模型发布），但长期可能让州级（如加州）和欧盟 AI 法规填补联邦真空。</div>
+      <div class="news-summary-en">President Trump canceled the signing of an AI executive order that would have created a pre-release vetting process for advanced AI models. Zuckerberg, Musk, and David Sacks reportedly called the president directly hours before the scheduled signing. A White House source said Trump "just hates regulation." Short-term positive for AI labs (faster model launches), but long-term negative as state-level and EU regulations fill the federal vacuum.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>联邦层面的 AI 监管空白意味着各州和欧盟将制定更碎片化的规则，增加跨国 AI 企业的合规成本。OpenAI 和 Anthropic 将面临"多标合规"挑战。</div>
+      <div class="why-en"><strong>Why it matters:</strong>A federal AI regulatory vacuum means states and the EU will create more fragmented rules, increasing compliance costs for multinational AI companies. OpenAI and Anthropic will face "multi-standard compliance" challenges.</div>
+    </div>
+    <a class="source-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-may-25-2026" target="_blank">&#x1F517; BuildFastWithAI</a>
+  </div>
+
+  <div class="news-item tag-policy">
+    <div class="news-title-cn">NextEra $670 亿收购 Dominion Energy：AI 电力需求成最大驱动</div>
+    <div class="news-title-en">NextEra's $67B Dominion Acquisition: AI Power Demand as Primary Driver</div>
+    <div class="news-meta">
+      <span class="tag tag-policy">Policy</span>
+      <span class="news-date">May 25, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">NextEra Energy 宣布以 $670 亿收购 Dominion Energy，创美国史上最大公用事业合并纪录。AI 数据中心预计到 2030 年将消耗美国 15-25% 的电力。NextEra 拥有北美最大可再生能源组合，此次收购旨在为超大规模 AI 工作负载建设发电和输电能力。</div>
+      <div class="news-summary-en">NextEra Energy announced a $67B deal to acquire Dominion Energy, the largest utility merger in U.S. history. AI data centers are projected to consume 15-25% of U.S. electricity by 2030. NextEra operates North America's largest renewable energy portfolio; the acquisition aims to build generation and transmission capacity for hyperscale AI workloads.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>电力供应而非模型能力，正成为大规模 AI 训练和推理的首要约束。$670 亿的收购规模表明资本市场已经将 AI 电力基础设施视为核心投资主题。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Power availability, not model capability, is now the primary constraint for large-scale AI training and inference. The $67B acquisition scale signals capital markets view AI power infrastructure as a core investment theme.</div>
+    </div>
+    <a class="source-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-may-25-2026" target="_blank">&#x1F517; BuildFastWithAI</a>
+  </div>
+
+  <div class="news-item tag-policy">
+    <div class="news-title-cn">Intuit 裁员 17%，AI 驱动的企业重组持续蔓延</div>
+    <div class="news-title-en">Intuit Lays Off 17% as AI-Driven Enterprise Restructuring Spreads</div>
+    <div class="news-meta">
+      <span class="tag tag-policy">Policy</span>
+      <span class="news-date">May 25, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Intuit 裁减 17% 员工，成为 AI 驱动企业重组的最新案例。此前 Salesforce、Microsoft、Google 和 Meta（上周裁员 8000 人）已采取类似行动。企业并非因为 AI 直接替代岗位而裁员，而是 AI 使更小的团队能够交付相同的产品路线图。</div>
+      <div class="news-summary-en">Intuit laid off 17% of its workforce, the latest in AI-driven enterprise restructuring following similar moves from Salesforce, Microsoft, Google, and Meta (8,000 layoffs the prior week). Companies aren't laying off because AI directly replaced roles, but because AI enables shipping the same product roadmaps with smaller teams.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>AI 对就业的影响已从"替代论"转向"提效论"——不是 AI 抢了工作，而是 AI 让更少的人能做更多的事。这对白领就业市场的影响可能比预期更深更广。</div>
+      <div class="why-en"><strong>Why it matters:</strong>AI's employment impact has shifted from "replacement" to "efficiency" — not AI taking jobs, but AI enabling fewer people to do more. The impact on white-collar employment may be deeper and broader than expected.</div>
+    </div>
+    <a class="source-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-may-25-2026" target="_blank">&#x1F517; BuildFastWithAI</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title-cn">Andrej Karpathy 加入 Anthropic 预训练团队，AI 人才争夺战升级</div>
+    <div class="news-title-en">Andrej Karpathy Joins Anthropic Pretraining Team, AI Talent War Escalates</div>
+    <div class="news-meta">
+      <span class="tag tag-us">US</span>
+      <span class="news-date">May 19-20, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 联合创始人、前特斯拉自动驾驶负责人 Andrej Karpathy 宣布加入 Anthropic，在预训练团队负责人 Nicholas Joseph 指导下工作。Karpathy 表示未来几年在 LLM 前沿的工作将"尤为关键"。此举被业界视为 AI 人才争夺战升级的标志性事件。</div>
+      <div class="news-summary-en">OpenAI co-founder and former Tesla Autopilot lead Andrej Karpathy announced joining Anthropic to work under pretraining team lead Nicholas Joseph. Karpathy described the next few years at the LLM frontier as "especially formative." The move is seen as a landmark event in the escalating AI talent war.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>Karpathy 是 AI 社区最具影响力的技术领袖之一，他的选择反映了行业顶尖人才对 Anthropic 前沿研究方向的信心。对 OpenAI 而言，核心人才的流失是比 IPO 更值得关注的风险信号。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Karpathy is one of the most influential technical leaders in the AI community. His choice reflects top talent's confidence in Anthropic's frontier research direction. For OpenAI, losing core talent is a risk signal more noteworthy than the IPO.</div>
+    </div>
+    <a class="source-link" href="https://www.36kr.com/p/3816814284145798" target="_blank">&#x1F517; 36Kr</a>
+  </div>
+</div>
+
+<!-- OPEN SOURCE -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">&#x1F4E6; &#x5F00;&#x6E90;&#x751F;&#x6001;</span>
+    <span class="title-en">Open Source Ecosystem</span>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-title-cn">中国开源模型占 OpenRouter 60% 流量，全面领先美国阵营</div>
+    <div class="news-title-en">Chinese Open-Weight Models Reach 60% Share on OpenRouter, Leading the Pack</div>
+    <div class="news-meta">
+      <span class="tag tag-open">Open</span>
+      <span class="news-date">May 25, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Kimi K2.6、DeepSeek V4、GLM-5.1、Qwen 3 等中国开源模型在 OpenRouter（全球最广泛使用的第三方 AI 模型路由器）上合计占据 60% 的使用流量。Meta 的 Avocado 模型作为美国最后一个可信的开源前沿候选者，迟迟未有公开更新。</div>
+      <div class="news-summary-en">Chinese open-weight models including Kimi K2.6, DeepSeek V4, GLM-5.1, and Qwen 3 now account for 60% of all AI usage on OpenRouter, the most widely used third-party AI model router. Meta's Avocado model, the last credible U.S. open-weight frontier candidate, has had no public updates.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>开源 AI 的格局已经发生根本性变化。Meta 放弃 Llama 转向闭源后，美国阵营在开源领域出现真空，中国四强（Kimi / Qwen / DeepSeek / GLM）全面填补。这对全球开发者生态的长期影响深远。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The open-source AI landscape has fundamentally shifted. After Meta abandoned Llama for closed-source, a vacuum emerged in the U.S. camp, fully filled by China's top four (Kimi/Qwen/DeepSeek/GLM). The long-term implications for the global developer ecosystem are profound.</div>
+    </div>
+    <a class="source-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-may-25-2026" target="_blank">&#x1F517; BuildFastWithAI</a>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-title-cn">Cursor 发布 Composer 2.5：首个自研前沿编码模型</div>
+    <div class="news-title-en">Cursor Releases Composer 2.5: First In-House Frontier Coding Model</div>
+    <div class="news-meta">
+      <span class="tag tag-open">Open</span>
+      <span class="news-date">May 18, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Cursor 发布首款自研前沿编码模型 Composer 2.5，直接对标 Claude Opus 4.7 和 GPT-5.5。SWE-Bench Multilingual 得分 79.8%，CursorBench v3.1 得分 63.2%，达到与顶级模型同级别的编码能力。定价 $0.50/$2.50 每百万输入/输出 Token，对所有 Cursor 用户开放。</div>
+      <div class="news-summary-en">Cursor released Composer 2.5, its first in-house frontier coding model, directly competing with Claude Opus 4.7 and GPT-5.5. Scored 79.8% on SWE-Bench Multilingual and 63.2% on CursorBench v3.1, reaching parity with top-tier models. Priced at $0.50/$2.50 per 1M input/output tokens, rolled out to all Cursor users.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>IDE 厂商自研模型的成功意味着"垂直场景专用模型"路线可行。Cursor 证明了不依赖 OpenAI/Anthropic 也能达到顶级编码能力，为更多垂直 AI 应用提供了参考。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The success of an IDE vendor's in-house model proves the "vertical scenario-specific model" approach works. Cursor showed it's possible to reach top coding ability without depending on OpenAI/Anthropic, providing a reference for more vertical AI applications.</div>
+    </div>
+    <a class="source-link" href="https://codersera.com/blog/ai-models-released-may-2026-monthly-roundup/" target="_blank">&#x1F517; Codersera</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-title-cn">xAI 发布 Grok Build CLI Beta：首个 Grok 编程 Agent 命令行工具</div>
+    <div class="news-title-en">xAI Releases Grok Build CLI Beta: First Grok Coding Agent CLI Tool</div>
+    <div class="news-meta">
+      <span class="tag tag-us">US</span>
+      <span class="news-date">May 14, 2026</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">xAI 发布 Grok Build CLI 测试版，基于 Grok 4.3 Beta 模型，支持 2M Token 上下文窗口和最多 8 个并行子 Agent。功能包括终端规划、干净 Diff、Worktree 支持和无头模式。仅限 SuperGrok Heavy 订阅者（$299/月）使用。</div>
+      <div class="news-summary-en">xAI released Grok Build CLI beta based on Grok 4.3 Beta, supporting 2M token context window and up to 8 parallel sub-agents. Features include terminal planning, clean diffs, worktree support, and headless mode. Available only to SuperGrok Heavy subscribers ($299/month).</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>&#x4E3A;&#x4F55;&#x91CD;&#x8981;&#xFF1A：</strong>编程 Agent CLI 赛道已聚集 Claude Code、OpenAI Codex、Grok Build 三大玩家。8 个并行子 Agent 的设计在同类产品中最为激进，体现了 xAI 在 Agent 编排上的差异化策略。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The coding agent CLI space now has three major players: Claude Code, OpenAI Codex, and Grok Build. The 8 parallel sub-agent design is the most aggressive among peers, reflecting xAI's differentiated strategy in agent orchestration.</div>
+    </div>
+    <a class="source-link" href="https://codersera.com/blog/ai-models-released-may-2026-monthly-roundup/" target="_blank">&#x1F517; Codersera</a>
+  </div>
+</div>
+
+<!-- WHITELIST -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">&#x1F3F7; &#x4FE1;&#x6E90;&#x767D;&#x540D;&#x5355;</div>
+  <div class="whitelist-title-en">Source Whitelist</div>
+  <div class="whitelist-note-cn">&#x4EE5;&#x4E0B;&#x4E3A;&#x672C;&#x7B80;&#x62A5;&#x8FFD;&#x8E2A;&#x7684;&#x5B98;&#x65B9;/&#x6743;&#x5A01;&#x4FE1;&#x606F;&#x6E90;&#xFF0C;&#x6BCF;&#x671F;&#x66F4;&#x65B0;</div>
+  <div class="whitelist-note-en">Official and authoritative sources tracked by this briefing. Updated each edition.</div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-title">&#x1F1FA;&#x1F1F8; US</div>
+    <div class="whitelist-item">OpenAI News/Research (openai.com/news, openai.com/research)</div>
+    <div class="whitelist-item">Anthropic Newsroom/Research (anthropic.com/news, anthropic.com/research)</div>
+    <div class="whitelist-item">Google DeepMind (deepmind.google/blog)</div>
+    <div class="whitelist-item">Meta Superintelligence Labs (about.fb.com/news)</div>
+    <div class="whitelist-item">NVIDIA News (nvidianews.nvidia.com)</div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-title">&#x1F1E8;&#x1F1F3; China</div>
+    <div class="whitelist-item">Moonshot/Kimi (moonshot.ai, kimi.com)</div>
+    <div class="whitelist-item">MiniMax (minimaxi.com)</div>
+    <div class="whitelist-item">&#x667A;&#x8C31; Zhipu AI (zhipuai.cn, open.bigmodel.cn)</div>
+    <div class="whitelist-item">Qwen/Alibaba Cloud (qwen.ai/blog)</div>
+    <div class="whitelist-item">DeepSeek (deepseek.com)</div>
+    <div class="whitelist-item">ByteDance Seed (seed.bytedance.com)</div>
+    <div class="whitelist-item">Kimi K2 Official (kimi-k2.org)</div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-title">&#x1F1EC;&#x1F1E7; Singapore</div>
+    <div class="whitelist-item">A*STAR AI Division (a-star.edu.sg/aiml)</div>
+    <div class="whitelist-item">GovTech Singapore (tech.gov.sg/)</div>
+    <div class="whitelist-item">Singapore DSAI (smartnation.sg/digital-singapore/ai-sg)</div>
+    <div class="whitelist-item">NUS AI Research (nus.edu.sg/computing/ai-research)</div>
+    <div class="whitelist-item">MDDI Singapore (mddi.gov.sg/newsroom)</div>
+    <div class="whitelist-item">Singtel Digital InfraCo (singtel.com/about-us/media-centre)</div>
+    <div class="whitelist-item">PAIR Chat (pair.gov.sg, reports.open.gov.sg/pair/updates)</div>
+    <div class="whitelist-item">AIBots (developer.tech.gov.sg)</div>
+    <div class="whitelist-item">Transcribe (transcribe.gov.sg)</div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-title">&#x1F4F0; Media</div>
+    <div class="whitelist-item">Reuters AI (reuters.com/technology)</div>
+    <div class="whitelist-item">MIT Tech Review (technologyreview.com)</div>
+    <div class="whitelist-item">The Information (theinformation.com)</div>
+    <div class="whitelist-item">CNBC Technology (cnbc.com)</div>
+    <div class="whitelist-item">Forbes AI 50 (forbes.com)</div>
+    <div class="whitelist-item">IEEE Spectrum (spectrum.ieee.org)</div>
+    <div class="whitelist-item">AI Flash Report (aiflashreport.com)</div>
+    <div class="whitelist-item">WinBuzzer (winbuzzer.com)</div>
+    <div class="whitelist-item">Xinhua EN (xinhuanet.com/english)</div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-title">&#x1F4DA; Open Source / Research</div>
+    <div class="whitelist-item">Hugging Face Blog (huggingface.co/blog)</div>
+    <div class="whitelist-item">arXiv CS.AI (arxiv.org/list/cs.AI)</div>
+    <div class="whitelist-item">OpenBMB (openbmb.org)</div>
+    <div class="whitelist-item">HKUDS (hku-datascience.github.io)</div>
+    <div class="whitelist-item">Marktechpost (marktechpost.com)</div>
+    <div class="whitelist-item">IT之家 OpenAI &#x6807;&#x7B7E; (ithome.com/tags/openai)</div>
+    <div class="whitelist-item">AI Agent Store (aiagentstore.ai)</div>
+    <div class="whitelist-item">BuildFastWithAI (buildfastwithai.com)</div>
+    <div class="whitelist-item">AIToolsRecap (aitoolsrecap.com)</div>
+    <div class="whitelist-item">Codersera (codersera.com)</div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-title">&#x1F6E1; AI Governance / Policy</div>
+    <div class="whitelist-item">NIST AI (nist.gov/artificial-intelligence)</div>
+    <div class="whitelist-item">Plural Policy (pluralpolicy.com/blog)</div>
+    <div class="whitelist-item">UK AISI (aisi.gov.uk/blog)</div>
+    <div class="whitelist-item">Stanford HAI (hai.stanford.edu)</div>
+    <div class="whitelist-item">Mayer Brown AI Policy (mayerbrown.com)</div>
+  </div>
+
+  <div class="whitelist-group">
+    <div class="whitelist-group-title">&#x1F916; Computer Use Research</div>
+    <div class="whitelist-item">H Company (hcompany.ai)</div>
+    <div class="whitelist-item">Hugging Face Computer Use (huggingface.co/blog/Hcompany/holo3)</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-cn">AI Daily Briefing &#183; &#x7531;&#x5DE5;&#x4F5C;&#x6D41;&#x81EA;&#x52A8;&#x751F;&#x6210;&#xFF0C;&#x57FA;&#x4E8E;&#x767D;&#x540D;&#x5355;&#x4FE1;&#x6E90;&#x4E0E;&#x7F51;&#x7EDC;&#x641C;&#x7D22;</div>
+  <div class="footer-en">AI Daily Briefing &#183; Auto-generated by workflow, based on whitelisted sources and web search</div>
+  <div class="footer-gap"></div>
+  <div class="footer-cn">&#x53D1;&#x5E03;&#x65F6;&#x95F4;&#xFF1A;2026&#x5E74;5&#x6708;26&#x65E5; 08:21 SGT &#183; &#x4E0B;&#x4E00;&#x671F;&#xFF1A;&#x665A;&#x62A5; 20:00 SGT</div>
+  <div class="footer-en">Published: May 26, 2026 08:21 SGT &#183; Next: Evening Edition 20:00 SGT</div>
+  <div class="footer-gap"></div>
+  <div class="footer-cn">&#x514D;&#x8D23;&#x58F0;&#x660E;&#xFF1A;&#x672C;&#x7B80;&#x62A5;&#x4EC5;&#x4F9B;&#x4FE1;&#x606F;&#x53C2;&#x8003;&#xFF0C;&#x4E0D;&#x6784;&#x6210;&#x6295;&#x8D44;&#x5EFA;&#x8BAE;</div>
+  <div class="footer-en">Disclaimer: This briefing is for informational purposes only and does not constitute investment advice</div>
+</div>
+
+</body>
+</html>

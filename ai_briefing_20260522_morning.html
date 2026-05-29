@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 2026-05-22 早报 | AI Briefing Morning Edition</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --accent: #a78bfa;
+  --accent-dim: rgba(167, 139, 250, 0.15);
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --border: #334155;
+  --tag-us: #3b82f6;
+  --tag-cn: #ef4444;
+  --tag-sg: #f97316;
+  --tag-research: #22c55e;
+  --tag-open: #a78bfa;
+  --tag-policy: #eab308;
+  --tag-new: #06b6d4;
+  --radius: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; line-height:1.6; padding:40px 24px; max-width:900px; margin:0 auto; }
+
+.header { text-align:center; margin-bottom:36px; }
+.header h1 { font-size:28px; font-weight:700; color:var(--accent); margin-bottom:4px; }
+.header .date-cn { font-size:14px; color:var(--text-muted); }
+.header .date-en { font-size:12px; color:var(--text-dim); font-style:italic; margin-top:2px; }
+
+.trends-card { background:var(--card-bg); border:1px solid var(--accent-dim); border-radius:var(--radius); padding:20px 24px; margin-bottom:28px; }
+.trends-title-cn { font-size:15px; font-weight:700; color:var(--accent); margin-bottom:2px; }
+.trends-title-en { font-size:11px; color:var(--text-dim); font-style:italic; margin-bottom:14px; }
+.trend-item { padding:6px 0; font-size:13px; border-bottom:1px solid var(--border); }
+.trend-item:last-child { border-bottom:none; }
+.trend-cn { color:var(--text); }
+.trend-en { color:var(--text-dim); font-size:11px; font-style:italic; margin-top:1px; }
+
+.stats-bar { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
+.stat-box { flex:1; min-width:120px; background:var(--card-bg); border-radius:var(--radius); padding:14px 16px; text-align:center; border:1px solid var(--border); }
+.stat-value { font-size:24px; font-weight:700; color:var(--accent); }
+.stat-label-cn { font-size:12px; color:var(--text-muted); margin-top:4px; }
+.stat-label-en { font-size:10px; color:var(--text-dim); font-style:italic; }
+.stat-unit-cn { font-size:10px; color:var(--text-dim); }
+.stat-unit-en { font-size:9px; color:var(--text-dim); font-style:italic; }
+
+.section { margin-bottom:28px; }
+.card-title { display:flex; align-items:center; gap:12px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.card-title .title-cn { font-size:18px; font-weight:700; color:var(--text); }
+.card-title .title-en { font-size:11px; color:var(--text-dim); font-style:italic; }
+.card-title .count { font-size:12px; color:var(--text-muted); background:var(--border); padding:2px 8px; border-radius:12px; }
+
+.news-item { background:var(--card-bg); border-radius:var(--radius); padding:18px 20px; margin-bottom:14px; border-left:3px solid var(--accent); }
+.news-item.us { border-left-color: var(--tag-us); }
+.news-item.cn { border-left-color: var(--tag-cn); }
+.news-item.sg { border-left-color: var(--tag-sg); }
+.news-item.research { border-left-color: var(--tag-research); }
+.news-item.open { border-left-color: var(--tag-open); }
+.news-item.policy { border-left-color: var(--tag-policy); }
+.news-item.top { border-left-color: var(--accent); }
+
+.news-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.news-title-cn { font-size:15px; font-weight:600; color:var(--text); line-height:1.4; }
+.news-title-en { font-size:12px; color:var(--text-dim); font-style:italic; margin-top:3px; line-height:1.4; }
+.tag { font-size:10px; padding:3px 8px; border-radius:4px; font-weight:600; white-space:nowrap; margin-left:8px; }
+.tag-us { background:var(--tag-us); color:#fff; }
+.tag-cn { background:var(--tag-cn); color:#fff; }
+.tag-sg { background:var(--tag-sg); color:#fff; }
+.tag-research { background:var(--tag-research); color:#000; }
+.tag-open { background:var(--tag-open); color:#fff; }
+.tag-policy { background:var(--tag-policy); color:#000; }
+.tag-new { background:var(--tag-new); color:#000; }
+
+.news-summary { margin-bottom:10px; }
+.news-summary-cn { font-size:13px; color:var(--text-muted); padding-left:12px; border-left:2px solid var(--border); margin-bottom:6px; line-height:1.6; }
+.news-summary-en { font-size:11px; color:var(--text-dim); font-style:italic; padding-left:12px; border-left:2px solid rgba(100,116,139,0.3); line-height:1.5; }
+
+.why-matters { background:rgba(167,139,250,0.06); border-radius:6px; padding:10px 14px; margin-bottom:12px; }
+.why-cn { font-size:12px; color:var(--text); line-height:1.5; }
+.why-cn strong { color:var(--accent); }
+.why-en { font-size:10px; color:var(--text-dim); font-style:italic; line-height:1.5; margin-top:3px; }
+.why-en strong { color:var(--accent); }
+
+.source-link { display:inline-block; margin-top:6px; }
+.source-link a { font-size:11px; color:var(--accent); text-decoration:none; border:1px solid var(--accent-dim); padding:4px 10px; border-radius:4px; transition:all 0.2s; }
+.source-link a:hover { background:var(--accent-dim); }
+
+.new-source-callout { background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.25); border-radius:6px; padding:8px 12px; margin-top:8px; }
+.new-source-callout .ns-cn { font-size:11px; color:var(--tag-new); font-weight:600; }
+.new-source-callout .ns-en { font-size:10px; color:var(--text-dim); font-style:italic; }
+
+.whitelist-section { background:var(--card-bg); border-radius:var(--radius); padding:20px 24px; margin-top:32px; border:1px solid var(--border); }
+.whitelist-title-cn { font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.whitelist-title-en { font-size:10px; color:var(--text-dim); font-style:italic; margin-bottom:10px; }
+.whitelist-note-cn { font-size:11px; color:var(--text-muted); margin-bottom:10px; }
+.whitelist-note-en { font-size:10px; color:var(--text-dim); font-style:italic; margin-bottom:12px; }
+.whitelist-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; }
+.wl-cat { font-size:11px; font-weight:700; color:var(--accent); margin-top:8px; margin-bottom:4px; grid-column:1/-1; }
+.wl-item { font-size:11px; color:var(--text-muted); padding:3px 0; }
+.wl-item .new-badge { font-size:9px; color:var(--tag-new); font-weight:700; }
+
+.footer { margin-top:36px; text-align:center; padding-top:20px; border-top:1px solid var(--border); }
+.footer-cn { font-size:11px; color:var(--text-dim); margin-bottom:2px; }
+.footer-en { font-size:10px; color:var(--text-dim); font-style:italic; margin-bottom:2px; }
+
+.observe-note { background:rgba(234,179,8,0.08); border:1px solid rgba(234,179,8,0.25); border-radius:6px; padding:8px 12px; margin-top:8px; }
+.observe-note .ob-cn { font-size:11px; color:var(--tag-policy); }
+.observe-note .ob-en { font-size:10px; color:var(--text-dim); font-style:italic; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 AI 技术早报</h1>
+  <div class="date-cn">2026年5月22日 · 星期五 · 晨间版</div>
+  <div class="date-en">May 22, 2026 · Friday · Morning Edition</div>
+</div>
+
+<!-- 核心趋势卡 -->
+<div class="trends-card">
+  <div class="trends-title-cn">📊 今日核心趋势</div>
+  <div class="trends-title-en">Today's Key Trends</div>
+  <div class="trend-item">
+    <div class="trend-cn">🔴 AI 人才争夺战升级：Karpathy 加入 Anthropic，OpenAI 启动 IPO 倒计时</div>
+    <div class="trend-en">AI Talent War Intensifies: Karpathy joins Anthropic as OpenAI begins IPO countdown</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">🔴 阿里云全栈出击：Qwen 3.7-Max + 自研芯片 M890，从硅到软件的 Agent 时代布局</div>
+    <div class="trend-en">Alibaba Full-Stack Push: Qwen 3.7-Max + custom M890 chip, silicon-to-software Agentic Era play</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">🟡 美国 AI 监管遭遇波折：特朗普推迟签署 AI 行政令，称"不喜欢某些条款"</div>
+    <div class="trend-en">US AI Regulation Hits Turbulence: Trump postpones EO signing, says he "didn't like certain aspects"</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">🟠 新加坡 × Google 国家 AI 伙伴关系：ATxSummit 2026 发布四大支柱合作计划</div>
+    <div class="trend-en">Singapore × Google National AI Partnership: Four-pillar collaboration unveiled at ATxSummit 2026</div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-box">
+    <div class="stat-value">10</div>
+    <div class="stat-label-cn">本期新闻</div>
+    <div class="stat-label-en">Stories Today</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-value">$850B+</div>
+    <div class="stat-label-cn">OpenAI IPO 估值</div>
+    <div class="stat-label-en">OpenAI IPO Valuation</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-value">35h</div>
+    <div class="stat-label-cn">Qwen 3.7 自主任务</div>
+    <div class="stat-label-en">Qwen 3.7 Autonomous Run</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-value">3x</div>
+    <div class="stat-label-cn">M890 性能提升</div>
+    <div class="stat-label-en">M890 Perf Gain</div>
+  </div>
+</div>
+
+<!-- ═══════════ 头条区 ═══════════ -->
+<div class="section">
+<div class="card-title">
+  <span class="title-cn">🔥 Top Stories · 头条</span>
+  <span class="title-en">Top Stories</span>
+  <span class="count">3</span>
+</div>
+
+<!-- Story 1: Karpathy -->
+<div class="news-item us top">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">Andrej Karpathy 加入 Anthropic 预训练团队，AI 人才争夺战白热化</div>
+      <div class="news-title-en">Andrej Karpathy Joins Anthropic's Pretraining Team as AI Talent War Heats Up</div>
+    </div>
+    <span class="tag tag-us">US</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">OpenAI 联合创始人、前特斯拉 AI 负责人 Andrej Karpathy 于 5 月 19 日宣布加入 Anthropic，将在 Nicholas Joseph 领导的预训练团队工作。Karpathy 在 X 上表示："我认为未来几年在 LLM 前沿领域将格外具有塑造性。我很高兴加入这个团队，重返研发岗位。"此前他创办了 AI 教育初创公司 Eureka Labs。这一消息紧随 Anthropic 收购 Stainless、与 SpaceX 租用算力等动作之后，标志着 AI 人才争夺战进一步升级。</div>
+    <div class="news-summary-en">OpenAI co-founder and former Tesla AI lead Andrej Karpathy announced on May 19 that he has joined Anthropic's pretraining team under Nicholas Joseph. Karpathy posted on X: "I think the next few years at the frontier of LLMs will be especially formative. I am very excited to join the team here and get back to R&D." He previously founded AI education startup Eureka Labs. The move follows Anthropic's acquisition of Stainless and its compute deal with SpaceX, signaling an intensifying battle for top AI talent.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>Karpathy 是 OpenAI 创始团队成员，被 Elon Musk 评价为"计算机视觉领域全球第二人"（仅次于 Ilya Sutskever）。他的加入进一步巩固了 Anthropic 在预训练能力上的优势。在 Anthropic 估值逼近 $900B、收入增速超越 OpenAI 的背景下，这一人才流动可能重塑 AI 竞争格局。</div>
+    <div class="why-en"><strong>Why it matters:</strong> Karpathy is an OpenAI founding member whom Elon Musk called "arguably the #2 guy in the world in computer vision" (behind Ilya Sutskever). His move strengthens Anthropic's pretraining capabilities at a time when its valuation approaches $900B and revenue growth outpaces OpenAI — potentially reshaping the competitive landscape.</div>
+  </div>
+  <div class="source-link"><a href="https://www.cnbc.com/2026/05/19/anthropic-hires-openai-cofounder-andrej-karpathy-former-tesla-ai-lead.html" target="_blank">CNBC · May 19, 2026</a></div>
+</div>
+
+<!-- Story 2: OpenAI IPO -->
+<div class="news-item us top">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">OpenAI 准备提交 IPO 保密申请，估值超 $8500 亿，或为本世纪最大 IPO</div>
+      <div class="news-title-en">OpenAI Prepares Confidential IPO Filing at $850B+ Valuation in What Could Be Largest Public Debut in History</div>
+    </div>
+    <span class="tag tag-us">US</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">据 CNBC 5 月 20 日报道，OpenAI 最早将于本周五（5 月 22 日）向 SEC 提交 IPO 保密申请草案，目标在 2026 年第四季度上市。公司当前私募估值超过 $8500 亿，已累计融资 $1800 亿以上，由 Goldman Sachs 和 Morgan Stanley 担任承销商。CFO Sarah Friar 此前表示，对 OpenAI 这样规模的公司而言，"像上市公司一样运作是良好的治理习惯"。与此同时，竞争对手 Anthropic 正以 $9000 亿估值洽谈融资，SpaceX（合并 xAI）也在准备 IPO。</div>
+    <div class="news-summary-en">CNBC reported on May 20 that OpenAI is preparing to confidentially file its IPO prospectus as soon as Friday (May 22), targeting a Q4 2026 public debut. The company is valued at over $850B by private investors, has raised more than $180B, and is working with Goldman Sachs and Morgan Stanley as underwriters. CFO Sarah Friar previously said it is "good hygiene" for a company of OpenAI's size to operate like a public company. Rival Anthropic is reportedly raising at a $900B valuation, while SpaceX (merged with xAI) is also preparing its IPO.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>OpenAI 的 IPO 将是对 AI 行业商业模式的终极检验。$8500 亿+ 估值远超历史上任何科技 IPO，但其仍在"以历史性速度烧钱"。投资者将首次看到 OpenAI 的完整财务数据，这将成为整个 AI 行业估值体系的锚点。</div>
+    <div class="why-en"><strong>Why it matters:</strong> OpenAI's IPO will be the ultimate test of the AI industry's business model. The $850B+ valuation dwarfs any tech IPO in history, yet the company continues to "burn through cash at a historic pace." Investors will see OpenAI's full financials for the first time, setting an anchor for the entire AI sector's valuation framework.</div>
+  </div>
+  <div class="source-link"><a href="https://www.cnbc.com/2026/05/20/openai-ipo-filing.html" target="_blank">CNBC · May 20, 2026</a></div>
+</div>
+
+<!-- Story 3: White House EO -->
+<div class="news-item policy top">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">特朗普推迟签署 AI 行政令，称"不喜欢某些条款"，前沿模型预审机制搁浅</div>
+      <div class="news-title-en">Trump Postpones AI Executive Order Signing, Says He "Didn't Like Certain Aspects" — Frontier Model Review in Limbo</div>
+    </div>
+    <span class="tag tag-policy">Policy</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">据 CNN 和 POLITICO 5 月 21 日报道，白宫在最后一刻推迟了特朗普原定于周四签署的 AI 行政令。该行政令拟建立自愿框架，要求 AI 公司在发布"受覆盖前沿模型"前向联邦政府提供最长 90 天的安全审查期，并设立由财政部主导的 AI 漏洞信息共享平台。特朗普表示该行政令"可能成为阻碍"，强调"美国正在领先中国、领先所有人"。目前行政令的修订和签署时间尚未确定，OpenAI 与 Anthropic 等公司仍在与政府谈判审查期限——企业方倾向于 14 天而非 90 天。</div>
+    <div class="news-summary-en">CNN and POLITICO reported on May 21 that the White House abruptly postponed Trump's planned signing of an AI executive order. The order would have established a voluntary framework for AI companies to provide up to 90 days of pre-launch security review for "covered frontier models" and a Treasury-led vulnerability clearinghouse. Trump said the order "could've been a blocker," stressing that "the United States is leading China, we're leading everybody." No new signing date has been set. OpenAI and Anthropic are negotiating with the administration over the review window — companies favor 14 days rather than 90.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>这是特朗普政府从"不干预"转向有限监管的关键时刻。自 Anthropic 发布 Mythos 模型（可前所未有的速度利用网络安全漏洞）以来，AI 安全监管压力骤增。行政令的推迟意味着前沿模型的安全审查机制继续处于真空状态，但谈判仍在进行中——最终框架将影响全球 AI 治理走向。</div>
+    <div class="why-en"><strong>Why it matters:</strong> This marks a pivotal moment in the Trump administration's shift from hands-off to limited regulation. Since Anthropic unveiled Mythos — which can exploit cybersecurity vulnerabilities at unprecedented speed — pressure for AI safety oversight has surged. The postponement means frontier model review remains in limbo, but negotiations continue. The final framework will influence global AI governance trajectory.</div>
+  </div>
+  <div class="source-link"><a href="https://edition.cnn.com/2026/05/20/tech/ai-executive-order-trump-white-house" target="_blank">CNN · May 21, 2026</a></div>
+  <div class="observe-note">
+    <div class="ob-cn">⚑ 持续观察：行政令何时重新签署、审查期限最终定为几天、OpenAI/Anthropic 是否接受最终条款。</div>
+    <div class="ob-en">⚑ Watch: When the EO will be re-signed, the final review window length, and whether OpenAI/Anthropic accept the terms.</div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ 官方发布 ═══════════ -->
+<div class="section">
+<div class="card-title">
+  <span class="title-cn">📢 官方发布</span>
+  <span class="title-en">Official Releases</span>
+  <span class="count">2</span>
+</div>
+
+<!-- Story 4: Alibaba Cloud Summit -->
+<div class="news-item cn">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">阿里云峰会：Qwen 3.7-Max 正式发布 + 自研 M890 芯片 + 超级节点服务器，全栈 AI 出击</div>
+      <div class="news-title-en">Alibaba Cloud Summit: Qwen 3.7-Max Launched + Custom M890 Chip + Supernode Server — Full-Stack AI Offensive</div>
+    </div>
+    <span class="tag tag-cn">CN</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">5 月 20 日杭州阿里云峰会上，阿里巴巴发布了面向 Agent 时代的三大核心产品：（1）<strong>Qwen 3.7-Max</strong>：万亿参数 MoE 旗舰模型，专为多步骤 Agent 工作负载设计，支持 OpenClaw、Claude Code 等 Agent 框架。内部测试中，该模型在从未训练过的 M890 芯片上自主运行 35 小时、执行 1000+ 工具调用，产出的 AI 计算内核性能超出芯片厂商官方版本 10 倍。（2）<strong>Zhenwu M890 芯片</strong>：平头哥出品，性能达前代 810E 的 3 倍，片上内存 144GB，芯片间带宽 800GB/s，支持 FP32 到 FP4。已出货 56 万+ 颗。（3）<strong>Panjiu AL128 超级节点</strong>：单机架 128 颗加速器，PB/s 级内部带宽。CEO 吴泳铭预计 AI 产品收入将在约一年内超越传统云计算销售额。</div>
+    <div class="news-summary-en">At the May 20 Alibaba Cloud Summit in Hangzhou, Alibaba launched three Agentic Era products: (1) <strong>Qwen 3.7-Max</strong>: a trillion-parameter MoE flagship model purpose-built for multi-step agent workloads, supporting OpenClaw, Claude Code, and other harnesses. In internal testing, it ran autonomously for 35 hours on an untrained M890 chip, executing 1,000+ tool calls and producing an AI computing kernel 10× faster than the chipmaker's official version. (2) <strong>Zhenwu M890 chip</strong>: by T-Head, 3× the performance of predecessor 810E, 144GB on-chip memory, 800GB/s inter-chip bandwidth, FP32-to-FP4 native support. 560K+ units shipped. (3) <strong>Panjiu AL128 Supernode</strong>: 128 accelerators per rack, PB/s internal bandwidth. CEO Eddie Wu projected AI revenue will surpass conventional cloud sales within ~1 year.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>这是阿里迄今最激进的 AI 全栈布局——从自研芯片到自研模型再到超级计算节点，构建了完整的 Agent 时代基础设施。Qwen 3.7-Max 在 M890 上自主完成芯片级优化的演示，展示了"AI 设计 AI 硬件"的闭环能力。模型服务 ARR 预计本季度突破 ¥100 亿，标志着中国 AI 商业化进入规模化阶段。</div>
+    <div class="why-en"><strong>Why it matters:</strong> This is Alibaba's most aggressive full-stack AI play yet — from custom silicon to proprietary models to supercomputing nodes, building complete infrastructure for the Agentic Era. The demo of Qwen 3.7-Max autonomously optimizing a chip it had never seen showcases the "AI designs AI hardware" closed loop. Model services ARR projected to surpass ¥10B this quarter, signaling China's AI commercialization at scale.</div>
+  </div>
+  <div class="source-link"><a href="https://www.alibabacloud.com/blog/alibaba-unveils-new-ai-chip-flagship-model-and-rebuilt-cloud-stack-ai-for-agentic-era_603151" target="_blank">Alibaba Cloud Blog · May 20, 2026</a></div>
+</div>
+
+<!-- Story 5: Singapore Google Partnership -->
+<div class="news-item sg">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">新加坡与 Google 扩大 AI 合作：DeepMind 医疗 AI + 无障碍跑步助手 + AI Agent 治理沙盒</div>
+      <div class="news-title-en">Singapore and Google Expand National AI Partnership: DeepMind Healthcare, Accessibility Runner, and AI Agent Governance Sandbox</div>
+    </div>
+    <span class="tag tag-sg">SG</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">5 月 20 日 ATxSummit 2026 期间，新加坡数位发展及新闻部（MDDI）与 Google 宣布扩大国家 AI 伙伴关系，涵盖四大支柱：（1）<strong>社会挑战</strong>：Google DeepMind 与新加坡公立医疗集群合作 AI 联合临床医生研究；与 NRF 合作培训本地科研人员使用 Agent 科学工具；与 A*STAR 加速实验室发现转化；为视障运动员开发 Gemma 驱动的跑步助手（与 SG Enable 合作）。（2）<strong>教育</strong>：为所有中小学至初院教师启用 Google Workspace AI 功能；与教育部扩大 AI 教学合作。（3）<strong>创新</strong>：新加坡工程中心增派前向部署工程师支持企业 Agent 转型。（4）<strong>安全</strong>：Google、CSA、GovTech 和 IMDA 联合发布 AI Agent 沙盒白皮书；DeepMind 与 IMDA、MLCommons 合作多语言 AI 安全基准。Majulah AI 计划已培训 28,000 名新加坡人。</div>
+    <div class="news-summary-en">At ATxSummit 2026 on May 20, Singapore's MDDI and Google announced an expanded National AI Partnership across four pillars: (1) <strong>Societal Challenges</strong>: Google DeepMind collaborating with Singapore public health clusters on AI co-clinician research; training local researchers with NRF on agentic science tools; accelerating lab-to-innovation with A*STAR; developing a Gemma-powered running assistant for blind/low-vision athletes with SG Enable. (2) <strong>Education</strong>: AI-powered Google Workspace for all primary-to-JC educators; expanded MOE collaboration. (3) <strong>Innovation</strong>: Forward Deployed Engineers from Google's Singapore Engineering Center supporting enterprise agentic transformation. (4) <strong>Trust & Safety</strong>: Joint AI Agents Sandbox whitepaper by Google, CSA, GovTech, and IMDA; multilingual AI safety benchmarks with DeepMind, IMDA, and MLCommons. The Majulah AI initiative has trained 28,000 Singaporeans to date.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>这是新加坡迄今规模最大的单一 AI 公私合作，涉及 10+ 政府机构。标志着新加坡从"AI 战略规划"进入"AI 规模化部署"阶段。AI Agent 治理沙盒白皮书的发布尤其值得关注——在全球缺乏 Agent 监管框架的背景下，新加坡正试图建立可复制的治理模板。</div>
+    <div class="why-en"><strong>Why it matters:</strong> This is Singapore's largest single public-private AI collaboration to date, engaging 10+ government agencies. It marks Singapore's transition from "AI strategy planning" to "AI deployment at scale." The AI Agents Sandbox whitepaper is particularly notable — with no global regulatory framework for agents yet, Singapore is attempting to build a replicable governance template.</div>
+  </div>
+  <div class="source-link"><a href="https://www.mddi.gov.sg/newsroom/google-and-singapore-expand-partnership-to-accelerate-ai-impact-for-the-public-good/" target="_blank">MDDI Singapore · May 20, 2026</a></div>
+</div>
+</div>
+
+<!-- ═══════════ 研究与技术 ═══════════ -->
+<div class="section">
+<div class="card-title">
+  <span class="title-cn">🔬 研究与技术</span>
+  <span class="title-en">Research & Technology</span>
+  <span class="count">2</span>
+</div>
+
+<!-- Story 6: TIDE -->
+<div class="news-item research">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">TIDE：无损 MoE 扩散 LLM 推理加速，无需重训即获 1.5× 吞吐提升</div>
+      <div class="news-title-en">TIDE: Lossless MoE Diffusion LLM Inference — 1.5× Throughput Gain Without Retraining</div>
+    </div>
+    <span class="tag tag-research">Research</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">本周 arXiv 亮点论文 TIDE 提出了一种针对 MoE 扩散 LLM 的 I/O 感知专家卸载系统，利用专家激活在块内的时间稳定性，在不重新训练模型的情况下实现高达 1.5 倍的吞吐量提升。该方法被描述为扩散 LLM 推理的"免费午餐"——适用于 GPU-CPU 混合系统，对当前主流 MoE 架构（如 DeepSeek V4、Qwen 3.7 等）具有广泛适用性。</div>
+    <div class="news-summary-en">This week's arXiv highlight TIDE proposes an I/O-aware expert offloading system for MoE diffusion LLMs that exploits temporal stability of expert activation within blocks, achieving up to 1.5× throughput improvement without model retraining. Described as a "free lunch" for dLLM inference, the method is applicable to GPU-CPU systems and broadly relevant to current MoE architectures (DeepSeek V4, Qwen 3.7, etc.).</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>随着 MoE 架构成为旗舰模型标配（DeepSeek V4、Qwen 3.7-Max、GLM-5.1），推理效率是制约部署规模的关键瓶颈。TIDE 的"零成本加速"思路为大规模 MoE 模型的服务化部署提供了直接可用的优化方案，对降低推理成本具有实际意义。</div>
+    <div class="why-en"><strong>Why it matters:</strong> As MoE becomes the default architecture for flagship models (DeepSeek V4, Qwen 3.7-Max, GLM-5.1), inference efficiency is the key bottleneck for deployment at scale. TIDE's "zero-cost acceleration" approach offers a directly applicable optimization for serving large MoE models, with practical implications for reducing inference costs.</div>
+  </div>
+  <div class="source-link"><a href="https://arxiv.deeppaper.ai/papers/weekly" target="_blank">arXiv · May 18–24, 2026</a></div>
+</div>
+
+<!-- Story 7: Mem-pi -->
+<div class="news-item research">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">Mem-π：AI Agent 自适应记忆框架，学习"记住什么、何时生成"，全面超越检索式方案</div>
+      <div class="news-title-en">Mem-π: Adaptive Memory for AI Agents — Learning What and When to Generate, Outperforming Retrieval-Based Approaches</div>
+    </div>
+    <span class="tag tag-research">Research</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">本周 arXiv 另一篇重要论文 Mem-π 提出了一种 LLM Agent 动态记忆框架，能够按需生成上下文相关指导而非依赖静态检索。该方法在多个 Agent 基准测试中全面超越现有检索式记忆方案。与传统 RAG 不同，Mem-π 让 Agent 学会自主判断何时需要记忆、需要记住什么、以及何时遗忘——这更接近人类的记忆机制。</div>
+    <div class="news-summary-en">Another significant arXiv paper this week, Mem-π proposes a dynamic memory framework for LLM agents that generates context-specific guidance on demand rather than relying on static retrieval. The approach outperforms existing retrieval-based memory methods across multiple agent benchmarks. Unlike traditional RAG, Mem-π enables agents to autonomously decide when memory is needed, what to remember, and when to forget — more closely resembling human memory mechanisms.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>Agent 记忆是当前 AI Agent 研究的最核心挑战之一。Anthropic 的 Agent Coding Trends 报告也指出，Agent 需要在"数十次工作会话中保持连贯上下文"。Mem-π 的自适应记忆方案直接回应了这一需求，为长时间运行的自主 Agent 提供了更优的记忆架构选择。</div>
+    <div class="why-en"><strong>Why it matters:</strong> Agent memory is one of the most central challenges in AI agent research. Anthropic's Agent Coding Trends report also notes that agents need to "maintain coherent context across dozens of work sessions." Mem-π's adaptive memory approach directly addresses this need, offering a superior memory architecture for long-running autonomous agents.</div>
+  </div>
+  <div class="source-link"><a href="https://arxiv.deeppaper.ai/papers/weekly" target="_blank">arXiv · May 18–24, 2026</a></div>
+</div>
+</div>
+
+<!-- ═══════════ 政策与产业 ═══════════ -->
+<div class="section">
+<div class="card-title">
+  <span class="title-cn">🏛 政策与产业</span>
+  <span class="title-en">Policy & Industry</span>
+  <span class="count">2</span>
+</div>
+
+<!-- Story 8: Meta layoffs -->
+<div class="news-item policy">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">Meta 启动史上最大规模 AI 重组：裁员近 8,000 人，另调 7,000 人转向 AI 项目</div>
+      <div class="news-title-en">Meta Launches Largest-Ever AI Restructuring: ~8,000 Layoffs, 7,000 Reassigned to AI Projects</div>
+    </div>
+    <span class="tag tag-policy">Policy</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">据 Reuters 和 Business Insider 5 月 19 日报道，Meta 于 5 月 20 日启动新一轮全球裁员，涉及约 10% 员工（近 8,000 人），同时将 7,000 名员工调配至 AI 工作流相关新项目，并大规模削减管理层级。这并非单纯的降本裁员，而是一次以 AI 为核心逻辑的全面组织再造。此前 Meta 已推迟 Avocado 模型发布至 6 月，其开源策略也已转向闭源 Muse Spark。</div>
+    <div class="news-summary-en">Reuters and Business Insider reported on May 19 that Meta launched a new round of global layoffs on May 20, affecting ~10% of staff (~8,000 jobs), while reassigning 7,000 employees to AI workflow-related projects and significantly reducing management layers. This is not purely cost-cutting but a comprehensive AI-centric organizational restructuring. Meta had earlier delayed its Avocado model to June and pivoted from open-source to the closed-source Muse Spark.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>Meta 的"裁员 + AI 重配"模式可能成为大型科技公司 AI 转型的标准模板。近 8,000 人被裁、7,000 人被调配的组合，折射出 AI 自动化正在从根本上改变科技公司的劳动力结构。在开源策略转向闭源、模型发布不断推迟的背景下，Meta 正在经历 AI 时代最深刻的战略调整。</div>
+    <div class="why-en"><strong>Why it matters:</strong> Meta's "layoffs + AI reassignment" model may become the standard template for Big Tech AI transformation. The combination of ~8,000 cuts and 7,000 reassignments reflects how AI automation is fundamentally reshaping tech company workforce structures. With its open-source pivot abandoned and model releases delayed, Meta is undergoing its deepest strategic realignment in the AI era.</div>
+  </div>
+  <div class="source-link"><a href="https://finance.sina.com.cn/wm/2026-05-19/doc-inhymcpr7572714.shtml" target="_blank">Reuters / Sina Finance · May 19, 2026</a></div>
+</div>
+
+<!-- Story 9: EU AI Act -->
+<div class="news-item policy">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">EU AI 法案高风险系统合规倒计时：2026 年 8 月 2 日强制生效，全球企业加速布局</div>
+      <div class="news-title-en">EU AI Act High-Risk Compliance Countdown: Mandatory by August 2, 2026 — Global Enterprises Race to Prepare</div>
+    </div>
+    <span class="tag tag-policy">Policy</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">欧盟 AI 法案高风险 AI 系统条款将于 2026 年 8 月 2 日正式强制生效，距今仅剩约 10 周。该条款覆盖医疗设备 AI、招聘算法、信贷评估、关键基础设施等领域的AI系统，要求企业完成风险评估、建立人类监督机制、确保数据治理合规。与此同时，美国 AI 行政令的推迟（见头条）使大西洋两岸的 AI 监管节奏出现明显分化——欧盟先行一步，美国仍在谈判桌上。</div>
+    <div class="news-summary-en">The EU AI Act's high-risk AI system provisions become mandatory on August 2, 2026 — just ~10 weeks away. These cover AI systems in medical devices, hiring algorithms, credit assessment, and critical infrastructure, requiring risk assessments, human oversight mechanisms, and data governance compliance. Meanwhile, the postponement of the US AI executive order (see Top Stories) creates a clear regulatory divergence across the Atlantic — Europe charging ahead while the US remains at the negotiating table.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>8 月 2 日的截止日期是全球 AI 监管的分水岭。欧盟拥有 4.5 亿人口的统一市场，任何部署高风险 AI 系统的企业（包括中美公司）都必须合规，否则面临最高全球年营收 7% 的罚款。在美国监管节奏放缓的背景下，欧盟实际上正在成为全球 AI 治理的事实标准制定者。</div>
+    <div class="why-en"><strong>Why it matters:</strong> The August 2 deadline is a watershed moment for global AI regulation. The EU's 450M-person single market means any enterprise deploying high-risk AI systems — including US and Chinese companies — must comply or face fines up to 7% of global annual revenue. With US regulation stalling, the EU is de facto becoming the global AI governance standard-setter.</div>
+  </div>
+  <div class="source-link"><a href="https://calmops.com/ai/global-ai-regulation-2026/" target="_blank">CalmOps / EU AI Act Analysis · 2026</a></div>
+</div>
+</div>
+
+<!-- ═══════════ 开源生态 ═══════════ -->
+<div class="section">
+<div class="card-title">
+  <span class="title-cn">🌐 开源生态</span>
+  <span class="title-en">Open Source Ecosystem</span>
+  <span class="count">2</span>
+</div>
+
+<!-- Story 10: Qwen 3.7 open-weight -->
+<div class="news-item open">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">Qwen 3.7 系列开源中尺寸变体预期发布，延续"旗舰闭源 + 中杯开源"双轨策略</div>
+      <div class="news-title-en">Qwen 3.7 Open-Weight Mid-Tier Variants Expected, Continuing "Closed Flagship + Open Mid-Tier" Dual Strategy</div>
+    </div>
+    <span class="tag tag-open">Open</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">伴随 Qwen 3.7-Max 闭源旗舰的发布，阿里云峰会透露将延续 Qwen 3.6 的双轨策略：Max/Plus 旗舰保持闭源，同时发布 Apache 2.0 许可的开源中尺寸变体（预计类似 Qwen 3.6-35B-A3B 的规模）。此外，Qwen 3.7 系列可能包含专门的 Coder 和 VL（视觉语言）变体。加上 Qwen 3.7-Plus-Preview 已在 Arena 上线（支持多模态），开源社区的"中国四强"格局（Kimi K2.6 / Qwen 3.7 / DeepSeek V4 / GLM-5.1）将更加完整。</div>
+    <div class="news-summary-en">Alongside the Qwen 3.7-Max closed flagship launch, the Alibaba Cloud Summit indicated continuation of Qwen 3.6's dual-track strategy: Max/Plus flagships remain closed-source, with Apache 2.0-licensed open-weight mid-tier variants expected (likely at Qwen 3.6-35B-A3B scale). The Qwen 3.7 series may also include dedicated Coder and VL (vision-language) variants. With Qwen 3.7-Plus-Preview already on Arena (supporting multimodal), the open-source community's "China Big Four" landscape (Kimi K2.6 / Qwen 3.7 / DeepSeek V4 / GLM-5.1) becomes more complete.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>Qwen 的开源策略已成为全球开源 AI 生态的支柱之一。在 Meta 转向闭源后，Qwen 的开源中尺寸模型填补了关键空白。如果 Qwen 3.7 开源变体延续 SWE-bench 77.2% 的性能水平并进一步提升 Agent 能力，将继续巩固其在开源编码 Agent 领域的主导地位。</div>
+    <div class="why-en"><strong>Why it matters:</strong> Qwen's open-source strategy has become a pillar of the global open-source AI ecosystem. After Meta's pivot to closed-source, Qwen's open-weight mid-tier models fill a critical gap. If Qwen 3.7 open variants maintain the SWE-bench 77.2% performance level with enhanced agent capabilities, they will further solidify Qwen's dominance in open-source coding agents.</div>
+  </div>
+  <div class="source-link"><a href="https://www.alibabacloud.com/blog/alibaba-unveils-new-ai-chip-flagship-model-and-rebuilt-cloud-stack-ai-for-agentic-era_603151" target="_blank">Alibaba Cloud Summit · May 20, 2026</a></div>
+</div>
+
+<!-- Story 11: Open source research -->
+<div class="news-item open">
+  <div class="news-header">
+    <div>
+      <div class="news-title-cn">TIDE 与 Mem-π 代码开源：本周两大研究附带可复现实现</div>
+      <div class="news-title-en">TIDE and Mem-π Open-Source: Two Major Research Papers This Week Ship with Reproducible Implementations</div>
+    </div>
+    <span class="tag tag-open">Open</span>
+  </div>
+  <div class="news-summary">
+    <div class="news-summary-cn">本周 arXiv 上的两项重要研究——TIDE（MoE 扩散 LLM 推理加速）和 Mem-π（Agent 自适应记忆）——均提供了开源代码实现。这延续了 2026 年 AI 研究的趋势：高质量论文越来越多地附带可直接使用的开源代码，加速了学术成果向工业实践的转化。对于开发者而言，TIDE 的推理优化可立即应用于现有 MoE 模型部署，Mem-π 的记忆框架可直接集成到 Agent 系统中。</div>
+    <div class="news-summary-en">Two significant arXiv papers this week — TIDE (MoE diffusion LLM inference acceleration) and Mem-π (adaptive agent memory) — both ship with open-source implementations. This continues a 2026 AI research trend: high-quality papers increasingly include immediately usable open-source code, accelerating translation from academic results to industrial practice. For developers, TIDE's inference optimizations can be applied to existing MoE model deployments, while Mem-π's memory framework can be integrated directly into agent systems.</div>
+  </div>
+  <div class="why-matters">
+    <div class="why-cn"><strong>为何重要：</strong>开源代码的附带发布正在成为 AI 研究的事实标准，这大大缩短了"论文→产品"的周期。对于当前 MoE 架构主导的模型生态和 Agent 系统开发者而言，TIDE 和 Mem-π 提供了两个可以直接落地的优化工具。</div>
+    <div class="why-en"><strong>Why it matters:</strong> Open-source code alongside papers is becoming the de facto standard for AI research, dramatically shortening the "paper → product" cycle. For the MoE-dominated model ecosystem and agent system developers, TIDE and Mem-π offer two directly deployable optimization tools.</div>
+  </div>
+  <div class="source-link"><a href="https://arxiv.deeppaper.ai/papers/weekly" target="_blank">arXiv · May 18–24, 2026</a></div>
+</div>
+</div>
+
+<!-- ═══════════ 白名单 ═══════════ -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">📋 本期追踪来源白名单</div>
+  <div class="whitelist-title-en">Source Whitelist — This Edition</div>
+  <div class="whitelist-note-cn">以下为本简报持续追踪的权威 AI 资讯来源。标注 🆕 为近期新增。动态白名单规则：搜索时发现新公司重要动态，须访问其官方网站获取原文后追加。</div>
+  <div class="whitelist-note-en">Below are authoritative AI sources continuously tracked by this briefing. 🆕 marks recently added sources. Dynamic whitelist rule: new company discoveries must be verified via official websites before addition.</div>
+  <div class="whitelist-grid">
+    <div class="wl-cat">🇺🇸 美国 US</div>
+    <div class="wl-item">OpenAI — openai.com/news, openai.com/research</div>
+    <div class="wl-item">Anthropic — anthropic.com/news, anthropic.com/research</div>
+    <div class="wl-item">Google DeepMind — deepmind.google/blog</div>
+    <div class="wl-item">Meta Superintelligence Labs — about.fb.com/news</div>
+
+    <div class="wl-cat">🇨🇳 中国 China</div>
+    <div class="wl-item">Moonshot/Kimi — moonshot.ai, kimi.com</div>
+    <div class="wl-item">MiniMax — minimaxi.com</div>
+    <div class="wl-item">智谱 Zhipu — zhipuai.cn, open.bigmodel.cn</div>
+    <div class="wl-item">Qwen/阿里云 — qwen.ai/blog</div>
+    <div class="wl-item">DeepSeek — deepseek.com</div>
+    <div class="wl-item">ByteDance Seed — seed.bytedance.com</div>
+    <div class="wl-item">Knightli AI — knightli.com</div>
+    <div class="wl-item">Kimi K2 Official — kimi-k2.org</div>
+
+    <div class="wl-cat">🇸🇬 新加坡 Singapore</div>
+    <div class="wl-item">A*STAR AI — a-star.edu.sg/aiml</div>
+    <div class="wl-item">GovTech — tech.gov.sg/</div>
+    <div class="wl-item">Singapore DSAI — smartnation.sg/digital-singapore/ai-sg</div>
+    <div class="wl-item">NUS AI Research — nus.edu.sg/computing/ai-research</div>
+    <div class="wl-item">MDDI Singapore — mddi.gov.sg/newsroom</div>
+    <div class="wl-item">Singtel RE:AI — singtel.com/about-us/media-centre</div>
+
+    <div class="wl-cat">🇸🇬 SG GovTech Tools Watchlist</div>
+    <div class="wl-item">PAIR Chat — pair.gov.sg, reports.open.gov.sg/pair/updates</div>
+    <div class="wl-item">AIBots — developer.tech.gov.sg/products/categories/productivity-tools/aibots</div>
+    <div class="wl-item">Transcribe — transcribe.gov.sg</div>
+
+    <div class="wl-cat">📰 媒体 Media</div>
+    <div class="wl-item">Reuters AI — reuters.com/technology</div>
+    <div class="wl-item">MIT Tech Review — technologyreview.com/topic/artificial-intelligence</div>
+    <div class="wl-item">Xinhua EN — xinhuanet.com/english</div>
+    <div class="wl-item">CNBC Technology — cnbc.com</div>
+    <div class="wl-item">Forbes AI 50 — forbes.com</div>
+    <div class="wl-item">AI Critique — aicritique.org</div>
+    <div class="wl-item">IEEE Spectrum — spectrum.ieee.org</div>
+    <div class="wl-item">AI Flash Report — aiflashreport.com</div>
+    <div class="wl-item">WinBuzzer — winbuzzer.com</div>
+
+    <div class="wl-cat">🔬 开源与研究 Open Source / Research</div>
+    <div class="wl-item">Hugging Face Blog — huggingface.co/blog</div>
+    <div class="wl-item">arXiv CS.AI — arxiv.org/list/cs.AI</div>
+    <div class="wl-item">OpenBMB — openbmb.org</div>
+    <div class="wl-item">HKUDS — hku-datascience.github.io</div>
+    <div class="wl-item">Marktechpost — marktechpost.com</div>
+
+    <div class="wl-cat">🏛 治理与政策 AI Governance / Policy</div>
+    <div class="wl-item">Plural Policy — pluralpolicy.com/blog</div>
+    <div class="wl-item">UK AISI — aisi.gov.uk/blog</div>
+    <div class="wl-item">Stanford HAI — hai.stanford.edu</div>
+    <div class="wl-item">Mayer Brown — mayerbrown.com</div>
+
+    <div class="wl-cat">💻 Computer Use Research</div>
+    <div class="wl-item">H Company — hcompany.ai</div>
+    <div class="wl-item">Hugging Face Computer Use — huggingface.co/blog/Hcompany/holo3</div>
+  </div>
+  <div style="margin-top:13px; font-size:10px; color:var(--text-dim);">
+    <div>本期无新增白名单来源。</div>
+    <div style="font-style:italic;">No new whitelist sources added this edition.</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-cn">AI 技术早报 · 2026年5月22日晨间版 · 数据来源：各公司官方博客、权威媒体及 arXiv</div>
+  <div class="footer-en">AI Briefing · May 22, 2026 Morning Edition · Sources: official company blogs, authoritative media, and arXiv</div>
+  <div class="footer-cn">白名单来源持续维护中 · 动态扩展规则：发现新公司重要动态 → 访问官网 → 追加至白名单</div>
+  <div class="footer-en">Whitelist maintained continuously · Dynamic rule: discover → verify official site → append to whitelist</div>
+  <div class="footer-cn" style="margin-top:6px;">⚑ 持续观察：PAIR Chat 底层模型升级（当前 Claude Sonnet 4）| 美国 AI 行政令签署时间 | OpenAI IPO 进展</div>
+  <div class="footer-en" style="font-style:italic;">⚑ Watching: PAIR Chat model upgrade (currently Claude Sonnet 4) | US AI EO re-signing timeline | OpenAI IPO progress</div>
+</div>
+
+</body>
+</html>

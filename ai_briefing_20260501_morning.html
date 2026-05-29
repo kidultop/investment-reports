@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 | 2026-05-01 AM</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #a78bfa;
+  --border: #334155;
+  --us: #3b82f6;
+  --cn: #ef4444;
+  --sg: #f97316;
+  --research: #22c55e;
+  --open: #a78bfa;
+  --policy: #eab308;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+.header {
+  text-align: center;
+  padding: 40px 0 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.header h1 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.header .subtitle { color: var(--muted); font-size: 14px; }
+.header .date-badge {
+  display: inline-block;
+  background: rgba(167,139,250,0.15);
+  color: var(--accent);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+/* Stats Bar */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.stat-item {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.stat-value { font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-label-cn { font-size: 12px; color: var(--text); margin-top: 2px; }
+.stat-label-en { font-size: 11px; color: var(--muted); }
+.stat-unit-cn { font-size: 11px; color: var(--muted); }
+.stat-unit-en { font-size: 10px; color: #64748b; }
+
+/* Trends Card */
+.trends-card {
+  background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(59,130,246,0.08));
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+.trends-title-cn { font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+.trends-title-en { font-size: 12px; color: var(--muted); font-style: italic; margin-bottom: 16px; display: block; }
+.trend-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+.trend-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.trend-cn { font-size: 14px; color: var(--text); }
+.trend-en { font-size: 12px; color: var(--muted); display: block; margin-top: 2px; }
+
+/* Section */
+.section { margin-bottom: 28px; }
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+}
+.title-cn { display: block; }
+.title-en { font-size: 12px; color: var(--muted); font-style: italic; display: block; margin-top: 2px; }
+
+/* News Item */
+.news-item {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+}
+.news-item[data-tag="us"] { border-left-color: var(--us); }
+.news-item[data-tag="cn"] { border-left-color: var(--cn); }
+.news-item[data-tag="sg"] { border-left-color: var(--sg); }
+.news-item[data-tag="research"] { border-left-color: var(--research); }
+.news-item[data-tag="open"] { border-left-color: var(--open); }
+.news-item[data-tag="policy"] { border-left-color: var(--policy); }
+
+.news-title-cn { font-size: 16px; font-weight: 600; color: #fff; }
+.news-title-en { font-size: 12px; color: var(--muted); font-style: italic; display: block; margin-top: 2px; margin-bottom: 10px; }
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 6px;
+}
+.tag-us { background: rgba(59,130,246,0.15); color: var(--us); }
+.tag-cn { background: rgba(239,68,68,0.15); color: var(--cn); }
+.tag-sg { background: rgba(249,115,22,0.15); color: var(--sg); }
+.tag-research { background: rgba(34,197,94,0.15); color: var(--research); }
+.tag-open { background: rgba(167,139,250,0.15); color: var(--open); }
+.tag-policy { background: rgba(234,179,8,0.15); color: var(--policy); }
+
+.news-summary {
+  margin-top: 10px;
+  padding-left: 14px;
+  border-left: 2px solid var(--border);
+}
+.news-summary-cn { font-size: 14px; color: var(--text); margin-bottom: 6px; }
+.news-summary-en { font-size: 13px; color: var(--muted); }
+
+.why-matters {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(167,139,250,0.06);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.why-cn { color: var(--text); margin-bottom: 4px; }
+.why-en { color: var(--muted); font-size: 12px; }
+
+.source-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 12px;
+  background: rgba(167,139,250,0.12);
+  color: var(--accent);
+  border-radius: 6px;
+  font-size: 12px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.source-link:hover { background: rgba(167,139,250,0.25); }
+
+/* New source callout */
+.new-source-callout {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(34,211,238,0.08);
+  border: 1px solid rgba(34,211,238,0.25);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #22d3ee;
+}
+
+/* Whitelist */
+.whitelist-section {
+  margin-top: 40px;
+  padding: 24px;
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+.whitelist-title-cn { font-size: 15px; font-weight: 600; color: var(--accent); }
+.whitelist-title-en { font-size: 11px; color: var(--muted); font-style: italic; display: block; margin-bottom: 4px; }
+.whitelist-note-cn { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.whitelist-note-en { font-size: 11px; color: #64748b; margin-bottom: 16px; }
+.wl-category { font-size: 13px; font-weight: 600; color: var(--text); margin-top: 12px; margin-bottom: 6px; }
+.wl-item { font-size: 12px; color: var(--muted); padding: 2px 0; }
+.wl-new { color: #22d3ee; font-weight: 600; }
+
+/* Footer */
+.footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.footer-cn { font-size: 12px; color: var(--muted); }
+.footer-en { font-size: 11px; color: #64748b; }
+
+@media (max-width: 640px) {
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .header h1 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AI 简报</h1>
+  <div class="subtitle">Daily AI Briefing</div>
+  <div class="date-badge">2026-05-01 · 早报 AM</div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value">12</div>
+    <div class="stat-label-cn">本月模型发布</div>
+    <div class="stat-label-en">Model Releases</div>
+    <div class="stat-unit-cn">April 2026</div>
+    <div class="stat-unit-en">Models launched this month</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">$400亿</div>
+    <div class="stat-label-cn">最大单笔投资</div>
+    <div class="stat-label-en">Largest Deal</div>
+    <div class="stat-unit-cn">Google → Anthropic</div>
+    <div class="stat-unit-en">Google → Anthropic</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">$50B</div>
+    <div class="stat-label-cn">OpenAI-AWS 合作</div>
+    <div class="stat-label-en">OpenAI-AWS Deal</div>
+    <div class="stat-unit-cn">结束 Azure 独家</div>
+    <div class="stat-unit-en">Ending Azure exclusivity</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">多云</div>
+    <div class="stat-label-cn">行业新格局</div>
+    <div class="stat-label-en">New Paradigm</div>
+    <div class="stat-unit-cn">模型厂商全面多云化</div>
+    <div class="stat-unit-en">Multi-cloud becomes the norm</div>
+  </div>
+</div>
+
+<!-- Trends Card -->
+<div class="trends-card">
+  <span class="trends-title-cn">核心趋势</span>
+  <span class="trends-title-en">Key Trends</span>
+
+  <div class="trend-item">
+    <span class="trend-icon">🔗</span>
+    <div>
+      <span class="trend-cn">AI 独家云合作终结：OpenAI 一周内先后结束微软独家、登陆 AWS，行业进入多云时代</span>
+      <span class="trend-en">End of exclusive cloud partnerships: OpenAI ended Microsoft exclusivity and landed on AWS within one week, ushering in the multi-cloud era</span>
+    </div>
+  </div>
+
+  <div class="trend-item">
+    <span class="trend-icon">💰</span>
+    <div>
+      <span class="trend-cn">资本加速集中：Google 400 亿注资 Anthropic、OpenAI 1220 亿融资完成，算力成为核心筹码</span>
+      <span class="trend-en">Capital concentration accelerates: Google's $40B Anthropic bet and OpenAI's $122B round close, with compute infrastructure as the key bargaining chip</span>
+    </div>
+  </div>
+
+  <div class="trend-item">
+    <span class="trend-icon">🛡️</span>
+    <div>
+      <span class="trend-cn">安全AI涌现：OpenAI GPT-5.5-Cyber 定向开放网络安全模型，AI 安全进入实战化阶段</span>
+      <span class="trend-en">Security-focused AI emerges: OpenAI's GPT-5.5-Cyber selectively opens to cybersecurity professionals, signaling AI security's move to production</span>
+    </div>
+  </div>
+
+  <div class="trend-item">
+    <span class="trend-icon">🌐</span>
+    <div>
+      <span class="trend-cn">地缘政治重塑 AI 产业：中国阻止 Meta 收购 Manus，AI 人才与数据成为战略资产</span>
+      <span class="trend-en">Geopolitics reshapes AI industry: China blocks Meta's $2B Manus acquisition, treating AI talent and data as strategic assets</span>
+    </div>
+  </div>
+</div>
+
+<!-- TOP STORIES -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">头条 TOP STORIES</span>
+    <span class="title-en">The most significant developments</span>
+  </div>
+
+  <!-- 1 -->
+  <div class="news-item" data-tag="us">
+    <div>
+      <span class="tag tag-us">US</span>
+      <span class="tag tag-policy">Policy</span>
+    </div>
+    <div class="news-title-cn">OpenAI 登陆 AWS，终结微软独家云合作 — $500 亿合作曝光</div>
+    <div class="news-title-en">OpenAI Lands on AWS, Ending Microsoft's Exclusive Cloud Partnership — $50B Deal Revealed</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 28 日，AWS 与 OpenAI 联合宣布重大合作：GPT-5.5、Codex 及 Bedrock Managed Agents 正式在 Amazon Bedrock 上提供预览。据路透社报道，合作条款包括 Amazon 对 OpenAI 投资 500 亿美元、OpenAI 承诺在 8 年内向 AWS 投入 1000 亿美元算力支出。此前一天（4/27），微软官方宣布与 OpenAI 的合作转为非独家协议，有效期至 2032 年。这意味着 OpenAI 在一周内完成了从"微软专属"到"全面多云"的战略转身。</div>
+      <div class="news-summary-en">On April 28, AWS and OpenAI jointly announced a landmark partnership: GPT-5.5, Codex, and Bedrock Managed Agents are now available in preview on Amazon Bedrock. Reuters reports the deal includes a $50B Amazon investment in OpenAI and a $100B OpenAI commitment to AWS over 8 years. The day prior (Apr 27), Microsoft announced its partnership with OpenAI had transitioned to a non-exclusive agreement through 2032. Within a single week, OpenAI pivoted from "Microsoft-exclusive" to "fully multi-cloud."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是云计算史上最具颠覆性的格局变化之一。OpenAI 不再绑定任何单一云厂商，企业客户可在 Azure、AWS 及 Google Cloud 之间自由选择。对行业而言，这意味着模型厂商不再依赖云平台的分发渠道，AI 基础设施的竞争从"谁能独家拿到最好模型"转向"谁能提供最好的算力和部署服务"。</div>
+      <div class="why-en"><strong>Why it matters:</strong>This is one of the most disruptive shifts in cloud computing history. OpenAI is no longer bound to any single cloud provider, giving enterprise customers freedom to choose between Azure, AWS, and Google Cloud. The industry is shifting from "who can exclusively offer the best models" to "who provides the best compute and deployment services."</div>
+    </div>
+    <a class="source-link" href="https://aws.amazon.com/about-aws/whats-new/2026/04/bedrock-openai-models-codex-managed-agents/" target="_blank">AWS 官方公告 →</a>
+    <a class="source-link" href="https://www.cnbc.com/2026/04/27/openai-microsoft-partnership-revenue-cap.html" target="_blank">CNBC 报道 →</a>
+  </div>
+
+  <!-- 2 -->
+  <div class="news-item" data-tag="us">
+    <div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-title-cn">Google 宣布 400 亿美元投资 Anthropic，AI 产业最大单笔交易</div>
+    <div class="news-title-en">Google Commits Up to $40B Investment in Anthropic, Largest AI Deal to Date</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 24 日，Google 母公司 Alphabet 宣布对 Anthropic 进行最高 400 亿美元战略投资：100 亿美元现金立即到账，按 Anthropic 3800 亿美元估值入股，剩余 300 亿美元视业绩目标追加。该交易的核心逻辑在于算力绑定——Anthropic 获得资金后大量采购 Google TPU 算力服务，形成了"Google 给钱 → Anthropic 买算力 → 资金回流 Google"的闭环。</div>
+      <div class="news-summary-en">On April 24, Google's parent Alphabet announced a strategic investment of up to $40B in Anthropic: $10B cash upfront at a $380B valuation, with $30B conditional on performance milestones. The deal's core logic is compute lock-in — Anthropic will use the funding to purchase Google's TPU cloud services, creating a circular flow of capital from Google to Anthropic and back to Google.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Anthropic 的估值（3800 亿美元）已逼近 OpenAI（8520 亿美元），Claude 年化收入据报从约 10 亿美元暴涨至 300 亿美元。Google 通过这笔交易同时实现了"投资顶级 AI 公司 + 确保大客户采购自家 TPU 算力"的双重目标，堪称 AI 时代最具战略性的投资之一。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Anthropic's $380B valuation is approaching OpenAI's $852B, with Claude's annualized revenue reportedly surging from ~$1B to $30B. Google achieves a dual objective: investing in a top AI company while locking in a major TPU cloud customer. It's arguably the most strategically designed investment of the AI era.</div>
+    </div>
+    <a class="source-link" href="https://www.36kr.com/p/3784243425565953" target="_blank">36Kr 深度分析 →</a>
+  </div>
+
+  <!-- 3 -->
+  <div class="news-item" data-tag="cn">
+    <div>
+      <span class="tag tag-cn">CN</span>
+      <span class="tag tag-policy">Policy</span>
+    </div>
+    <div class="news-title-cn">中国正式阻止 Meta 收购 Manus，AI 人才与数据成为战略资产</div>
+    <div class="news-title-en">China Officially Blocks Meta's $2B Acquisition of Manus, AI Talent Declared Strategic Asset</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 27 日，中国国家发改委正式否决了 Meta 对中国背景 AI 创业公司 Manus 的 20 亿美元收购案，并要求双方在数周内完成交易撤回。监管机构明确将 AI 人才、数据及知识产权列为战略资产，跨境转移需国家审批。Manus 虽已迁册新加坡，但因核心团队及技术源自中国，仍被纳入监管范围。</div>
+      <div class="news-summary-en">On April 27, China's NDRC officially blocked Meta's $2B acquisition of Chinese-founded AI startup Manus, ordering the parties to unwind the deal within weeks. Regulators explicitly classified AI talent, data, and IP as strategic assets requiring state approval for cross-border transfer. Although Manus relocated to Singapore, its core team and technology origins in China kept it within regulatory scope.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是中美科技博弈在 AI 领域的标志性事件。此先例意味着所有涉及中国 AI 人才或技术的外资收购都将面临严格审查，即便公司注册地在海外。这对跨国 AI 投资格局产生深远影响，新加坡作为"中立地带"的定位也受到挑战。</div>
+      <div class="why-en"><strong>Why it matters:</strong>This is a landmark event in US-China tech rivalry. The precedent means all foreign acquisitions involving Chinese AI talent or technology will face strict scrutiny, even if the company is registered overseas. It profoundly reshapes cross-border AI investment and challenges Singapore's positioning as a "neutral ground."</div>
+    </div>
+    <a class="source-link" href="https://www.cnbc.com/2026/04/27/meta-manus-china-blocks-acquisition-ai-startup.html" target="_blank">CNBC 报道 →</a>
+  </div>
+</div>
+
+<!-- 官方发布 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">官方发布 OFFICIAL RELEASES</span>
+    <span class="title-en">Announcements from AI labs and companies</span>
+  </div>
+
+  <!-- 4 -->
+  <div class="news-item" data-tag="us">
+    <div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-title-cn">OpenAI 发布 GPT-5.5：多步任务与自主性显著提升</div>
+    <div class="news-title-en">OpenAI Releases GPT-5.5 with Significant Advances in Multi-Step Tasks and Autonomy</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 23 日，OpenAI 正式发布 GPT-5.5，已向 Plus、Pro 及 Codex 用户开放。该模型在编程、计算机操作和科研推理方面实现重要突破，Token 成本降至前代的 1/35。总裁 Greg Brockman 强调，GPT-5.5 的核心亮点在于处理模糊问题时展现出更强的自主性，能以更少的指导完成更多任务。API 版本即将上线。</div>
+      <div class="news-summary-en">On April 23, OpenAI released GPT-5.5, now available to Plus, Pro, and Codex users. The model brings major advances in coding, computer use, and research reasoning, with token costs reduced to 1/35th of its predecessor. President Greg Brockman highlighted GPT-5.5's enhanced autonomy when handling ambiguous problems, requiring less guidance to accomplish more tasks. API access is coming soon.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GPT-5.5 是 OpenAI 在 Claude Mythos 和 Claude Opus 4.7 压力下推出的重要回应。其成本大幅下降（降至 1/35）使大规模 Agent 应用成为可能，进一步推动了 AI Agent 在企业生产环境中的落地。</div>
+      <div class="why-en"><strong>Why it matters:</strong>GPT-5.5 is OpenAI's key response to competitive pressure from Claude Mythos and Claude Opus 4.7. The dramatic cost reduction (1/35th) makes large-scale agent deployment economically viable, further accelerating enterprise AI agent adoption.</div>
+    </div>
+    <a class="source-link" href="https://www.cnbc.com/2026/04/23/openai-announces-latest-artificial-intelligence-model.html" target="_blank">CNBC 报道 →</a>
+    <a class="source-link" href="https://www.macrumors.com/2026/04/24/openai-gpt-5-5-research-gains/" target="_blank">MacRumors →</a>
+  </div>
+
+  <!-- 5 -->
+  <div class="news-item" data-tag="us">
+    <div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-title-cn">OpenAI 宣布 GPT-5.5-Cyber 网络安全模型，定向开放给安全防护人员</div>
+    <div class="news-title-en">OpenAI Announces GPT-5.5-Cyber, a Cybersecurity-Focused Model for Vetted Defenders</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 30 日，OpenAI CEO Sam Altman 在社交平台宣布即将推出 GPT-5.5-Cyber，一款前沿网络安全专用模型。该模型不会向公众开放，而是定向限量推送给经过筛选的"网络安全防护人员"，用于帮助机构强化网络防御能力。OpenAI 表示将与行业生态及政府部门共同制定负责任的使用规范。</div>
+      <div class="news-summary-en">On April 30, OpenAI CEO Sam Altman announced the upcoming launch of GPT-5.5-Cyber, a dedicated cybersecurity model. Unlike general-purpose releases, it will not be publicly available — instead, it will be selectively deployed to vetted cybersecurity professionals to help organizations strengthen their defenses. OpenAI emphasized it will co-develop responsible use guidelines with industry and government partners.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>继 Anthropic Claude Mythos 展示自主发现零日漏洞能力后，OpenAI 推出专用安全模型，标志着 AI 在网络安全领域的应用从"概念验证"进入"实战部署"阶段。定向开放策略也体现了行业对 AI 双刃剑特性的审慎态度。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Following Anthropic's Claude Mythos demonstrating autonomous zero-day discovery, OpenAI's dedicated security model signals AI cybersecurity is moving from proof-of-concept to production deployment. The selective access approach reflects the industry's cautious handling of AI's dual-use nature.</div>
+    </div>
+    <a class="source-link" href="https://www.36kr.com/newsflashes/3788865126849537" target="_blank">36Kr 快讯 →</a>
+  </div>
+
+  <!-- 6 -->
+  <div class="news-item" data-tag="cn">
+    <div>
+      <span class="tag tag-cn">CN</span>
+    </div>
+    <div class="news-title-cn">DeepSeek 发布 V4 Preview：百万 Token 上下文，开源权重</div>
+    <div class="news-title-en">DeepSeek Releases V4 Preview: 1M Token Context Window with Open-Source Weights</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 24 日，DeepSeek 正式发布并开源 V4 Preview 版本，包含 V4-Pro 和 V4-Flash 两个模型，支持 100 万 Token 上下文窗口。这是 DeepSeek 继 V3 之后时隔 15 个月的重要更新。V4 针对华为昇腾 950 芯片进行了专门优化，推动国内算力自主化。据报，字节跳动、腾讯、阿里等互联网大厂已开始下单采购昇腾 950 芯片。</div>
+      <div class="news-summary-en">On April 24, DeepSeek officially released and open-sourced V4 Preview, including V4-Pro and V4-Flash models with a 1M token context window. This marks DeepSeek's first major update since V3, 15 months ago. V4 is specifically optimized for Huawei's Ascend 950 chips, advancing domestic compute independence. ByteDance, Tencent, and Alibaba have reportedly placed orders for Ascend 950 chips.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>DeepSeek V4 的百万级上下文窗口在开源模型中处于领先地位，且针对国产芯片优化意味着中国 AI 生态正加速脱离对 NVIDIA GPU 的依赖。与此前 V3 发布引发市场震动不同，市场对 V4 反应相对平静，反映出中国高效开源模型已逐渐"常态化"。</div>
+      <div class="why-en"><strong>Why it matters:</strong>DeepSeek V4's million-token context window leads among open-source models, and its Huawei Ascend optimization signals China's AI ecosystem is accelerating away from NVIDIA GPU dependency. Unlike V3's market-shaking launch, the muted market reaction to V4 suggests China's efficient open-source models have become the new normal.</div>
+    </div>
+    <a class="source-link" href="https://www.knightli.com/en/2026/04/24/deepseek-v4-preview-release/" target="_blank">Knightli 深度分析 →</a>
+    <a class="source-link" href="https://news.cgtn.com/news/2026-04-24/DeepSeek-unveils-new-AI-model-adapted-for-Huawei-chips-1MBU0eOEv9S/p.html" target="_blank">CGTN →</a>
+  </div>
+
+  <!-- 7 -->
+  <div class="news-item" data-tag="cn">
+    <div>
+      <span class="tag tag-cn">CN</span>
+    </div>
+    <div class="news-title-cn">通义千问 Qwen3.6 系列发布：27B 稠密模型编程能力媲美千亿级</div>
+    <div class="news-title-en">Alibaba's Qwen3.6 Series Released: 27B Dense Model Matches 100B+ Models on Coding</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月中下旬，阿里巴巴通义千问团队连续发布 Qwen3.6 系列多个模型：Qwen3.6-35B-A3B（稀疏 MoE，仅 3B 激活参数）、Qwen3.6-27B（稠密模型，Apache 2.0 开源）及 Qwen3.6-Max-Preview（旗舰预览版）。其中 Qwen3.6-27B 在 SWE-bench、Terminal-Bench 等多项 Agent 编程基准测试中表现出色，以 270 亿参数的性能媲美千亿级模型。</div>
+      <div class="news-summary-en">In mid-to-late April, Alibaba's Qwen team released multiple Qwen3.6 models: Qwen3.6-35B-A3B (sparse MoE, only 3B active parameters), Qwen3.6-27B (dense, Apache 2.0 open-source), and Qwen3.6-Max-Preview (flagship preview). The Qwen3.6-27B excels on agentic coding benchmarks like SWE-bench and Terminal-Bench, matching 100B+ parameter models with just 27B parameters.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Qwen3.6 系列延续了千问团队"小参数、高智能"的技术路线，27B 稠密模型能在编程 Agent 场景下与千亿模型竞争，大幅降低了部署成本。Apache 2.0 许可也为商业应用提供了便利，进一步强化了中国开源 AI 在全球开发者社区的影响力。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The Qwen3.6 series continues Alibaba's "small parameters, high intelligence" approach. A 27B dense model competing with 100B+ models in agentic coding scenarios dramatically lowers deployment costs. The Apache 2.0 license enables commercial use, further strengthening Chinese open-source AI's global developer influence.</div>
+    </div>
+    <a class="source-link" href="https://github.com/QwenLM/Qwen3.6" target="_blank">GitHub →</a>
+    <a class="source-link" href="https://rits.shanghai.nyu.edu/ai/qwen3-6-27b-a-dense-27b-model-that-beats-a-397b-moe-on-coding/" target="_blank">分析报告 →</a>
+  </div>
+</div>
+
+<!-- 研究与技术 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">研究与技术 RESEARCH & TECHNOLOGY</span>
+    <span class="title-en">Breakthroughs in AI research and engineering</span>
+  </div>
+
+  <!-- 8 -->
+  <div class="news-item" data-tag="research">
+    <div>
+      <span class="tag tag-research">Research</span>
+    </div>
+    <div class="news-title-cn">MIT Technology Review 发布「2026 年 AI 领域最重要的 10 件事」</div>
+    <div class="news-title-en">MIT Technology Review Launches "10 Things That Matter in AI Right Now" for 2026</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 21 日，MIT Technology Review 推出年度 AI 趋势清单，由旗下获奖 AI 记者团队集体评选。10 大趋势涵盖：人形机器人数据采集、LLM+（后大模型时代）、AI 增强的网络诈骗、世界模型、军事 AI 应用、深度伪造武器化、Agent 编排、中国开源战略、AI 科学家以及 AI 反对运动。这是该刊物在经典"10 大突破技术"榜单基础上首次推出 AI 专项年度清单。</div>
+      <div class="news-summary-en">On April 21, MIT Technology Review launched its annual AI trends list, curated by its award-winning AI reporting team. The 10 items span: humanoid robot data collection, LLMs+ (post-LLM era), supercharged scams, world models, military AI, weaponized deepfakes, agent orchestration, China's open-source bet, artificial scientists, and the AI resistance movement. This is the first AI-specific annual list, extending the legacy of the famous "10 Breakthrough Technologies."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>MIT Technology Review 的年度榜单历来是科技行业的风向标。本次特别指出"中国开源 AI 赢得全球开发者信任"和"AI 反对运动正在获得实质性政策胜利"两大趋势，为理解 2026 年 AI 产业的深层结构性变化提供了权威视角。</div>
+      <div class="why-en"><strong>Why it matters:</strong>MIT Technology Review's annual lists have long been industry bellwethers. This edition notably highlights "China's open-source AI winning global developer trust" and "AI resistance gaining meaningful policy wins," offering an authoritative perspective on the structural shifts reshaping the AI industry in 2026.</div>
+    </div>
+    <a class="source-link" href="https://www.technologyreview.com/2026/04/21/1135643/10-ai-artificial-intelligence-trends-technologies-research-2026/" target="_blank">MIT Technology Review →</a>
+  </div>
+
+  <!-- 9 -->
+  <div class="news-item" data-tag="research">
+    <div>
+      <span class="tag tag-research">Research</span>
+    </div>
+    <div class="news-title-cn">Hugging Face 开源 ml-intern：自动化 LLM 后训练工作流的 AI Agent</div>
+    <div class="news-title-en">Hugging Face Open-Sources ml-intern: An AI Agent Automating LLM Post-Training Workflows</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 21 日，Hugging Face 在 GitHub 上开源 ml-intern 项目，定位为"开源机器学习工程师"。该 Agent 能自动完成从论文阅读到模型训练、后训练优化的全流程，在实测中将 Qwen3-1.7B 的 GPQA 评分从 10% 提升至 32%，整个过程仅需不到 10 小时。</div>
+      <div class="news-summary-en">On April 21, Hugging Face open-sourced ml-intern on GitHub, positioning it as an "open-source ML engineer." The agent automates end-to-end workflows from paper reading to model training and post-training optimization. In testing, it improved Qwen3-1.7B's GPQA score from 10% to 32% in under 10 hours.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>ml-intern 代表了"AI 构建 AI"趋势的落地实践——用 AI Agent 自动化模型训练和优化流程，显著降低了 AI 模型开发的门槛。这对资源有限的团队和小型实验室意义重大，有望加速 AI 民主化进程。</div>
+      <div class="why-en"><strong>Why it matters:</strong>ml-intern represents the practical realization of "AI building AI" — using AI agents to automate model training and optimization, significantly lowering the barrier to AI model development. This is particularly impactful for resource-constrained teams and small labs, potentially accelerating AI democratization.</div>
+    </div>
+    <a class="source-link" href="https://www.marktechpost.com/2026/04/21/hugging-face-releases-ml-intern-an-open-source-ai-agent-that-automates-the-llm-post-training-workflow/" target="_blank">Marktechpost →</a>
+  </div>
+
+  <!-- 10 -->
+  <div class="news-item" data-tag="research">
+    <div>
+      <span class="tag tag-research">Research</span>
+    </div>
+    <div class="news-title-cn">arXiv Agent 趋势：AI Agent 研究聚焦科学自动化与多智能体协作</div>
+    <div class="news-title-en">arXiv Agent Trends: Research Focuses on Scientific Automation and Multi-Agent Collaboration</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 25 日发布的 arXiv cs.AI 领域 Agent 趋势报告显示，多个重要研究方向集中涌现：科学自动化（AI Agent 自主执行科研任务）、多智能体通信协议、可扩展性优化、Agent 评估方法论及领域应用等。其中"From Research to Discovery"类论文探讨了 AI 辅助科学发现的可行性边界。</div>
+      <div class="news-summary-en">The April 25 arXiv cs.AI Agent trends report reveals multiple emerging research directions: scientific automation (AI agents autonomously conducting research), multi-agent communication protocols, scalability optimization, agent evaluation methodologies, and domain applications. Papers in the "From Research to Discovery" category explore the feasibility boundaries of AI-assisted scientific discovery.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>arXiv 上的研究趋势反映了学术界对 AI Agent 的关注已从"概念验证"转向"工程化落地"。科学自动化和多智能体协作是两个最具远景的方向，可能在未来几年内重新定义科研工作方式。</div>
+      <div class="why-en"><strong>Why it matters:</strong>arXiv research trends show academia's focus on AI agents has shifted from proof-of-concept to engineering practicality. Scientific automation and multi-agent collaboration are two of the most forward-looking directions that could redefine how research is conducted in the coming years.</div>
+    </div>
+    <a class="source-link" href="https://www.daoyuly.cn/2026/arxiv-agent-trends-2026-04-25/" target="_blank">趋势报告 →</a>
+  </div>
+</div>
+
+<!-- 政策与产业 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">政策与产业 POLICY & INDUSTRY</span>
+    <span class="title-en">Regulation, deals, and market dynamics</span>
+  </div>
+
+  <!-- 11 -->
+  <div class="news-item" data-tag="policy">
+    <div>
+      <span class="tag tag-policy">Policy</span>
+    </div>
+    <div class="news-title-cn">EU AI Act 简化谈判停滞，DMA 扩大审查至 AI 与云服务</div>
+    <div class="news-title-en">EU AI Act Simplification Talks Stall; DMA Expands Scrutiny to AI and Cloud Services</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 28-29 日，欧盟关于简化 AI Act 合规负担的谈判陷入僵局，企业继续面临监管不确定性。同时，欧盟委员会宣布将数字市场法（DMA）审查范围扩展至 AI 和云服务领域，计划评估领先的 AI 服务是否构成需要更严格竞争规则的"核心平台服务"。</div>
+      <div class="news-summary-en">On April 28-29, EU negotiations to simplify AI Act compliance burdens stalled, leaving businesses with continued regulatory uncertainty. Simultaneously, the European Commission announced the Digital Markets Act (DMA) will broaden its focus to AI and cloud services, evaluating whether leading AI offerings qualify as "core platform services" subject to stricter competition rules.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>EU AI Act 简化失败意味着合规成本仍是企业部署 AI 的重要障碍，而 DMA 扩展至 AI 可能对 OpenAI、Anthropic、Google 等主要 AI 厂商带来额外的反垄断压力。双重监管框架叠加将显著影响 AI 产业在欧洲的发展节奏。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The failure to simplify the EU AI Act means compliance costs remain a significant barrier to enterprise AI deployment. Expanding DMA to AI could bring additional antitrust pressure on OpenAI, Anthropic, Google, and other major providers. The dual regulatory framework will significantly impact AI development pace in Europe.</div>
+    </div>
+    <a class="source-link" href="https://www.aicritique.org/us/2026/04/29/ai-developments-in-april-2026/" target="_blank">AI Critique 综述 →</a>
+  </div>
+
+  <!-- 12 -->
+  <div class="news-item" data-tag="sg">
+    <div>
+      <span class="tag tag-sg">SG</span>
+      <span class="tag tag-policy">Policy</span>
+    </div>
+    <div class="news-title-cn">新加坡 Singtel 与 Mistral AI 合作，共建 AI 基础设施</div>
+    <div class="news-title-en">Singtel Partners with Mistral AI to Co-Develop AI Infrastructure in Southeast Asia</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 27 日，新加坡电信 Singtel 旗下数字基础设施公司 RE:AI 与法国 AI 公司 Mistral AI 宣布战略合作伙伴关系。双方将整合 Mistral AI 的开源技术栈（包括训练能力、基础模型）与 Singtel 在亚太地区的云基础设施，共同打造面向东南亚市场的 AI 基础设施平台。此前，U.S. News 分析指出新加坡正成为中美 AI 博弈中的"中立地带"，AI 人才签证和 IP 税收优惠政策吸引越来越多国际 AI 公司落地。</div>
+      <div class="news-summary-en">On April 27, Singtel's Digital InfraCo RE:AI and French AI company Mistral AI announced a strategic partnership. The two will integrate Mistral's open-source stack (including training capabilities and foundation models) with Singtel's APAC cloud infrastructure to build an AI infrastructure platform for Southeast Asia. U.S. News previously noted Singapore is emerging as "neutral ground" in US-China AI rivalry, with AI talent visas and IP tax incentives attracting international AI companies.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是东南亚地区重要的 AI 基础设施合作，显示了新加坡作为亚太 AI 枢纽的战略地位。在全球 AI 地缘政治紧张加剧的背景下，此类合作模式为跨国 AI 部署提供了"第三条路"。</div>
+      <div class="why-en"><strong>Why it matters:</strong>This is a significant AI infrastructure partnership for Southeast Asia, highlighting Singapore's strategic position as an APAC AI hub. Amid growing AI geopolitical tensions, this collaboration model offers a "third path" for cross-border AI deployment.</div>
+    </div>
+    <a class="source-link" href="https://www.singtel.com/about-us/media-centre/news-releases/singtel-mistral-ai" target="_blank">Singtel 官方公告 →</a>
+    <a class="source-link" href="https://money.usnews.com/investing/news/articles/2026-04-23/analysis-singapore-emerging-as-neutral-ground-as-ai-firms-navigate-sino-us-rivalry" target="_blank">U.S. News 分析 →</a>
+  </div>
+</div>
+
+<!-- 开源生态 -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">开源生态 OPEN SOURCE</span>
+    <span class="title-en">Community-driven AI projects and tools</span>
+  </div>
+
+  <!-- 13 -->
+  <div class="news-item" data-tag="open">
+    <div>
+      <span class="tag tag-open">Open Source</span>
+    </div>
+    <div class="news-title-cn">Moonshot AI 开源 Kimi K2.6：万亿参数 MoE，Agent Swarm 支持超 300 子 Agent</div>
+    <div class="news-title-en">Moonshot AI Open-Sources Kimi K2.6: Trillion-Parameter MoE with 300+ Sub-Agent Swarms</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月 20 日，Moonshot AI（月之暗面）正式开源 Kimi K2.6，一款原生多模态 Agent 模型。基于万亿参数 MoE 架构，支持 256K 上下文、300+ 子 Agent 协同和 4000 步协调操作。K2.6 在多项 Agent 编程和编码基准测试中超越 GPT 系列模型，从 4 月 13 日内测到 4 月 21 日正式发布仅用 8 天。</div>
+      <div class="news-summary-en">On April 20, Moonshot AI open-sourced Kimi K2.6, a native multimodal agentic model. Built on a trillion-parameter MoE architecture, it supports 256K context, 300+ sub-agent coordination, and 4,000 coordinated steps. K2.6 outperforms GPT-series models on multiple agentic and coding benchmarks, progressing from private beta (Apr 13) to GA (Apr 21) in just 8 days.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Kimi K2.6 是目前开源社区最大规模的 Agent 模型之一，300+ 子 Agent 协同能力在开源模型中属首次。加上 DeepSeek V4、Qwen3.6 等同期发布，中国开源 AI 在 4 月形成了"井喷"态势，直接挑战闭源模型的技术领先地位。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Kimi K2.6 is among the largest open-source agent models available, with 300+ sub-agent coordination being a first for open-source. Combined with DeepSeek V4 and Qwen3.6 released in the same month, Chinese open-source AI surged in April, directly challenging the technical leadership of closed-source models.</div>
+    </div>
+    <a class="source-link" href="https://kimi-k2.org/blog/24-kimi-k2-6-release" target="_blank">Kimi K2.6 官方博客 →</a>
+    <a class="source-link" href="https://www.marktechpost.com/2026/04/20/moonshot-ai-releases-kimi-k2-6-with-long-horizon-coding-agent-swarm-scaling-to-300-sub-agents-and-4000-coordinated-steps/" target="_blank">Marktechpost →</a>
+  </div>
+
+  <!-- 14 -->
+  <div class="news-item" data-tag="open">
+    <div>
+      <span class="tag tag-open">Open Source</span>
+    </div>
+    <div class="news-title-cn">Stanford HAI 发布 2026 年 AI Index 报告：碳排放与模型效率成焦点</div>
+    <div class="news-title-en">Stanford HAI Releases 2026 AI Index Report: Carbon Emissions and Model Efficiency in Focus</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">4 月中旬，Stanford 人类中心 AI 研究所（HAI）发布年度 AI Index 报告。报告持续追踪 AI 训练碳排放问题，指出排放趋势"令人担忧地持续上升"。报告同时关注了模型效率优化、开源 vs 闭源模型竞争格局、以及全球 AI 治理政策进展等核心议题。</div>
+      <div class="news-summary-en">In mid-April, Stanford's HAI (Human-centered AI Institute) released its annual AI Index report. The report continues tracking AI training carbon emissions, noting the trend is "worryingly continuing to rise." It also covers model efficiency optimization, the open-source vs. closed-source competitive landscape, and global AI governance policy progress.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Stanford AI Index 是全球 AI 行业最具权威性的年度参考之一。碳排放问题的持续恶化与模型规模膨胀形成张力，可能在未来推动更严格的环保法规和效率优化需求。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The Stanford AI Index is one of the most authoritative annual references in the global AI industry. The worsening carbon emissions trend creates tension with scaling-up model sizes, potentially driving stricter environmental regulations and efficiency optimization demands.</div>
+    </div>
+    <a class="source-link" href="https://spectrum.ieee.org/state-of-ai-index-2026" target="_blank">IEEE Spectrum 解读 →</a>
+  </div>
+</div>
+
+<!-- Whitelist -->
+<div class="whitelist-section">
+  <span class="whitelist-title-cn">信息来源白名单</span>
+  <span class="whitelist-title-en">Source Whitelist</span>
+  <span class="whitelist-note-cn">以下为简报长期追踪的官方与权威来源，确保信息可靠性与可追溯性。</span>
+  <span class="whitelist-note-en">Official and authoritative sources tracked for this briefing to ensure reliability and traceability.</span>
+
+  <div class="wl-category">🇺🇸 United States</div>
+  <div class="wl-item">OpenAI — openai.com/news, openai.com/research</div>
+  <div class="wl-item">Anthropic — anthropic.com/news, anthropic.com/research</div>
+  <div class="wl-item">Google DeepMind — deepmind.google/blog</div>
+  <div class="wl-item">Meta Superintelligence Labs — about.fb.com/news</div>
+  <div class="wl-item">AWS / Amazon — aws.amazon.com</div>
+
+  <div class="wl-category">🇨🇳 China</div>
+  <div class="wl-item">Moonshot / Kimi — moonshot.ai, kimi.com</div>
+  <div class="wl-item">MiniMax — minimaxi.com</div>
+  <div class="wl-item">Zhipu AI (Z.ai) — zhipuai.cn, open.bigmodel.cn</div>
+  <div class="wl-item">Qwen / Alibaba Cloud — qwen.ai/blog</div>
+  <div class="wl-item">DeepSeek — deepseek.com</div>
+  <div class="wl-item">ByteDance Seed — seed.bytedance.com</div>
+  <div class="wl-item">Kimi K2 — kimi-k2.org</div>
+  <div class="wl-item">Knightli AI Analysis — knightli.com</div>
+
+  <div class="wl-category">🇸🇬 Singapore</div>
+  <div class="wl-item">A*STAR AI Division — a-star.edu.sg/aiml</div>
+  <div class="wl-item">GovTech Singapore — tech.gov.sg</div>
+  <div class="wl-item">Singapore DSAI — smartnation.sg/digital-singapore/ai-sg</div>
+  <div class="wl-item">NUS AI Research — nus.edu.sg/computing/ai-research</div>
+  <div class="wl-item">MDDI Singapore — mddi.gov.sg/newsroom</div>
+  <div class="wl-item">Singtel Digital InfraCo — singtel.com</div>
+  <div class="wl-new">🆕 Singtel RE:AI (singtel.com/about-us/media-centre) — 2026-05-01 新增</div>
+
+  <div class="wl-category">SG GovTech Tools Watchlist</div>
+  <div class="wl-item">PAIR Chat — pair.gov.sg, reports.open.gov.sg/pair/updates</div>
+  <div class="wl-item">AIBots — developer.tech.gov.sg</div>
+  <div class="wl-item">Transcribe — transcribe.gov.sg</div>
+
+  <div class="wl-category">Media</div>
+  <div class="wl-item">Reuters AI — reuters.com/technology</div>
+  <div class="wl-item">CNBC Technology — cnbc.com</div>
+  <div class="wl-item">MIT Tech Review — technologyreview.com</div>
+  <div class="wl-item">Xinhua EN — xinhuanet.com/english</div>
+  <div class="wl-item">Forbes AI 50 — forbes.com</div>
+  <div class="wl-new">🆕 AI Critique (aicritique.org) — 2026-05-01 新增</div>
+  <div class="wl-new">🆕 IEEE Spectrum (spectrum.ieee.org) — 2026-05-01 新增</div>
+
+  <div class="wl-category">Open Source / Research</div>
+  <div class="wl-item">Hugging Face Blog — huggingface.co/blog</div>
+  <div class="wl-item">arXiv CS.AI — arxiv.org/list/cs.AI</div>
+  <div class="wl-item">OpenBMB — openbmb.org</div>
+  <div class="wl-item">HKUDS — hku-datascience.github.io</div>
+  <div class="wl-item">Knightli — knightli.com</div>
+  <div class="wl-new">🆕 Marktechpost (marktechpost.com) — 2026-05-01 新增</div>
+
+  <div class="wl-category">AI Governance / Policy</div>
+  <div class="wl-item">Plural Policy — pluralpolicy.com/blog</div>
+  <div class="wl-item">UK AI Security Institute — aisi.gov.uk/blog</div>
+  <div class="wl-item">Stanford HAI — hai.stanford.edu</div>
+  <div class="wl-item">Eversheds Sutherland AI Bulletin — eversheds-sutherland.com</div>
+  <div class="wl-new">🆕 Mayer Brown AI Policy (mayerbrown.com) — 2026-05-01 新增</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-cn">AI 简报 · 每日早 08:00 / 晚 20:00 自动生成</div>
+  <div class="footer-en">AI Briefing · Auto-generated daily at 08:00 / 20:00 SGT</div>
+  <div class="footer-cn">信息来源以白名单官方渠道为主，经人工核实后发布</div>
+  <div class="footer-en">Sources primarily from whitelisted official channels, verified before publication</div>
+  <div class="footer-cn" style="margin-top: 8px;">Generated on 2026-05-01 · Powered by WorkBuddy</div>
+</div>
+
+</body>
+</html>

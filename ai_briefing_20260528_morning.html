@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Briefing — 2026-05-28 AM</title>
+<style>
+:root{--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--accent:#a78bfa;--accent2:#7c3aed;--text:#e2e8f0;--text-muted:#94a3b8;--tag-us:#3b82f6;--tag-cn:#ef4444;--tag-sg:#f97316;--tag-research:#22c55e;--tag-open:#a78bfa;--tag-policy:#eab308;--tag-new:#06b6d4;--border:#475569}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.7;max-width:900px;margin:0 auto;padding:20px 16px 60px}
+.header{text-align:center;padding:32px 0 20px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.header h1{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--accent),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.header .date{color:var(--text-muted);font-size:14px}
+.stats-bar{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:20px 0;padding:16px;background:var(--bg2);border-radius:12px}
+.stat{text-align:center}
+.stat-value{font-size:22px;font-weight:700;color:var(--accent)}
+.stat-label-cn{font-size:11px;color:var(--text-muted);display:block}
+.stat-label-en{font-size:10px;color:var(--border);display:block}
+.stat-unit-cn{font-size:10px;color:var(--border)}
+.trends-card{background:var(--bg2);border-radius:12px;padding:20px;margin-bottom:28px;border-left:4px solid var(--accent)}
+.trends-title-cn{font-size:16px;font-weight:700;margin-bottom:2px}
+.trends-title-en{font-size:12px;color:var(--text-muted);font-style:italic;margin-bottom:14px;display:block}
+.trend-item{margin-bottom:10px;padding:8px 12px;background:var(--bg);border-radius:8px}
+.trend-item:last-child{margin-bottom:0}
+.trend-cn{font-size:13px;font-weight:500}
+.trend-en{font-size:11px;color:var(--text-muted);display:block;margin-top:2px}
+.section{margin-bottom:28px}
+.card-title{font-size:18px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:10px}
+.title-cn{color:var(--text)}
+.title-en{font-size:12px;color:var(--text-muted);font-style:italic}
+.news-item{background:var(--bg2);border-radius:12px;padding:18px;margin-bottom:14px;border-left:4px solid var(--accent);transition:transform .15s}
+.news-item:hover{transform:translateX(2px)}
+.news-item[data-tag="US"]{border-left-color:var(--tag-us)}
+.news-item[data-tag="CN"]{border-left-color:var(--tag-cn)}
+.news-item[data-tag="SG"]{border-left-color:var(--tag-sg)}
+.news-item[data-tag="Research"]{border-left-color:var(--tag-research)}
+.news-item[data-tag="Open"]{border-left-color:var(--tag-open)}
+.news-item[data-tag="Policy"]{border-left-color:var(--tag-policy)}
+.news-item[data-tag="new-source"]{border-left-color:var(--tag-new)}
+.news-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.news-title{flex:1}
+.news-title .title-text{font-size:15px;font-weight:600;line-height:1.4}
+.news-title .title-en{font-size:12px;color:var(--text-muted);font-style:italic;display:block;margin-top:2px}
+.tag{font-size:11px;padding:3px 8px;border-radius:20px;white-space:nowrap;font-weight:600;flex-shrink:0}
+.tag-US{background:rgba(59,130,246,.2);color:var(--tag-us)}
+.tag-CN{background:rgba(239,68,68,.2);color:var(--tag-cn)}
+.tag-SG{background:rgba(249,115,22,.2);color:var(--tag-sg)}
+.tag-Research{background:rgba(34,197,94,.2);color:var(--tag-research)}
+.tag-Open{background:rgba(167,139,250,.2);color:var(--tag-open)}
+.tag-Policy{background:rgba(234,179,8,.2);color:var(--tag-policy)}
+.news-summary{margin:10px 0;display:flex;gap:0;border-radius:8px;overflow:hidden}
+.news-summary-cn{flex:1;padding:10px 14px;font-size:13px;line-height:1.7;border-left:3px solid var(--accent)}
+.news-summary-en{flex:1;padding:10px 14px;font-size:12px;color:var(--text-muted);line-height:1.7;border-left:1px solid var(--border)}
+.why-matters{background:rgba(167,139,250,.08);border-radius:8px;padding:10px 14px;margin-top:8px}
+.why-cn{font-size:12px;color:#c4b5fd}
+.why-en{font-size:11px;color:var(--text-muted);margin-top:4px}
+.source-link{display:inline-block;margin-top:10px;font-size:12px;color:var(--accent);text-decoration:none;padding:4px 10px;border:1px solid rgba(167,139,250,.3);border-radius:6px;transition:background .2s}
+.source-link:hover{background:rgba(167,139,250,.15)}
+.new-source-callout{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);border-radius:8px;padding:8px 14px;margin-top:10px;font-size:12px;color:var(--tag-new)}
+.new-source-callout strong{color:#22d3ee}
+.whitelist-section{margin-top:36px;padding:20px;background:var(--bg2);border-radius:12px}
+.whitelist-title-cn{font-size:15px;font-weight:700;margin-bottom:2px}
+.whitelist-title-en{font-size:11px;color:var(--text-muted);font-style:italic;margin-bottom:10px;display:block}
+.whitelist-note-cn{font-size:11px;color:var(--text-muted);margin-bottom:8px}
+.whitelist-note-en{font-size:10px;color:var(--border);margin-bottom:12px;display:block}
+.wl-category{margin-bottom:10px}
+.wl-cat-name{font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px}
+.wl-items{font-size:11px;color:var(--text-muted);line-height:1.8}
+.wl-new{color:#22d3ee;font-weight:600}
+.footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:var(--text-muted)}
+.footer-cn{display:block;margin-bottom:2px}
+.footer-en{display:block;color:var(--border);font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>AI Briefing / AI 技术简报</h1>
+<div class="date">2026-05-28 Thursday AM / 星期四 早报</div>
+</div>
+
+<div class="stats-bar">
+<div class="stat">
+<div class="stat-value">14</div>
+<span class="stat-label-cn">今日要闻</span>
+<span class="stat-label-en">Stories Today</span>
+</div>
+<div class="stat">
+<div class="stat-value">3</div>
+<span class="stat-label-cn">地区覆盖</span>
+<span class="stat-label-en">Regions</span>
+</div>
+<div class="stat">
+<div class="stat-value">7</div>
+<span class="stat-label-cn">来源类别</span>
+<span class="stat-label-en">Source Types</span>
+</div>
+<div class="stat">
+<div class="stat-value">5</div>
+<span class="stat-label-cn">交易日 (MSFT Build)</span>
+<span class="stat-label-en">Days to MSFT Build</span>
+</div>
+</div>
+
+<div class="trends-card">
+<div class="trends-title-cn">核心趋势 / Key Trends</div>
+<span class="trends-title-en">What's shaping the AI landscape this week</span>
+
+<div class="trend-item">
+<div class="trend-cn">AI 竞争主战场从模型性能转向企业部署与分销</div>
+<div class="trend-en">The AI race shifts from benchmarks to enterprise deployment and distribution</div>
+</div>
+<div class="trend-item">
+<div class="trend-cn">四大咨询巨头全面押注 Claude，OpenAI 以 $4B DeployCo 应战</div>
+<div class="trend-en">Big Four consulting firms standardize on Claude; OpenAI counters with $4B DeployCo</div>
+</div>
+<div class="trend-item">
+<div class="trend-cn">中国收紧 AI 人才出境管制，对阿里、DeepSeek 等民企高管实施审批制</div>
+<div class="trend-en">China imposes travel restrictions on senior AI professionals at Alibaba, DeepSeek</div>
+</div>
+<div class="trend-item">
+<div class="trend-cn">NVIDIA Vera CPU 首批第三方跑分公布，综合性能领先 x86 1.5×</div>
+<div class="trend-en">NVIDIA Vera CPU first third-party benchmarks show 1.5x lead over top x86 CPUs</div>
+</div>
+</div>
+
+<!-- ==================== TOP STORIES ==================== -->
+<div class="section">
+<div class="card-title">
+<span class="title-cn">头条 / Top Stories</span>
+<span class="title-en">The stories that matter most</span>
+</div>
+
+<div class="news-item" data-tag="US">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">OpenAI 正式向 SEC 提交 S-1 注册文件，目标 2026 Q4 IPO</div>
+<span class="title-en">OpenAI files S-1 registration with SEC, targeting Q4 2026 IPO</span>
+</div>
+<span class="tag tag-US">US</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">OpenAI 已正式向美国证券交易委员会（SEC）提交 S-1 注册文件，由高盛与摩根士丹利担任承销商。此举标志着这家从非营利起步的 AI 巨头正式踏上上市之路。此前保密提交阶段估值目标为 $850B-$1T，若成功将成为科技史上最大 IPO 之一。S-1 公开文件将强制披露收入、亏损及股权结构细节。</div>
+<div class="news-summary-en">OpenAI has formally filed its S-1 registration statement with the U.S. SEC, with Goldman Sachs and Morgan Stanley as lead underwriters. This marks the final step of the AI giant's transformation from nonprofit to public company. The confidential filing stage targeted an $850B-$1T valuation, potentially making it the largest tech IPO in history. The public S-1 will mandate disclosure of revenue, losses, and equity structure.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>OpenAI IPO 将成为 AI 行业资本化的标志性事件，S-1 披露的财务数据将首次揭示 ChatGPT 的真实商业表现，也为 Anthropic 对标的估值锚定提供基准。</div>
+<div class="why-en"><strong>Why it matters:</strong>The OpenAI IPO is a watershed moment for AI industry capitalization. S-1 disclosures will reveal ChatGPT's true financial performance for the first time, providing a valuation benchmark for Anthropic and peers.</div>
+</div>
+<a class="source-link" href="https://www.winzheng.com/lab/reports/openai-s1-ipo-filing" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="US">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">Anthropic 完成 $300 亿融资，估值突破 $900B，首度超越 OpenAI</div>
+<span class="title-en">Anthropic closes $30B funding round at $900B+ valuation, overtaking OpenAI</span>
+</div>
+<span class="tag tag-US">US</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">据 Bloomberg 报道，Anthropic 即将完成超过 $300 亿的新一轮融资，估值突破 $9000 亿，首次超越 OpenAI 成为全球估值最高的 AI 初创公司。Q2 营收据报达到 $109 亿，主要驱动力来自 Claude Code API 使用及企业合同。公司每月向 SpaceX 支付 $12.5 亿计算费用。</div>
+<div class="news-summary-en">Anthropic is finalizing a $30B+ funding round at a $900B+ valuation, making it the world's most valuable AI startup for the first time, per Bloomberg. Q2 revenue reportedly hit $10.9B, driven by Claude Code API usage and enterprise contracts. The company spends $1.25B monthly on SpaceX compute.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>AI 行业估值格局发生历史性逆转。"安全优先"的商业路径获得资本市场认可，Anthropic 的企业级部署策略（四大咨询巨头全部选择 Claude）成为估值核心支撑。</div>
+<div class="why-en"><strong>Why it matters:</strong>A historic reversal in AI industry valuations. Anthropic's "safety-first" commercial path gains capital market validation, with enterprise deployment strategy (all Big Four firms chose Claude) as the valuation anchor.</div>
+</div>
+<a class="source-link" href="https://www.arturmarkus.com/anthropic-raises-30-billion-at-900b-valuation-overtakes-openai-for-first-time-with-10-9b-q2-revenue-and-45b-spacex-gpu-contract/" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="CN">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">中国对民企 AI 人才实施出境审批制，涉及阿里、DeepSeek</div>
+<span class="title-en">China restricts overseas travel for top AI talent at private firms including Alibaba, DeepSeek</span>
+</div>
+<span class="tag tag-CN">CN</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">据 Bloomberg 报道，中国已开始要求阿里、DeepSeek 等民营企业的资深 AI 专业人士在出国前需获得政府审批。这些不公开的限制措施标志着北京保护关键技术人才的新举措，也反映了中美 AI 竞争白热化背景下的人才安全关切。</div>
+<div class="news-summary-en">China is requiring government approval for overseas travel by senior AI professionals at private firms including Alibaba and DeepSeek, per a Bloomberg report. The quiet restrictions mark Beijing's push to retain critical AI talent amid intensifying US-China AI competition.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>AI 人才流动性直接影响全球研发格局。中国对民企 AI 人才出境设限意味着技术保护主义升级，可能加速国际 AI 人才市场分化，影响跨国学术合作。</div>
+<div class="why-en"><strong>Why it matters:</strong>AI talent mobility directly shapes the global R&D landscape. China's travel restrictions on private-sector AI professionals signal an escalation in tech protectionism, potentially fragmenting the international AI talent market.</div>
+</div>
+<a class="source-link" href="https://www.chinapulse.com/data-news/2026/05/27/china-expands-travel-restrictions-for-top-ai-talent-in-private-firms/" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="US">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">xAI 完成 Grok V9-Medium 训练：1.5T 参数，2-3 周内发布</div>
+<span class="title-en">xAI completes Grok V9-Medium training: 1.5T parameters, launch in 2-3 weeks</span>
+</div>
+<span class="tag tag-US">US</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">马斯克宣布 xAI（已并入 SpaceX，更名为 SpaceXAI）的 Grok V9-Medium 基础模型已完成训练，参数量达 1.5 万亿，是目前生产模型 V8-Small（0.5T）的三倍。模型已在监督微调阶段，几天内将开始强化学习训练。补充训练中吸纳了大量 Cursor 代码数据，面向编程 AI 赛道。预计 2-3 周内面向公众发布。</div>
+<div class="news-summary-en">Elon Musk announced that xAI's (now SpaceXAI) Grok V9-Medium base model has completed training with 1.5 trillion parameters — 3x the current production model V8-Small (0.5T). The model is in supervised fine-tuning with RL training starting in days. Supplementary training incorporated extensive Cursor code data targeting the coding AI track. Public release expected in 2-3 weeks.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>Grok V9-Medium 是目前公开确认的最大规模 LLM 之一（1.5T），xAI 并入 SpaceX 后算力资源充沛。在编程 AI 赛道的发力直接对标 Claude Code 和 OpenAI Codex，Cursor 数据的使用也引发数据来源争议。</div>
+<div class="why-en"><strong>Why it matters:</strong>Grok V9-Medium is among the largest confirmed LLMs at 1.5T parameters. Post-SpaceX merger, xAI has ample compute. Its coding AI push directly targets Claude Code and OpenAI Codex, while Cursor data usage raises sourcing questions.</div>
+</div>
+<a class="source-link" href="https://news.qq.com/rain/a/20260526A05B9E00" target="_blank">Source / 来源</a>
+</div>
+</div>
+
+<!-- ==================== 官方发布 ==================== -->
+<div class="section">
+<div class="card-title">
+<span class="title-cn">官方发布 / Official Releases</span>
+<span class="title-en">Model launches, product updates & partnerships</span>
+</div>
+
+<div class="news-item" data-tag="CN">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">智谱发布 GLM-5.1 高速版 API：400 tokens/s 刷新全球速度上限</div>
+<span class="title-en">Zhipu launches GLM-5.1-highspeed API at 400 tokens/s, setting global speed record</span>
+</div>
+<span class="tag tag-CN">CN</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">智谱 AI 宣布面向企业客户推出 GLM-5.1 高速版 API，输出速度达 400 tokens/s，刷新全球大模型厂商 API 速度上限。该模型打破"快即小"的行业惯例，首次在国产大模型中实现旗舰级能力与极致低延迟兼顾。智谱港股股价盘中一度涨超 22%。由智谱 GLM 团队与 TileDB 合作优化推理引擎。</div>
+<div class="news-summary-en">Zhipu AI launched GLM-5.1-highspeed for enterprise customers at 400 tokens/s, setting a new global speed record for LLM APIs. The model breaks the industry convention that speed requires smaller models, achieving flagship-level capabilities with ultra-low latency for the first time among Chinese LLMs. Zhipu's HK stock surged 22% intraday. Co-developed with TileDB for inference engine optimization.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>400 tokens/s 意味着 30 秒可生成复杂网页代码，实时交互体验质变。智谱成为首家将旗舰能力与极限速度兼顾的中国厂商，对延迟敏感的企业应用场景（如实时客服、代码补全）意义重大。</div>
+<div class="why-en"><strong>Why it matters:</strong>400 tokens/s means complex web page code in 30 seconds — a qualitative shift in real-time interaction. Zhipu is the first Chinese lab to combine flagship capability with extreme speed, critical for latency-sensitive enterprise use cases.</div>
+</div>
+<a class="source-link" href="https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="US">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">Claude Code v2.1 更新：/usage 明细 + 安全修复，Windows 用户需立即升级</div>
+<span class="title-en">Claude Code v2.1 update: /usage breakdown + critical security fix, Windows users must update</span>
+</div>
+<span class="tag tag-US">US</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">Anthropic 发布 Claude Code v2.1.149-152 系列更新。v2.1.149 修复了关键 PowerShell 权限绕过漏洞（内置 cd 函数可绕过工作区检测），Windows 用户须立即通过 `claude update` 或 `winget upgrade` 升级。新功能包括 /usage 命令分类显示消耗（技能、子 Agent、MCP 服务器）、键盘友好的 diff 滚动浏览、Markdown GFM 任务列表渲染，以及企业级 MCP 云连接器设置。</div>
+<div class="news-summary-en">Anthropic released Claude Code v2.1.149-152. v2.1.149 patches a critical PowerShell permission bypass (built-in cd functions could change directory outside workspace undetected). Windows users must update immediately via `claude update` or `winget upgrade`. New features: /usage per-category breakdown, keyboard-friendly diff scrolling, Markdown GFM task list rendering, and enterprise MCP cloud connector settings.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>PowerShell 漏洞是 Claude Code 首个被公开披露的安全风险，修复速度反映 Anthropic 对 Agent 安全的重视。/usage 明细功能让企业用户可追踪每个 MCP 服务器的成本，为 AI 编程工具的企业级管理提供基础。</div>
+<div class="why-en"><strong>Why it matters:</strong>The PowerShell vulnerability is Claude Code's first publicly disclosed security risk; rapid patching reflects Anthropic's focus on agent security. The /usage breakdown enables enterprise cost tracking per MCP server, a foundation for enterprise-grade AI coding tool management.</div>
+</div>
+<a class="source-link" href="https://claude.com/product/claude-security" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="CN">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">DeepSeek V4-Pro API 永久降价 75%，调整后 $0.435/$0.87 每百万 Token</div>
+<span class="title-en">DeepSeek V4-Pro API permanently cut by 75% to $0.435/$0.87 per million tokens</span>
+</div>
+<span class="tag tag-CN">CN</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">DeepSeek 宣布 V4-Pro 模型 API 在 5 月 31 日 2.5 折优惠结束后，正式调整为原定价的 1/4（永久性降价）。输入价格从 $1.74 降至 $0.435/百万 Token，输出从 $3.48 降至 $0.87/百万 Token。此举旨在吸引更多开发者在 DeepSeek V4-Pro 与 GPT-5.5/Claude Opus 4.6 之间选择。</div>
+<div class="news-summary-en">DeepSeek announced that V4-Pro API pricing will be permanently reduced to 25% of original after the 2.5x promotional period ends May 31. Input drops from $1.74 to $0.435/M tokens, output from $3.48 to $0.87/M tokens. The move aims to attract developers choosing between DeepSeek V4-Pro and GPT-5.5/Claude Opus 4.6.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>DeepSeek V4-Pro 的永久降价使中国开源模型的 API 成本优势进一步拉大。$0.435/M Token 的输入价格不到 GPT-5.5 的十分之一，可能引发新一轮全球 API 价格战。</div>
+<div class="why-en"><strong>Why it matters:</strong>DeepSeek's permanent price cut widens the cost advantage of Chinese open-source model APIs. At $0.435/M tokens input, it's less than 1/10th of GPT-5.5, potentially triggering another round of global API price wars.</div>
+</div>
+<a class="source-link" href="https://www.timesofai.com/news/deepseek-permanently-cuts-v4-pro-ai-costs-by-75/" target="_blank">Source / 来源</a>
+</div>
+</div>
+
+<!-- ==================== 研究与技术 ==================== -->
+<div class="section">
+<div class="card-title">
+<span class="title-cn">研究与技术 / Research & Technology</span>
+<span class="title-en">Papers, benchmarks & engineering breakthroughs</span>
+</div>
+
+<div class="news-item" data-tag="Research">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">NVIDIA Vera CPU 第三方基准测试公布：综合性能领先 x86 1.5×</div>
+<span class="title-en">NVIDIA Vera CPU third-party benchmarks: 1.5x overall performance lead over x86</span>
+</div>
+<span class="tag tag-Research">Research</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">Phoronix 发布 NVIDIA Vera CPU 首批第三方基准测试。这款专为 Agentic AI 和 AI 工厂设计的 ARM 架构数据中心处理器，综合性能比顶级 x86 CPU 高 1.5 倍，Linux 内核编译速度提升 2 倍，STREAM TRIAD 内存带宽达 4 倍。Vera 采用 Olympus 内核架构，专为全核负载高持续性能设计。首批交付客户包括 Anthropic、OpenAI、SpaceX AI。</div>
+<div class="news-summary-en">Phoronix published first third-party benchmarks for NVIDIA Vera CPU. The ARM-based data center processor designed for agentic AI and AI factories shows 1.5x overall performance over top x86 CPUs, 2x faster Linux kernel compilation, and 4x STREAM TRIAD memory bandwidth. Vera uses Olympus cores engineered for sustained full-load performance. Initial customers include Anthropic, OpenAI, and SpaceX AI.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>Vera CPU 标志着 AI 基础设施从 GPU-only 向 CPU+GPU 协同架构演进。其全核满载性能设计直接针对 AI Agent 编排、代码编译、数据处理等场景，可能重塑数据中心 CPU 格局。</div>
+<div class="why-en"><strong>Why it matters:</strong>Vera CPU signals the evolution of AI infrastructure from GPU-only to CPU+GPU collaborative architecture. Its full-load performance targets AI agent orchestration, code compilation, and data processing, potentially reshaping the data center CPU landscape.</div>
+</div>
+<a class="source-link" href="https://blogs.nvidia.com/blog/vera-cpu-phoronix/" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="Research">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">arXiv 本周精选：CUA-Gym 可验证 Computer-Use Agent 训练框架</div>
+<span class="title-en">arXiv picks: CUA-Gym — scalable verifiable training for computer-use agents</span>
+</div>
+<span class="tag tag-Research">Research</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">CUA-Gym（arXiv:2605.25624）提出一套可扩展的 Computer-Use Agent 训练流水线和数据集，引入可验证奖励机制，显著提升 GUI Agent 在基准任务上的表现。同期 noteworthy 论文包括：SEAL（Agent 与学习环境协同进化框架）、ProAct（利用空闲计算预判用户需求的主动 Agent 架构）、AutoResearch AI（AI 驱动科学发现自动化的综述论文）。</div>
+<div class="news-summary-en">CUA-Gym (arXiv:2605.25624) proposes a scalable pipeline and dataset for training computer-use agents with verifiable rewards, significantly boosting GUI agent performance. Other notable papers: SEAL (co-evolution framework for agents and environments), ProAct (proactive agent architecture using idle-time computation to anticipate needs), and AutoResearch AI (survey on AI-driven scientific discovery automation).</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>Computer-Use Agent 是 2026 年最活跃的研究方向之一。CUA-Gym 的可验证奖励机制解决了 GUI Agent 训练中的核心评估难题，ProAct 的预判式架构则为降低 Agent 幻觉率提供了新思路。</div>
+<div class="why-en"><strong>Why it matters:</strong>Computer-use agents are among the most active research areas in 2026. CUA-Gym's verifiable rewards solve core evaluation challenges in GUI agent training, while ProAct's anticipatory architecture offers new approaches to reducing agent hallucination.</div>
+</div>
+<a class="source-link" href="https://arxiv.deeppaper.ai/papers/weekly" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="US">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">Anthropic 开源 Claude Cowork 知识工作插件库，GitHub 16.6K Star</div>
+<span class="title-en">Anthropic open-sources Claude Cowork knowledge work plugins, 16.6K GitHub stars</span>
+</div>
+<span class="tag tag-US">US</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">Anthropic 在 GitHub 上开源 knowledge-work-plugins 插件库，为 Claude Cowork 环境提供 16 个专业领域插件，覆盖法律、财务、产品管理等岗位。采用无代码设计，三层架构实现主动命令与被动技能结合，支持企业级定制。项目一周内飙升至 GitHub Trending，累计 16.6K Star。</div>
+<div class="news-summary-en">Anthropic open-sourced knowledge-work-plugins on GitHub, providing 16 professional domain plugins for Claude Cowork covering legal, finance, product management, and more. The no-code design uses a three-layer architecture combining proactive commands with passive skills, supporting enterprise customization. The project hit GitHub Trending within a week with 16.6K stars.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>这是 Anthropic 首次官方提供企业级岗位定制方案。开源策略让社区贡献加速专业化覆盖，也降低了企业部署 Claude Cowork 的门槛，与 KPMG 27.6 万人全员部署形成产品生态闭环。</div>
+<div class="why-en"><strong>Why it matters:</strong>Anthropic's first official enterprise role customization offering. Open-sourcing accelerates professional coverage via community contributions and lowers the barrier for Claude Cowork enterprise deployment, completing the product ecosystem loop with KPMG's 276K-employee rollout.</div>
+</div>
+<a class="source-link" href="https://github.com/anthropics/knowledge-work-plugins" target="_blank">Source / 来源</a>
+</div>
+</div>
+
+<!-- ==================== 政策与产业 ==================== -->
+<div class="section">
+<div class="card-title">
+<span class="title-cn">政策与产业 / Policy & Industry</span>
+<span class="title-en">Funding, regulation & market dynamics</span>
+</div>
+
+<div class="news-item" data-tag="Policy">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">OpenRouter 完成 $113M B 轮融资，估值 $13 亿，6 个月使用量增长 5 倍</div>
+<span class="title-en">OpenRouter raises $113M Series B at $1.3B valuation, 5x usage growth in 6 months</span>
+</div>
+<span class="tag tag-Policy">Policy</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">多模型 AI 路由平台 OpenRouter 完成 $1.13 亿 B 轮融资，由 CapitalG（Alphabet 增长基金）领投，估值达 $13 亿，一年内翻倍。平台使用量在 6 个月内增长 5 倍，反映出行业从单一模型向多模型组合使用的结构性转变。</div>
+<div class="news-summary-en">Multi-model AI routing platform OpenRouter raised $113M Series B led by CapitalG (Alphabet's growth fund) at $1.3B valuation, doubling in one year. Platform usage grew 5x in 6 months, reflecting the industry's structural shift from single-model to multi-model usage.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>OpenRouter 的爆发式增长验证了"模型路由层"作为独立商业赛道的可行性。企业越来越倾向于根据任务类型动态选择最优模型，而非绑定单一供应商，这对 OpenAI 和 Anthropic 的锁定策略构成挑战。</div>
+<div class="why-en"><strong>Why it matters:</strong>OpenRouter's explosive growth validates the "model routing layer" as an independent commercial category. Enterprises increasingly prefer dynamic model selection by task type over single-vendor lock-in, challenging OpenAI and Anthropic's stickiness strategies.</div>
+</div>
+<a class="source-link" href="https://techcrunch.com/2026/05/26/openrouter-more-than-doubles-valuation-to-1-3b-in-a-year/" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="Policy">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">Google AI 搜索改造引发用户反弹，DuckDuckGo 安装量周增 30%</div>
+<span class="title-en">Google AI search overhaul triggers user backlash, DuckDuckGo installs surge 30%</span>
+</div>
+<span class="tag tag-Policy">Policy</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">Google 在 I/O 2026 宣布用 AI Agent 取代传统蓝色链接搜索后，引发用户强烈反弹。DuckDuckGo 5 月 20-25 日期间美国应用安装量连续 6 天增长，峰值增幅达 30.5%，周均环比增长 18.1%。用户反馈显示对"强制 AI"搜索的不满，部分用户称"Google 已经不再是那个 Google"。</div>
+<div class="news-summary-en">After Google announced replacing traditional blue-link search with AI agents at I/O 2026, user backlash was swift. DuckDuckGo US app installs grew for 6 consecutive days (May 20-25), peaking at 30.5% daily increase with 18.1% weekly average. User feedback reflects frustration with "forced AI" search, with some saying "Google is no longer Google."</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>这是 AI 产品化进程中首个大规模用户抵制案例。Google 的教训表明，AI 替代传统界面时若缺乏用户选择权，可能适得其反。对 AI 搜索赛道的设计哲学（辅助 vs 替代）具有深远启示。</div>
+<div class="why-en"><strong>Why it matters:</strong>The first large-scale user backlash against AI productization. Google's lesson shows that replacing traditional interfaces with AI without user choice can backfire, with deep implications for AI search design philosophy (assist vs. replace).</div>
+</div>
+<a class="source-link" href="https://techcrunch.com/2026/05/26/duckduckgo-installs-are-up-30-as-users-reject-being-force-fed-googles-ai-search/" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="Policy">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">KPMG 全员部署 Claude，四大咨询巨头 Claude 标准化竞争白热化</div>
+<span class="title-en">KPMG deploys Claude to 276K employees; Big Four Claude standardization intensifies</span>
+</div>
+<span class="tag tag-Policy">Policy</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">KPMG 宣布将 Claude Cowork 和 Managed Agents 嵌入核心客户交付平台 KPMG Digital Gateway，覆盖 138 个国家 27.6 万专业人士。初始聚焦税务法律、私募股权和网络安全扫描。计划 2026 年 9 月在 Microsoft Azure 上全面实施。至此 Deloitte（47 万）、PwC（37 万）、KPMG（27.6 万）均已选择 Claude 作为标准 AI 工具，EY 预计 Q3 跟进。</div>
+<div class="news-summary-en">KPMG announced embedding Claude Cowork and Managed Agents into its core KPMG Digital Gateway platform, covering 276K professionals across 138 countries. Initial focus: tax/legal, private equity, cybersecurity scanning. Full Azure implementation by September 2026. With Deloitte (470K), PwC (370K), and KPMG (276K) now standardized on Claude, EY is expected to follow in Q3.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>四大合计约 110 万专业人士构成全球企业 AI 采购的关键影响力网络。Claude 赢得四大咨询公司的事实标准地位，将深刻影响财富 500 强和全球 2000 强的 AI 供应商选择。</div>
+<div class="why-en"><strong>Why it matters:</strong>The Big Four's combined ~1.1M professionals form a critical influence network for global enterprise AI procurement. Claude's de facto standard status among all Big Four firms will profoundly shape Fortune 500 and Global 2000 AI vendor selection.</div>
+</div>
+<a class="source-link" href="https://www.buildfastwithai.com/blogs/ai-news-today-may-28-2026" target="_blank">Source / 来源</a>
+</div>
+
+<div class="news-item" data-tag="Policy">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">Qualcomm 获 ByteDance AI 芯片订单，中国 AI 基础设施支出年增 25%</div>
+<span class="title-en">Qualcomm secures ByteDance AI chip deal as China AI infra spending rises 25%</span>
+</div>
+<span class="tag tag-Policy">Policy</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">据 Tech in Asia 报道，高通成功获得字节跳动的 AI 芯片供应合同。字节跳动 2026 年基础设施支出增长 25% 至约 294 亿美元（2000 亿元人民币），AI 算力需求是核心驱动。此举也反映出中国科技巨头在 GPU 供应多元化方面的战略布局。</div>
+<div class="news-summary-en">Qualcomm secured an AI chip supply deal with ByteDance, per Tech in Asia. ByteDance's 2026 infrastructure spending rose 25% to ~$29.4B (200B RMB), driven by AI compute demand. The deal also reflects Chinese tech giants' strategic diversification of GPU supply sources.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>ByteDance 选择高通而非 NVIDIA 标志着 AI 芯片供应链多元化加速。在美国对华芯片出口管制持续的背景下，中国科技巨头的替代方案布局对全球半导体格局有深远影响。</div>
+<div class="why-en"><strong>Why it matters:</strong>ByteDance choosing Qualcomm over NVIDIA signals accelerating AI chip supply diversification. Amid ongoing US chip export controls, Chinese tech giants' alternative sourcing has profound implications for the global semiconductor landscape.</div>
+</div>
+<a class="source-link" href="https://www.techinasia.com/news/qualcomm-reportedly-lands-bytedance-ai-chip-deal" target="_blank">Source / 来源</a>
+</div>
+</div>
+
+<!-- ==================== 开源生态 ==================== -->
+<div class="section">
+<div class="card-title">
+<span class="title-cn">开源生态 / Open Source</span>
+<span class="title-en">Community tools, frameworks & ecosystem</span>
+</div>
+
+<div class="news-item" data-tag="Open">
+<div class="news-header">
+<div class="news-title">
+<div class="title-text">Claude Code 生态工具爆发：CodeGraph、Understand-Anything、ECC 三项目同日登 GitHub Trending</div>
+<span class="title-en">Claude Code ecosystem explodes: CodeGraph, Understand-Anything, ECC simultaneously trend on GitHub</span>
+</div>
+<span class="tag tag-Open">Open</span>
+</div>
+<div class="news-summary">
+<div class="news-summary-cn">过去一周内，三个 Claude Code 生态工具同时登上 GitHub Trending：CodeGraph（本地代码知识图谱，降低 Token 用量和工具调用次数，100% 本地运行）、Understand-Anything（将代码库转换为可交互知识图谱，兼容 Claude Code/Codex/Cursor/Gemini CLI）、ECC（AI Agent Shell 优化系统，基于技能/直觉/记忆/安全/研究五大支柱）。社区围绕 AI 编程工具的基础设施建设进入加速期。</div>
+<div class="news-summary-en">Three Claude Code ecosystem tools simultaneously hit GitHub Trending this week: CodeGraph (local code knowledge graph reducing token usage and tool calls, 100% local), Understand-Anything (converts codebases to interactive knowledge graphs, compatible with Claude Code/Codex/Cursor/Gemini CLI), and ECC (AI Agent Shell optimization system built on 5 pillars: skills, instincts, memory, security, research). Community infrastructure for AI coding tools is accelerating.</div>
+</div>
+<div class="why-matters">
+<div class="why-cn"><strong>为何重要：</strong>AI 编程工具生态从"单一产品"向"平台 + 插件 + 中间件"演进。三个项目分别解决 Token 成本、代码理解、Agent 工程化三大痛点，标志着 AI 辅助编程进入成熟期。</div>
+<div class="why-en"><strong>Why it matters:</strong>AI coding tool ecosystem evolves from "single product" to "platform + plugins + middleware." The three projects address Token costs, code understanding, and agent engineering respectively, signaling AI-assisted coding entering maturity.</div>
+</div>
+<a class="source-link" href="https://github.com/colbymchenry/codegraph" target="_blank">Source / 来源</a>
+</div>
+</div>
+
+<!-- ==================== WHITELIST ==================== -->
+<div class="whitelist-section">
+<div class="whitelist-title-cn">信源白名单 / Source Whitelist</div>
+<span class="whitelist-title-en">All tracked sources — new additions marked with emoji</span>
+<div class="whitelist-note-cn">以下为简报追踪的所有官方来源，确保信息可信度。发现新来源时会自动加入并标注。</div>
+<div class="whitelist-note-en">All officially tracked sources for briefing credibility. New sources are auto-added and marked.</div>
+
+<div class="wl-category">
+<div class="wl-cat-name">US Labs</div>
+<div class="wl-items">
+OpenAI (openai.com/news, openai.com/research) | Anthropic (anthropic.com/news, anthropic.com/research) | Google DeepMind (deepmind.google/blog) | Meta Superintelligence Labs (about.fb.com/news)
+</div>
+</div>
+<div class="wl-category">
+<div class="wl-cat-name">China Labs</div>
+<div class="wl-items">
+Moonshot/Kimi (moonshot.ai, kimi.com) | MiniMax (minimaxi.com) | Zhipu (zhipuai.cn, open.bigmodel.cn) | Qwen/Alibaba Cloud (qwen.ai/blog) | DeepSeek (deepseek.com) | ByteDance Seed (seed.bytedance.com)
+</div>
+</div>
+<div class="wl-category">
+<div class="wl-cat-name">Singapore</div>
+<div class="wl-items">
+A*STAR AI Division | GovTech Singapore | Singapore DSAI | NUS AI Research | MDDI Singapore | Singtel Digital InfraCo RE:AI
+</div>
+</div>
+<div class="wl-category">
+<div class="wl-cat-name">Media</div>
+<div class="wl-items">
+Reuters AI | MIT Tech Review | Xinhua EN | CNBC Technology | Forbes AI 50 | AI Critique | IEEE Spectrum | AI Flash Report | WinBuzzer
+</div>
+</div>
+<div class="wl-category">
+<div class="wl-cat-name">Open Source / Research</div>
+<div class="wl-items">
+Hugging Face Blog | arXiv CS.AI | OpenBMB | HKUDS | Marktechpost
+</div>
+</div>
+<div class="wl-category">
+<div class="wl-cat-name">AI Governance / Policy</div>
+<div class="wl-items">
+Plural Policy | UK AISI | Stanford HAI | Mayer Brown AI Policy
+</div>
+</div>
+<div class="wl-category">
+<div class="wl-cat-name">GitHub / Developer</div>
+<div class="wl-items">
+Anthropic Official GitHub (github.com/anthropics) | NVIDIA Blog (blogs.nvidia.com) | Phoronix
+</div>
+</div>
+</div>
+
+<div class="footer">
+<span class="footer-cn">AI 技术简报 — 2026-05-28 AM / 自动生成，发布至 GitHub Pages</span>
+<span class="footer-en">AI Briefing — 2026-05-28 AM / Auto-generated, published to GitHub Pages</span>
+<span class="footer-cn">数据来源：白名单官方渠道 + 权威媒体 / 内容经交叉验证</span>
+<span class="footer-en">Sources: Official whitelist channels + authoritative media / Cross-verified</span>
+</div>
+
+</body>
+</html>

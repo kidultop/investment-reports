@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 简报 2026-05-02 早报</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface2: #334155;
+            --accent: #a78bfa;
+            --accent-light: #c4b5fd;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --us-color: #60a5fa;
+            --cn-color: #f87171;
+            --sg-color: #fb923c;
+            --research-color: #4ade80;
+            --open-color: #c084fc;
+            --policy-color: #fbbf24;
+            --new-color: #22d3ee;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "Noto Sans", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .header .date {
+            margin-top: 10px;
+            color: var(--text-muted);
+        }
+        
+        .trends-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .trends-title-cn {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .trends-title-en {
+            font-size: 1em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .trend-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent);
+            background: rgba(167, 139, 250, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .trend-cn {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .trend-en {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--surface2);
+        }
+        
+        .title-cn {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .title-en {
+            font-size: 1em;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .news-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 4px solid var(--accent);
+            position: relative;
+        }
+        
+        .news-item.headline {
+            border-left-width: 6px;
+            background: rgba(167, 139, 250, 0.08);
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .tag-us { background: rgba(96, 165, 250, 0.2); color: var(--us-color); }
+        .tag-cn { background: rgba(248, 113, 113, 0.2); color: var(--cn-color); }
+        .tag-sg { background: rgba(251, 146, 60, 0.2); color: var(--sg-color); }
+        .tag-research { background: rgba(74, 222, 128, 0.2); color: var(--research-color); }
+        .tag-open { background: rgba(192, 132, 252, 0.2); color: var(--open-color); }
+        .tag-policy { background: rgba(251, 191, 36, 0.2); color: var(--policy-color); }
+        .tag-new { background: rgba(34, 211, 238, 0.2); color: var(--new-color); }
+        
+        .news-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+        
+        .news-title-en {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .news-summary {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .news-summary-cn {
+            flex: 1;
+            padding-right: 15px;
+        }
+        
+        .news-summary-en {
+            flex: 1;
+            padding-left: 15px;
+            border-left: 3px solid var(--surface2);
+            color: var(--text-muted);
+            font-size: 0.95em;
+        }
+        
+        .why-matters {
+            background: rgba(167, 139, 250, 0.05);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .why-cn, .why-en {
+            margin-bottom: 5px;
+        }
+        
+        .why-cn strong, .why-en strong {
+            color: var(--accent);
+        }
+        
+        .source-link {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--surface2);
+            color: var(--accent-light);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+        
+        .source-link:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .new-source-callout {
+            background: rgba(34, 211, 238, 0.1);
+            border-left: 4px solid var(--new-color);
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9em;
+        }
+        
+        .whitelist-section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 30px;
+        }
+        
+        .whitelist-title-cn {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .whitelist-title-en {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .whitelist-note-cn, .whitelist-note-en {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+        
+        .whitelist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .whitelist-item {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            font-size: 0.85em;
+        }
+        
+        .whitelist-item.new {
+            border-left: 3px solid var(--new-color);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--surface2);
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+        
+        .footer-cn, .footer-en {
+            margin-bottom: 5px;
+        }
+        
+        .footer-en {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 AI 技术简报</h1>
+        <div class="subtitle">Daily AI Briefing</div>
+        <div class="date">2026年5月2日 早报 | May 2, 2026 Morning Edition</div>
+    </div>
+    
+    <div class="trends-card">
+        <div class="trends-title-cn">📊 核心趋势</div>
+        <div class="trends-title-en">Core Trends</div>
+        
+        <div class="trend-item">
+            <div class="trend-cn">DeepSeek V4 开源发布，1.6T MoE 架构 + 100万 token 上下文成新标杆</div>
+            <div class="trend-en">DeepSeek V4 open-sourced: 1.6T MoE architecture + 1M token context sets new benchmark</div>
+        </div>
+        
+        <div class="trend-item">
+            <div class="trend-cn">Microsoft-OpenAI 修订合作协议，OpenAI 获多云部署自由</div>
+            <div class="trend-en">Microsoft-OpenAI amend partnership: OpenAI gains multi-cloud deployment freedom</div>
+        </div>
+        
+        <div class="trend-item">
+            <div class="trend-cn">AI 智能体编排成主流趋势，多 Agent 协作成技术竞争焦点</div>
+            <div class="trend-en">AI agent orchestration goes mainstream; multi-agent collaboration becomes tech competition focus</div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">📰 头条</span>
+            <span class="title-en">Top Stories</span>
+        </div>
+        
+        <div class="news-item headline">
+            <div class="tag tag-cn">CN</div>
+            <div class="news-title">DeepSeek V4 开源发布：1.6T MoE 架构，100万 token 上下文</div>
+            <div class="news-title-en">DeepSeek V4 Open-Sourced: 1.6T MoE Architecture, 1M Token Context</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月24日，DeepSeek 发布开源大模型 DeepSeek-V4 系列，包含 V4-Pro 与 V4-Flash 双版本。V4-Pro 总参数 1.6 万亿，激活参数 490 亿；V4-Flash 总参数 2840 亿，激活参数 130 亿。两款模型均支持 100 万 token 上下文长度，采用 MoE 架构。这是迄今为止开源社区获得的最强推理与编码模型之一。
+                </div>
+                <div class="news-summary-en">
+                    On April 24, 2026, DeepSeek released the open-source DeepSeek-V4 series, including V4-Pro and V4-Flash dual versions. V4-Pro has 1.6 trillion total parameters with 49 billion activated; V4-Flash has 284 billion total parameters with 13 billion activated. Both models support 1 million token context length using MoE architecture. This is one of the strongest reasoning and coding models the open-source community has obtained to date.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>DeepSeek V4 将 100 万 token 上下文从高端特性变为默认标准，大幅降低超长文本处理成本。双模型策略（Pro 追求性能上限，Flash 追求速度与经济性）为不同场景提供灵活选择，进一步巩固中国开源 AI 的全球竞争力。</div>
+                <div class="why-en"><strong>Why it matters:</strong> DeepSeek V4 makes 1M token context the default standard, dramatically reducing ultra-long text processing costs. The dual-model strategy (Pro for performance ceiling, Flash for speed and cost-efficiency) provides flexible options for different scenarios, further solidifying China's global competitiveness in open-source AI.</div>
+            </div>
+            <a href="https://api-docs.deepseek.com/news/news260424" class="source-link" target="_blank">官方公告 Official Announcement →</a>
+        </div>
+        
+        <div class="news-item headline">
+            <div class="tag tag-us">US</div>
+            <div class="news-title">Microsoft 与 OpenAI 修订合作协议，OpenAI 获多云部署自由</div>
+            <div class="news-title-en">Microsoft and OpenAI Amend Partnership, OpenAI Gains Multi-Cloud Freedom</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月27日，微软和 OpenAI 宣布修订合作协议，从"深度绑定"转向"灵活共存"。关键变化包括：OpenAI 产品不再绑定 Azure，可在任意云服务运行；微软 IP 许可从独占变为非独占（持续至 2032 年）；微软不再向 OpenAI 支付收入分成，反而是 OpenAI 继续向微软付款至 2030 年。这标志着 AI 行业从"排他性合作"走向"多元化生态"。
+                </div>
+                <div class="news-summary-en">
+                    On April 27, 2026, Microsoft and OpenAI announced an amended partnership agreement, shifting from "deep binding" to "flexible coexistence." Key changes include: OpenAI products are no longer bound to Azure and can run on any cloud service; Microsoft's IP license changes from exclusive to non-exclusive (through 2032); Microsoft no longer pays revenue share to OpenAI, while OpenAI continues paying Microsoft through 2030. This marks the AI industry's shift from "exclusive partnerships" to "diversified ecosystems."
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>此次协议修订赋予 OpenAI 更大的基础设施自主权，可自由选择云服务商，降低对微软的依赖。对行业而言，这预示着顶尖 AI 公司正在从独家联盟模式转向多合作伙伴生态，可能加速 AI 技术的多元化部署和竞争。</div>
+                <div class="why-en"><strong>Why it matters:</strong> This agreement gives OpenAI greater infrastructure autonomy to choose cloud providers freely, reducing dependence on Microsoft. For the industry, this signals that top AI companies are shifting from exclusive alliance models to multi-partner ecosystems, potentially accelerating diversified AI deployment and competition.</div>
+            </div>
+            <a href="https://blogs.microsoft.com/blog/2026/04/27/the-next-phase-of-the-microsoft-openai-partnership/" class="source-link" target="_blank">微软官方博客 Microsoft Blog →</a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">🏢 官方发布</span>
+            <span class="title-en">Official Releases</span>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-us">US</div>
+            <div class="news-title">Anthropic 发布 Claude Opus 4.7，编码与视觉能力大幅提升</div>
+            <div class="news-title-en">Anthropic Releases Claude Opus 4.7 with Major Coding and Vision Improvements</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月16日，Anthropic 发布 Claude Opus 4.7，这是 Opus 4.6 的直接升级版本。核心改进包括：93 任务内部编码基准测试解决率提升 13%；支持最高 2576 像素长边的图像输入（是此前模型的 3 倍以上）；新增 xhigh 努力等级；正式支持高分辨率图像输入。在 XBOW 视觉敏锐度基准测试中得分 98.5%（Opus 4.6 为 54.5%）。定价与 Opus 4.6 一致：输入 $5/百万 token，输出 $25/百万 token。
+                </div>
+                <div class="news-summary-en">
+                    On April 16, 2026, Anthropic released Claude Opus 4.7, a direct upgrade from Opus 4.6. Key improvements include: 13% higher resolution rate on 93-task internal coding benchmark; supports image input up to 2576px long side (3x+ previous models); new xhigh effort level; official support for high-resolution image input. Scored 98.5% on XBOW Visual Acuity Benchmark (Opus 4.6: 54.5%). Pricing remains same as Opus 4.6: $5/M input tokens, $25/M output tokens.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Opus 4.7 在编码、视觉和智能体工作流方面的全面提升，使其成为当前最强的闭源商用 AI 模型之一。特别是视觉能力的飞跃（从 54.5% 到 98.5%），使其在文档分析、图表理解等场景中具备显著优势。</div>
+                <div class="why-en"><strong>Why it matters:</strong> Opus 4.7's comprehensive improvements in coding, vision, and agentic workflows make it one of the strongest closed-source commercial AI models. The dramatic leap in vision capability (54.5% to 98.5%) gives it significant advantages in document analysis and chart understanding scenarios.</div>
+            </div>
+            <a href="https://www.anthropic.com/news/claude-opus-4-7" class="source-link" target="_blank">Anthropic 官方公告 →</a>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-cn">CN</div>
+            <div class="news-title">Moonshot AI 正式发布 Kimi K2.6，支持 12 小时自主编码</div>
+            <div class="news-title-en">Moonshot AI Officially Releases Kimi K2.6 with 12-Hour Autonomous Coding</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月21日，Moonshot AI 正式发布 Kimi K2.6，从 Code Preview 分支毕业为正式版本。核心能力包括：支持最长 12 小时连续运行；单次任务最多 4000 步协调执行；单次 Agent Swarm 最多 300 个子代理；上下文窗口 262,144 tokens。在 Terminal-Bench 2.0 得分 66.7%，SWE-Bench Pro 得分 58.6%。模型已在 Kimi.com、官方 API、Kimi Code CLI 上线，并保持 Apache 2.0 开源许可。
+                </div>
+                <div class="news-summary-en">
+                    On April 21, 2026, Moonshot AI officially released Kimi K2.6, graduating from the Code Preview branch to general availability. Core capabilities include: up to 12 hours continuous operation; up to 4,000 coordinated steps per task; up to 300 sub-agents per Agent Swarm; 262,144 token context window. Scores 66.7% on Terminal-Bench 2.0, 58.6% on SWE-Bench Pro. The model is available on Kimi.com, official API, and Kimi Code CLI, with Apache 2.0 open-source license.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Kimi K2.6 将 AI 编码助手的自主运行时长从分钟级提升到小时级（12 小时），这是 AI 编程工具从"代码片段生成"到"长期工程任务执行"的关键跃迁。300 个子代理的编排能力也为复杂系统工程提供了新可能。</div>
+                <div class="why-en"><strong>Why it matters:</strong> Kimi K2.6 elevates AI coding assistants from minute-level to hour-level (12 hours) autonomous runtime, a critical leap from "code snippet generation" to "long-horizon engineering task execution." The 300-sub-agent orchestration capability also opens new possibilities for complex systems engineering.</div>
+            </div>
+            <a href="https://kimi-k2.org/blog/24-kimi-k2-6-release" class="source-link" target="_blank">Kimi K2.6 官方发布页 →</a>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-cn">CN</div>
+            <div class="news-title">阿里开源 Qwen 3.6-27B，270 亿参数多模态模型</div>
+            <div class="news-title-en">Alibaba Open-Sources Qwen 3.6-27B, 2.7B Parameter Multimodal Model</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月22日，阿里巴巴发布 Qwen 3.6 系列的新成员 Qwen3.6-27B，这是一个 270 亿参数的稠密多模态模型。该模型在编程能力上达到旗舰级水平，支持 GGUF 格式用于本地部署。Qwen 3.6 系列此前已发布 Qwen3.6-Plus 和 Qwen3.6-35B-A3B，此次 27B 版本的发布为社区提供了中等规模但高性能的选择。
+                </div>
+                <div class="news-summary-en">
+                    On April 22, 2026, Alibaba released Qwen3.6-27B, a new member of the Qwen 3.6 series—a 2.7 billion parameter dense multimodal model. The model achieves flagship-level coding capabilities and supports GGUF format for local deployment. The Qwen 3.6 series previously released Qwen3.6-Plus and Qwen3.6-35B-A3B; this 27B version provides the community with a medium-scale, high-performance option.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Qwen 3.6-27B 在中等参数规模（27B）下实现旗舰级编程能力，使其成为本地部署和边缘计算场景的理想选择。GGUF 格式支持进一步降低了本地运行门槛，推动 AI 民主化。</div>
+                <div class="why-en"><strong>Why it matters:</strong> Qwen3.6-27B achieves flagship-level coding at a medium parameter scale (27B), making it ideal for local deployment and edge computing. GGUF format support further lowers the barrier to local execution, advancing AI democratization.</div>
+            </div>
+            <a href="https://qwen.ai/blog?id=qwen3.6-27b" class="source-link" target="_blank">Qwen 官方博客 →</a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">🔬 研究与技术</span>
+            <span class="title-en">Research & Technology</span>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-us">US</div>
+            <div class="news-title">MIT Technology Review 发布 2026 年 AI 十大重要趋势</div>
+            <div class="news-title-en">MIT Technology Review Publishes 2026 "10 Things That Matter in AI"</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月22日，MIT Technology Review 首次推出年度 AI 趋势清单，总结了 10 个正在塑造人工智能领域的重要技术、新兴趋势和强大力量。十大趋势包括：人形数据训练、大语言模型进阶、AI 增强诈骗、世界模型、AI 军事应用、武器化深度伪造、智能体编排、中国开源押注、人工智能科学家、对 AI 的抵抗运动。这份报告为理解 2026 年 AI 发展趋势提供了权威参考。
+                </div>
+                <div class="news-summary-en">
+                    On April 22, 2026, MIT Technology Review launched its first annual AI trends list, summarizing 10 important technologies, emerging trends, and powerful forces shaping the AI field. The top 10 trends include: humanoid data training, LLM advances, AI-enhanced scams, world models, AI military applications, weaponized deepfakes, agent orchestration, China's open-source bet, artificial scientists, and resistance to AI. This report provides an authoritative reference for understanding 2026 AI development trends.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>MIT Technology Review 的年度趋势报告被视为 AI 行业的"风向标"。今年特别关注 AI 从技术探索进入产业整合阶段后的新动态，尤其是智能体编排和中国开源策略的崛起，为行业从业者提供了战略参考。</div>
+                <div class="why-en"><strong>Why it matters:</strong> MIT Technology Review's annual trends report is regarded as an "industry barometer." This year's focus on AI's transition from tech exploration to industrial integration—especially agent orchestration and China's open-source strategy—provides strategic reference for industry practitioners.</div>
+            </div>
+            <a href="https://www.technologyreview.com/2026/04/21/1135643/10-ai-artificial-intelligence-trends-technologies-research-2026/" class="source-link" target="_blank">MIT Technology Review 原文 →</a>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-us">US</div>
+            <div class="news-title">Stanford HAI 发布 2026 年 AI 指数报告</div>
+            <div class="news-title-en">Stanford HAI Releases 2026 AI Index Report</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月13日，斯坦福大学人类中心人工智能研究所（Stanford HAI）发布 2026 年 AI 指数报告，这是 AI 行业的年度"成绩单"。报告通过大量图表和数据，清晰呈现了 AI 技术的现状和发展趋势，包括模型性能、产业应用、政策监管、公众参与等多个维度。这是理解全球 AI 发展态势的权威数据来源。
+                </div>
+                <div class="news-summary-en">
+                    On April 13, 2026, Stanford's Institute for Human-Centered AI (Stanford HAI) released the 2026 AI Index Report, the industry's annual "report card." The report uses extensive charts and data to clearly present the current state and development trends of AI technology, covering model performance, industrial applications, policy regulation, public engagement, and more. It is an authoritative data source for understanding global AI development.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Stanford AI 指数报告是业界公认的权威年度报告，通过系统化的数据收集和分析，去除了 AI 行业的大量噪音。2026 年版特别关注开源与闭源模型的差距缩小、AI 在各行业的应用渗透率、以及全球 AI 治理的进展。
+                </div>
+                <div class="why-en"><strong>Why it matters:</strong> The Stanford AI Index Report is the industry's recognized authoritative annual report. The 2026 edition systematically collects and analyzes data to cut through AI industry noise, with particular focus on the narrowing gap between open-source and closed-source models, AI application penetration across industries, and global AI governance progress.</div>
+            </div>
+            <a href="https://www.technologyreview.com/2026/04/13/1135675/want-to-understand-the-current-state-of-ai-check-out-these-charts/" class="source-link" target="_blank">报告解读 Analysis →</a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">📜 政策与产业</span>
+            <span class="title-en">Policy & Industry</span>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-us">US</div>
+            <div class="news-title">Anthropic 与亚马逊扩展合作，建设 5 GW 新算力</div>
+            <div class="news-title-en">Anthropic Expands Amazon Partnership for 5 GW of New Compute</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年4月20日，Anthropic 宣布与亚马逊扩展合作，建设高达 5 GW 的新一代算力基础设施。这是继 Google（400 亿美元投资承诺）之后，Anthropic 在算力扩张上的又一重大举措。5 GW 算力规模相当于多个大型数据中心集群，将显著增强 Anthropic 训练和部署大规模 AI 模型的能力。
+                </div>
+                <div class="news-summary-en">
+                    On April 20, 2026, Anthropic announced an expanded partnership with Amazon to build up to 5 GW of new-generation compute infrastructure. This follows Anthropic's major compute expansion move after Google's $40 billion investment commitment. The 5 GW compute scale equals multiple large data center clusters, significantly enhancing Anthropic's ability to train and deploy large-scale AI models.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>5 GW 算力扩张表明 AI 公司之间的"算力军备竞赛"正在升级。Anthropic 通过与云巨头（亚马逊、Google）的深度绑定来确保算力供给，这也反映出新一代大模型对计算资源的巨大需求。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The 5 GW compute expansion signals an escalating "compute arms race" among AI companies. Anthropic's deep tying with cloud giants (Amazon, Google) to secure compute supply reflects the enormous resource demands of new-generation large models.</div>
+            </div>
+            <a href="https://www.anthropic.com/news" class="source-link" target="_blank">Anthropic 新闻页 →</a>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-cn">CN</div>
+            <div class="news-title">智谱 AI 推进 GLM-5 商业化，完成香港 IPO 募资 43.5 亿港元</div>
+            <div class="news-title-en">Zhipu AI Advances GLM-5 Commercialization, Raises HK$4.35B in Hong Kong IPO</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    2026年1月，智谱 AI 完成香港 IPO，募资约 43.5 亿港元（约 5.58 亿美元），资金直接用于 GLM-5 等新一代模型研发。GLM-5 于 2026 年 2 月 11 日正式发布，以 744B 参数规模（40B 激活）强势登场，聚焦复杂系统工程和长距离 Agent 任务。智谱成为首家完成 IPO 的中国大模型公司，标志着 AI 国产化进入新阶段。
+                </div>
+                <div class="news-summary-en">
+                    In January 2026, Zhipu AI completed its Hong Kong IPO, raising approximately HK$4.35 billion (about $558 million), with funds directly used for GLM-5 and other new-generation model R&D. GLM-5 was officially released on February 11, 2026, debuting with 744B parameters (40B activated), focusing on complex systems engineering and long-horizon Agent tasks. Zhipu became the first Chinese large-model company to complete an IPO, marking a new stage in AI localization.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>智谱 AI 的香港 IPO 是中国 AI 产业发展的重要里程碑，证明大模型公司可以通过公开市场融资来支持长期研发。GLM-5 在华为昇腾芯片上训练，也是国产 AI 芯片生态成熟的重要标志。</div>
+                <div class="why-en"><strong>Why it matters:</strong> Zhipu AI's Hong Kong IPO is a significant milestone for China's AI industry, proving that large-model companies can use public markets to fund long-term R&D. GLM-5's training on Huawei Ascend chips is also an important sign of maturation in domestic AI chip ecosystems.</div>
+            </div>
+            <a href="https://glm-5.org/zh/" class="source-link" target="_blank">GLM-5 官方网站 →</a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">🌐 开源生态</span>
+            <span class="title-en">Open Source Ecosystem</span>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-open">Open</div>
+            <div class="news-title">DeepSeek V4 开源权重发布至 Hugging Face</div>
+            <div class="news-title-en">DeepSeek V4 Open Weights Published on Hugging Face</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    DeepSeek V4-Pro 和 V4-Flash 的开源权重已发布至 Hugging Face。技术报告（DeepSeek_V4.pdf）也同步公开，详细介绍了 Engram 架构与 mHC 框架的实现细节。开源许可允许商业使用，进一步降低开发者使用顶尖 AI 模型的门槛。DeepSeek 继续保持其"开源旗舰"策略，与闭源巨头形成差异化竞争。
+                </div>
+                <div class="news-summary-en">
+                    DeepSeek V4-Pro and V4-Flash open weights have been published on Hugging Face. The technical report (DeepSeek_V4.pdf) was also released simultaneously, detailing the implementation of Engram architecture and mHC framework. The open-source license allows commercial use, further lowering the barrier for developers to use top-tier AI models. DeepSeek continues its "open-source flagship" strategy, differentiating from closed-source giants.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>DeepSeek V4 的开源发布是对全球 AI 社区的重大贡献。100 万 token 上下文 + 最强推理性能的组合，使开发者可以在本地或自有基础设施上部署世界级 AI 能力，减少对闭源 API 的依赖。</div>
+                <div class="why-en"><strong>Why it matters:</strong> DeepSeek V4's open-source release is a major contribution to the global AI community. The combination of 1M token context + strongest reasoning performance enables developers to deploy world-class AI capabilities locally or on self-owned infrastructure, reducing dependence on closed-source APIs.</div>
+            </div>
+            <a href="https://huggingface.co/collections/deepseek-ai/deepseek-v4" class="source-link" target="_blank">Hugging Face 模型页面 →</a>
+        </div>
+        
+        <div class="news-item">
+            <div class="tag tag-open">Open</div>
+            <div class="news-title">Kimi K2.6 保持 Apache 2.0 开源许可，推动 Agent 生态发展</div>
+            <div class="news-title-en">Kimi K2.6 Maintains Apache 2.0 License, Advancing Agent Ecosystem</div>
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    Moonshot AI 继续将 Kimi K2.6 的权重以 Apache 2.0 许可开源，这是 K2 系列的一贯策略。K2.6 的发布特别聚焦于 Agent 场景优化，已与 Claude Code、OpenClaw、OpenCode 等主流 AI Agent 框架集成。开源社区的开发者可以基于 K2.6 构建各类自主编码和任务执行系统，无需支付 API 费用。
+                </div>
+                <div class="news-summary-en">
+                    Moonshot AI continues to open-source Kimi K2.6 weights under the Apache 2.0 license, consistent with the K2 series strategy. K2.6's release particularly focuses on Agent scenario optimization and has integrated with mainstream AI Agent frameworks like Claude Code, OpenClaw, and OpenCode. Open-source community developers can build various autonomous coding and task execution systems based on K2.6 without paying API fees.
+                </div>
+            </div>
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Kimi K2.6 的开源策略与中国"开源押注"趋势一致。通过免费提供前沿模型，中国实验室正在赢得全球开发者的好感，并在他国技术基础上进行开发。这种模式在财务上的可持续性仍待观察，但短期影响力已十分显著。</div>
+                <div class="why-en"><strong>Why it matters:</strong> Kimi K2.6's open-source strategy aligns with China's "open-source bet" trend. By giving away frontier models for free, Chinese labs are winning global developer goodwill and having others build on their technology. The financial sustainability of this model remains to be seen, but short-term influence is already significant.</div>
+            </div>
+            <a href="https://github.com/kimi-k2/Kimi-K2" class="source-link" target="_blank">GitHub 仓库 →</a>
+        </div>
+    </div>
+    
+    <div class="whitelist-section">
+        <div class="whitelist-title-cn">📋 追踪来源白名单</div>
+        <div class="whitelist-title-en">Source Whitelist</div>
+        <div class="whitelist-note-cn">以下为本期简报追踪的 AI 资讯来源，新增来源以 🆕 标注。</div>
+        <div class="whitelist-note-en">The following are AI information sources tracked in this briefing. New sources are marked with 🆕.</div>
+        
+        <div class="whitelist-grid">
+            <div class="whitelist-item">US: OpenAI (openai.com/news, openai.com/research)</div>
+            <div class="whitelist-item">US: Anthropic (anthropic.com/news, anthropic.com/research)</div>
+            <div class="whitelist-item">US: Google DeepMind (deepmind.google/blog)</div>
+            <div class="whitelist-item">US: Meta Superintelligence Labs (about.fb.com/news)</div>
+            <div class="whitelist-item">CN: Moonshot/Kimi (moonshot.ai, kimi.com)</div>
+            <div class="whitelist-item">CN: MiniMax (minimaxi.com)</div>
+            <div class="whitelist-item">CN: 智谱 (zhipuai.cn, open.bigmodel.cn)</div>
+            <div class="whitelist-item">CN: Qwen/Alibaba Cloud (qwen.ai/blog)</div>
+            <div class="whitelist-item">CN: DeepSeek (deepseek.com)</div>
+            <div class="whitelist-item">SG: A*STAR AI (a-star.edu.sg/aiml)</div>
+            <div class="whitelist-item">SG: GovTech (tech.gov.sg)</div>
+            <div class="whitelist-item">SG: Singapore DSAI (smartnation.sg)</div>
+            <div class="whitelist-item">SG: NUS AI (nus.edu.sg/computing/ai-research)</div>
+            <div class="whitelist-item">SG: MDDI (mddi.gov.sg/newsroom)</div>
+            <div class="whitelist-item">SG: Singtel (singtel.com/about-us/media-centre)</div>
+            <div class="whitelist-item">Media: Reuters (reuters.com/technology)</div>
+            <div class="whitelist-item">Media: MIT Tech Review (technologyreview.com)</div>
+            <div class="whitelist-item">Media: Xinhua EN (xinhuanet.com/english)</div>
+            <div class="whitelist-item">Media: CNBC (cnbc.com)</div>
+            <div class="whitelist-item">Media: Forbes (forbes.com)</div>
+            <div class="whitelist-item">Media: AI Critique (aicritique.org)</div>
+            <div class="whitelist-item">Media: IEEE Spectrum (spectrum.ieee.org)</div>
+            <div class="whitelist-item">Open: Hugging Face (huggingface.co/blog)</div>
+            <div class="whitelist-item">Open: arXiv (arxiv.org/list/cs.AI)</div>
+            <div class="whitelist-item">Open: OpenBMB (openbmb.org)</div>
+            <div class="whitelist-item">Open: HKUDS (hku-datascience.github.io)</div>
+            <div class="whitelist-item">Open: Marktechpost (marktechpost.com)</div>
+            <div class="whitelist-item">Computer Use: H Company (hcompany.ai)</div>
+            <div class="whitelist-item">Policy: Plural Policy (pluralpolicy.com/blog)</div>
+            <div class="whitelist-item">Policy: UK AISI (aisi.gov.uk/blog)</div>
+            <div class="whitelist-item">Policy: Stanford HAI (hai.stanford.edu)</div>
+            <div class="whitelist-item">Policy: Mayer Brown (mayerbrown.com)</div>
+            <div class="whitelist-item">CN Extended: ByteDance Seed (seed.bytedance.com)</div>
+            <div class="whitelist-item">CN Extended: Knightli (knightli.com)</div>
+            <div class="whitelist-item">CN Extended: Kimi K2 Official (kimi-k2.org)</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-cn">AI 技术简报由 AI 自动生成，信息来源于公开渠道，仅供参考。</div>
+        <div class="footer-en">AI Technical Briefing automatically generated by AI. Information sourced from public channels, for reference only.</div>
+        <div class="footer-cn" style="margin-top: 10px;">生成时间：2026年5月2日 09:46 SGT</div>
+        <div class="footer-en">Generated: May 2, 2026 09:46 SGT</div>
+    </div>
+</body>
+</html>

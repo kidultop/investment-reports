@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 · 2026年4月7日 早报</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --bg2: #1e293b;
+    --bg3: #334155;
+    --accent: #a78bfa;
+    --accent2: #7c3aed;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --us: #3b82f6;
+    --cn: #ef4444;
+    --sg: #f97316;
+    --research: #22c55e;
+    --open: #a78bfa;
+    --policy: #eab308;
+    --new-src: #06b6d4;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 60%, #1a0533 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px 20px;
+  }
+  .header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .header-icon { font-size: 28px; }
+  .header-title-cn { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .header-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+  .header-meta { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+  .header-meta span { margin-right: 16px; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    background: var(--bg2); border-radius: var(--radius);
+    padding: 14px 18px; margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+  .stat-item { flex: 1; min-width: 100px; text-align: center; }
+  .stat-number { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-label-cn { font-size: 11px; color: var(--text-muted); display: block; }
+  .stat-label-en { font-size: 10px; color: var(--text-muted); opacity: 0.7; display: block; font-style: italic; }
+
+  /* Trends Card */
+  .trends-card {
+    background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+    border: 1px solid #4c1d95;
+    border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px;
+  }
+  .trends-title-cn { font-size: 15px; font-weight: 700; color: var(--accent); }
+  .trends-title-en { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 12px; }
+  .trend-item { padding: 7px 0; border-bottom: 1px solid #2d2060; }
+  .trend-item:last-child { border-bottom: none; }
+  .trend-cn { font-size: 14px; color: var(--text); }
+  .trend-en { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+  /* Section Card */
+  .section { background: var(--bg2); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; border: 1px solid var(--border); }
+  .card-title {
+    padding: 14px 20px; background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-title .icon { font-size: 16px; }
+  .title-cn { font-weight: 700; font-size: 15px; }
+  .title-en { font-size: 11px; color: var(--text-muted); font-style: italic; margin-left: 8px; }
+
+  /* News Item */
+  .news-item {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    border-left: 4px solid var(--border);
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-item.top { border-left-color: var(--accent); }
+  .news-item.us { border-left-color: var(--us); }
+  .news-item.cn { border-left-color: var(--cn); }
+  .news-item.sg { border-left-color: var(--sg); }
+  .news-item.research { border-left-color: var(--research); }
+  .news-item.open { border-left-color: var(--open); }
+  .news-item.policy { border-left-color: var(--policy); }
+  .news-item.new-src-item { border-left-color: var(--new-src); }
+
+  .news-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .news-title-cn { font-weight: 600; font-size: 15px; color: var(--text); flex: 1; }
+  .news-title-en { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 10px; }
+
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tag {
+    font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .tag-us { background: rgba(59,130,246,0.2); color: var(--us); }
+  .tag-cn { background: rgba(239,68,68,0.2); color: var(--cn); }
+  .tag-sg { background: rgba(249,115,22,0.2); color: var(--sg); }
+  .tag-research { background: rgba(34,197,94,0.2); color: var(--research); }
+  .tag-open { background: rgba(167,139,250,0.2); color: var(--open); }
+  .tag-policy { background: rgba(234,179,8,0.2); color: var(--policy); }
+  .tag-new { background: rgba(6,182,212,0.2); color: var(--new-src); }
+
+  .news-summary {
+    background: rgba(255,255,255,0.03); border-left: 3px solid var(--bg3);
+    padding: 10px 14px; border-radius: 6px; margin-bottom: 10px;
+  }
+  .news-summary-cn { font-size: 14px; color: var(--text); margin-bottom: 8px; }
+  .news-summary-en { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+  .why-matters { margin-bottom: 10px; }
+  .why-cn { font-size: 13px; color: #c4b5fd; margin-bottom: 4px; }
+  .why-en { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+  .source-btn {
+    display: inline-block; font-size: 11px; padding: 4px 10px;
+    background: rgba(167,139,250,0.15); color: var(--accent);
+    border-radius: 5px; text-decoration: none;
+    border: 1px solid rgba(167,139,250,0.3);
+    transition: background 0.2s;
+  }
+  .source-btn:hover { background: rgba(167,139,250,0.3); }
+
+  /* New source callout */
+  .new-source-callout {
+    margin-top: 10px; padding: 10px 14px;
+    background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.3);
+    border-radius: 8px; font-size: 12px; color: var(--new-src);
+  }
+
+  /* Whitelist */
+  .whitelist-section {
+    background: var(--bg2); border-radius: var(--radius); padding: 18px 20px;
+    border: 1px solid var(--border); margin-bottom: 20px;
+  }
+  .whitelist-title-cn { font-size: 14px; font-weight: 700; color: var(--accent); }
+  .whitelist-title-en { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 12px; }
+  .whitelist-note-cn { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+  .whitelist-note-en { font-size: 11px; color: var(--text-muted); opacity: 0.7; font-style: italic; }
+  .wl-group { margin-bottom: 10px; }
+  .wl-group-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 1px; }
+  .wl-item { font-size: 12px; color: var(--text); padding: 3px 0; }
+  .wl-item a { color: var(--accent); text-decoration: none; }
+  .wl-item a:hover { text-decoration: underline; }
+  .wl-new { color: var(--new-src); }
+
+  /* Footer */
+  .footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); }
+  .footer-cn { font-size: 12px; color: var(--text-muted); }
+  .footer-en { font-size: 11px; color: var(--text-muted); opacity: 0.7; font-style: italic; }
+
+  @media (max-width: 600px) {
+    .stats-bar { gap: 8px; }
+    .stat-item { min-width: 80px; }
+    .news-title-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <span class="header-icon">🤖</span>
+    <div>
+      <div class="header-title-cn">AI 技术简报 · 早报</div>
+      <div class="header-title-en">AI Technology Briefing · Morning Edition</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span>📅 2026年4月7日（周二）</span>
+    <span>⏰ 早报 08:00 SGT</span>
+    <span>🌐 覆盖范围：全球 AI 领域</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">11</div>
+      <span class="stat-label-cn">今日条目</span>
+      <span class="stat-label-en">Stories Today</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">5</div>
+      <span class="stat-label-cn">分区覆盖</span>
+      <span class="stat-label-en">Sections</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">US+CN</div>
+      <span class="stat-label-cn">主线覆盖</span>
+      <span class="stat-label-en">Core Coverage</span>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">4</div>
+      <span class="stat-label-cn">模型发布</span>
+      <span class="stat-label-en">Model Releases</span>
+    </div>
+  </div>
+
+  <!-- Trends Card -->
+  <div class="trends-card">
+    <div class="trends-title-cn">📌 今日核心趋势</div>
+    <div class="trends-title-en">Today's Key Trends</div>
+    <div class="trend-item">
+      <div class="trend-cn">🇺🇸 OpenAI 发布 AI 经济政策白皮书，提议机器人税与公共财富基金，标志着顶尖 AI 公司开始主动介入社会分配议题</div>
+      <div class="trend-en">OpenAI releases an AI economy policy paper proposing robot taxes and public wealth funds, marking a pivotal shift where leading AI firms engage directly in redistribution debates.</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">🇨🇳 阿里 Qwen3.6-Plus 正式发布，面向企业级 Agentic AI 部署，百万 token 上下文与多模态推理成为国产模型新标配</div>
+      <div class="trend-en">Alibaba releases Qwen3.6-Plus targeting enterprise agentic AI, with 1M token context and multimodal reasoning now standard in Chinese frontier models.</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">🔬 Google DeepMind Gemma 4 系列开源发布，31B Dense 模型登开源榜全球第三，Apache 2.0 许可彻底开放商用</div>
+      <div class="trend-en">Google DeepMind releases Gemma 4 open-source model series; the 31B Dense model ranks 3rd globally on open-source leaderboards with full Apache 2.0 licensing.</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">🤗 开源生态双更新：Hugging Face 发布 Holo3 计算机操作模型 + TRL v1.0 后训练统一框架，推动 Agent 能力民主化</div>
+      <div class="trend-en">Open-source double update: Hugging Face releases Holo3 (computer use) and TRL v1.0 (unified post-training framework), democratizing agentic capabilities.</div>
+    </div>
+  </div>
+
+  <!-- Section 1: Top Stories -->
+  <div class="section">
+    <div class="card-title">
+      <span class="icon">⭐</span>
+      <span class="title-cn">头条新闻</span>
+      <span class="title-en">Top Stories</span>
+    </div>
+
+    <!-- Story 1: OpenAI Economy Policy -->
+    <div class="news-item top">
+      <div class="tags">
+        <span class="tag tag-us">US</span>
+        <span class="tag tag-policy">Policy</span>
+      </div>
+      <div class="news-title-cn">OpenAI 发布 AI 经济政策白皮书：提议征收机器人税、设立公共财富基金、试行四天工作制</div>
+      <div class="news-title-en"><em>OpenAI Proposes Robot Taxes, Public Wealth Fund, and Four-Day Work Week in AI Economy Policy Paper</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 于 4 月 6 日发布一份 13 页政策文件，呼吁美国政府对 AI 自动化收益征税，建立由 AI 企业注资的国家财富基金，并试点每周 32 小时工作制，以应对 AI 驱动的就业替代与财富不平等问题。该提案将再分配机制嵌入资本主义框架，是迄今为止主要 AI 公司中最明确的社会政策表态。</div>
+        <div class="news-summary-en">OpenAI released a 13-page policy document on April 6 calling on the U.S. government to tax automated labor profits, create a national wealth fund seeded by AI companies, and pilot a 32-hour workweek. The proposal embeds redistribution mechanisms into a capitalist framework and represents the most explicit social policy stance taken by a major AI company to date.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是 OpenAI 首次以官方文件形式介入社会政策领域，意味着 AI 公司正从技术角色转向更广泛的社会利益方角色。若影响政策走向，将对 AI 产业税负与全球 AI 治理格局产生深远影响。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This marks OpenAI's first official foray into social policy, signaling a shift from purely technical role to broader societal stakeholder. If influential, it could shape AI industry taxation and global AI governance significantly.</div>
+      </div>
+      <a href="https://techcrunch.com/2026/04/06/openais-vision-for-the-ai-economy-public-wealth-funds-robot-taxes-and-a-four-day-work-week/" class="source-btn" target="_blank">📎 TechCrunch 报道</a>
+      &nbsp;
+      <a href="https://www.unite.ai/openai-proposes-robot-taxes-public-wealth-fund-and-four-day-work-week/" class="source-btn" target="_blank">📎 Unite.ai</a>
+    </div>
+
+    <!-- Story 2: Gemma 4 -->
+    <div class="news-item top">
+      <div class="tags">
+        <span class="tag tag-us">US</span>
+        <span class="tag tag-open">Open Source</span>
+      </div>
+      <div class="news-title-cn">Google DeepMind 发布 Gemma 4：四款规格全覆盖，31B 模型登开源全球第三</div>
+      <div class="news-title-en"><em>Google DeepMind Releases Gemma 4: Four Model Sizes, 31B Dense Ranks 3rd on Global Open-Source Leaderboard</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">4 月 2 日，Google DeepMind 正式发布 Gemma 4 系列，包含 E2B、E4B、26B MoE、31B Dense 四款规格，覆盖树莓派到单卡 H100 的完整硬件区间。31B Dense 模型在 Arena AI 开源排行榜冲至全球第三；26B MoE 模型仅激活 38 亿参数即可达到同级 Dense 模型效果。全系列采用 Apache 2.0 许可，完全开源、可商用。基于 Gemini 3 同款技术栈构建，支持多模态、超长上下文。</div>
+        <div class="news-summary-en">On April 2, Google DeepMind released Gemma 4 with four model sizes: E2B, E4B, 26B MoE, and 31B Dense, covering hardware from Raspberry Pi to a single H100. The 31B Dense model ranks 3rd on Arena AI's open-source leaderboard. The 26B MoE activates only 3.8B parameters to match same-tier dense models. All models use Apache 2.0 licensing, fully open-source and commercially usable, built on the same technology stack as Gemini 3 with multimodal and extended context support.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Gemma 4 以极高的参数效率（38 亿激活参数打 Dense 同级）和完全开放的 Apache 2.0 许可，直接挑战 Meta Llama 在开源生态的统治地位，将进一步降低企业部署多模态 AI 的门槛。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Gemma 4's exceptional parameter efficiency (3.8B active parameters matching same-tier dense models) and full Apache 2.0 licensing directly challenge Meta Llama's dominance in the open-source ecosystem, further lowering barriers for enterprise multimodal AI deployment.</div>
+      </div>
+      <a href="https://deepmind.google/blog/" class="source-btn" target="_blank">📎 Google DeepMind 官方博客</a>
+    </div>
+
+    <!-- Story 3: Qwen3.6-Plus -->
+    <div class="news-item top">
+      <div class="tags">
+        <span class="tag tag-cn">CN</span>
+      </div>
+      <div class="news-title-cn">阿里巴巴发布 Qwen3.6-Plus：面向企业 Agentic AI，百万 token 上下文 + 强化编程推理</div>
+      <div class="news-title-en"><em>Alibaba Releases Qwen3.6-Plus: Targeting Enterprise Agentic AI with 1M Token Context and Enhanced Coding Reasoning</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">4 月 2 日，阿里巴巴正式发布 Qwen3.6-Plus，已通过 API 开放调用。该模型在自动化编程、AI Agent 工作流、多模态推理方面取得显著提升，支持百万 token 超长上下文，面向企业级 Agentic AI 部署场景设计，定位接近现实世界 Agent。</div>
+        <div class="news-summary-en">On April 2, Alibaba officially released Qwen3.6-Plus, immediately available via API. The model shows significant improvements in automated coding, AI agent workflows, and multimodal reasoning, supporting 1M token ultra-long context. Designed for enterprise-grade agentic AI deployment, positioned toward real-world agent capabilities.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Qwen3.6-Plus 是继 Qwen3.5 之后最快迭代的版本，表明国产大模型在 Agentic 能力竞赛中持续加速。百万 token 上下文和企业级 Agent 设计，是中国 AI 技术追赶国际前沿的重要里程碑。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Qwen3.6-Plus represents the fastest iteration after Qwen3.5, showing Chinese LLMs continuously accelerating in the agentic capability race. The 1M token context and enterprise agent design marks an important milestone for Chinese AI closing the gap with international frontier models.</div>
+      </div>
+      <a href="https://qwen.ai/blog?id=qwen3.6" class="source-btn" target="_blank">📎 Qwen 官方博客</a>
+      &nbsp;
+      <a href="https://www.alibabacloud.com/blog/alibaba-unveils-qwen3-6-plus-to-accelerate-agentic-ai-deployment-for-enterprises-and-alibaba%E2%80%99s-ai-applications_603000" class="source-btn" target="_blank">📎 Alibaba Cloud 博客</a>
+    </div>
+  </div>
+
+  <!-- Section 2: Official Releases -->
+  <div class="section">
+    <div class="card-title">
+      <span class="icon">📣</span>
+      <span class="title-cn">官方发布</span>
+      <span class="title-en">Official Releases</span>
+    </div>
+
+    <!-- Anthropic Claude Mythos -->
+    <div class="news-item us">
+      <div class="tags">
+        <span class="tag tag-us">US</span>
+      </div>
+      <div class="news-title-cn">Anthropic Claude Mythos（代号 Capybara）内测信息曝光：网络安全与编程推理能力达新高度</div>
+      <div class="news-title-en"><em>Anthropic Claude Mythos (Codename Capybara) Internal Testing Revealed: New Heights in Cybersecurity and Coding Reasoning</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据多方信源，Anthropic 下一代旗舰模型 Claude Mythos（内部代号 Capybara，定位高于 Claude Opus）已进入内测阶段。内测文件显示其在编程推理、网络安全漏洞分析方面能力显著超越前代，有报道称其在 90 分钟内完成了 20 年 Linux 历史漏洞的分析。正式发布日期尚未公布。</div>
+        <div class="news-summary-en">According to multiple sources, Anthropic's next-generation flagship model Claude Mythos (internally codenamed Capybara, positioned above Claude Opus) has entered internal testing. Leaked materials show significant improvements in coding reasoning and cybersecurity vulnerability analysis, with reports claiming it analyzed 20-year-old Linux vulnerabilities within 90 minutes. Official release date has not been announced.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Claude Mythos 若能兑现内测展示的网络安全与编程能力，将成为企业级高风险场景（安全审计、自动化代码生成）的重要工具，直接影响 Anthropic 与 OpenAI 在企业市场的竞争格局。</div>
+        <div class="why-en"><strong>Why it matters:</strong> If Claude Mythos delivers on its internal testing capabilities in cybersecurity and coding, it would become a critical tool for high-stakes enterprise scenarios (security auditing, automated code generation), directly impacting Anthropic vs. OpenAI competition in enterprise markets.</div>
+      </div>
+      <a href="https://www.anthropic.com/news" class="source-btn" target="_blank">📎 Anthropic Newsroom</a>
+      &nbsp;
+      <a href="https://www.cnn.com/2026/04/03/tech/anthropic-mythos-ai-cybersecurity" class="source-btn" target="_blank">📎 CNN 报道</a>
+    </div>
+
+    <!-- Anthropic Australia MOU -->
+    <div class="news-item us">
+      <div class="tags">
+        <span class="tag tag-us">US</span>
+        <span class="tag tag-policy">Policy</span>
+      </div>
+      <div class="news-title-cn">Anthropic 与澳大利亚政府签署 AI 安全与研究合作备忘录</div>
+      <div class="news-title-en"><em>Anthropic Signs MOU with Australian Government on AI Safety and Research Cooperation</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">3 月 31 日，Anthropic 与澳大利亚政府签署谅解备忘录（MOU），聚焦 AI 安全研究与负责任 AI 应用。这是 Anthropic 继英国政府合作后的又一国家级政府合作，延续其"安全优先"的品牌策略。</div>
+        <div class="news-summary-en">On March 31, Anthropic signed a Memorandum of Understanding (MOU) with the Australian government, focusing on AI safety research and responsible AI deployment. Following its UK government partnership, this represents another national government collaboration, continuing Anthropic's "safety-first" brand strategy.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>主要 AI 安全实验室与民主国家政府签署双边安全协议的模式正在加速，将形成有别于多边机构的 AI 治理格局，影响未来 AI 监管标准的制定。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The pattern of major AI safety labs signing bilateral safety agreements with democratic governments is accelerating, creating an AI governance landscape distinct from multilateral institutions and influencing future regulatory standards.</div>
+      </div>
+      <a href="https://www.anthropic.com/news" class="source-btn" target="_blank">📎 Anthropic Newsroom</a>
+    </div>
+
+    <!-- OpenAI Funding -->
+    <div class="news-item us">
+      <div class="tags">
+        <span class="tag tag-us">US</span>
+      </div>
+      <div class="news-title-cn">OpenAI 完成 8520 亿美元估值融资轮，募集资金达 1220 亿美元</div>
+      <div class="news-title-en"><em>OpenAI Closes Funding Round at $852B Valuation with $122B Total Committed Capital</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 本周正式宣布完成融资轮交割，估值达 8520 亿美元（较早前预期的 8400 亿美元略有提升），承诺资本总额达 1220 亿美元（高于此前披露的 1100 亿美元）。这是科技史上最大规模的私募融资之一，为公司 IPO 前的扩张提供充足弹药。</div>
+        <div class="news-summary-en">OpenAI officially announced the close of its funding round this week at a post-money valuation of $852B (slightly above the earlier $840B estimate), with total committed capital reaching $122B (above the previously disclosed $110B). This is one of the largest private fundraisings in tech history, providing ample resources for pre-IPO expansion.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>8520 亿美元估值确立了 OpenAI 在全球 AI 公司中的绝对领头地位，同时表明机构投资者对 AI 基础设施与应用市场的未来预期仍极为乐观。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The $852B valuation confirms OpenAI's absolute leadership among global AI companies, while signaling that institutional investors remain extremely optimistic about the future of AI infrastructure and application markets.</div>
+      </div>
+      <a href="https://www.cnbc.com/2026/03/31/openai-funding-round-ipo.html" class="source-btn" target="_blank">📎 CNBC 报道</a>
+    </div>
+  </div>
+
+  <!-- Section 3: Research & Technology -->
+  <div class="section">
+    <div class="card-title">
+      <span class="icon">🔬</span>
+      <span class="title-cn">研究与技术</span>
+      <span class="title-en">Research & Technology</span>
+    </div>
+
+    <!-- MIT gig workers humanoids -->
+    <div class="news-item research">
+      <div class="tags">
+        <span class="tag tag-research">Research</span>
+      </div>
+      <div class="news-title-cn">MIT 技术评论：零工经济工作者正在训练人形机器人，AI 数据标注模式向物理世界延伸</div>
+      <div class="news-title-en"><em>MIT Technology Review: Gig Workers Are Training Humanoid Robots — AI Data Labeling Expands into Physical World</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">MIT Technology Review 最新报道揭示，人形机器人公司正大规模雇用零工经济工作者为机器人提供远程操控示范数据（teleoperation data），以加速机器人具身智能学习。这复制了互联网 AI 数据标注的逻辑，但数据收集成本更高、规模化挑战更大。报道同时关注更好 AI 基准测试方法的讨论。</div>
+        <div class="news-summary-en">MIT Technology Review reveals humanoid robot companies are hiring gig economy workers at scale to provide teleoperation demonstration data, accelerating embodied AI learning for robots. This replicates the internet AI data labeling model but with higher data collection costs and greater scaling challenges. The report also addresses ongoing discussions about better AI benchmark methodologies.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>具身智能（Embodied AI）的数据瓶颈是人形机器人商业化的核心障碍。零工模式若能规模化，将显著加速 Boston Dynamics、Figure、1X 等公司的部署节奏。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The data bottleneck for embodied AI is the core barrier to humanoid robot commercialization. If the gig model can scale, it would significantly accelerate deployment timelines for companies like Boston Dynamics, Figure, and 1X.</div>
+      </div>
+      <a href="https://www.technologyreview.com/2026/04/01/1134993/the-download-gig-workers-training-humanoids-better-ai-benchmarks/" class="source-btn" target="_blank">📎 MIT Technology Review</a>
+    </div>
+
+    <!-- Anthropic Fellows Alignment Research -->
+    <div class="news-item research">
+      <div class="tags">
+        <span class="tag tag-us">US</span>
+        <span class="tag tag-research">Research</span>
+      </div>
+      <div class="news-title-cn">Anthropic Fellows 项目公布新 AI 对齐研究成果，聚焦可解释性与激励对齐</div>
+      <div class="news-title-en"><em>Anthropic Fellows Program Reveals New AI Alignment Research with Three Key Findings on Interpretability and Incentive Alignment</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic Fellows 项目（由 Tom Jiralerspong 等研究员主导）发布新一批对齐研究成果，涵盖三个关键发现，聚焦神经网络可解释性、模型激励对齐机制等核心 AI 安全议题。研究结果已通过 Anthropic 官方渠道公开。</div>
+        <div class="news-summary-en">The Anthropic Fellows program (led by researchers including Tom Jiralerspong) published new AI alignment research with three key findings focused on neural network interpretability and model incentive alignment mechanisms. Results have been shared through Anthropic's official channels.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>可解释性研究是 AI 安全的基础工具。Anthropic Fellows 作为独立研究路径的持续投入，表明业界正在构建超越 RLHF 的下一代对齐技术基础。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Interpretability research is the foundational tool for AI safety. Continued investment in Anthropic Fellows as an independent research track signals the industry is building next-generation alignment technology foundations beyond RLHF.</div>
+      </div>
+      <a href="https://www.anthropic.com/news" class="source-btn" target="_blank">📎 Anthropic 官方</a>
+    </div>
+
+    <!-- arXiv trending -->
+    <div class="news-item research">
+      <div class="tags">
+        <span class="tag tag-research">Research</span>
+      </div>
+      <div class="news-title-cn">arXiv 本周热门：多 Agent 协同框架、推理模型压缩、视觉语言模型泛化能力研究</div>
+      <div class="news-title-en"><em>arXiv This Week: Multi-Agent Collaboration Frameworks, Reasoning Model Compression, and VLM Generalization Research Trending</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">本周（截至 4 月 3 日）arXiv cs.AI 热门论文方向集中于：（1）多 Agent 协同推理与任务分配框架；（2）基于 GRPO/DPO 的推理模型高效压缩；（3）视觉语言模型在多域泛化能力的实验研究。相关论文在 alphaXiv 等平台获得活跃讨论。</div>
+        <div class="news-summary-en">This week (through April 3) on arXiv cs.AI, trending research focuses on: (1) Multi-agent collaborative reasoning and task delegation frameworks; (2) Efficient reasoning model compression via GRPO/DPO; (3) Experimental studies on VLM generalization across multiple domains. Related papers are actively discussed on platforms like alphaXiv.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>多 Agent 框架与推理压缩是当前学界到工业界迁移最快的两个方向，直接决定下一代 AI 产品的架构选择与部署成本。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Multi-agent frameworks and reasoning compression are the two fastest-moving areas from academia to industry, directly determining architectural choices and deployment costs for next-generation AI products.</div>
+      </div>
+      <a href="https://arxiv.org/list/cs.AI/recent" class="source-btn" target="_blank">📎 arXiv cs.AI</a>
+    </div>
+  </div>
+
+  <!-- Section 4: Policy & Industry -->
+  <div class="section">
+    <div class="card-title">
+      <span class="icon">🏛️</span>
+      <span class="title-cn">政策与产业</span>
+      <span class="title-en">Policy & Industry</span>
+    </div>
+
+    <!-- Kimi K2.5 -->
+    <div class="news-item cn">
+      <div class="tags">
+        <span class="tag tag-cn">CN</span>
+      </div>
+      <div class="news-title-cn">Moonshot AI Kimi K2.5 万亿参数 API 正式开放，支持 256K 上下文与多模态 Tool Calling</div>
+      <div class="news-title-en"><em>Moonshot AI Opens Kimi K2.5 Trillion-Parameter API with 256K Context and Multimodal Tool Calling</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Moonshot AI Kimi K2.5（今年 1 月 27 日发布的开源多模态 Agent 模型）已在开放平台正式上线 API，支持万亿参数规模、256K 超长上下文、多模态理解及 Tool Calling。Kimi K2.5 是原生多模态 Agentic 模型，支持思维链推理，适用于复杂任务自动化场景。</div>
+        <div class="news-summary-en">Moonshot AI's Kimi K2.5 (open-source multimodal agentic model released January 27) has officially launched its API on the open platform, supporting trillion-parameter scale, 256K ultra-long context, multimodal understanding, and Tool Calling. K2.5 is a native multimodal agentic model with chain-of-thought reasoning support for complex task automation.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>开源万亿参数模型的 API 化商业部署，标志着中国开源大模型正在快速形成闭环商业路径，与 Qwen3.6-Plus 形成国内 Agentic AI 双雄竞争局面。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Commercializing a trillion-parameter open-source model via API marks Chinese open-source LLMs rapidly closing their commercial loop, creating a domestic agentic AI duopoly with Qwen3.6-Plus.</div>
+      </div>
+      <a href="https://platform.moonshot.cn/" class="source-btn" target="_blank">📎 Kimi 开放平台</a>
+    </div>
+
+    <!-- Zhipu GLM-5 -->
+    <div class="news-item cn">
+      <div class="tags">
+        <span class="tag tag-cn">CN</span>
+      </div>
+      <div class="news-title-cn">智谱 GLM-5 驱动智谱清言全面升级，定位全能 AI 助手，强化代码与多模态能力</div>
+      <div class="news-title-en"><em>Zhipu AI's GLM-5 Powers ChatGLM Full Upgrade, Positioned as All-Purpose AI Assistant with Enhanced Code and Multimodal Capabilities</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">智谱 AI 最新版智谱清言已切换至 GLM-5 模型驱动，支持精通对话、写作、编程等全能力，并能理解图片与文档。平台持续更新工具集，GLM-5 是智谱 AI 在对标国际旗舰模型路径上的最新里程碑。</div>
+        <div class="news-summary-en">Zhipu AI's latest ChatGLM has switched to GLM-5 model, supporting comprehensive capabilities including conversation, writing, coding, and understanding images and documents. The platform continues to update its toolset, with GLM-5 representing Zhipu AI's latest milestone in benchmarking against international flagship models.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>GLM-5 的上线表明智谱 AI 在国内旗舰模型的迭代节奏与阿里、Moonshot 保持同步，国内大模型"三强"竞争格局持续强化。</div>
+        <div class="why-en"><strong>Why it matters:</strong> GLM-5's launch shows Zhipu AI maintaining iteration pace with Alibaba and Moonshot in domestic flagship models, reinforcing the domestic "Big Three" LLM competition landscape.</div>
+      </div>
+      <a href="https://chatglm.cn/" class="source-btn" target="_blank">📎 智谱清言</a>
+      &nbsp;
+      <a href="https://www.zhipuai.cn/" class="source-btn" target="_blank">📎 智谱 AI 官网</a>
+    </div>
+  </div>
+
+  <!-- Section 5: Open Source Ecosystem -->
+  <div class="section">
+    <div class="card-title">
+      <span class="icon">🤗</span>
+      <span class="title-cn">开源生态</span>
+      <span class="title-en">Open Source Ecosystem</span>
+    </div>
+
+    <!-- Holo3 -->
+    <div class="news-item open">
+      <div class="tags">
+        <span class="tag tag-open">Open</span>
+        <span class="tag tag-research">Research</span>
+      </div>
+      <div class="news-title-cn">Hugging Face 发布 Holo3：突破计算机操作前沿，开源计算机 Use 模型新基准</div>
+      <div class="news-title-en"><em>Hugging Face Releases Holo3: Breaking the Computer Use Frontier with New Open-Source Computer Use Model Benchmark</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">4 月 1 日，H Company 与 Hugging Face 联合在 HF 博客发布 Holo3，这是一款专注于计算机操作（computer use）的开源模型，通过合成导航数据与开放式任务生成方法，在 GUI 自动化与浏览器操作任务上建立新基准。该模型完全开源，代表 Agent 能力民主化的新进展。</div>
+        <div class="news-summary-en">On April 1, H Company and Hugging Face jointly released Holo3 on the HF blog, an open-source model specialized in computer use, establishing new benchmarks in GUI automation and browser operation tasks through synthetic navigation data and open-ended task generation. Fully open-source, representing new progress in democratizing agentic capabilities.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>计算机操作（computer use）能力是 AI Agent 商业化落地的关键接口。Holo3 的开源将推动社区在此方向上的快速迭代，对 Claude Computer Use 等闭源方案形成竞争压力。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Computer use capability is the key interface for AI agent commercialization. Holo3's open-source release will drive rapid community iteration in this direction, putting competitive pressure on closed-source solutions like Claude Computer Use.</div>
+      </div>
+      <a href="https://huggingface.co/blog/Hcompany/holo3" class="source-btn" target="_blank">📎 Hugging Face Blog</a>
+      &nbsp;
+      <a href="https://hcompany.ai/holo3" class="source-btn" target="_blank">📎 H Company 官网</a>
+    </div>
+
+    <!-- TRL v1.0 -->
+    <div class="news-item open">
+      <div class="tags">
+        <span class="tag tag-open">Open</span>
+      </div>
+      <div class="news-title-cn">Hugging Face 发布 TRL v1.0：统一 SFT、奖励建模、DPO、GRPO 的后训练框架</div>
+      <div class="news-title-en"><em>Hugging Face Releases TRL v1.0: Unified Post-Training Framework for SFT, Reward Modeling, DPO, and GRPO Workflows</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Hugging Face 于 4 月 1 日正式发布 TRL（Transformer Reinforcement Learning）v1.0，这是一个将监督微调（SFT）、奖励建模、直接偏好优化（DPO）和 GRPO 统一到单一框架的后训练工具栈。v1.0 标志着该库从研究工具向生产级后训练基础设施的正式转型，新增异步 GRPO 支持。</div>
+        <div class="news-summary-en">Hugging Face officially released TRL (Transformer Reinforcement Learning) v1.0 on April 1, a post-training tool stack unifying SFT, reward modeling, DPO, and GRPO into a single framework. v1.0 marks the library's formal transition from research tool to production-grade post-training infrastructure, with new asynchronous GRPO support.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>TRL v1.0 统一了后训练管线，降低了中小机构和个人研究者微调前沿模型的技术门槛，将进一步提速开源社区的模型迭代速度，对 AI 民主化进程意义重大。</div>
+        <div class="why-en"><strong>Why it matters:</strong> TRL v1.0 unifies the post-training pipeline, lowering the technical barrier for small institutions and individual researchers to fine-tune frontier models, further accelerating open-source community model iteration—significant for AI democratization.</div>
+      </div>
+      <a href="https://huggingface.co/blog" class="source-btn" target="_blank">📎 Hugging Face Blog</a>
+    </div>
+  </div>
+
+  <!-- Whitelist Section -->
+  <div class="whitelist-section">
+    <div class="whitelist-title-cn">📋 本期追踪来源白名单</div>
+    <div class="whitelist-title-en">This Issue's Source Whitelist</div>
+
+    <div class="wl-group">
+      <div class="wl-group-label">🇺🇸 US</div>
+      <div class="wl-item">• OpenAI News/Research — <a href="https://openai.com/news" target="_blank">openai.com/news</a>, <a href="https://openai.com/research" target="_blank">openai.com/research</a></div>
+      <div class="wl-item">• Anthropic Newsroom/Research — <a href="https://anthropic.com/news" target="_blank">anthropic.com/news</a>, <a href="https://anthropic.com/research" target="_blank">anthropic.com/research</a></div>
+      <div class="wl-item">• Google DeepMind Blog — <a href="https://deepmind.google/blog" target="_blank">deepmind.google/blog</a></div>
+    </div>
+
+    <div class="wl-group">
+      <div class="wl-group-label">🇨🇳 China</div>
+      <div class="wl-item">• Moonshot AI / Kimi — <a href="https://moonshot.ai" target="_blank">moonshot.ai</a>, <a href="https://kimi.com" target="_blank">kimi.com</a></div>
+      <div class="wl-item">• MiniMax — <a href="https://minimaxi.com" target="_blank">minimaxi.com</a></div>
+      <div class="wl-item">• 智谱 AI / Z.ai — <a href="https://zhipuai.cn" target="_blank">zhipuai.cn</a>, <a href="https://open.bigmodel.cn" target="_blank">open.bigmodel.cn</a></div>
+      <div class="wl-item">• Qwen / Alibaba Cloud — <a href="https://qwen.ai/blog" target="_blank">qwen.ai/blog</a></div>
+    </div>
+
+    <div class="wl-group">
+      <div class="wl-group-label">🇸🇬 Singapore</div>
+      <div class="wl-item">• A*STAR AI Division — <a href="https://a-star.edu.sg/aiml" target="_blank">a-star.edu.sg/aiml</a></div>
+      <div class="wl-item">• GovTech Singapore — <a href="https://tech.gov.sg/" target="_blank">tech.gov.sg</a></div>
+      <div class="wl-item">• Smart Nation / DSAI — <a href="https://smartnation.gov.sg" target="_blank">smartnation.gov.sg</a></div>
+      <div class="wl-item">• NUS AI Research — <a href="https://nus.edu.sg/computing/ai-research" target="_blank">nus.edu.sg/computing/ai-research</a></div>
+    </div>
+
+    <div class="wl-group">
+      <div class="wl-group-label">📰 Media</div>
+      <div class="wl-item">• Reuters AI — <a href="https://reuters.com/technology" target="_blank">reuters.com/technology</a></div>
+      <div class="wl-item">• MIT Technology Review — <a href="https://technologyreview.com/topic/artificial-intelligence" target="_blank">technologyreview.com/topic/artificial-intelligence</a></div>
+      <div class="wl-item">• Xinhua EN — <a href="https://xinhuanet.com/english" target="_blank">xinhuanet.com/english</a></div>
+    </div>
+
+    <div class="wl-group">
+      <div class="wl-group-label">🔬 Open Source / Research</div>
+      <div class="wl-item">• Hugging Face Blog — <a href="https://huggingface.co/blog" target="_blank">huggingface.co/blog</a></div>
+      <div class="wl-item">• arXiv CS.AI — <a href="https://arxiv.org/list/cs.AI" target="_blank">arxiv.org/list/cs.AI</a></div>
+    </div>
+
+    <div class="whitelist-note-cn">⚠️ 本期未发现需要新增的白名单来源</div>
+    <div class="whitelist-note-en">No new sources identified for addition this issue.</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-cn">🤖 AI 技术简报 · 自动生成 · 早报版 · 2026年4月7日</div>
+  <div class="footer-en"><em>AI Technology Briefing · Auto-Generated · Morning Edition · April 7, 2026</em></div>
+  <div class="footer-cn" style="margin-top:8px;">内容来源：白名单官方渠道 · 发布时间：08:29 SGT</div>
+  <div class="footer-en"><em>Sources: Whitelisted official channels · Published: 08:29 SGT</em></div>
+</div>
+
+</body>
+</html>

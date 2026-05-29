@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 早报 2026-05-08 | AI Daily Brief</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --accent: #a78bfa;
+            --accent-light: #c4b5fd;
+            --card-bg: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --us-blue: #3b82f6;
+            --cn-red: #ef4444;
+            --sg-orange: #f97316;
+            --research-green: #22c55e;
+            --open-purple: #a78bfa;
+            --policy-yellow: #eab308;
+            --new-cyan: #06b6d4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .header .date {
+            margin-top: 15px;
+            color: var(--accent-light);
+            font-size: 0.9em;
+        }
+        
+        .trends-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+        
+        .trends-title-cn {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .trends-title-en {
+            font-size: 1em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .trend-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent);
+            background: rgba(167, 139, 250, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .trend-cn {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .trend-en {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .title-cn {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .title-en {
+            font-size: 1em;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        .news-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            background: rgba(167, 139, 250, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .news-item:hover {
+            background: rgba(167, 139, 250, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .news-item.headline {
+            border-left-width: 6px;
+            background: rgba(167, 139, 250, 0.1);
+        }
+        
+        .news-item.us {
+            border-left-color: var(--us-blue);
+        }
+        
+        .news-item.cn {
+            border-left-color: var(--cn-red);
+        }
+        
+        .news-item.sg {
+            border-left-color: var(--sg-orange);
+        }
+        
+        .news-item.research {
+            border-left-color: var(--research-green);
+        }
+        
+        .news-item.open {
+            border-left-color: var(--open-purple);
+        }
+        
+        .news-item.policy {
+            border-left-color: var(--policy-yellow);
+        }
+        
+        .news-item.new-source {
+            border-left-color: var(--new-cyan);
+        }
+        
+        .news-title-cn {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+        
+        .news-title-en {
+            font-size: 0.95em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .news-summary {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .news-summary-cn {
+            flex: 1;
+            padding-right: 15px;
+            border-right: 3px solid var(--accent);
+        }
+        
+        .news-summary-en {
+            flex: 1;
+            padding-left: 15px;
+            color: var(--text-muted);
+            font-size: 0.95em;
+        }
+        
+        .why-matters {
+            background: rgba(167, 139, 250, 0.08);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .why-cn {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .why-en {
+            font-size: 0.95em;
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .tag-us {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--us-blue);
+            border: 1px solid var(--us-blue);
+        }
+        
+        .tag-cn {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--cn-red);
+            border: 1px solid var(--cn-red);
+        }
+        
+        .tag-sg {
+            background: rgba(249, 115, 22, 0.2);
+            color: var(--sg-orange);
+            border: 1px solid var(--sg-orange);
+        }
+        
+        .tag-research {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--research-green);
+            border: 1px solid var(--research-green);
+        }
+        
+        .tag-open {
+            background: rgba(167, 139, 250, 0.2);
+            color: var(--open-purple);
+            border: 1px solid var(--open-purple);
+        }
+        
+        .tag-policy {
+            background: rgba(234, 179, 8, 0.2);
+            color: var(--policy-yellow);
+            border: 1px solid var(--policy-yellow);
+        }
+        
+        .tag-new {
+            background: rgba(6, 182, 212, 0.2);
+            color: var(--new-cyan);
+            border: 1px solid var(--new-cyan);
+        }
+        
+        .source-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .source-link:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+        
+        .new-source-callout {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid var(--new-cyan);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .new-source-callout strong {
+            color: var(--new-cyan);
+        }
+        
+        .whitelist-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid var(--border);
+        }
+        
+        .whitelist-title-cn {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .whitelist-title-en {
+            font-size: 1em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .whitelist-note-cn {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .whitelist-note-en {
+            font-size: 0.95em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .whitelist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .whitelist-item {
+            padding: 12px;
+            background: rgba(167, 139, 250, 0.05);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.9em;
+        }
+        
+        .whitelist-item.new {
+            border-color: var(--new-cyan);
+            background: rgba(6, 182, 212, 0.05);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+        
+        .footer-cn {
+            margin-bottom: 5px;
+        }
+        
+        .footer-en {
+            font-style: italic;
+            font-size: 0.95em;
+        }
+        
+        .no-update-notice {
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid var(--policy-yellow);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 AI 早报</h1>
+        <div class="subtitle">AI Daily Brief - Morning Edition</div>
+        <div class="date">2026年5月8日 星期五 | Friday, May 8, 2026</div>
+    </div>
+    
+    <div class="trends-card">
+        <div class="trends-title-cn">📊 今日核心趋势</div>
+        <div class="trends-title-en">Core Trends Today</div>
+        
+        <div class="trend-item">
+            <div class="trend-cn">1. OpenAI 发布 GPT-5.5 Instant，降低幻觉并提升准确率</div>
+            <div class="trend-en">1. OpenAI releases GPT-5.5 Instant with reduced hallucination and improved accuracy</div>
+        </div>
+        
+        <div class="trend-item">
+            <div class="trend-cn">2. Anthropic 研究实现将 Claude 思维转换为可读文本</div>
+            <div class="trend-en">2. Anthropic research enables translating Claude's thoughts into readable text</div>
+        </div>
+        
+        <div class="trend-item">
+            <div class="trend-cn">3. 美国政府对前沿 AI 模型加强安全审查，多家公司签署测试协议</div>
+            <div class="trend-en">3. US government enhances safety review of frontier AI models, multiple companies sign testing agreements</div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">📰 头条新闻</span>
+            <span class="title-en">Top Stories</span>
+        </div>
+        
+        <div class="news-item headline us">
+            <div class="news-title-cn">OpenAI 发布 GPT-5.5 Instant，提供更智能、更清晰、更个性化的体验</div>
+            <div class="news-title-en">OpenAI Releases GPT-5.5 Instant: Smarter, Clearer, More Personalized Experience</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    OpenAI 于5月5日正式发布 GPT-5.5 Instant 版本。该模型在法律、医学和金融等敏感领域降低了幻觉率，同时保持了前代产品的低延迟特性。这是 OpenAI 对 ChatGPT 默认模型的重大升级。
+                </div>
+                <div class="news-summary-en">
+                    OpenAI officially released GPT-5.5 Instant on May 5. The model reduces hallucination rates in sensitive areas such as law, medicine, and finance, while maintaining the low latency of its predecessor. This is a major upgrade to ChatGPT's default model.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>GPT-5.5 Instant 的发布标志着 OpenAI 在降低大模型幻觉方面取得重要进展，特别是在专业领域的应用可靠性显著提升，将直接影响企业级用户的使用体验。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The release of GPT-5.5 Instant marks OpenAI's significant progress in reducing hallucinations in large models, especially in professional fields, which will directly impact the user experience of enterprise-level users.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-us">US</span>
+                <a href="https://openai.com/news/gpt-5-5-instant-smarter-clearer-more-personalized/" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">📢 官方发布</span>
+            <span class="title-en">Official Releases</span>
+        </div>
+        
+        <div class="no-update-notice">
+            <strong>📋 本期说明</strong><br>
+            经检索 white-list 来源（Moonshot/Kimi、MiniMax、智谱 GLM、Qwen 等），最近3天内（5月5-8日）中国 AI 公司无重大官方发布。<br>
+            <em>No major official releases from Chinese AI companies found in the past 3 days (May 5-8).</em>
+        </div>
+        
+        <div class="news-item us">
+            <div class="news-title-cn">OpenAI 在 ChatGPT 中测试广告功能</div>
+            <div class="news-title-en">OpenAI Testing Ads in ChatGPT</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    OpenAI 于5月7日宣布开始在 ChatGPT 中测试广告投放功能。这是 OpenAI 探索新商业模式的重要尝试，可能在未来改变免费用户的体验。
+                </div>
+                <div class="news-summary-en">
+                    OpenAI announced on May 7 that it is beginning to test ads in ChatGPT. This is an important attempt by OpenAI to explore new business models, which may change the experience for free users in the future.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>广告功能的测试标志着 OpenAI 在商业化道路上迈出重要一步，这可能为免费用户提供可持续的服务支持，但也引发了对 AI 助手中立性的讨论。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The testing of ads marks an important step for OpenAI on the path to commercialization, which may provide sustainable service support for free users, but also raises discussions about the neutrality of AI assistants.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-us">US</span>
+                <a href="https://openai.com/news/testing-ads-in-chatgpt/" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+        
+        <div class="news-item us">
+            <div class="news-title-cn">Anthropic 提升 Claude 使用限额并与 SpaceX 达成计算协议</div>
+            <div class="news-title-en">Anthropic Higher Usage Limits for Claude and Compute Deal with SpaceX</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    Anthropic 于5月6日宣布提升 Claude 的使用限额，并与 SpaceX 达成计算资源交易。这标志着 Anthropic 在企业级客户支持和算力资源整合方面的重要进展。
+                </div>
+                <div class="news-summary-en">
+                    Anthropic announced on May 6 that it is increasing usage limits for Claude and has reached a compute deal with SpaceX. This marks an important advancement in Anthropic's enterprise customer support and computing resource integration.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>与 SpaceX 的合作不仅为 Anthropic 提供了强大的计算资源，也标志着 AI 技术在高性能计算和航天领域的深入应用，具有重要的战略意义。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The partnership with SpaceX not only provides Anthropic with powerful computing resources but also marks the deep application of AI technology in high-performance computing and aerospace, which has important strategic significance.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-us">US</span>
+                <a href="https://www.anthropic.com/news/higher-usage-limits-claude-compute-deal-spacex" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">🔬 研究与技术</span>
+            <span class="title-en">Research & Technology</span>
+        </div>
+        
+        <div class="news-item headline research">
+            <div class="news-title-cn">Anthropic 实现自然语言自动编码器：将 Claude 的思维转换为文本</div>
+            <div class="news-title-en">Anthropic Natural Language Autoencoders: Turning Claude's Thoughts into Text</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    Anthropic 于5月7日发布研究论文，介绍自然语言自动编码器技术。该技术能够将 Claude 内部的数码思维过程翻译成人类可读的文本，为 AI 可解释性研究开辟了新的方向。
+                </div>
+                <div class="news-summary-en">
+                    Anthropic published a research paper on May 7, introducing Natural Language Autoencoders. This technology can translate Claude's internal digital thought processes into human-readable text, opening new directions for AI interpretability research.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>这项研究是 AI 可解释性领域的重大突破，让人类能够"读懂"大模型的思维过程，对于建立可信 AI 系统、调试模型行为、发现潜在偏见具有重要意义。</div>
+                <div class="why-en"><strong>Why it matters:</strong> This research is a major breakthrough in AI interpretability, allowing humans to "read" the thought processes of large models, which is of great significance for building trustworthy AI systems, debugging model behavior, and discovering potential biases.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-research">Research</span>
+                <a href="https://www.anthropic.com/research/natural-language-autoencoders" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+        
+        <div class="news-item research">
+            <div class="news-title-cn">Anthropic 捐赠开源对齐工具</div>
+            <div class="news-title-en">Anthropic Donating Open-Source Alignment Tool</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    Anthropic 于5月7日宣布捐赠其开源对齐工具。该工具旨在帮助 AI 开发者更好地对齐模型输出与人类价值观，是 AI 安全研究的重要贡献。
+                </div>
+                <div class="news-summary-en">
+                    Anthropic announced on May 7 that it is donating its open-source alignment tool. The tool aims to help AI developers better align model outputs with human values, an important contribution to AI safety research.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>开源对齐工具的捐赠将降低 AI 安全研究的门槛，使更多开发者和研究团队能够参与到可信 AI 的开发中，推动整个行业的安全标准提升。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The donation of the open-source alignment tool will lower the barrier to AI safety research, enabling more developers and research teams to participate in the development of trustworthy AI and promoting the improvement of safety standards across the industry.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-research">Research</span>
+                <span class="tag tag-open">Open</span>
+                <a href="https://www.anthropic.com/research/donating-open-source-alignment-tool" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+        
+        <div class="news-item research">
+            <div class="news-title-cn">arXiv 提交量激增：5月6-7日 AI 论文提交量超过 100 篇</div>
+            <div class="news-title-en">arXiv Submissions Surge: Over 100 AI Papers Submitted on May 6-7</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    根据 arXiv cs.AI 分类的最新数据，5月6-7日共有超过100篇 AI 相关论文提交。研究领域涵盖强化学习、计算机视觉、自然语言处理、多智能体系统等前沿方向。
+                </div>
+                <div class="news-summary-en">
+                    According to the latest data from arXiv cs.AI category, over 100 AI-related papers were submitted on May 6-7. Research areas cover cutting-edge directions such as reinforcement learning, computer vision, natural language processing, multi-agent systems, etc.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>arXiv 论文提交量的激增反映了 AI 研究的活跃程度，5月6-7日的集中提交可能与近期大模型发布和学术会议截稿期有关，值得关注的研究方向包括多智能体协作、推理能力提升等。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The surge in arXiv paper submissions reflects the activity level of AI research. The concentrated submissions on May 6-7 may be related to recent large model releases and academic conference deadlines. Research directions worth noting include multi-agent collaboration and reasoning capability improvement.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-research">Research</span>
+                <a href="https://arxiv.org/list/cs.AI/recent" class="source-link" target="_blank">浏览论文列表 | Browse Papers</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">🏛️ 政策与产业</span>
+            <span class="title-en">Policy & Industry</span>
+        </div>
+        
+        <div class="news-item headline policy">
+            <div class="news-title-cn">美国政府扩大前沿 AI 安全审查，多家公司与商务部 CAISI 签署协议</div>
+            <div class="news-title-en">US Government Expands Frontier AI Safety Review, Multiple Companies Sign Agreements with Commerce Department CAISI</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    5月5-6日，美国商务部国家标准与技术研究院（NIST）下属的人工智能标准与创新中心（CAISI）宣布与 Google DeepMind、Microsoft、xAI 等公司签署协议，在模型公开发布前进行国家安全测试。截至目前已完成40+次评估。
+                </div>
+                <div class="news-summary-en">
+                    On May 5-6, the Center for AI Standards and Innovation (CAISI) under the National Institute of Standards and Technology (NIST) of the US Department of Commerce announced agreements with companies including Google DeepMind, Microsoft, and xAI to conduct national security testing before models are publicly released. Over 40 evaluations have been completed so far.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>美国政府加强对前沿 AI 模型的国家安全审查，标志着 AI 监管进入新阶段。这将对 AI 公司的模型发布节奏、安全评估标准产生深远影响，也可能成为其他国家的监管参考。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The US government's strengthening of national security review of frontier AI models marks a new stage in AI regulation. This will have a profound impact on AI companies' model release pace and safety evaluation standards, and may also serve as a reference for regulation in other countries.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-policy">Policy</span>
+                <span class="tag tag-us">US</span>
+                <a href="https://www.nist.gov/news-events/news/2026/05/caisi-signs-agreements-regarding-frontier-ai-national-security-testing" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+        
+        <div class="news-item policy">
+            <div class="news-title-cn">Anthropic 深化金融领域推进，为银行和保险公司推出 10 个新 AI 代理</div>
+            <div class="news-title-en">Anthropic Deepens Finance Push with 10 New AI Agents for Banks and Insurers</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    Anthropic 于5月5日宣布深化金融领域布局，推出10个面向银行和保险公司的 AI 代理。目前 Anthropic 前50大客户中约40%是金融机构，金融业已成为仅次于科技企业的第二大企业收入来源。
+                </div>
+                <div class="news-summary-en">
+                    Anthropic announced on May 5 that it is deepening its finance sector push, launching 10 new AI agents for banks and insurers. Currently, about 40% of Anthropic's top 50 customers are financial institutions, and the financial industry has become its second-largest enterprise revenue source after technology companies.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Anthropic 在金融领域的深度布局反映了 AI 在企业级应用中的加速渗透。银行业的严格监管要求将推动 AI 安全和合规性标准的提升，为整个行业树立标杆。</div>
+                <div class="why-en"><strong>Why it matters:</strong> Anthropic's deep layout in the financial sector reflects the accelerated penetration of AI in enterprise applications. The strict regulatory requirements of the banking industry will drive the improvement of AI safety and compliance standards, setting a benchmark for the entire industry.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-policy">Policy</span>
+                <span class="tag tag-us">US</span>
+                <a href="https://money.usnews.com/investing/news/articles/2026-05-05/anthropic-deepens-finance-push-with-10-new-ai-agents-for-banks-insurers" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+        
+        <div class="news-item policy">
+            <div class="news-title-cn">白宫考虑对 Anthropic Mythos 模型进行政府审查</div>
+            <div class="news-title-en">White House Weighs Government Review of Anthropic's Mythos Model</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    5月5日，有报道称白宫正在考虑对 Anthropic 的 Mythos 模型进行发布前政府审查，原因是关注网络安全风险。这标志着美国政府可能将对前沿 AI 模型实施更严格的监管。
+                </div>
+                <div class="news-summary-en">
+                    On May 5, there were reports that the White House is considering pre-release government review of Anthropic's Mythos model due to concerns about cybersecurity risks. This marks that the US government may implement stricter regulation on frontier AI models.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>如果美国政府实施强制性的前沿模型发布前审查，这将是全球 AI 监管的重要转折点，可能对 AI 公司的研发节奏和商业模式产生重大影响。</div>
+                <div class="why-en"><strong>Why it matters:</strong> If the US government implements mandatory pre-release review of frontier models, this will be an important turning point in global AI regulation, potentially having a major impact on AI companies' R&D pace and business models.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-policy">Policy</span>
+                <span class="tag tag-us">US</span>
+                <a href="https://creati.ai/ai-news/2026-05-05/white-house-weighs-government-review-of-new-ai-models/" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-title">
+            <span class="title-cn">🌐 开源生态</span>
+            <span class="title-en">Open Source Ecosystem</span>
+        </div>
+        
+        <div class="news-item open">
+            <div class="news-title-cn">Hugging Face 社区活跃：5月6-7日多个重要项目更新</div>
+            <div class="news-title-en">Hugging Face Community Active: Multiple Important Project Updates on May 6-7</div>
+            
+            <div class="news-summary">
+                <div class="news-summary-cn">
+                    Hugging Face 社区在5月6-7日发布了多个重要更新，包括机器人应用商店、视频压缩鲁棒性改进、医疗健康语言模型等。社区持续推动 AI 技术的开放和普及。
+                </div>
+                <div class="news-summary-en">
+                    The Hugging Face community released multiple important updates on May 6-7, including robotics appstore, video compression robustness improvement, medical health language models, etc. The community continues to promote the openness and popularization of AI technology.
+                </div>
+            </div>
+            
+            <div class="why-matters">
+                <div class="why-cn"><strong>为何重要：</strong>Hugging Face 社区的活跃反映了开源 AI 生态的健康发展。机器人、医疗等垂直领域的模型开放，将降低相关应用的开发门槛，加速 AI 技术的社会化应用。</div>
+                <div class="why-en"><strong>Why it matters:</strong> The activity of the Hugging Face community reflects the healthy development of the open-source AI ecosystem. The opening of models in vertical fields such as robotics and healthcare will lower the development threshold for related applications and accelerate the social application of AI technology.</div>
+            </div>
+            
+            <div>
+                <span class="tag tag-open">Open</span>
+                <a href="https://huggingface.co/blog" class="source-link" target="_blank">阅读原文 | Read Original</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="whitelist-section">
+        <div class="whitelist-title-cn">📋 白名单来源</div>
+        <div class="whitelist-title-en">Whitelist Sources</div>
+        
+        <div class="whitelist-note-cn">
+            本期简报内容来自以下白名单来源。我们持续追踪这些来源的官方发布和技术更新。
+        </div>
+        <div class="whitelist-note-en">
+            Content in this brief comes from the whitelist sources below. We continuously track official releases and technical updates from these sources.
+        </div>
+        
+        <div class="whitelist-grid">
+            <div class="whitelist-item">
+                <strong>US:</strong> OpenAI (openai.com/news, openai.com/research), Anthropic (anthropic.com/news, anthropic.com/research), Google DeepMind (deepmind.google/blog), Meta Superintelligence Labs (about.fb.com/news)
+            </div>
+            
+            <div class="whitelist-item">
+                <strong>China:</strong> Moonshot/Kimi (moonshot.ai, kimi.com), MiniMax (minimaxi.com), 智谱 (zhipuai.cn, open.bigmodel.cn), Qwen/Alibaba Cloud (qwen.ai/blog), DeepSeek (deepseek.com)
+            </div>
+            
+            <div class="whitelist-item">
+                <strong>Singapore:</strong> A*STAR AI Division (a-star.edu.sg/aiml), GovTech Singapore (tech.gov.sg/), Singapore DSAI (smartnation.sg/digital-singapore/ai-sg), NUS AI Research (nus.edu.sg/computing/ai-research)
+            </div>
+            
+            <div class="whitelist-item">
+                <strong>Singapore GovTech AI Tools:</strong> PAIR Chat (pair.gov.sg), AIBots (developer.tech.gov.sg/products/categories/productivity-tools/aibots), Transcribe (transcribe.gov.sg)
+            </div>
+            
+            <div class="whitelist-item">
+                <strong>Media:</strong> Reuters (reuters.com/technology), MIT Tech Review (technologyreview.com/topic/artificial-intelligence), Xinhua EN (xinhuanet.com/english), CNBC Technology (cnbc.com), Forbes AI 50 (forbes.com)
+            </div>
+            
+            <div class="whitelist-item">
+                <strong>Open Source/Research:</strong> Hugging Face Blog (huggingface.co/blog), arXiv CS.AI (arxiv.org/list/cs.AI), OpenBMB (openbmb.org), HKUDS (hku-datascience.github.io), Marktechpost (marktechpost.com)
+            </div>
+            
+            <div class="whitelist-item">
+                <strong>AI Governance/Policy:</strong> Plural Policy AI Governance Watch (pluralpolicy.com/blog), UK AI Security Institute (aisi.gov.uk/blog), Stanford HAI AI Index (hai.stanford.edu), Mayer Brown AI Policy (mayerbrown.com)
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: rgba(167, 139, 250, 0.05); border-radius: 8px; font-size: 0.9em; color: var(--text-muted);">
+            <strong style="color: var(--accent);">📌 说明：</strong> 白名单持续动态维护。如发现新公司重要动态，经官方来源确认后加入。本期无新增来源。
+            <br>
+            <em>Whitelist is dynamically maintained. If important developments from new companies are discovered, they will be added after confirmation from official sources. No new sources added in this issue.</em>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-cn">AI 早报 由 WorkBuddy 自动生成 | 数据来源：白名单官方网站及权威媒体</div>
+        <div class="footer-en">AI Daily Brief automatically generated by WorkBuddy | Data source: Whitelist official websites and authoritative media</div>
+        <div class="footer-cn" style="margin-top: 10px;">⚠️ 本简报仅供参考，不构成投资建议或技术推荐</div>
+        <div class="footer-en" style="font-style: italic;">⚠️ This brief is for reference only and does not constitute investment advice or technical recommendations</div>
+    </div>
+</body>
+</html>

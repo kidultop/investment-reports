@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 · 2026年5月9日早报 | AI Briefing · May 9, 2026 Morning</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #263348;
+    --border: #334155;
+    --accent: #a78bfa;
+    --accent2: #7c3aed;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --tag-us: #3b82f6;
+    --tag-cn: #ef4444;
+    --tag-sg: #f97316;
+    --tag-research: #22c55e;
+    --tag-open: #a78bfa;
+    --tag-policy: #eab308;
+    --tag-new: #06b6d4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 60%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%);
+  }
+  .header-tag {
+    display: inline-block;
+    background: rgba(167,139,250,0.15);
+    border: 1px solid rgba(167,139,250,0.4);
+    color: var(--accent);
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .header h1 .sub { font-size: 13px; color: var(--muted); font-weight: 400; font-style: italic; display: block; margin-top: 2px; }
+  .header-meta { margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .container { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    flex: 1; min-width: 120px;
+  }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-label-cn { font-size: 11px; color: var(--muted); }
+  .stat-label-en { font-size: 10px; color: var(--border); font-style: italic; }
+
+  /* Trends Card */
+  .trends-card {
+    background: linear-gradient(135deg, #1e1b4b 0%, var(--surface) 100%);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+  }
+  .trends-title-cn { font-size: 14px; font-weight: 700; color: var(--accent); }
+  .trends-title-en { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 12px; }
+  .trend-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .trend-bullet { color: var(--accent); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .trend-cn { font-size: 13px; color: var(--text); }
+  .trend-en { font-size: 11px; color: var(--muted); font-style: italic; }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-icon { font-size: 18px; }
+  .card-title .title-cn { font-size: 15px; font-weight: 700; color: var(--text); }
+  .card-title .title-en { font-size: 11px; color: var(--muted); font-style: italic; }
+
+  /* News Items */
+  .news-item {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    transition: background 0.2s;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-item:hover { background: rgba(255,255,255,0.02); }
+  .news-item.top-story { border-left-color: var(--accent); }
+  .news-item.tag-us { border-left-color: var(--tag-us); }
+  .news-item.tag-cn { border-left-color: var(--tag-cn); }
+  .news-item.tag-sg { border-left-color: var(--tag-sg); }
+  .news-item.tag-research { border-left-color: var(--tag-research); }
+  .news-item.tag-open { border-left-color: var(--tag-open); }
+  .news-item.tag-policy { border-left-color: var(--tag-policy); }
+  .news-item.tag-new { border-left-color: var(--tag-new); }
+
+  .news-title-cn { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 3px; }
+  .news-title-en { font-size: 12px; color: var(--muted); font-style: italic; margin-bottom: 10px; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 100px; letter-spacing: 0.04em;
+  }
+  .tag.us { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+  .tag.cn { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+  .tag.sg { background: rgba(249,115,22,0.15); color: #fb923c; border: 1px solid rgba(249,115,22,0.3); }
+  .tag.research { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+  .tag.open { background: rgba(167,139,250,0.15); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.3); }
+  .tag.policy { background: rgba(234,179,8,0.15); color: #fbbf24; border: 1px solid rgba(234,179,8,0.3); }
+  .tag.new-src { background: rgba(6,182,212,0.15); color: #22d3ee; border: 1px solid rgba(6,182,212,0.3); }
+
+  .news-summary { margin-bottom: 10px; }
+  .news-summary-cn { font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 8px; }
+  .news-summary-en {
+    font-size: 12px; color: var(--muted); line-height: 1.6;
+    padding-left: 10px;
+    border-left: 2px solid var(--border);
+    font-style: italic;
+  }
+
+  .why-matters {
+    background: rgba(167,139,250,0.07);
+    border: 1px solid rgba(167,139,250,0.15);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .why-cn { font-size: 12px; color: var(--text); margin-bottom: 4px; }
+  .why-en { font-size: 11px; color: var(--muted); font-style: italic; }
+
+  .source-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--accent); text-decoration: none;
+    background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25);
+    padding: 3px 10px; border-radius: 6px;
+  }
+  .source-link:hover { background: rgba(167,139,250,0.2); }
+
+  .new-source-callout {
+    margin-top: 10px;
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.25);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 11px; color: #22d3ee;
+  }
+
+  /* Whitelist */
+  .whitelist-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 24px;
+  }
+  .whitelist-title-cn { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+  .whitelist-title-en { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+  .whitelist-note-cn { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .whitelist-note-en { font-size: 10px; color: var(--border); font-style: italic; margin-bottom: 14px; }
+  .whitelist-group { margin-bottom: 14px; }
+  .whitelist-group-title { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .whitelist-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .wl-item {
+    font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  }
+  .wl-item.new { background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.3); color: #22d3ee; }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 24px;
+    margin-top: 40px;
+    font-size: 11px; color: var(--muted);
+  }
+  .footer-cn { margin-bottom: 4px; }
+  .footer-en { font-style: italic; color: var(--border); }
+
+  @media (max-width: 600px) {
+    .stats-bar { flex-direction: column; }
+    .header h1 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">🤖 AI BRIEFING · MORNING · SGT</div>
+  <h1>AI 技术简报 · 2026年5月9日 早报
+    <span class="sub">AI Technology Briefing · May 9, 2026 · Morning Edition</span>
+  </h1>
+  <div class="header-meta">发布时间：09:30 SGT &nbsp;|&nbsp; 信息截止：2026-05-09 09:00 SGT &nbsp;|&nbsp; 覆盖：美国 · 中国 · 新加坡 · 全球研究</div>
+</div>
+
+<div class="container">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">5</div>
+      <div class="stat-label-cn">今日要闻</div>
+      <div class="stat-label-en">Stories Today</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">3</div>
+      <div class="stat-label-cn">官方来源</div>
+      <div class="stat-label-en">Official Sources</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">4</div>
+      <div class="stat-label-cn">覆盖地区</div>
+      <div class="stat-label-en">Regions Covered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">0</div>
+      <div class="stat-label-cn">新增来源</div>
+      <div class="stat-label-en">New Sources</div>
+    </div>
+  </div>
+
+  <!-- Trends Card -->
+  <div class="trends-card">
+    <div class="trends-title-cn">📊 今日核心趋势</div>
+    <div class="trends-title-en">Core Trends · May 9, 2026</div>
+
+    <div class="trend-item">
+      <div class="trend-bullet">▸</div>
+      <div>
+        <div class="trend-cn">AI 专业化纵深：OpenAI 与 Anthropic 分别推出安全与社会研究专项工具，AI 能力下沉至特定领域</div>
+        <div class="trend-en">AI specialization deepens — OpenAI & Anthropic launch domain-specific tools for cybersecurity and social impact research</div>
+      </div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-bullet">▸</div>
+      <div>
+        <div class="trend-cn">算法自进化进入商用：DeepMind AlphaEvolve 完成跨领域一年实战检验，正式向 Google Cloud 企业客户开放</div>
+        <div class="trend-en">Algorithmic self-optimization goes commercial — AlphaEvolve passes one-year real-world test across 10+ domains, opens on Google Cloud</div>
+      </div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-bullet">▸</div>
+      <div>
+        <div class="trend-cn">开源机器人迎来"App Store 时刻"：Hugging Face 为 Reachy Mini 发布 AI 驱动机器人应用商店</div>
+        <div class="trend-en">Open-source robotics gets its App Store moment — Hugging Face launches agentic appstore for 10,000 Reachy Mini robots</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP STORIES -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🔥</span>
+      <div class="card-title">
+        <div class="title-cn">头条要闻</div>
+        <div class="title-en">Top Stories</div>
+      </div>
+    </div>
+
+    <!-- Story 1: AlphaEvolve -->
+    <div class="news-item top-story tag-research">
+      <div class="tags">
+        <span class="tag research">Research</span>
+        <span class="tag us">US</span>
+      </div>
+      <div class="news-title-cn">DeepMind AlphaEvolve 发布一年实战报告，算法优化覆盖基因组学至量子计算十余个领域</div>
+      <div class="news-title-en"><em>DeepMind AlphaEvolve: One-Year Impact Report Across Genomics, Quantum Computing, and Infrastructure</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Google DeepMind 于 5 月 7 日发布 AlphaEvolve 运行一年的实战成果报告。这一基于 Gemini 的算法优化智能体已在基因组学（DNA 错误检测误差降低 30%）、电网优化（可行解率从 14% 提升至 88%）、量子物理（量子错误率降低 10 倍）、数学（协助陶哲轩求解 Erdős 问题）等超过十个领域取得实质性突破。在 Google 内部，AlphaEvolve 直接参与了下一代 TPU 的电路设计，并将 Spanner 数据库写放大降低 20%。目前 AlphaEvolve 已通过 Google Cloud 向 Klarna、Schrödinger、FM Logistic 等企业客户开放。</div>
+        <div class="news-summary-en">Google DeepMind released its one-year impact report for AlphaEvolve on May 7. The Gemini-powered algorithm optimization agent has achieved measurable breakthroughs across 10+ domains — cutting DNA variant detection errors by 30%, improving power grid feasibility from 14% to 88%, reducing quantum error rates 10x, and assisting Fields Medalist Terence Tao in solving Erdős problems. Internally, AlphaEvolve contributed to next-gen TPU circuit design and cut Spanner write amplification by 20%. It is now commercially available via Google Cloud to customers including Klarna, Schrödinger, and FM Logistic.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>AlphaEvolve 代表 AI 在科学发现与工程优化中从辅助工具迈向"主动贡献者"的关键节点——它不仅能优化已知问题，还能发现人类未曾考虑的解法。正式商用意味着这一能力正在走出实验室。</div>
+        <div class="why-en"><strong>Why it matters:</strong> AlphaEvolve marks a pivotal shift from AI as a tool to AI as an active contributor in science and engineering — discovering solutions humans hadn't considered. Its commercial rollout signals this capability is leaving the lab.</div>
+      </div>
+      <a class="source-link" href="https://deepmind.google/blog/alphaevolve-impact/" target="_blank">↗ deepmind.google</a>
+    </div>
+
+    <!-- Story 2: Anthropic Institute -->
+    <div class="news-item top-story tag-us">
+      <div class="tags">
+        <span class="tag us">US</span>
+        <span class="tag policy">Policy</span>
+      </div>
+      <div class="news-title-cn">Anthropic 研究院公布四大研究方向，聚焦 AI 对经济、安全与社会的实质影响</div>
+      <div class="news-title-en"><em>Anthropic Institute Publishes Research Agenda: Four Focus Areas on AI's Economic, Security and Social Impact</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">The Anthropic Institute（TAI）于 5 月 7 日发布其研究议程，明确四大方向：①经济扩散（AI 采用的公平性与生产力分配）、②威胁与韧性（双用途能力、网络安全攻守平衡）、③现实中的 AI 系统（集体认知影响、AI 智能体的法律治理）、④AI 驱动的研发（递归自我提升风险、智能爆炸预演）。TAI 由联合创始人 Jack Clark 领导，将利用 Anthropic 前沿实验室内部视角发布研究结果，向政府与公众开放。</div>
+        <div class="news-summary-en">The Anthropic Institute (TAI) published its research agenda on May 7, outlining four focus areas: ① Economic diffusion (who adopts AI and how gains are distributed), ② Threats and resilience (dual-use capabilities, cyber offense-defense balance), ③ AI systems in the wild (collective epistemology, legal governance of AI agents), ④ AI-driven R&D (recursive self-improvement risks, "intelligence explosion" fire drills). Led by co-founder Jack Clark, TAI will leverage its insider perspective at a frontier lab to publish findings for governments and the public.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是目前首家前沿实验室系统性承诺从内部视角研究并公开发布 AI 社会影响数据的机构。其研究议题直接对应 AI 治理中最难量化的盲区，包括 AI 是否使信息操控变得更易、以及智能爆炸预演该如何设计。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This is the first frontier lab to systematically commit to researching and publicly releasing AI social impact data from an insider perspective. The agenda directly addresses the hardest-to-quantify blind spots in AI governance, including epistemic effects and intelligence explosion preparation.</div>
+      </div>
+      <a class="source-link" href="https://www.anthropic.com/research/anthropic-institute-agenda" target="_blank">↗ anthropic.com</a>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- OFFICIAL RELEASES -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">📢</span>
+      <div class="card-title">
+        <div class="title-cn">官方发布</div>
+        <div class="title-en">Official Announcements</div>
+      </div>
+    </div>
+
+    <!-- OpenAI Cyber -->
+    <div class="news-item tag-us">
+      <div class="tags">
+        <span class="tag us">US</span>
+      </div>
+      <div class="news-title-cn">OpenAI 推出 GPT-5.5-Cyber，向经审核的网络安全团队限量预览</div>
+      <div class="news-title-en"><em>OpenAI Launches GPT-5.5-Cyber in Limited Preview for Vetted Cybersecurity Teams</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI 于 5 月 7 日宣布推出 GPT-5.5-Cyber，这是 GPT-5.5 的网络安全专项版本，目前仅向经过严格审核的安全团队开放限量预览。该模型针对网络安全任务进行了专项许可调整，支持漏洞识别与分类、补丁验证、恶意软件分析等工作流。与 Anthropic 于一个月前发布的 Claude Mythos Preview 直接竞争，后者通过 Project Glasswing 向同样的限定受众开放。</div>
+        <div class="news-summary-en">OpenAI announced GPT-5.5-Cyber on May 7 — a cybersecurity-tuned variant of GPT-5.5 in limited preview for vetted security teams only. It enables specialized workflows including vulnerability identification and triage, patch validation, and malware analysis with more permissive behavior than the base model. This is a direct competitive response to Anthropic's Claude Mythos Preview launched one month earlier via Project Glasswing.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>两家领先实验室在同一个月内相继发布网络安全专项模型，表明 AI 能力的专业化下沉已成战略方向。限定访问模式既减少滥用风险，也是与政府及关键基础设施运营商建立信任的关键步骤。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Two leading labs releasing specialized cybersecurity models within the same month signals that domain-specific AI is now a strategic priority. The gated access model reduces misuse risk while building credibility with governments and critical infrastructure operators.</div>
+      </div>
+      <a class="source-link" href="https://www.cnbc.com/2026/05/07/openai-rolls-out-new-gpt-5point5-cyber-to-vetted-cybersecurity-teams.html" target="_blank">↗ cnbc.com</a>
+    </div>
+
+    <!-- Anthropic Orbit -->
+    <div class="news-item tag-us">
+      <div class="tags">
+        <span class="tag us">US</span>
+      </div>
+      <div class="news-title-cn">Claude 主动式助手功能 Orbit 曝光，可在后台持续接入 Gmail、Slack、GitHub</div>
+      <div class="news-title-en"><em>Claude's Proactive Assistant Feature "Orbit" Revealed — Background Integration with Gmail, Slack, GitHub</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">5 月 4 日，测试人员在 Anthropic 客户端中发现未发布的功能模块 Orbit。该功能将 Claude 从被动响应转变为主动式助手，可在无需用户提示的情况下自动读取 Gmail、Slack、GitHub、Calendar 等数据源，生成个性化简报与洞察。这一模式要求 Claude 在后台持续运行，对 Anthropic 的推理基础设施提出更高要求。Orbit 于 5 月 6 日 Code with Claude 开发者大会期间引发广泛讨论，官方尚未正式宣布。</div>
+        <div class="news-summary-en">On May 4, testers discovered an unreleased module called Orbit within Anthropic's clients. The feature shifts Claude from reactive to proactive — automatically reading Gmail, Slack, GitHub, Calendar, and Drive to generate personalized briefings without user prompting. This requires Claude to run continuously in the background, placing significantly higher demands on Anthropic's inference infrastructure. Orbit drew wide attention during the May 6 Code with Claude developer conference, though no official announcement has been made.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Orbit 代表 AI 助手从"等待指令"到"主动服务"的范式转变，同时引发持续后台数据访问的隐私边界问题。若正式发布，将直接与 Microsoft Copilot 的 365 深度集成路线形成竞争。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Orbit represents a paradigm shift from reactive to proactive AI — and raises important questions about continuous background data access and privacy boundaries. If launched, it would directly compete with Microsoft Copilot's deep 365 integration strategy.</div>
+      </div>
+      <a class="source-link" href="https://www.sohu.com/a/1018831544_473283" target="_blank">↗ sohu.com（二手报道）</a>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- RESEARCH & TECH -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🔬</span>
+      <div class="card-title">
+        <div class="title-cn">研究与技术</div>
+        <div class="title-en">Research &amp; Technology</div>
+      </div>
+    </div>
+
+    <!-- Hugging Face Reachy -->
+    <div class="news-item tag-open">
+      <div class="tags">
+        <span class="tag open">Open</span>
+        <span class="tag research">Research</span>
+      </div>
+      <div class="news-title-cn">Hugging Face 为 Reachy Mini 推出智能体应用商店，1 万台机器人迎来"App Store 时刻"</div>
+      <div class="news-title-en"><em>Hugging Face Launches Agentic App Store for Reachy Mini — 10,000 Robots Get Their App Store Moment</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Hugging Face 发布针对开源桌面机器人 Reachy Mini 的智能体工具包与应用商店。用户只需用自然语言描述行为需求，AI 智能体即可自动完成代码编写、测试与部署，无需任何机器人技术背景。应用商店已有超过 150 位创作者上传逾 200 个应用，涵盖语言学习、烹饪助手、象棋伴侣等场景。全球已部署约 1 万台 Reachy Mini，未来 30 天内还将发货 1000 余台。所有代码、模型与应用均完全开源托管于 Hugging Face Hub。</div>
+        <div class="news-summary-en">Hugging Face released an agentic toolkit and app store for Reachy Mini, its open-source desktop robot. Users describe desired behaviors in plain English and an AI agent writes, tests, and deploys the code — no robotics experience required. The store already hosts 200+ apps from 150+ creators across language tutoring, cooking assistance, and chess companionship. Approximately 10,000 units are deployed globally with 1,000+ more shipping within 30 days. All code, models, and apps are fully open-source on the Hugging Face Hub.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这是继 iPhone App Store 之后第一次有人为机器人平台构建了真正的开放生态——不同的是，硬件、软件与 AI 全部开源。无代码机器人开发的可行性被 78 岁的非程序员用户 Joel Cohen 亲身验证，意义深远。</div>
+        <div class="why-en"><strong>Why it matters:</strong> This is the first genuinely open ecosystem for a consumer robotics platform — hardware, software, and AI all open-source. The viability of no-code robotics was validated by Joel Cohen, age 78 with no coding background, building a fully functional AI facilitation robot.</div>
+      </div>
+      <a class="source-link" href="https://huggingface.co/blog/clem/reachymini-appstore" target="_blank">↗ huggingface.co</a>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- POLICY & INDUSTRY -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🏛️</span>
+      <div class="card-title">
+        <div class="title-cn">政策与产业</div>
+        <div class="title-en">Policy &amp; Industry</div>
+      </div>
+    </div>
+
+    <!-- Singapore AI Governance -->
+    <div class="news-item tag-sg">
+      <div class="tags">
+        <span class="tag sg">SG</span>
+        <span class="tag policy">Policy</span>
+      </div>
+      <div class="news-title-cn">新加坡 2026 年预算拨款加速 AI 发展与治理，《Agent AI 治理框架》延续全球领先定位</div>
+      <div class="news-title-en"><em>Singapore Budget 2026 Accelerates AI Investment; Agentic AI Governance Framework Maintains Global Lead</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据 law.asia 分析，新加坡 2026 年预算在 AI 发展、基础设施与风险治理方面均有实质性拨款，延续了 NAIS 2.0 的战略部署。此前（1 月），新加坡 IMDA 发布全球首个《Agent AI 治理框架》，针对自主决策 AI 系统的监管进行了系统性规范。目前新加坡已被多份国际分析报告列为 Agentic AI 治理的全球领先国家之一。法务部今年 3 月还发布了 GenAI 在法律领域使用指南。</div>
+        <div class="news-summary-en">According to law.asia analysis, Singapore's Budget 2026 includes substantive allocations for AI development, infrastructure, and risk governance, continuing the NAIS 2.0 strategic framework. In January, Singapore's IMDA released the world's first Model AI Governance Framework for Agentic AI, providing systematic regulations for autonomous decision-making systems. Singapore is now cited by multiple international analyses as a global leader in agentic AI governance. The Ministry of Law also released a GenAI guide for the legal sector in March.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>新加坡作为小城市国家，率先将 Agentic AI 治理写入法规与预算，为其他国家提供了可参考的监管路径。在 EU AI Act 即将于 2026 年 8 月全面生效的背景下，各国竞相建立先发优势。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Singapore, as a small city-state, has pioneered agentic AI governance in both regulation and budget allocation — providing a replicable model for other countries. With the EU AI Act taking full effect in August 2026, nations are racing to establish regulatory frameworks.</div>
+      </div>
+      <a class="source-link" href="https://law.asia/singapore-ai-regulation-budget-2026-2/" target="_blank">↗ law.asia</a>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- OPEN SOURCE ECOSYSTEM -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🌐</span>
+      <div class="card-title">
+        <div class="title-cn">开源生态</div>
+        <div class="title-en">Open Source Ecosystem</div>
+      </div>
+    </div>
+
+    <!-- Chinese LLM Landscape -->
+    <div class="news-item tag-cn">
+      <div class="tags">
+        <span class="tag cn">CN</span>
+        <span class="tag open">Open</span>
+      </div>
+      <div class="news-title-cn">中国开源大模型格局：Kimi K2.6、DeepSeek V3.2、Qwen 3.6 Plus 持续活跃</div>
+      <div class="news-title-en"><em>Chinese Open-Source LLM Landscape: Kimi K2.6, DeepSeek V3.2, Qwen 3.6 Plus Remain Actively Maintained</em></div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据多方技术综合追踪，截至本周，中国主要开源模型持续迭代中：Kimi K2.6（月之暗面/Moonshot）在编码任务中表现突出；DeepSeek V3.2 通过 API 持续更新；Qwen 3.6 Plus（阿里云）在多语言推理场景有竞争力表现；MiniMax M2.7 则以多模态能力见长；GLM-5.1（智谱 AI）专注企业级应用。上述模型均可通过官方 API 或 Hugging Face Hub 访问，各有其编程、推理或实时交互的差异化定位。本周无重大新版本官方发布公告。</div>
+        <div class="news-summary-en">Based on aggregated technical tracking, China's major open-source models continue active iteration: Kimi K2.6 (Moonshot AI) leads in coding tasks; DeepSeek V3.2 receives continuous API updates; Qwen 3.6 Plus (Alibaba Cloud) shows competitive multilingual reasoning; MiniMax M2.7 specializes in multimodal capabilities; and GLM-5.1 (Zhipu AI) focuses on enterprise applications. All are accessible via official APIs or Hugging Face Hub with differentiated positioning across coding, reasoning, and real-time interaction. No major new official version announcements this week.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>中国开源模型生态已形成多极竞争格局，在编码（Kimi）、推理（DeepSeek）、多语言（Qwen）和多模态（MiniMax）方向各有所长，与美国闭源模型形成差异化互补关系。</div>
+        <div class="why-en"><strong>Why it matters:</strong> China's open-source LLM ecosystem has matured into a multi-polar competitive landscape, with distinct strengths in coding (Kimi), reasoning (DeepSeek), multilingual (Qwen), and multimodal (MiniMax) — complementing rather than directly replicating US closed-source models.</div>
+      </div>
+      <a class="source-link" href="https://tokenmix.ai/blog/best-chinese-ai-models-2026-comparison-guide" target="_blank">↗ tokenmix.ai（综合追踪）</a>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- Whitelist -->
+  <div class="whitelist-card">
+    <div class="whitelist-title-cn">📋 本期信息来源白名单</div>
+    <div class="whitelist-title-en">Source Whitelist · This Edition</div>
+    <div class="whitelist-note-cn">本期无新增来源。白名单动态维护，新发现重要来源将用 🆕 标注。</div>
+    <div class="whitelist-note-en">No new sources this edition. Whitelist is dynamically maintained; newly discovered sources are marked 🆕.</div>
+
+    <div class="whitelist-group">
+      <div class="whitelist-group-title">🇺🇸 US</div>
+      <div class="whitelist-items">
+        <span class="wl-item">openai.com/news</span>
+        <span class="wl-item">openai.com/research</span>
+        <span class="wl-item">anthropic.com/news</span>
+        <span class="wl-item">anthropic.com/research</span>
+        <span class="wl-item">deepmind.google/blog</span>
+        <span class="wl-item">about.fb.com/news</span>
+      </div>
+    </div>
+
+    <div class="whitelist-group">
+      <div class="whitelist-group-title">🇨🇳 China</div>
+      <div class="whitelist-items">
+        <span class="wl-item">moonshot.ai</span>
+        <span class="wl-item">kimi.com</span>
+        <span class="wl-item">minimaxi.com</span>
+        <span class="wl-item">zhipuai.cn</span>
+        <span class="wl-item">qwen.ai/blog</span>
+        <span class="wl-item">deepseek.com</span>
+        <span class="wl-item">seed.bytedance.com</span>
+        <span class="wl-item">kimi-k2.org</span>
+      </div>
+    </div>
+
+    <div class="whitelist-group">
+      <div class="whitelist-group-title">🇸🇬 Singapore</div>
+      <div class="whitelist-items">
+        <span class="wl-item">a-star.edu.sg/aiml</span>
+        <span class="wl-item">tech.gov.sg</span>
+        <span class="wl-item">smartnation.gov.sg</span>
+        <span class="wl-item">mddi.gov.sg/newsroom</span>
+        <span class="wl-item">singtel.com/media-centre</span>
+        <span class="wl-item">pair.gov.sg</span>
+        <span class="wl-item">transcribe.gov.sg</span>
+      </div>
+    </div>
+
+    <div class="whitelist-group">
+      <div class="whitelist-group-title">📰 Media</div>
+      <div class="whitelist-items">
+        <span class="wl-item">reuters.com/technology</span>
+        <span class="wl-item">technologyreview.com</span>
+        <span class="wl-item">cnbc.com</span>
+        <span class="wl-item">forbes.com</span>
+        <span class="wl-item">aiflashreport.com</span>
+        <span class="wl-item">aicritique.org</span>
+        <span class="wl-item">winbuzzer.com</span>
+        <span class="wl-item">spectrum.ieee.org</span>
+        <span class="wl-item">xinhuanet.com/english</span>
+      </div>
+    </div>
+
+    <div class="whitelist-group">
+      <div class="whitelist-group-title">🔬 Research / Open Source</div>
+      <div class="whitelist-items">
+        <span class="wl-item">huggingface.co/blog</span>
+        <span class="wl-item">arxiv.org/list/cs.AI</span>
+        <span class="wl-item">openbmb.org</span>
+        <span class="wl-item">marktechpost.com</span>
+        <span class="wl-item">hcompany.ai</span>
+      </div>
+    </div>
+
+    <div class="whitelist-group">
+      <div class="whitelist-group-title">🏛️ Policy / Governance</div>
+      <div class="whitelist-items">
+        <span class="wl-item">pluralpolicy.com/blog</span>
+        <span class="wl-item">aisi.gov.uk/blog</span>
+        <span class="wl-item">hai.stanford.edu</span>
+        <span class="wl-item">mayerbrown.com</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <div class="footer-cn">📅 早报 · 2026年5月9日 09:30 SGT &nbsp;|&nbsp; 内容覆盖：美国 · 中国 · 新加坡 &nbsp;|&nbsp; 下期：晚报 18:00-23:59 SGT</div>
+  <div class="footer-en">Morning Edition · May 9, 2026 09:30 SGT | Coverage: US · China · Singapore | Next: Evening Edition 18:00–23:59 SGT</div>
+  <div class="footer-cn" style="margin-top:8px;">本简报基于公开信息整理，仅收录官方或权威媒体来源，标题克制不夸张。所有来源链接均附原文地址。</div>
+  <div class="footer-en">This briefing is compiled from public information. Only official or authoritative media sources are included. Source links to original articles are provided throughout.</div>
+</div>
+
+</body>
+</html>
