@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 技术早报 — 2026年6月2日</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #a78bfa;
+  --accent-dim: #7c3aed;
+  --green: #4ade80;
+  --red: #f87171;
+  --blue: #60a5fa;
+  --orange: #fb923c;
+  --yellow: #facc15;
+  --cyan: #22d3ee;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif; min-height:100vh; padding:20px; }
+.container { max-width:900px; margin:0 auto; }
+.header { text-align:center; padding:40px 0 30px; border-bottom:1px solid var(--border); margin-bottom:30px; }
+.header h1 { font-size:28px; font-weight:700; background:linear-gradient(135deg,var(--accent),#c4b5fd); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.header .subtitle { color:var(--muted); font-size:13px; margin-top:8px; font-style:italic; }
+.header .date-badge { display:inline-block; background:var(--card); border:1px solid var(--border); border-radius:20px; padding:6px 18px; font-size:13px; color:var(--muted); margin-top:10px; }
+
+.trends-card { background:linear-gradient(135deg,var(--card),#1e1b4b); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:30px; }
+.trends-title-cn { font-size:16px; font-weight:700; color:var(--accent); margin-bottom:4px; }
+.trends-title-en { font-size:12px; color:var(--muted); font-style:italic; margin-bottom:16px; }
+.trend-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+@media (max-width:600px) { .trend-grid { grid-template-columns:1fr; } }
+.trend-item { background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.15); border-radius:8px; padding:14px; }
+.trend-cn { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.trend-en { font-size:11px; color:var(--muted); font-style:italic; }
+
+.stats-bar { display:flex; gap:12px; margin-bottom:30px; flex-wrap:wrap; }
+.stat-card { flex:1; min-width:120px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
+.stat-value { font-size:22px; font-weight:700; color:var(--accent); }
+.stat-label-cn { font-size:11px; color:var(--text); margin-top:4px; }
+.stat-label-en { font-size:10px; color:var(--muted); font-style:italic; }
+.stat-unit-cn { font-size:10px; color:var(--muted); }
+.stat-unit-en { font-size:9px; color:var(--muted); font-style:italic; }
+
+.section { margin-bottom:32px; }
+.card-title { display:flex; flex-direction:column; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid var(--accent-dim); }
+.title-cn { font-size:18px; font-weight:700; color:var(--text); }
+.title-en { font-size:12px; color:var(--muted); font-style:italic; }
+
+.news-item { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:8px; padding:20px; margin-bottom:16px; position:relative; }
+.news-item.tag-us { border-left-color:var(--blue); }
+.news-item.tag-cn { border-left-color:var(--red); }
+.news-item.tag-sg { border-left-color:var(--orange); }
+.news-item.tag-research { border-left-color:var(--green); }
+.news-item.tag-open { border-left-color:var(--accent); }
+.news-item.tag-policy { border-left-color:var(--yellow); }
+.news-item.tag-new { border-left-color:var(--cyan); }
+
+.tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:600; text-transform:uppercase; margin-bottom:10px; }
+.tag-us { background:rgba(96,165,250,0.15); color:var(--blue); }
+.tag-cn { background:rgba(248,113,113,0.15); color:var(--red); }
+.tag-sg { background:rgba(251,146,60,0.15); color:var(--orange); }
+.tag-research { background:rgba(74,222,128,0.15); color:var(--green); }
+.tag-open { background:rgba(167,139,250,0.15); color:var(--accent); }
+.tag-policy { background:rgba(250,204,21,0.15); color:var(--yellow); }
+
+.news-title-cn { font-size:16px; font-weight:600; color:var(--text); margin-bottom:4px; line-height:1.5; }
+.news-title-en { font-size:12px; color:var(--muted); font-style:italic; margin-bottom:12px; }
+
+.news-summary { display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+.news-summary-cn { padding-left:12px; border-left:2px solid var(--border); font-size:14px; color:var(--muted); line-height:1.7; }
+.news-summary-en { padding-left:12px; border-left:2px solid var(--border); font-size:12px; color:#64748b; line-height:1.6; font-style:italic; }
+
+.why-matters { background:rgba(167,139,250,0.06); border-radius:6px; padding:12px; margin-bottom:12px; }
+.why-cn { font-size:13px; color:var(--text); line-height:1.6; margin-bottom:4px; }
+.why-cn strong { color:var(--accent); }
+.why-en { font-size:11px; color:#64748b; line-height:1.5; font-style:italic; }
+.why-en strong { color:var(--accent); font-style:italic; }
+
+.source-link { display:inline-block; padding:6px 14px; background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.2); border-radius:6px; font-size:11px; color:var(--accent); text-decoration:none; transition:all 0.2s; }
+.source-link:hover { background:rgba(167,139,250,0.2); }
+
+.new-source-callout { background:rgba(34,211,238,0.08); border:1px dashed rgba(34,211,238,0.3); border-radius:6px; padding:10px 14px; margin-top:12px; font-size:12px; color:var(--cyan); }
+.new-source-callout strong { color:var(--cyan); }
+
+.whitelist-section { margin-top:40px; padding-top:24px; border-top:1px solid var(--border); }
+.whitelist-title-cn { font-size:16px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.whitelist-title-en { font-size:12px; color:var(--muted); font-style:italic; margin-bottom:6px; }
+.whitelist-note-cn { font-size:12px; color:var(--muted); margin-bottom:10px; }
+.whitelist-note-en { font-size:11px; color:#64748b; font-style:italic; margin-bottom:14px; }
+.whitelist-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; }
+.whitelist-cat { font-size:10px; font-weight:700; color:var(--accent); text-transform:uppercase; margin-top:10px; }
+.whitelist-item { font-size:11px; color:var(--muted); padding:2px 0; }
+.whitelist-item.new { color:var(--cyan); }
+
+.footer { margin-top:50px; padding:24px 0; border-top:1px solid var(--border); text-align:center; }
+.footer-cn { font-size:12px; color:var(--muted); }
+.footer-en { font-size:10px; color:#64748b; font-style:italic; margin-top:4px; }
+
+.observe-box { background:rgba(251,146,60,0.08); border:1px solid rgba(251,146,60,0.2); border-radius:8px; padding:14px; margin-top:30px; }
+.observe-title { font-size:13px; font-weight:700; color:var(--orange); margin-bottom:6px; }
+.observe-list { font-size:12px; color:var(--muted); line-height:1.8; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>AI 技术早报 — 2026年6月2日</h1>
+  <div class="subtitle">AI Technology Morning Briefing · Tuesday, June 2, 2026</div>
+  <div class="date-badge">SGT 08:30 · 02 Jun 2026</div>
+</div>
+
+<!-- 核心趋势 -->
+<div class="trends-card">
+  <div class="trends-title-cn">🔥 今日核心趋势</div>
+  <div class="trends-title-en">Today's Core AI Trends</div>
+  <div class="trend-grid">
+    <div class="trend-item">
+      <div class="trend-cn">Anthropic 提交机密 S-1，AI IPO 超级周期正式启动</div>
+      <div class="trend-en">Anthropic files confidential S-1 — the AI IPO super-cycle begins</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">Microsoft Build 2026 今日开幕，AI Agent 成核心主线</div>
+      <div class="trend-en">Microsoft Build 2026 opens today with AI Agents as the central theme</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">arXiv 单日 13 篇 Agent/LLM 论文，科学 Agent 与推理效率成热点</div>
+      <div class="trend-en">13 Agent/LLM papers in one day — scientific agents & reasoning efficiency dominate arXiv</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">EU AI 法案高风险系统合规仅剩 60 天</div>
+      <div class="trend-en">EU AI Act high-risk system deadline: 60 days remaining</div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-value">$965B</div>
+    <div class="stat-label-cn">Anthropic 估值</div>
+    <div class="stat-label-en">Valuation</div>
+    <div class="stat-unit-cn">Series H 后</div>
+    <div class="stat-unit-en">Post-Series H</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">$47B</div>
+    <div class="stat-label-cn">ARR 年化营收</div>
+    <div class="stat-label-en">Annualized Revenue</div>
+    <div class="stat-unit-cn">18个月 4.7× 增长</div>
+    <div class="stat-unit-en">4.7× growth in 18mo</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">13</div>
+    <div class="stat-label-cn">今日 arXiv 论文</div>
+    <div class="stat-label-en">Papers Today</div>
+    <div class="stat-unit-cn">cs.AI Agent/LLM</div>
+    <div class="stat-unit-en">cs.AI Agent/LLM</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">60天</div>
+    <div class="stat-label-cn">EU AI 法案倒计时</div>
+    <div class="stat-label-en">Countdown</div>
+    <div class="stat-unit-cn">2026-08-02</div>
+    <div class="stat-unit-en">Aug 2, 2026</div>
+  </div>
+</div>
+
+<!-- Section 1: Top Stories -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">📰 头条要闻</span>
+    <span class="title-en">Top Stories</span>
+  </div>
+
+  <!-- Story 1: Anthropic IPO -->
+  <div class="news-item tag-us">
+    <span class="tag tag-us">US</span>
+    <div class="news-title-cn">Anthropic 向 SEC 提交机密 S-1，AI 史上最大 IPO 正式启动</div>
+    <div class="news-title-en">Anthropic Files Confidential S-1 with SEC, Setting Up Historic AI IPO</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6 月 1 日，Anthropic 正式向美国证券交易委员会（SEC）递交机密 S-1 草案。公司估值 $9,650 亿（$65B Series H 后），年化营收从一年前 $10B 激增至 $47B（18 个月 4.7 倍增长）。文件确认 Anthropic 每月向 SpaceX Colossus 1 数据中心支付 $12.5 亿用于算力。IPO 预计纳斯达克上市，最早 2026 年 10 月完成，抢在 OpenAI 之前锁定 AI 第一股地位。</div>
+      <div class="news-summary-en">Anthropic confidentially submitted a draft S-1 to the SEC on June 1, 2026. Valued at $965B post-$65B Series H, ARR has surged from $10B to $47B in 18 months (4.7× growth). The filing discloses a $1.25B/month compute deal with SpaceX's Colossus 1. Nasdaq listing targeted as early as October 2026, ahead of OpenAI, securing first-mover advantage in the AI IPO wave.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是 AI 行业从"风险资本驱动"走向"公开市场定价"的分水岭。$965B 估值 + $47B ARR 证明 AI 不只是技术叙事，而是真实的大规模商业基础设施。Anthropic 抢先 OpenAI 提交 S-1，将主导 AI 上市叙事。加之 SpaceX 即将路演、OpenAI 紧随其后，2026 年 Q3-Q4 将成为 AI IPO 超级周期。</div>
+      <div class="why-en"><strong>Why it matters:</strong> A watershed moment — AI transitions from VC-fueled growth to public-market pricing. $965B valuation + $47B ARR proves AI is infrastructure-scale business, not just a tech narrative. Anthropic filing ahead of OpenAI seizes the narrative advantage. With SpaceX roadshow imminent and OpenAI next in line, Q3-Q4 2026 shapes up as the AI IPO super-cycle.</div>
+    </div>
+    <a class="source-link" href="https://www.anthropic.com/news/confidential-draft-s1-sec" target="_blank">📄 Anthropic 官方公告</a>
+    <a class="source-link" href="https://www.cnbc.com/2026/06/01/anthropic-ipo-s1-prospectus.html" target="_blank" style="margin-left:8px;">📰 CNBC 报道</a>
+  </div>
+
+  <!-- Story 2: Microsoft Build 2026 -->
+  <div class="news-item tag-us">
+    <span class="tag tag-us">US</span>
+    <div class="news-title-cn">Microsoft Build 2026 今日旧金山开幕，AI Agent 全面落地成焦点</div>
+    <div class="news-title-en">Microsoft Build 2026 Opens Today in San Francisco — AI Agents Go Production</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Microsoft Build 2026 于 6 月 2-3 日在旧金山 Fort Mason Center 举行，自 2016 年以来首次离开西雅图。CEO Satya Nadella 将于 PT 时间 9:30 发表开幕主旨演讲，主题从"AI 助手"转向"AI 操作员"。预期重大发布包括：Windows Agent Framework（将 Windows 变为 AI Agent 原生平台）、WSL 3（Linux 子系统深度 AI 集成）、Azure Agent Mesh（多 Agent 编排基础设施）、GitHub Copilot 重大更新，以及 50 款免费开发者工具。门票 $1,099，限额 2,500 人。</div>
+      <div class="news-summary-en">Microsoft Build 2026 runs June 2-3 at Fort Mason Center, San Francisco — the first time outside Seattle since 2016. CEO Satya Nadella's 9:30 AM PT keynote shifts the frame from "AI assistant" to "AI operator." Major announcements expected: Windows Agent Framework (native AI agent platform), WSL 3 (deep AI-integrated Linux subsystem), Azure Agent Mesh (multi-agent orchestration), major GitHub Copilot updates, and 50 free developer tools. $1,099 tickets, capped at 2,500 attendees.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Build 2026 的叙事转向标志着 AI 产业从"能与 AI 对话"进入"AI 能自主操作"阶段。Windows 作为全球最普及的桌面操作系统被定位为 AI Agent 原生平台，这意味着数亿用户将直接面对 Agent 工作流。同时 Azure Agent Mesh 若成功落地，微软将在多 Agent 编排基础设施上建立类似 AWS 之于云计算的先发优势。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Build 2026's narrative shift from "chatting with AI" to "AI acting autonomously" signals a new phase. Windows becoming a native AI Agent platform means hundreds of millions of users will encounter Agent workflows directly. If Azure Agent Mesh executes well, Microsoft could capture the same first-mover advantage in multi-agent orchestration that AWS did in cloud infrastructure.</div>
+    </div>
+    <a class="source-link" href="https://news.microsoft.com/build-2026-live-blog" target="_blank">📄 Microsoft Build Live</a>
+    <a class="source-link" href="https://www.notebookcheck.net/Microsoft-Build-2026-What-to-expect-from-the-June-2-keynote.1311546.0.html" target="_blank" style="margin-left:8px;">📰 NotebookCheck 前瞻</a>
+  </div>
+
+  <!-- Story 3: OpenAI Rosalind -->
+  <div class="news-item tag-us">
+    <span class="tag tag-us">US</span>
+    <div class="news-title-cn">OpenAI 启动 Rosalind 生物防御计划：GPT-Rosalind 前沿模型用于疫苗与生物安全</div>
+    <div class="news-title-en">OpenAI Launches Rosalind Biodefense Program: GPT-Rosalind for Vaccine & Biosecurity</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 29 日，OpenAI 宣布推出 Rosalind 生物防御计划，为通过审核的开发者与政府合作伙伴提供 GPT-Rosalind 前沿推理模型访问。该计划专注于生命科学领域，设两个方向：开发者方向面向非营利组织、学术机构和生物技术初创；政府方向面向国家级生物安全伙伴。由于模型在分子生物、基因工程和疾病传播推理上的强大能力，OpenAI 实施了严格的访问授权限制，评审标准涵盖研究目的、安全预案和成果公开承诺。</div>
+      <div class="news-summary-en">On May 29, OpenAI announced the Rosalind Biodefense Program, granting vetted developers and government partners access to the GPT-Rosalind frontier reasoning model. Focused on life sciences, the program has two tracks: developer (nonprofits, academia, biotech startups) and government (national biosecurity partners). Access is tightly restricted due to the model's capabilities in molecular biology, genetic engineering, and disease propagation reasoning, with review criteria covering research purpose, safety protocols, and open-result commitments.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是 OpenAI 首次将前沿推理模型专用于公共安全领域，标志着 AI 在生命科学领域的应用从"辅助工具"升级为"核心基础设施"。严格的双轨授权机制也设立了 AI 敏感领域应用的安全标杆。该计划的发布时机恰好处于 GPT-5.6（iris-alpha）泄露后的市场关注窗口，显示出 OpenAI 在 IPO 前强化"负责任 AI"叙事的多线布局。</div>
+      <div class="why-en"><strong>Why it matters:</strong> OpenAI's first dedicated deployment of a frontier reasoning model for public safety, upgrading AI's role in life sciences from "assistant" to "core infrastructure." The strict dual-track authorization sets a safety benchmark for sensitive AI applications. Coming amid GPT-5.6 (iris-alpha) leak speculation, the program reinforces OpenAI's "responsible AI" narrative ahead of its own anticipated IPO.</div>
+    </div>
+    <a class="source-link" href="https://news.qq.com/rain/a/20260530A03WLH00" target="_blank">📰 腾讯新闻</a>
+    <a class="source-link" href="https://openai.com/index/rosalind-biodefense-program/" target="_blank" style="margin-left:8px;">📄 OpenAI 官方</a>
+  </div>
+</div>
+
+<!-- Section 2: Official Releases -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">📋 官方发布</span>
+    <span class="title-en">Official Releases</span>
+  </div>
+
+  <div class="news-item tag-us">
+    <span class="tag tag-us">US</span>
+    <div class="news-title-cn">Anthropic 致投资者函：S-1 文件确认 $47B ARR 与 $1.25B/月 SpaceX 算力支出</div>
+    <div class="news-title-en">Anthropic's S-1 Filing Confirms $47B ARR and $1.25B/Month SpaceX Compute Deal</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">根据 Anthropic 官方公告及 CNBC/TechCrunch 解读，本次机密 S-1 披露了几个关键数据：年化营收从 18 个月前的 $10B 增长至 $47B（4.7 倍）；此前一周刚完成的 $65B Series H 将估值推至 $965B；与 SpaceX 签订的 Colossus 1 算力合同每月 $12.5 亿、持续至 2029 年 5 月、双方均可 90 天通知终止。IPO 时间取决于 SEC 审查进度和市场条件，路演前至少 15 天公开招股说明书。</div>
+      <div class="news-summary-en">Per Anthropic's official announcement and CNBC/TechCrunch analysis, the confidential S-1 reveals: ARR surged from $10B to $47B in 18 months (4.7× growth); the $65B Series H closed the prior week at $965B valuation; the SpaceX Colossus 1 compute contract runs $1.25B/month through May 2029, terminable by either party with 90 days' notice. IPO timing depends on SEC review and market conditions; prospectus must be public at least 15 days before roadshow.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>每月 $12.5 亿的算力支出惊人——年化 $150 亿，相当于一家中型科技公司全年营收。这说明前沿 AI 的算力需求仍在指数级增长，也解释了为什么 Anthropic 需要 $650 亿融资和 IPO。SpaceX 从"火箭公司"变身为 AI 基础设施巨头，这背后的产业重构意义深远。</div>
+      <div class="why-en"><strong>Why it matters:</strong> $1.25B/month on compute is staggering — $15B annualized, equivalent to a mid-cap tech company's entire revenue. This confirms frontier AI's compute appetite is still growing exponentially, explaining the need for both a $65B funding round and an IPO. SpaceX's transformation from "rocket company" to AI infrastructure power is a profound industry restructuring signal.</div>
+    </div>
+    <a class="source-link" href="https://techcrunch.com/2026/06/01/anthropic-files-to-go-public/" target="_blank">📰 TechCrunch</a>
+    <a class="source-link" href="https://www.premieralts.com/articles/anthropic-s1-confidential-ipo-filing" target="_blank" style="margin-left:8px;">📊 PremierAlts 分析</a>
+  </div>
+
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-title-cn">DeepSeek V4-Pro 永久降价正式生效：$0.435/$0.87 每百万 Token</div>
+    <div class="news-title-en">DeepSeek V4-Pro Permanent Price Cut Takes Effect: $0.435/$0.87 per Million Tokens</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 31 日，DeepSeek V4-Pro API 永久降价正式生效。新定价为输入 $0.435/百万 Token、输出 $0.87/百万 Token，降幅约 75%，使 DeepSeek 成为主流旗舰模型中价格最低的选项之一。该定价于 5 月 22 日首次宣布，旨在应对中国 AI 市场竞争加剧，并为开发者提供可预测的成本结构用于生产部署。</div>
+      <div class="news-summary-en">On May 31, DeepSeek V4-Pro's permanent API price cut took effect: $0.435/M input tokens, $0.87/M output tokens — approximately 75% lower than previous pricing, making it one of the cheapest flagship models available. First announced May 22, the cut addresses intensifying Chinese AI market competition and gives developers predictable costs for production workflows.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>75% 的降价幅度不仅压低了中国 AI API 市场的价格地板，也对全球推理定价产生锚定效应。对于预算敏感的开发者，DeepSeek V4-Pro 现在是最具性价比的选择，可能加速中国开源模型在 OpenRouter 等国际平台上的流量增长（此前已占 60%）。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The 75% price cut not only resets the floor for Chinese AI API pricing but creates an anchoring effect on global inference costs. For cost-sensitive developers, DeepSeek V4-Pro is now the best value option, likely accelerating Chinese open-source model adoption on international platforms like OpenRouter (already 60% traffic share).</div>
+    </div>
+    <a class="source-link" href="https://business-news-today.com/deepseek-cuts-v4-pro-api-pricing-permanently-as-developers-weigh-cost-against-reliability/" target="_blank">📰 Business News Today</a>
+  </div>
+</div>
+
+<!-- Section 3: Research & Technology -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">🔬 研究与技术</span>
+    <span class="title-en">Research & Technology</span>
+  </div>
+
+  <div class="news-item tag-research">
+    <span class="tag tag-research">Research</span>
+    <div class="news-title-cn">arXiv 5 月 29 日精选：科学 Agent 全生命周期系统 AutoSci + 三项 LLM 推理效率突破</div>
+    <div class="news-title-en">arXiv May 29 Highlights: AutoSci Full-Lifecycle Scientific Agent + Three LLM Reasoning Breakthroughs</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 29 日 arXiv cs.AI 共收录 25+ 篇新论文，Agent 与 LLM 推理方向尤其突出。四大亮点：(1) <strong>AutoSci</strong>（清华）——覆盖科学全生命周期的记忆驱动 Agent 系统，含 SciMem/SciFlow/SciDAG/SciEvolve 四个模块，可跨项目执行、记忆与进化；(2) <strong>SLAT</strong>（南洋理工）——基于强化学习的 CoT 推理效率优化，推理长度减少 50% 同时保持竞争力准确度；(3) <strong>UniScale</strong>（港大）——统一模型路由与推理时报扩展的自适应框架，用 LinUCB 实现质量-成本最优折衷；(4) <strong>Feedback Distillation</strong>（INRIA/DeepMind）——利用特权反馈进行 Token 级自蒸馏，生成多样性超越 GRPO，两者互补可从 Feedback Distillation 检查点初始化 GRPO。</div>
+      <div class="news-summary-en">May 29 arXiv cs.AI featured 25+ new papers, with Agent and LLM reasoning dominating. Four highlights: (1) <strong>AutoSci</strong> (Tsinghua) — a memory-centric agentic system spanning the full scientific lifecycle with SciMem/SciFlow/SciDAG/SciEvolve modules; (2) <strong>SLAT</strong> (NTU) — RL-based CoT optimization reducing reasoning length by 50% while maintaining accuracy; (3) <strong>UniScale</strong> (HKU) — unified model routing + test-time scaling framework achieving optimal quality-cost trade-off via LinUCB; (4) <strong>Feedback Distillation</strong> (INRIA/DeepMind) — token-level self-distillation with privileged feedback, generating more diverse trajectories than GRPO, with the two being complementary.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>AutoSci 代表了 AI Agent 从"单任务执行"走向"跨项目科学研究全生命周期"的关键一步——记忆持久化、DAG 工作流、反馈进化三点结合，距离"AI 科学家"更进一步。SLAT 的 50% 推理长度缩减直接击中当前大模型推理成本痛点，具有即时工程价值。</div>
+      <div class="why-en"><strong>Why it matters:</strong> AutoSci represents a key step from "single-task execution" to "cross-project full scientific lifecycle" — combining persistent memory, DAG workflows, and feedback-driven evolution brings us closer to the "AI scientist" vision. SLAT's 50% reasoning reduction directly addresses the cost pain point of LLM inference, with immediate engineering value.</div>
+    </div>
+    <a class="source-link" href="https://papers.cool/arxiv/cs.AI" target="_blank">📄 arXiv cs.AI (May 29)</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <span class="tag tag-research">Research</span>
+    <div class="news-title-cn">Web Agent 自改进与安全搜索两大前沿：SCALE 认知边界探索 + COMPASS 认知 MCTS 安全对齐</div>
+    <div class="news-title-en">Self-Improving Web Agents + Safe Search: SCALE Cognitive Exploration & COMPASS MCTS Safety Alignment</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">同日两篇 Web Agent 方向重要论文：(1) <strong>SCALE</strong>（浙大/蚂蚁）——引入 Selector/Predictor/Judger 三个对抗角色自主发现 Agent 能力边界，配合 SCALE-Hop 图探索全局规划策略，并发布 19 个真实网站的 SCALE-20k 大规模数据集；(2) <strong>COMPASS</strong>（浙大）——针对搜索 Agent 的检索诱发安全退化问题，集成认知树探索（CTE）生成隐蔽攻击轨迹，配合内省式逐步对齐（ISA）实现细粒度过程监督，以更少训练数据达到安全-效用最优平衡。</div>
+      <div class="news-summary-en">Two important Web Agent papers: (1) <strong>SCALE</strong> (ZJU/Ant Group) — three adversarial roles (Selector/Predictor/Judger) autonomously discover agent limitations, with SCALE-Hop graph exploration for global planning, plus the SCALE-20k dataset from 19 real websites; (2) <strong>COMPASS</strong> (ZJU) — addresses retrieval-induced safety degradation in search agents via Cognitive Tree Exploration (CTE) for stealthy attack synthesis and Introspective Step-wise Alignment (ISA) for fine-grained process supervision, achieving optimal safety-utility trade-off with less training data.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>SCALE 的"对抗自我发现"机制有望减少 Agent 开发中对人工标注的依赖，且 SCALE-20k 数据集对 Web Agent 社区价值巨大。COMPASS 首次系统化地解决"搜索结果污染 AI Agent 安全性"这一实际问题——在与当前 Claude Code/Dynamic Workflows 等数百子 Agent 并行的场景下，搜索安全问题更加紧迫。</div>
+      <div class="why-en"><strong>Why it matters:</strong> SCALE's "adversarial self-discovery" mechanism could reduce reliance on manual annotation for Agent development, and the SCALE-20k dataset is high-value for the Web Agent community. COMPASS is the first systematic approach to "search results contaminating AI agent safety" — a problem that grows more urgent with hundreds of parallel sub-agents in systems like Claude Code Dynamic Workflows.</div>
+    </div>
+    <a class="source-link" href="https://papers.cool/arxiv/cs.AI" target="_blank">📄 arXiv cs.AI (May 29)</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <span class="tag tag-research">Research</span>
+    <div class="news-title-cn">DecomposeR + AdaCoM：DAG 规划强化学习与 Agent 上下文管理双突破</div>
+    <div class="news-title-en">DecomposeR + AdaCoM: DAG Planning RL & Agent Context Management Twin Breakthroughs</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">(1) <strong>DecomposeR</strong>（多伦多大学 / Vector Institute）将研究计划表示为带类型的有向无环图（DAG），分两阶段训练——规划器 RL（学习图结构与查询分解）和回答器 RL（分支级执行与综合），在长文本基准上超越可比开源基线 5.1-8.0 分；(2) <strong>AdaCoM</strong>（蒙特利尔 / 华为诺亚）训练外部 LLM 管理冻结 Agent 上下文，首次揭示"保真度-可靠度"折衷：强 Agent 需要高保真上下文中存，弱 Agent 则需要更激进压缩。</div>
+      <div class="news-summary-en">(1) <strong>DecomposeR</strong> (U of Toronto/Vector Institute) represents research plans as typed DAGs and trains in two stages — planner RL (graph structure + query decomposition) and answerer RL (branch execution + synthesis), outperforming comparable open baselines by 5.1-8.0 points on long-form benchmarks; (2) <strong>AdaCoM</strong> (Montreal/Huawei Noah) trains an external LLM to manage frozen agent context, revealing the first "Fidelity-Reliability Trade-off": stronger agents benefit from higher-fidelity context preservation, while weaker agents need more aggressive compression.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>DecomposeR 的 DAG 规划范式与 Anthropic Dynamic Workflows 异曲同工——两者都在结构化子任务图而非线性链。AdaCoM 发现的"反向上下文需求"挑战直觉：弱模型需要更激进信息压缩而非更多信息，这对 Agent 系统设计有直接指导意义。</div>
+      <div class="why-en"><strong>Why it matters:</strong> DecomposeR's DAG planning paradigm parallels Anthropic's Dynamic Workflows — both structure work as task graphs rather than linear chains. AdaCoM's counterintuitive finding — weaker models need more aggressive compression, not more context — has direct design implications for Agent systems.</div>
+    </div>
+    <a class="source-link" href="https://papers.cool/arxiv/cs.AI" target="_blank">📄 arXiv cs.AI (May 29)</a>
+  </div>
+</div>
+
+<!-- Section 4: Policy & Industry -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">🏛️ 政策与产业</span>
+    <span class="title-en">Policy & Industry</span>
+  </div>
+
+  <div class="news-item tag-policy">
+    <span class="tag tag-policy">Policy</span>
+    <div class="news-title-cn">EU AI 法案高风险系统合规倒计时 60 天：AI 生成内容标注义务率先生效</div>
+    <div class="news-title-en">EU AI Act Enforcement Countdown: 60 Days to High-Risk System Compliance, AI Content Labeling Takes Effect First</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">EU AI 法案大部分条款将于 2026 年 8 月 2 日正式执行，距今仅剩 60 天。首先生效的包括 AI 生成内容透明度标注义务和高风险系统合规要求。欧盟委员会正在最终确定 AI 生成内容标记与标签操作守则。任何服务欧洲用户、与欧洲客户合作或涉及可能被归类为高风险功能的 AI 应用，均需准备文档、风险分类、信息披露、测试和治理机制。AI 治理正成为涉及产品、法务、安全、人力和运营的全企业跨职能议题。</div>
+      <div class="news-summary-en">Most EU AI Act provisions take effect August 2, 2026 — just 60 days away. First to activate: AI-generated content transparency labelling and high-risk system compliance obligations. The European Commission is finalizing a code of practice on AI content marking and labelling. Any business serving EU users, working with EU customers, or using AI in potentially high-risk functions must prepare documentation, risk categorization, disclosures, testing, and governance. AI governance is now a cross-functional enterprise issue.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>60 天倒计时意味着全球 AI 合规窗口正在急剧收窄。对于 Anthropic、OpenAI 等即将 IPO 的公司，EU AI 法案合规是风险披露中的核心项。对中国 AI 出海企业而言，若模型/应用触及欧盟用户，8 月 2 日前必须完成合规准备，否则面临全球营收 6% 的罚款风险。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The 60-day countdown means global AI compliance windows are closing fast. For companies like Anthropic and OpenAI about to IPO, EU AI Act compliance is a core risk disclosure item. For Chinese AI companies going global, any model/app touching EU users must complete compliance preparation by August 2 or risk fines up to 6% of global revenue.</div>
+    </div>
+    <a class="source-link" href="https://kersai.com/june-2026-ai-news-anthropic-spacex-google-business-impact/" target="_blank">📰 Kersai 分析</a>
+    <a class="source-link" href="https://www.consilium.europa.eu/" target="_blank" style="margin-left:8px;">📄 EU Council</a>
+  </div>
+
+  <div class="news-item tag-policy">
+    <span class="tag tag-policy">Policy</span>
+    <div class="news-title-cn">SpaceX 成为 AI 基础设施新势力：$1.25B/月算力合同 + Cursor $60B 收购期权</div>
+    <div class="news-title-en">SpaceX Emerges as AI Infrastructure Power: $1.25B/Month Compute Deal + $60B Cursor Acquisition Option</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 的 S-1 文件揭示了一个更广泛的产业趋势：SpaceX 正从火箭公司蜕变为 AI 基础设施关键玩家。通过 Colossus 1 超级计算机，SpaceX 向 Anthropic 提供超过 300MW 算力，年化收入 $150 亿，持续至 2029 年。此外 SpaceX 还获得了以 $60B 收购 AI 编程工具 Cursor 的期权（或支付 $10B 用于联合开发）。同时 SpaceX 正在探索轨道计算能力，以应对地面能源和冷却瓶颈。SpaceX 自身 IPO 路演将于本周启动。</div>
+      <div class="news-summary-en">Anthropic's S-1 reveals a broader industry trend: SpaceX is morphing from a rocket company into a critical AI infrastructure player. Through Colossus 1, SpaceX provides Anthropic with 300+ MW of compute at $15B/year through 2029. SpaceX also holds a $60B option to acquire coding tool Cursor (or $10B for joint development). The company is exploring orbital compute to address terrestrial energy and cooling constraints. SpaceX's own IPO roadshow begins this week.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>SpaceX 的 AI 基础设施角色代表了云计算格局的潜在重构——传统云厂商（AWS/Azure/GCP）之外，一家由航天工程驱动的算力供应商正在崛起。Colossus 1 的 300MW 规模（约 10 万块 H100 级别 GPU）足以支撑一个国家规模的 AI 训练需求。Cursor $60B 估值则标志着 AI 编程工具已成为战略控制节点。</div>
+      <div class="why-en"><strong>Why it matters:</strong> SpaceX's AI infrastructure role represents a potential restructuring of the cloud landscape — beyond traditional hyperscalers (AWS/Azure/GCP), an aerospace-driven compute provider is rising. Colossus 1's 300MW scale (~100,000 H100-class GPUs) is enough to support national-scale AI training. The $60B Cursor valuation signals coding tools are now strategic control points in the AI value chain.</div>
+    </div>
+    <a class="source-link" href="https://www.cnbc.com/2026/06/01/anthropic-ipo-s1-prospectus.html" target="_blank">📰 CNBC</a>
+    <a class="source-link" href="https://kersai.com/june-2026-ai-news-anthropic-spacex-google-business-impact/" target="_blank" style="margin-left:8px;">📊 Kersai</a>
+  </div>
+</div>
+
+<!-- Section 5: Open Source Ecosystem -->
+<div class="section">
+  <div class="card-title">
+    <span class="title-cn">🌐 开源生态</span>
+    <span class="title-en">Open Source Ecosystem</span>
+  </div>
+
+  <div class="news-item tag-open">
+    <span class="tag tag-open">Open</span>
+    <div class="news-title-cn">arXiv 5.29 开源亮点：AutoSci / SCALE-20k / SLAT / LinTree 附带开源实现</div>
+    <div class="news-title-en">arXiv 5.29 Open-Source Highlights: AutoSci, SCALE-20k, SLAT, LinTree with Public Implementations</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">5 月 29 日 arXiv 多篇论文附带开源代码：AutoSci 全科学生命周期 Agent 系统、SCALE-20k（19 个真实网站的大规模 Web Agent 数据集）、SLAT CoT 推理效率优化（50% 推理长度缩减）、LinTree 显式搜索树结构推理。此外 UniScale 自适应推理框架和 DecomposeR DAG 规划 RL 也提供开源实现。这些工作在 Agent 记忆持久化、推理效率、自适应计算三个方向上为开源社区提供了可直接复用的技术组件。</div>
+      <div class="news-summary-en">Multiple May 29 arXiv papers include open-source code: AutoSci (full scientific lifecycle Agent), SCALE-20k (large-scale Web Agent dataset from 19 real websites), SLAT (50% CoT reasoning reduction), LinTree (explicit search tree structure reasoning). UniScale (adaptive inference) and DecomposeR (DAG planning RL) also provide public implementations. These works deliver reusable components to the open-source community across agent memory persistence, reasoning efficiency, and adaptive computation.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>5 月 29 日这批论文的开源质量很高——不仅是模型权重或推理代码，而是完整的 Agent 系统、大规模数据集和可复现的训练流程。在中国开源模型主导 OpenRouter（60% 流量）的背景下，研究层面的开源也在同步加速，形成"模型开源 + 研究开源"的双轮驱动。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The May 29 batch's open-source quality is notably high — not just model weights or inference code, but full Agent systems, large-scale datasets, and reproducible training pipelines. With Chinese open-source models already dominating OpenRouter (60% traffic), research-level open-sourcing is accelerating in parallel, forming a dual-engine dynamic: model open-source + research open-source.</div>
+    </div>
+    <a class="source-link" href="https://papers.cool/arxiv/cs.AI" target="_blank">📄 arXiv cs.AI</a>
+  </div>
+
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-title-cn">中国 AI 模型五月回顾：Qwen 3.7-Max 发布 + 天津智博会闭幕 + 开源五强格局稳定</div>
+    <div class="news-title-en">China AI May Recap: Qwen 3.7-Max Launch + Tianjin Expo Concludes + Open-Source Five-Strong Pattern Holds</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">本周中国 AI 领域以延续态势为主：(1) 阿里云 Qwen 3.7-Max 发布两周后，1M 上下文 + $2.50/$7.50 定价对标国际旗舰；(2) 2026 世界智能产业博览会（天津，5 月 28-31 日）闭幕，中国 AI 从"模型竞赛"转向"场景落地"趋势明确；(3) 中国开源五强格局（Qwen/GLM/Kimi K2/DeepSeek/MiniMax）稳定，OpenRouter 上中国模型流量维持在 60% 左右；(4) MiniMax Mavis 多智能体协作产品在海外市场持续增长。</div>
+      <div class="news-summary-en">China AI this week shows consolidation: (1) Two weeks post-launch, Alibaba's Qwen 3.7-Max with 1M context + $2.50/$7.50 pricing targets international flagships; (2) The 2026 World Intelligence Industry Expo (Tianjin, May 28-31) concluded, confirming China AI's pivot from "model racing" to "scenario deployment"; (3) The five-strong open-source pattern (Qwen/GLM/Kimi K2/DeepSeek/MiniMax) holds, with Chinese model traffic on OpenRouter stable around 60%; (4) MiniMax Mavis multi-agent collaboration product continues overseas growth.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>天津智博会闭幕标志着中国 AI 上半年的"模型密集发布期"告一段落，下半年重心将转向行业应用加速和 Agent 生态建设。定价层面，DeepSeek V4-Pro 降价后，中国模型 API 市场进入"超性价比"阶段，对全球开源生态产生持续的定价锚定效应。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Tianjin Expo's conclusion marks the end of China's "intensive model release" phase in H1 2026. H2 focus shifts to industry application acceleration and Agent ecosystem building. On pricing, post-DeepSeek V4-Pro cut, China's model API market enters "super-value" territory, creating a persistent anchoring effect on global open-source pricing.</div>
+    </div>
+    <a class="source-link" href="https://ofox.ai/zh/blog/open-source-llm-china-roundup-2026/" target="_blank">📊 ofox.ai 全景分析</a>
+    <a class="source-link" href="https://www.digitalapplied.com/blog/qwen-3-7-max-alibaba-flagship-ai-model-2026" target="_blank" style="margin-left:8px;">📰 Digital Applied</a>
+  </div>
+</div>
+
+<!-- ⚑ Observation Section -->
+<div class="observe-box">
+  <div class="observe-title">⚑ 持续观察 Watchlist</div>
+  <div class="observe-list">
+    • <strong>Microsoft Build 2026 今日直播</strong> — PT 9:30 开幕主旨，关注 Windows Agent Framework / WSL 3 / Azure Mesh 具体发布<br>
+    • <strong>Anthropic S-1 后续</strong> — SEC 审查进度、路演时间、最终 IPO 定价区间<br>
+    • <strong>SpaceX IPO 路演本周启动</strong> — AI 基础设施叙事对估值的影响<br>
+    • <strong>OpenAI IPO S-1</strong> — 预计紧随 Anthropic 提交，关注估值对标（上次 $852B）<br>
+    • <strong>OpenAI GPT-5.6 (iris-alpha)</strong> — 150 万 Token 上下文，预计 6 月发布，关注官方确认<br>
+    • <strong>Apple WWDC 2026</strong> — 6 月 8-12 日，AI 成果与开发者工具更新<br>
+    • <strong>Claude Mythos 全面开放</strong> — 安全控制完成后数周内，⚑ PAIR Chat 跟进升级待观察<br>
+    • <strong>EU AI 法案高风险系统合规</strong> — 2026-08-02，仅剩 60 天
+  </div>
+</div>
+
+<!-- Whitelist Section -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">📋 本期信息源白名单</div>
+  <div class="whitelist-title-en">Source Whitelist — Tracked & Verified</div>
+  <div class="whitelist-note-cn">所有来源均为官方或权威媒体，动态维护。🆕 标注本期新增来源。</div>
+  <div class="whitelist-note-en">All sources are official or authoritative media, dynamically maintained. 🆕 marks newly added this issue.</div>
+
+  <div class="whitelist-grid">
+    <div>
+      <div class="whitelist-cat">🇺🇸 US AI Labs</div>
+      <div class="whitelist-item">OpenAI (openai.com/news)</div>
+      <div class="whitelist-item">Anthropic (anthropic.com/news)</div>
+      <div class="whitelist-item">Google DeepMind (deepmind.google/blog)</div>
+      <div class="whitelist-item">Meta Superintelligence Labs (about.fb.com/news)</div>
+    </div>
+    <div>
+      <div class="whitelist-cat">🇨🇳 China AI Labs</div>
+      <div class="whitelist-item">Qwen/Alibaba Cloud (qwen.ai/blog)</div>
+      <div class="whitelist-item">Moonshot/Kimi (moonshot.ai, kimi.com)</div>
+      <div class="whitelist-item">MiniMax (minimaxi.com)</div>
+      <div class="whitelist-item">智谱 Zhipu (zhipuai.cn)</div>
+      <div class="whitelist-item">DeepSeek (deepseek.com)</div>
+      <div class="whitelist-item">ByteDance Seed (seed.bytedance.com)</div>
+      <div class="whitelist-item">Kimi K2 Official (kimi-k2.org)</div>
+      <div class="whitelist-item">Knightli AI (knightli.com)</div>
+    </div>
+    <div>
+      <div class="whitelist-cat">🇸🇬 Singapore</div>
+      <div class="whitelist-item">A*STAR AI (a-star.edu.sg/aiml)</div>
+      <div class="whitelist-item">GovTech (tech.gov.sg)</div>
+      <div class="whitelist-item">DSAI (smartnation.sg)</div>
+      <div class="whitelist-item">NUS AI Research (nus.edu.sg)</div>
+      <div class="whitelist-item">MDDI (mddi.gov.sg/newsroom)</div>
+      <div class="whitelist-item">Singtel RE:AI (singtel.com)</div>
+    </div>
+    <div>
+      <div class="whitelist-cat">SG GovTech Tools</div>
+      <div class="whitelist-item">PAIR Chat (pair.gov.sg)</div>
+      <div class="whitelist-item">AIBots (developer.tech.gov.sg)</div>
+      <div class="whitelist-item">Transcribe (transcribe.gov.sg)</div>
+      <div class="whitelist-item">Pair Noms / Pair Search</div>
+    </div>
+    <div>
+      <div class="whitelist-cat">📰 Media</div>
+      <div class="whitelist-item">Reuters AI (reuters.com)</div>
+      <div class="whitelist-item">MIT Tech Review (technologyreview.com)</div>
+      <div class="whitelist-item">Xinhua EN (xinhuanet.com)</div>
+      <div class="whitelist-item">CNBC Technology (cnbc.com)</div>
+      <div class="whitelist-item">Forbes AI 50 (forbes.com)</div>
+      <div class="whitelist-item">AI Critique (aicritique.org)</div>
+      <div class="whitelist-item">IEEE Spectrum (spectrum.ieee.org)</div>
+      <div class="whitelist-item">AI Flash Report (aiflashreport.com)</div>
+      <div class="whitelist-item">WinBuzzer (winbuzzer.com)</div>
+      <div class="whitelist-item new">🆕 Kersai AI Analysis (kersai.com ← 2026-06-02)</div>
+    </div>
+    <div>
+      <div class="whitelist-cat">🔬 Open Source / Research</div>
+      <div class="whitelist-item">Hugging Face Blog (huggingface.co/blog)</div>
+      <div class="whitelist-item">arXiv CS.AI (arxiv.org/list/cs.AI)</div>
+      <div class="whitelist-item">OpenBMB (openbmb.org)</div>
+      <div class="whitelist-item">HKUDS (hku-datascience.github.io)</div>
+      <div class="whitelist-item">Marktechpost (marktechpost.com)</div>
+      <div class="whitelist-item new">🆕 AI Release Tracker (aireleasetracker.com ← 2026-06-02)</div>
+    </div>
+    <div>
+      <div class="whitelist-cat">🏛️ Governance / Policy</div>
+      <div class="whitelist-item">Plural Policy (pluralpolicy.com)</div>
+      <div class="whitelist-item">UK AISI (aisi.gov.uk/blog)</div>
+      <div class="whitelist-item">Stanford HAI (hai.stanford.edu)</div>
+      <div class="whitelist-item">Mayer Brown AI Policy (mayerbrown.com)</div>
+      <div class="whitelist-item">EU Council (consilium.europa.eu)</div>
+      <div class="whitelist-item">Inside Global Tech (insideglobaltech.com)</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-cn">🤖 本简报由 WorkBuddy AI 简报系统自动生成 · 2026年6月2日 AM · 数据来源见各条目链接</div>
+  <div class="footer-en">Generated by WorkBuddy AI Briefing System · Jun 2, 2026 AM · Sources linked in each entry</div>
+  <div class="footer-cn" style="margin-top:8px;">📊 投资数据来源：Yahoo Finance · Reuters · Bloomberg &nbsp;|&nbsp; 🤖 AI 简报来源：OpenAI · Anthropic · Google DeepMind · Hugging Face · arXiv · 新华社 · MIT Tech Review</div>
+  <div class="footer-en">Investment Data: Yahoo Finance · Reuters · Bloomberg &nbsp;|&nbsp; AI Briefing Sources: OpenAI · Anthropic · Google DeepMind · Hugging Face · arXiv · Xinhua · MIT Tech Review</div>
+</div>
+
+</div>
+</body>
+</html>
