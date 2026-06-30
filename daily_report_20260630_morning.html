@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资日报 2026年06月30日 早报 Morning Brief</title>
+    <style>
+        :root {
+            --up: #16a34a;
+            --down: #dc2626;
+            --neutral: #94a3b8;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --warn-high: #ef4444;
+            --warn-mid: #f59e0b;
+            --warn-low: #22c55e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 14px; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .report-header { background: linear-gradient(135deg, #1e3a5f, #0f172a); border: 1px solid var(--border); border-radius: 12px; padding: 24px 32px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .report-title { font-size: 22px; font-weight: 700; color: var(--accent); }
+        .report-subtitle { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+        .report-meta { text-align: right; color: var(--text-muted); font-size: 12px; }
+        .report-type-badge { display: inline-block; background: var(--accent); color: #0f172a; font-weight: 700; padding: 4px 12px; border-radius: 20px; font-size: 13px; margin-bottom: 6px; }
+
+        /* Cards */
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+        .card-title { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; }
+        th { color: var(--text-muted); font-weight: 500; text-align: left; padding: 6px 10px; font-size: 12px; border-bottom: 1px solid var(--border); }
+        td { padding: 8px 10px; border-bottom: 1px solid rgba(51,65,85,0.4); }
+        .ticker-row:hover { background: rgba(56,189,248,0.05); }
+        .symbol { font-weight: 700; color: var(--accent); font-family: monospace; font-size: 13px; }
+        .name-label { color: var(--text-muted); font-size: 12px; }
+        .price { font-weight: 600; }
+        .volume { color: var(--text-muted); font-size: 12px; }
+        .change-abs { font-size: 12px; }
+        .cost-col { font-size: 12px; }
+        .cost-price { color: var(--text-muted); font-family: monospace; }
+        .cost-pl { font-size: 11px; font-weight: 600; }
+
+        /* Colors */
+        .up { color: var(--up); }
+        .down { color: var(--down); }
+        .neutral { color: var(--neutral); }
+        .error-row { opacity: 0.5; }
+
+        /* VIX */
+        .vix-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; background: rgba(148,163,184,0.15); margin-left: 12px; }
+        .vix-badge.up { background: rgba(220,38,38,0.15); color: var(--down); }
+        .vix-label { font-weight: 400; }
+
+        /* News */
+        .news-item { border-left: 3px solid var(--border); padding: 10px 14px; margin-bottom: 10px; background: rgba(15,23,42,0.4); border-radius: 0 6px 6px 0; }
+        .news-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .news-source { color: var(--text-muted); font-size: 11px; }
+        .news-title { font-size: 13px; line-height: 1.5; }
+        .news-effect { color: var(--text-muted); font-size: 12px; margin-top: 4px; font-style: italic; }
+
+        /* Summary boxes */
+        .summary-box { border-left: 3px solid var(--warn-mid); padding: 10px 14px; background: rgba(245,158,11,0.08); border-radius: 0 6px 6px 0; margin-bottom: 8px; }
+        .summary-box.green { border-color: var(--warn-low); background: rgba(34,197,94,0.08); }
+        .summary-box.red { border-color: var(--warn-high); background: rgba(239,68,68,0.08); }
+        .summary-icon { font-size: 16px; margin-right: 8px; }
+        .summary-text { font-size: 13px; line-height: 1.6; }
+
+        /* Footer */
+        .report-footer { text-align: center; color: var(--text-muted); font-size: 11px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .report-header { flex-direction: column; gap: 12px; }
+            .report-meta { text-align: left; }
+        }
+
+        /* 新闻版块样式 - 分类显示 */
+        .news-placeholder { text-align: center; padding: 30px; color: var(--text-muted); }
+        .news-category { margin-bottom: 20px; border-bottom: 1px solid #374151; padding-bottom: 16px; }
+        .news-category:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .news-category-header { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; padding: 4px 8px; background: rgba(255,255,255,0.05); border-radius: 4px; display: inline-block; }
+        .news-item { margin-bottom: 14px; padding-left: 12px; border-left: 2px solid var(--neutral); }
+        .news-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .news-domain { font-size: 11px; color: var(--text-muted); font-style: italic; }
+        .news-score { font-size: 11px; font-weight: 600; }
+        .score-high { color: #16a34a; }
+        .score-medium { color: #eab308; }
+        .score-low { color: #dc2626; }
+        .news-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 4px; }
+        .news-title-cn { font-size: 13px; font-weight: 400; color: #fde68a; line-height: 1.4; margin-bottom: 4px; }
+        .news-title a { color: var(--text); text-decoration: none; }
+        .news-snippet { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+        .news-snippet-cn { font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="report-header">
+        <div>
+            <div class="report-title">📊 每日投资报告</div>
+            <div class="report-subtitle">2026年06月30日 周二 &nbsp;|&nbsp; 隔夜美股收盘 | 亚市开盘预判</div>
+        </div>
+        <div class="report-meta">
+            <div class="report-type-badge">早报 Morning Brief</div>
+            <div>数据更新 Data Updated: 2026-06-30 08:27:02</div>
+            <div>数据来源 Data Sources: Yahoo Finance</div>
+        </div>
+    </div>
+
+    <!-- Section 0: 重要新闻 Key News -->
+    <div class="card">
+        <div class="card-title">📰 重要新闻 Key News</div>
+        <div class="news-category"><div class="news-category-header">🌍 地缘 Geopolitics</div><div class="news-item"><div class="news-meta"><span class="news-domain">reuters.com</span><span class="news-score score-medium" title="权威评分 Authority Score: 7.2/10">⭐⭐⭐</span></div><div class="news-title">Iran and US agree to halt attacks and renew talks; technical talks to resume Tuesday in Qatar</div><div class="news-title-cn">美伊同意停火并重启谈判；技术性会谈周二在卡塔尔恢复</div><div class="news-snippet">Iran and the United States agreed to halt recent hostilities in the Gulf and renew talks regarding their dispute over the Strait of Hormuz. 'Technical talks are slated to continue on all areas of the MOU. Both sides will stand down for now and vessels can move freely,' a U.S. official said. Talks would resume Tuesday in Qatar.</div><div class="news-snippet-cn">伊朗与美国同意停止海湾地区敌对行动并重启霍尔木兹海峡争端谈判。美方官员称'双方将暂时停火，船只可自由通行'。技术性会谈将于周二在卡塔尔恢复。此前周末双方进行了数日的打击与反打击。</div></div><div class="news-item"><div class="news-meta"><span class="news-domain">investopedia.com</span><span class="news-score score-low" title="权威评分 Authority Score: 6.9/10">⭐⭐⭐</span></div><div class="news-title">Oil prices rise as US-Iran pause hostilities; WTI up 1.8% to $70.45, Brent up 1.6% to $73.15</div><div class="news-title-cn">美伊暂停敌对行动，油价上涨；WTI涨1.8%至$70.45，布伦特涨1.6%至$73.15</div><div class="news-snippet">Oil prices rose after the U.S. and Iran exchanged military strikes over the weekend, although they agreed to resume peace talks. WTI futures up 1.8% to $70.45/barrel, Brent crude settled up 1.6% to $73.15.</div><div class="news-snippet-cn">美伊周末互射军事打击后同意恢复和谈，油价上涨。WTI期货涨1.8%至$70.45/桶，布伦特原油涨1.6%至$73.15。交易员关注霍尔木兹海峡通行是否真正恢复。</div></div><div class="news-item"><div class="news-meta"><span class="news-domain">investopedia.com</span><span class="news-score score-low" title="权威评分 Authority Score: 6.5/10">⭐⭐⭐</span></div><div class="news-title">Gold futures decline 1.6% to $4,030 as geopolitical tensions ease; Dollar index slips 0.3%</div><div class="news-title-cn">地缘紧张缓解，黄金期货跌1.6%至$4,030；美元指数微跌0.3%</div><div class="news-snippet">Gold futures declined 1.6% to $4,030 an ounce as safe-haven demand waned following the US-Iran ceasefire agreement. The U.S. dollar index was 0.3% lower at 101.10. Bitcoin traded around $60,400.</div><div class="news-snippet-cn">美伊停火协议后避险需求减弱，黄金期货跌1.6%至$4,030/盎司。美元指数微跌0.3%至101.10。比特币交易于$60,400附近，接近2024年以来最低。</div></div></div><div class="news-category"><div class="news-category-header">💼 市场 Market</div><div class="news-item"><div class="news-meta"><span class="news-domain">marketwatch.com</span><span class="news-score score-medium" title="权威评分 Authority Score: 7.0/10">⭐⭐⭐</span></div><div class="news-title">Dow closes above 52,000 for first time; S&P 500 and Nasdaq snap five-day losing streak as 'Magnificent Seven' recover</div><div class="news-title-cn">道指首次收于52,000点上方；标普500和纳指终结五连跌，科技七巨头反弹</div><div class="news-snippet">The Dow Jones Industrial Average closed above the 52,000 mark for the first time, gaining about 306 points or 0.59%. The S&P 500 advanced 1.17% and Nasdaq Composite climbed 2.07%, snapping five-session losing streaks as technology shares rebounded.</div><div class="news-snippet-cn">道琼斯工业平均指数首次收于52,000点上方，涨约306点（+0.59%）。标普500涨1.17%，纳指涨2.07%，终结五连跌，科技股强势反弹。特斯拉领涨七巨头+8.5%，Alphabet +4.82%。</div></div><div class="news-item"><div class="news-meta"><span class="news-domain">investopedia.com</span><span class="news-score score-low" title="权威评分 Authority Score: 5.9/10">⭐⭐</span></div><div class="news-title">SpaceX to join Nasdaq-100 Index on July 7; shares rise 7%</div><div class="news-title-cn">SpaceX将于7月7日加入纳斯达克100指数；股价涨7%</div><div class="news-snippet">Shares of Elon Musk's recently public SpaceX (SPCX) rose 7% on news it will join the Nasdaq 100 index next Monday, July 7. The stock has been volatile since its June 12 IPO at $135.</div><div class="news-snippet-cn">马斯克旗下SpaceX（SPCX）宣布将于7月7日（下周一）加入纳斯达克100指数，股价涨7%。自6月12日以$135上市以来，该股波动剧烈。</div></div><div class="news-item"><div class="news-meta"><span class="news-domain">invezz.com</span><span class="news-score score-low" title="权威评分 Authority Score: 5.9/10">⭐⭐</span></div><div class="news-title">RBC raises S&P 500 12-month target to 8,150; cites continued earnings strength</div><div class="news-title-cn">加拿大皇家银行上调标普500十二个月目标至8,150；称盈利持续强劲</div><div class="news-snippet">RBC Capital Markets raised its 12-month target for the S&P 500 to 8,150 from 7,900, citing continued earnings strength and a supportive macroeconomic backdrop. Most S&P 500 companies are expected to begin reporting Q2 earnings after mid-July.</div><div class="news-snippet-cn">加拿大皇家银行资本市场将标普500十二个月目标从7,900上调至8,150，理由是企业盈利持续强劲和宏观环境支撑。大多数标普500公司预计在7月中旬后开始公布Q2财报。</div></div></div><div class="news-category"><div class="news-category-header">📊 综合 General</div><div class="news-item"><div class="news-meta"><span class="news-domain">investopedia.com</span><span class="news-score score-low" title="权威评分 Authority Score: 6.5/10">⭐⭐⭐</span></div><div class="news-title">Alphabet rises nearly 5% on first day as Dow component; Tesla leads Magnificent Seven with 8.5% surge</div><div class="news-title-cn">Alphabet加入道指首日涨近5%；特斯拉涨8.5%领跑七巨头</div><div class="news-snippet">Alphabet (GOOGL) rose nearly 5% to pace the Dow in its first day as a component of the index. Tesla (TSLA) led the Magnificent Seven with an 8.5% advance. Five of the seven mega-cap tech stocks finished higher.</div><div class="news-snippet-cn">Alphabet（GOOGL）加入道指首日涨近5%领跑道指成分股。特斯拉（TSLA）涨8.5%领跑七巨头，七巨头中五只收涨。SpaceX（SPCX）+7%，因将于7月7日加入纳斯达克100指数。</div></div></div><div class="news-category"><div class="news-category-header">💰 央行 Central Bank</div><div class="news-item"><div class="news-meta"><span class="news-domain">cnbc.com</span><span class="news-score score-low" title="权威评分 Authority Score: 5.6/10">⭐⭐</span></div><div class="news-title">Fed's Warsh holds rates steady at 3.50%-3.75%; dot plot shows 9 members expect rate hike in 2026</div><div class="news-title-cn">美联储Warsh维持利率3.50%-3.75%不变；点阵图显示9名官员预计2026年加息</div><div class="news-snippet">The FOMC voted unanimously to hold rates at 3.50%-3.75% at its June 16-17 meeting. The dot plot median year-end projection rose to 3.8% (from 3.4%), with 9 members expecting at least one rate hike in 2026. Warsh declined to submit his own dot, calling it 'not helpful.' CPI hit 4.2% in May.</div><div class="news-snippet-cn">FOMC在6月16-17日会议上全票维持利率3.50%-3.75%不变。点阵图中位数年末预期升至3.8%（前值3.4%），9名官员预计2026年至少加息一次。新任主席Warsh拒绝提交自己的点阵图，称其'无助于政策执行'。5月CPI升至4.2%。</div></div></div>
+    </div>
+
+    <!-- Section 1: 执行摘要 Executive Summary -->
+    <div class="card">
+        <div class="card-title">⚡ 执行摘要 Executive Summary</div>
+        <div class="summary-box green"><span class="summary-icon">🔥</span><span class="summary-text">美股强劲反弹终结五连跌：道指首次突破52,000点历史新高(+0.59%)，标普500 +1.17%，纳指+2.07%，VIX回落至17.65(-4.13%)。科技七巨头集体反弹，特斯拉+8.5%领涨，市场情绪显著改善。</span></div><div class="summary-box green"><span class="summary-icon">🕊️</span><span class="summary-text">美伊同意停火重启谈判：双方同意停止海湾敌对行动，技术性会谈周二在卡塔尔重启，霍尔木兹海峡船只可自由通行。地缘风险溢价回落，黄金-1.6%至$4,030，但油价小幅上涨(WTI $70.29)。</span></div><div class="summary-box green"><span class="summary-icon">🔧</span><span class="summary-text">半导体板块强势反弹：SMH +3.33%，应用材料/KLA等涨超11%，AMD +3.43%。GOOGL加入道指首日+4.82%，SpaceX +7%（将加入纳斯达克100）。AI投资叙事在抛售后重获信心。</span></div><div class="summary-box"><span class="summary-icon">📅</span><span class="summary-text">假期缩短交易周+季末窗饰效应：本周五为美国独立日休市，周四提前公布非农就业报告。RBC上调标普12个月目标至8,150。需警惕低流动性下的放大波动和季末调仓行为。</span></div>
+    </div>
+
+    <!-- Section 2: 全球市场行情 Global Market Overview -->
+
+    <!-- 第一行：美股 + 欧洲 -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">🇺🇸 美股指数 US Markets <div class="vix-badge neutral">VIX: 17.6 <span class="vix-label">正常</span></div></div>
+            <table>
+                <thead><tr><th>指数 Index</th><th>收盘价 Close</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <tbody>
+        <tr class="ticker-row">
+            <td><span class="symbol">^GSPC</span> <span class="name-label">S&P 500</span></td>
+            <td class="up price">7,440.43</td>
+            
+            <td class="up">▲ +1.18%</td>
+            <td class="up change-abs">+86.41</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^IXIC</span> <span class="name-label">NASDAQ</span></td>
+            <td class="up price">25,820.14</td>
+            
+            <td class="up">▲ +2.07%</td>
+            <td class="up change-abs">+522.53</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^DJI</span> <span class="name-label">Dow Jones</span></td>
+            <td class="up price">52,182.74</td>
+            
+            <td class="up">▲ +0.59%</td>
+            <td class="up change-abs">+306.63</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^VIX</span> <span class="name-label">VIX</span></td>
+            <td class="down price">17.65</td>
+            
+            <td class="down">▼ -4.13%</td>
+            <td class="down change-abs">-0.76</td>
+            
+        </tr></tbody>
+            </table>
+        </div>
+        <div class="card">
+            <div class="card-title">🇪🇺 欧洲市场 European Markets</div>
+            <table>
+                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <tbody>
+        <tr class="ticker-row">
+            <td><span class="symbol">^FTSE</span> <span class="name-label">FTSE 100 (UK)</span></td>
+            <td class="down price">10,484.20</td>
+            
+            <td class="down">▼ -0.23%</td>
+            <td class="down change-abs">-23.80</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^GDAXI</span> <span class="name-label">DAX 40 (DE)</span></td>
+            <td class="down price">24,626.89</td>
+            
+            <td class="down">▼ -0.18%</td>
+            <td class="down change-abs">-44.33</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^FCHI</span> <span class="name-label">CAC 40 (FR)</span></td>
+            <td class="down price">8,367.33</td>
+            
+            <td class="down">▼ -0.21%</td>
+            <td class="down change-abs">-17.54</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^STOXX50E</span> <span class="name-label">Euro Stoxx 50</span></td>
+            <td class="up price">6,231.63</td>
+            
+            <td class="up">▲ +0.16%</td>
+            <td class="up change-abs">+10.08</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^SSMI</span> <span class="name-label">SMI (CH)</span></td>
+            <td class="up price">14,223.90</td>
+            
+            <td class="up">▲ +0.36%</td>
+            <td class="up change-abs">+51.19</td>
+            
+        </tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 第二行：亚洲 + 澳洲&中国 -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">🌏 亚洲市场 Asia Markets
+                <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:8px;">亚市开盘预判（基于期货）</span>
+            </div>
+            <table>
+                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <tbody>
+        <tr class="ticker-row">
+            <td><span class="symbol">^HSI</span> <span class="name-label">Hang Seng (HK)</span></td>
+            <td class="up price">23,026.68</td>
+            
+            <td class="up">▲ +1.57%</td>
+            <td class="up change-abs">+354.82</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^N225</span> <span class="name-label">Nikkei 225 (JP)</span></td>
+            <td class="up price">70,543.65</td>
+            
+            <td class="up">▲ +1.55%</td>
+            <td class="up change-abs">+1,075.54</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^KS11</span> <span class="name-label">KOSPI (KR)</span></td>
+            <td class="up price">8,497.76</td>
+            
+            <td class="up">▲ +1.23%</td>
+            <td class="up change-abs">+103.11</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^NSEI</span> <span class="name-label">NIFTY 50 (IN)</span></td>
+            <td class="neutral price">23,946.25</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^TWII</span> <span class="name-label">Taiwan TWII</span></td>
+            <td class="up price">44,999.90</td>
+            
+            <td class="up">▲ +0.96%</td>
+            <td class="up change-abs">+428.14</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^STI</span> <span class="name-label">STI (SG)</span></td>
+            <td class="up price">5,208.75</td>
+            
+            <td class="up">▲ +0.33%</td>
+            <td class="up change-abs">+17.02</td>
+            
+        </tr></tbody>
+            </table>
+        </div>
+        <div class="card">
+            <div class="card-title">🌏 澳洲 & 中国市场 Australia & China</div>
+            <table>
+                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="4" style="color:var(--text-muted);font-size:11px;padding:4px 10px;">🇦🇺 澳洲市场 Australia</td></tr>
+                    
+        <tr class="ticker-row">
+            <td><span class="symbol">^AXJO</span> <span class="name-label">ASX 200 (AU)</span></td>
+            <td class="up price">8,829.80</td>
+            
+            <td class="up">▲ +0.07%</td>
+            <td class="up change-abs">+6.40</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^AORD</span> <span class="name-label">All Ordinaries (AU)</span></td>
+            <td class="up price">9,032.90</td>
+            
+            <td class="up">▲ +0.07%</td>
+            <td class="up change-abs">+6.00</td>
+            
+        </tr>
+                    <tr><td colspan="4" style="color:var(--text-muted);font-size:11px;padding:4px 10px;padding-top:12px;">🇨🇳 中国市场 China A-Share (Reference)</td></tr>
+                    
+        <tr class="ticker-row">
+            <td><span class="symbol">000001.SS</span> <span class="name-label">上证综合 SSE</span></td>
+            <td class="up price">4,073.90</td>
+            
+            <td class="up">▲ +1.16%</td>
+            <td class="up change-abs">+46.64</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">399001.SZ</span> <span class="name-label">深证成分 SZSE</span></td>
+            <td class="up price">15,812.87</td>
+            
+            <td class="up">▲ +0.19%</td>
+            <td class="up change-abs">+30.65</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">000300.SS</span> <span class="name-label">沪深300 CSI300</span></td>
+            <td class="neutral price">4,868.22</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">000688.SS</span> <span class="name-label">科创50 STAR</span></td>
+            <td class="neutral price">2,126.01</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Section 3: 持仓个股 Portfolio Stocks -->
+    <div class="card">
+        <div class="card-title">📈 持仓个股 Portfolio Stocks</div>
+        <table>
+            <thead><tr><th>股票 Stock</th><th>现价 Price(USD)</th><th>成本价 Cost Basis</th><th>涨跌幅 Change%</th><th>变动 Change</th><th>成交量 Volume</th></tr></thead>
+            <tbody>
+        <tr class="ticker-row">
+            <td><span class="symbol">NVDA</span> <span class="name-label">NVDA</span></td>
+            <td class="up price">194.97</td>
+            <td class='cost-col'><span class='cost-price'>184.463</span>&nbsp;<span class='up cost-pl'>(+5.7%)</span></td>
+            <td class="up">▲ +1.27%</td>
+            <td class="up change-abs">+2.44</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">GOOGL</span> <span class="name-label">GOOGL</span></td>
+            <td class="up price">353.65</td>
+            <td class='cost-col'><span class='cost-price'>244.700</span>&nbsp;<span class='up cost-pl'>(+44.5%)</span></td>
+            <td class="up">▲ +4.82%</td>
+            <td class="up change-abs">+16.26</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">AAPL</span> <span class="name-label">AAPL</span></td>
+            <td class="down price">281.74</td>
+            <td class='cost-col'><span class='cost-price'>257.397</span>&nbsp;<span class='up cost-pl'>(+9.5%)</span></td>
+            <td class="down">▼ -0.72%</td>
+            <td class="down change-abs">-2.04</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">MSFT</span> <span class="name-label">MSFT</span></td>
+            <td class="down price">368.57</td>
+            <td class='cost-col'><span class='cost-price'>515.000</span>&nbsp;<span class='down cost-pl'>(-28.4%)</span></td>
+            <td class="down">▼ -1.18%</td>
+            <td class="down change-abs">-4.40</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">AMD</span> <span class="name-label">AMD</span></td>
+            <td class="up price">539.49</td>
+            <td class='cost-col'><span class='cost-price'>180.190</span>&nbsp;<span class='up cost-pl'>(+199.4%)</span></td>
+            <td class="up">▲ +3.43%</td>
+            <td class="up change-abs">+17.91</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">SNDK</span> <span class="name-label">SNDK</span></td>
+            <td class="down price">2,050.39</td>
+            <td class='cost-col'><span class='cost-price'>205.330</span>&nbsp;<span class='up cost-pl'>(+898.6%)</span></td>
+            <td class="down">▼ -1.93%</td>
+            <td class="down change-abs">-40.32</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">IBM</span> <span class="name-label">IBM</span></td>
+            <td class="up price">278.00</td>
+            <td class='cost-col'><span class='cost-price'>305.022</span>&nbsp;<span class='down cost-pl'>(-8.9%)</span></td>
+            <td class="up">▲ +2.35%</td>
+            <td class="up change-abs">+6.37</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">JNJ</span> <span class="name-label">JNJ</span></td>
+            <td class="up price">258.51</td>
+            <td class='cost-col'><span class='cost-price'>229.313</span>&nbsp;<span class='up cost-pl'>(+12.7%)</span></td>
+            <td class="up">▲ +1.51%</td>
+            <td class="up change-abs">+3.85</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">KO</span> <span class="name-label">KO</span></td>
+            <td class="up price">82.65</td>
+            <td class='cost-col'><span class='cost-price'>66.190</span>&nbsp;<span class='up cost-pl'>(+24.9%)</span></td>
+            <td class="up">▲ +0.02%</td>
+            <td class="up change-abs">+0.02</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">PG</span> <span class="name-label">PG</span></td>
+            <td class="down price">148.45</td>
+            <td class='cost-col'><span class='cost-price'>150.810</span>&nbsp;<span class='down cost-pl'>(-1.6%)</span></td>
+            <td class="down">▼ -0.38%</td>
+            <td class="down change-abs">-0.57</td>
+            <td class='volume'>0</td>
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">VT</span> <span class="name-label">VT</span></td>
+            <td class="up price">155.83</td>
+            <td class='cost-col'><span class='cost-price'>154.322</span>&nbsp;<span class='up cost-pl'>(+1.0%)</span></td>
+            <td class="up">▲ +1.22%</td>
+            <td class="up change-abs">+1.88</td>
+            <td class='volume'>0</td>
+        </tr></tbody>
+        </table>
+    </div>
+
+    <!-- Section 4: ETF & 贵金属 ETF & Precious Metals -->
+    <div class="grid-2">
+        <div class="card">
+        <div class="card-title">🥇 ETF & 贵金属 ETF & Precious Metals</div>
+            <table>
+                <thead><tr><th>标的 Ticker</th><th>现价 Price</th><th>成本价 Cost</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <tbody>
+        <tr class="ticker-row">
+            <td><span class="symbol">IAU</span> <span class="name-label">IAU (Gold ETF)</span></td>
+            <td class="down price">75.53</td>
+            <td class='cost-col'><span class='cost-price'>88.950</span>&nbsp;<span class='down cost-pl'>(-15.1%)</span></td>
+            <td class="down">▼ -1.35%</td>
+            <td class="down change-abs">-1.03</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">SLV</span> <span class="name-label">SLV (Silver ETF)</span></td>
+            <td class="down price">52.68</td>
+            <td class='cost-col'><span class='cost-price'>44.268</span>&nbsp;<span class='up cost-pl'>(+19.0%)</span></td>
+            <td class="down">▼ -1.13%</td>
+            <td class="down change-abs">-0.60</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">EWJ</span> <span class="name-label">EWJ (Japan ETF)</span></td>
+            <td class="up price">93.21</td>
+            <td class='cost-col'><span class='cost-price'>83.418</span>&nbsp;<span class='up cost-pl'>(+11.7%)</span></td>
+            <td class="up">▲ +0.44%</td>
+            <td class="up change-abs">+0.41</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">SMH</span> <span class="name-label">SMH (Semiconductor ETF)</span></td>
+            <td class="up price">631.98</td>
+            <td class='cost-col'><span class='cost-price'>572.140</span>&nbsp;<span class='up cost-pl'>(+10.5%)</span></td>
+            <td class="up">▲ +3.33%</td>
+            <td class="up change-abs">+20.37</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">GC=F</span> <span class="name-label">Gold Spot</span></td>
+            <td class="neutral price">4,022.90</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">SI=F</span> <span class="name-label">Silver Spot</span></td>
+            <td class="neutral price">58.73</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">BZ=F</span> <span class="name-label">Brent Crude</span></td>
+            <td class="neutral price">73.58</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">CL=F</span> <span class="name-label">WTI Crude</span></td>
+            <td class="neutral price">70.29</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">HG=F</span> <span class="name-label">Copper</span></td>
+            <td class="neutral price">6.18</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr></tbody>
+            </table>
+        </div>
+
+        <!-- 宏观：汇率+债券 -->
+        <div class="card">
+            <div class="card-title">💱 汇率 & 债券 FX & Bonds</div>
+            <table>
+                <thead><tr><th>指标 Indicator</th><th>数值 Value</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <tbody>
+        <tr class="ticker-row">
+            <td><span class="symbol">DX-Y.NYB</span> <span class="name-label">DXY (USD Index)</span></td>
+            <td class="neutral price">101.17</td>
+            
+            <td class="neutral">─ +0.00%</td>
+            <td class="neutral change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">JPY=X</span> <span class="name-label">USD/JPY</span></td>
+            <td class="up price">161.95</td>
+            
+            <td class="up">▲ +0.10%</td>
+            <td class="up change-abs">+0.16</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">SGD=X</span> <span class="name-label">USD/SGD</span></td>
+            <td class="down price">1.29</td>
+            
+            <td class="down">▼ -0.12%</td>
+            <td class="down change-abs">-0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">CNY=X</span> <span class="name-label">USD/CNY</span></td>
+            <td class="down price">6.79</td>
+            
+            <td class="down">▼ -0.16%</td>
+            <td class="down change-abs">-0.01</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">KRW=X</span> <span class="name-label">USD/KRW</span></td>
+            <td class="up price">1,543.18</td>
+            
+            <td class="up">▲ +0.52%</td>
+            <td class="up change-abs">+7.94</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">TWD=X</span> <span class="name-label">USD/TWD</span></td>
+            <td class="up price">31.86</td>
+            
+            <td class="up">▲ +0.06%</td>
+            <td class="up change-abs">+0.02</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^TNX</span> <span class="name-label">US 10Y Treasury</span></td>
+            <td class="up price">4.37</td>
+            
+            <td class="up">▲ +0.05%</td>
+            <td class="up change-abs">+0.00</td>
+            
+        </tr>
+        <tr class="ticker-row">
+            <td><span class="symbol">^IRX</span> <span class="name-label">US 2Y Treasury</span></td>
+            <td class="up price">3.68</td>
+            
+            <td class="up">▲ +0.46%</td>
+            <td class="up change-abs">+0.02</td>
+            
+        </tr>
+        <tr>
+            <td><span class="symbol">利差</span> <span class="name-label">10Y - 2Y Spread</span></td>
+            <td class="neutral price">+0.694%</td>
+            <td colspan="2" class="neutral">正常</td>
+        </tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 新闻版块已移至顶部 -->
+
+    <!-- Section 5b: 持仓个股分析 Portfolio Insights -->
+    <div class="card">
+        <div class="card-title">🔍 持仓个股简评 Portfolio Stock Commentary</div>
+        <table>
+            <thead><tr><th>股票 Stock</th><th>当日 Driver</th><th>简评 Commentary</th></tr></thead>
+            <tbody>
+                <tr><td><span class="symbol up">NVDA</span></td><td class="name-label">半导体板块反弹</td><td style="font-size:12px;">跟随半导体板块温和反弹+1.27%，Blackwell需求强劲但涨幅弱于同业，资金流向中小型AI芯片股</td></tr>
+                <tr><td><span class="symbol up">GOOGL</span></td><td class="name-label">加入道指首日</td><td style="font-size:12px;">加入道琼斯指数首日大涨+4.82%，AI人才流失担忧暂缓，$800亿募资影响逐步消化</td></tr>
+                <tr><td><span class="symbol down">AAPL</span></td><td class="name-label">产品提价后需求担忧</td><td style="font-size:12px;">科技股普涨中逆势-0.72%，MacBook/iPad提价后终端需求疑虑持续，存储成本上升侵蚀利润率</td></tr>
+                <tr><td><span class="symbol down">MSFT</span></td><td class="name-label">资金轮动至半导体</td><td style="font-size:12px;">-1.18%，资金从AI软件/云轮动至半导体硬件，Copilot Cowork/Scout商业化进展待验证</td></tr>
+                <tr><td><span class="symbol up">AMD</span></td><td class="name-label">半导体反弹+数据中心</td><td style="font-size:12px;">+3.43%，半导体板块强势反弹带动，MI400数据中心GPU需求持续增长，估值修复中</td></tr>
+                <tr><td><span class="symbol down">SNDK</span></td><td class="name-label">获利回吐</td><td style="font-size:12px;">-1.93%，AI存储超级周期逻辑未变，但百倍涨幅后短期获利回吐压力大，花旗目标价$2,025</td></tr>
+                <tr><td><span class="symbol up">IBM</span></td><td class="name-label">量子/AI持续发酵</td><td style="font-size:12px;">+2.35%，0.7nm芯片突破+量子计算JV后续动能持续，巴克莱$350目标价支撑</td></tr>
+                <tr><td><span class="symbol up">JNJ</span></td><td class="name-label">防御板块资金流入</td><td style="font-size:12px;">+1.51%，医疗板块持续获得防御性资金流入，上周医疗+7%为最强行业</td></tr>
+                <tr><td><span class="symbol neutral">KO</span></td><td class="name-label">消费防御平淡</td><td style="font-size:12px;">+0.02%几乎持平，科技股反弹日消费防御股遭冷落，但$82附近支撑稳固</td></tr>
+                <tr><td><span class="symbol down">PG</span></td><td class="name-label">防御板块轮动减弱</td><td style="font-size:12px;">-0.38%，上周大涨后小幅回吐，防御板块短期动能减弱但基本面稳健</td></tr>
+                <tr><td><span class="symbol down">IAU</span></td><td class="name-label">美伊停火降低避险</td><td style="font-size:12px;">-1.35%，美伊停火协议降低避险需求，但Fed加息预期+通胀4.2%下$4,000金价有支撑</td></tr>
+                <tr><td><span class="symbol down">SLV</span></td><td class="name-label">白银跟随黄金走弱</td><td style="font-size:12px;">-1.13%，白银跟随黄金走弱但跌幅较温和，工业需求端提供底部支撑</td></tr>
+                <tr><td><span class="symbol up">EWJ</span></td><td class="name-label">日经强势带动</td><td style="font-size:12px;">+0.44%，日经225大涨1.55%带动日本ETF微涨，日元161.95持续走弱利好出口股</td></tr>
+                <tr><td><span class="symbol up">SMH</span></td><td class="name-label">半导体ETF强势反弹</td><td style="font-size:12px;">+3.33%，应用材料/KLA等涨超11%带动，AI投资叙事在抛售后重获信心</td></tr>
+                <tr><td><span class="symbol up">VT</span></td><td class="name-label">全球股市反弹</td><td style="font-size:12px;">+1.22%，全球股市普涨带动，Vanguard全球ETF随大势回升</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section 6: 投资建议 Investment Insights -->
+    <div class="card">
+        <div class="card-title">💡 投资建议 Investment Insights</div>
+        <div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>短期操作提示：</strong>Hold NVDA/GOOGL/AMD：科技股反弹动能确立，GOOGL加入道指+半导体复苏提供短期支撑。不追高加仓，等待季末窗饰结束后再评估。</span></div><div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>短期操作提示：</strong>Hold SNDK（$2,050，成本$205.33，浮盈+899%）：AI存储超级周期逻辑未变，但短期获利回吐压力大。维持前期建议——考虑部分止盈30-50%，设$1,900硬止损保护。</span></div><div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>短期操作提示：</strong>Hold IAU/SLV：美伊停火短期压制贵金属，但Fed加息预期+通胀4.2%背景下，黄金$4,000关口有支撑。不建议在此位置减仓。</span></div><div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>短期操作提示：</strong>关注MSFT/AAPL：两只个股在科技板块反弹中逆势下跌（MSFT -1.18%, AAPL -0.72%），反映资金从软件轮动至半导体的结构性变化。短期观望，不急于补仓。</span></div><div class="summary-box red"><span class="summary-icon">⚠️</span><span class="summary-text"><strong>风险提示：</strong>美伊停火脆弱性：周末刚经历数日互相打击→紧急停火→周二谈判，协议基础极不稳固。任何谈判破裂消息都将导致油价跳涨+科技股暴跌的'双杀'格局。</span></div><div class="summary-box red"><span class="summary-icon">⚠️</span><span class="summary-text"><strong>风险提示：</strong>周四非农+季末窗饰：假期缩量+季末调仓可能放大市场波动。若非农数据强劲(>200K)，加息预期将进一步升温，可能触发科技股新一轮获利了结。</span></div>
+        <div style="color:var(--text-muted);font-size:11px;margin-top:12px;">
+            ⚠️ 本报告仅供参考，不构成投资建议。投资决策请结合个人情况独立判断。
+       This report is for reference only and does not constitute investment advice. Make independent decisions based on your own circumstances.
+        </div>
+    </div>
+
+    <div class="report-footer">
+        投资日报 · 每日 08:00 早报 / 20:00 晚报 &nbsp;|&nbsp; 数据来源 Data Sources: Yahoo Finance · Reuters · Bloomberg &nbsp;|&nbsp; 生成时间：2026-06-30 08:27:02
+    </div>
+
+</div>
+</body>
+</html>
