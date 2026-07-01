@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 简报 · 2026年7月1日 · 早报</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --accent: #a78bfa;
+            --accent-light: #c4b5fd;
+            --accent-dark: #7c3aed;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-muted2: #64748b;
+            --border: #334155;
+            --tag-us: #38bdf8;
+            --tag-cn: #ef4444;
+            --tag-sg: #f97316;
+            --tag-research: #4ade80;
+            --tag-open: #a78bfa;
+            --tag-policy: #fbbf24;
+            --tag-new: #2dd4bf;
+            --whitelist-bg: #0c1222;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-title-cn {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .header-title-en {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .header-date {
+            font-size: 13px;
+            color: var(--text-muted2);
+            margin-top: 8px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+        .stat-item {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label-cn {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .stat-label-en {
+            font-size: 10px;
+            color: var(--text-muted2);
+            font-style: italic;
+        }
+        .stat-unit-cn, .stat-unit-en {
+            font-size: 10px;
+            color: var(--text-muted2);
+        }
+
+        /* Trends Card */
+        .trends-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #1a1f3a 100%);
+            border: 1px solid var(--accent-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .trends-title-cn {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 2px;
+        }
+        .trends-title-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+        .trend-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .trend-item:last-child { border-bottom: none; }
+        .trend-cn {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .trend-en {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .trend-tag {
+            display: inline-block;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+        .trend-tag-us { background: rgba(56,189,248,0.2); color: var(--tag-us); }
+        .trend-tag-cn { background: rgba(239,68,68,0.2); color: var(--tag-cn); }
+        .trend-tag-sg { background: rgba(249,115,22,0.2); color: var(--tag-sg); }
+        .trend-tag-research { background: rgba(74,222,128,0.2); color: var(--tag-research); }
+        .trend-tag-policy { background: rgba(251,191,36,0.2); color: var(--tag-policy); }
+        .trend-tag-open { background: rgba(167,139,250,0.2); color: var(--tag-open); }
+
+        /* Section Card */
+        .section-card {
+            margin: 24px 0;
+        }
+        .card-title {
+            background: var(--bg-card);
+            border-radius: 8px 8px 0 0;
+            padding: 14px 20px;
+            border-bottom: 2px solid var(--accent);
+        }
+        .title-cn {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .title-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* News Item */
+        .news-item {
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            position: relative;
+        }
+        .news-item.tag-us { border-left-color: var(--tag-us); }
+        .news-item.tag-cn { border-left-color: var(--tag-cn); }
+        .news-item.tag-sg { border-left-color: var(--tag-sg); }
+        .news-item.tag-research { border-left-color: var(--tag-research); }
+        .news-item.tag-open { border-left-color: var(--tag-open); }
+        .news-item.tag-policy { border-left-color: var(--tag-policy); }
+        .news-item.tag-new { border-left-color: var(--tag-new); }
+        .news-item:last-child { border-radius: 0 0 8px 8px; border-bottom: none; }
+
+        .news-title-cn {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .news-title-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .news-tags {
+            margin-bottom: 8px;
+        }
+        .news-tag {
+            display: inline-block;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+        .tag-us-badge { background: rgba(56,189,248,0.2); color: var(--tag-us); }
+        .tag-cn-badge { background: rgba(239,68,68,0.2); color: var(--tag-cn); }
+        .tag-sg-badge { background: rgba(249,115,22,0.2); color: var(--tag-sg); }
+        .tag-research-badge { background: rgba(74,222,128,0.2); color: var(--tag-research); }
+        .tag-open-badge { background: rgba(167,139,250,0.2); color: var(--tag-open); }
+        .tag-policy-badge { background: rgba(251,191,36,0.2); color: var(--tag-policy); }
+        .tag-new-badge { background: rgba(45,212,191,0.2); color: var(--tag-new); }
+
+        /* Summary */
+        .news-summary {
+            margin-bottom: 10px;
+        }
+        .news-summary-cn {
+            font-size: 13px;
+            color: var(--text);
+            border-left: 2px solid var(--accent);
+            padding-left: 12px;
+            margin-bottom: 8px;
+        }
+        .news-summary-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            border-left: 2px solid var(--text-muted2);
+            padding-left: 12px;
+            font-style: italic;
+        }
+
+        /* Why it matters */
+        .why-matters {
+            background: rgba(167,139,250,0.08);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+        }
+        .why-cn {
+            font-size: 13px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .why-cn strong { color: var(--accent); }
+        .why-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .why-en strong { color: var(--accent-light); }
+
+        /* Source link */
+        .source-link {
+            display: inline-block;
+            font-size: 11px;
+            padding: 3px 10px;
+            background: rgba(167,139,250,0.15);
+            color: var(--accent-light);
+            border-radius: 4px;
+            text-decoration: none;
+            margin-right: 6px;
+        }
+        .source-link:hover { background: rgba(167,139,250,0.3); }
+
+        /* New source callout */
+        .new-source-callout {
+            background: rgba(45,212,191,0.1);
+            border: 1px solid rgba(45,212,191,0.3);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--tag-new);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--whitelist-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .footer-cn {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .footer-en {
+            font-size: 11px;
+            color: var(--text-muted2);
+            font-style: italic;
+        }
+        .footer-divider {
+            border-top: 1px solid var(--border);
+            margin: 12px 0;
+        }
+
+        /* Whitelist section */
+        .whitelist-section {
+            margin-top: 20px;
+        }
+        .whitelist-title-cn {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .whitelist-title-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        .whitelist-list {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+        .whitelist-new {
+            color: var(--tag-new);
+            font-weight: 600;
+        }
+        .whitelist-note-cn {
+            font-size: 11px;
+            color: var(--text-muted2);
+            margin-top: 8px;
+        }
+        .whitelist-note-en {
+            font-size: 10px;
+            color: var(--text-muted2);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .stats-bar { grid-template-columns: repeat(3, 1fr); }
+            .header-title-cn { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-title-cn">🤖 AI 技术简报 · 早报</div>
+    <div class="header-title-en">AI Technology Briefing · Morning Edition</div>
+    <div class="header-date">
+        <div class="footer-cn">2026年7月1日 · 星期三 · 新加坡时间 08:30</div>
+        <div class="footer-en">July 1, 2026 · Wednesday · SGT 08:30</div>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="stat-value">5</div>
+        <div class="stat-label-cn">头条新闻</div>
+        <div class="stat-label-en">Top Stories</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">4</div>
+        <div class="stat-label-cn">官方发布</div>
+        <div class="stat-label-en">Official Releases</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label-cn">研究/技术</div>
+        <div class="stat-label-en">Research & Tech</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">4</div>
+        <div class="stat-label-cn">政策/产业</div>
+        <div class="stat-label-en">Policy & Industry</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">2</div>
+        <div class="stat-label-cn">开源生态</div>
+        <div class="stat-label-en">Open Source</div>
+    </div>
+</div>
+
+<!-- Trends Card -->
+<div class="trends-card">
+    <div class="trends-title-cn">🔍 今日核心趋势</div>
+    <div class="trends-title-en">Core Trends Today</div>
+
+    <div class="trend-item">
+        <div class="trend-cn">GPT-5.6 三型号首发，但受美国政府要求仅限可信伙伴预览 <span class="trend-tag trend-tag-us">US</span></div>
+        <div class="trend-en">GPT-5.6 launched with Sol/Terra/Luna, but limited preview per US government request</div>
+    </div>
+    <div class="trend-item">
+        <div class="trend-cn">Claude Fable 5 / Mythos 5 停用第 19 天，谈判仍在进行 <span class="trend-tag trend-tag-us">US</span></div>
+        <div class="trend-en">Claude Fable 5 / Mythos 5 suspended for 19 days, negotiations ongoing</div>
+    </div>
+    <div class="trend-item">
+        <div class="trend-cn">美团 LongCat-2.0 万亿参数开源，全流程国产算力训练 <span class="trend-tag trend-tag-cn">CN</span></div>
+        <div class="trend-en">Meituan LongCat-2.0 trillion-parameter open-source, trained on domestic chips</div>
+    </div>
+    <div class="trend-item">
+        <div class="trend-cn">Colorado 首个州级 AI 法正式生效，联邦 AI 法案草案推进 <span class="trend-tag trend-tag-policy">Policy</span></div>
+        <div class="trend-en">Colorado's first state AI law takes effect, federal Great American AI Act advances</div>
+    </div>
+    <div class="trend-item">
+        <div class="trend-cn">OpenAI Jalapeño 自研推理芯片与 Codex 硬件加速布局 <span class="trend-tag trend-tag-us">US</span></div>
+        <div class="trend-en">OpenAI Jalapeño custom inference chip + Codex Micro hardware signal vertical integration</div>
+    </div>
+</div>
+
+<!-- ===== TOP STORIES ===== -->
+<div class="section-card">
+    <div class="card-title">
+        <span class="title-cn">📌 头条新闻</span>
+        <span class="title-en">Top Stories</span>
+    </div>
+
+    <!-- Story 1: GPT-5.6 -->
+    <div class="news-item tag-us">
+        <div class="news-title-cn">OpenAI 发布 GPT-5.6 系列：Sol、Terra、Luna 三档模型，受美国政府要求限量预览</div>
+        <div class="news-title-en">OpenAI Launches GPT-5.6 Series: Sol, Terra, Luna — Limited Preview Per US Government Request</div>
+        <div class="news-tags">
+            <span class="news-tag tag-us-badge">US</span>
+            <span class="news-tag tag-policy-badge">Policy</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 26 日，OpenAI 发布 GPT-5.6 系列三档模型：旗舰版 Sol（编程与网络安全最强）、均衡版 Terra（日常场景成本降 50%）、轻量版 Luna（速度优先）。不同于以往公开发布，本次仅向少数"可信合作伙伴"提供预览权限，系应美国政府建立前沿 AI 模型安全评估流程的要求。Sol 在 ExploitBench 上几乎打平 Anthropic Mythos Preview，但仅消耗约三分之一输出 token。</div>
+            <div class="news-summary-en">On June 26, OpenAI launched GPT-5.6 with three tiers: flagship Sol (strongest in coding & cybersecurity), balanced Terra (50% cost reduction for daily tasks), and lightweight Luna (speed-first). Unlike prior public releases, this launch is restricted to "trusted partners" per US government request to establish frontier AI safety evaluation processes. Sol nearly matches Anthropic Mythos Preview on ExploitBench with ~1/3 output tokens.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>这是美国政府首次直接介入前沿模型发布节奏，标志着 AI 监管从框架讨论进入实质干预。三档定位策略将定价权与能力分层绑定，可能重塑企业 AI 采购逻辑。</div>
+            <div class="why-en"><strong>Why it matters:</strong>First time the US government directly intervened in a frontier model launch cadence, marking a shift from regulatory frameworks to concrete intervention. The three-tier pricing-capability bundling could reshape enterprise AI procurement logic.</div>
+        </div>
+        <a class="source-link" href="https://openai.com/index/gpt-5-6/" target="_blank">OpenAI Official</a>
+        <a class="source-link" href="https://news.qq.com/rain/a/20260627A04VOB00" target="_blank">腾讯新闻</a>
+        <a class="source-link" href="https://letsdatascience.com/news/openai-unveils-gpt-56-sol-terra-and-luna-cf7d34df" target="_blank">Let's Data Science</a>
+        <a class="source-link" href="https://news.qq.com/rain/a/20260630A09FKW00" target="_blank">深度解析</a>
+    </div>
+
+    <!-- Story 2: Claude Fable 5 / Mythos 5 suspended -->
+    <div class="news-item tag-us">
+        <div class="news-title-cn">Claude Fable 5 / Mythos 5 停用第 19 天：出口管制谈判仍在进行，无恢复时间表</div>
+        <div class="news-title-en">Claude Fable 5 / Mythos 5 Suspended for 19 Days: Export Control Negotiations Continue, No Restoration Timeline</div>
+        <div class="news-tags">
+            <span class="news-tag tag-us-badge">US</span>
+            <span class="news-tag tag-policy-badge">Policy</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 12 日 Anthropic 因美国出口管制指令停用 Fable 5 和 Mythos 5，截至 6 月底仍未恢复。两周来出现多轮反弹：研究人员联名公开信要求恢复、众议院跨党派信函要求法律依据说明。Anthropic 内部审查认为相关越狱技术仅暴露了已知的小漏洞，与政府的国家安全主张存在分歧，目前双方正在谈判。</div>
+            <div class="news-summary-en">Anthropic suspended Fable 5 and Mythos 5 on June 12 under a US export-control directive, with no restoration by late June. Pushback mounted: researchers signed open letters, a bipartisan House letter demanded legal justification. Anthropic's review found the cited jailbreak only surfaced minor known vulnerabilities, diverging from the government's national-security claim. Negotiations continue.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>Fable 5 发布仅 3 天即遭全球下架，开创了商业 AI 模型被出口管制令强制停用的先例。谈判结果将决定未来前沿模型的发布自由度与政府干预边界。</div>
+            <div class="why-en"><strong>Why it matters:</strong>Fable 5 was globally suspended just 3 days after launch — the first commercial AI model forcibly halted by export controls. The negotiation outcome will define future frontier model release freedom and government intervention boundaries.</div>
+        </div>
+        <a class="source-link" href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank">Anthropic Official</a>
+        <a class="source-link" href="https://claude5.ai/zh/blog/is-claude-fable-5-back-status-update-june-2026" target="_blank">Claude5 Status</a>
+        <a class="source-link" href="https://explainx.ai/blog/is-fable-5-back-2026" target="_blank">explainx.ai</a>
+        ⚑ 待观察：Fable 5 恢复时间 | PAIR Chat 是否跟进升级
+    </div>
+
+    <!-- Story 3: OpenAI Jalapeño chip -->
+    <div class="news-item tag-us">
+        <div class="news-title-cn">OpenAI 首款自研推理芯片 Jalapeño 发布：9 个月从零到流片，博通联合设计</div>
+        <div class="news-title-en">OpenAI's First Custom Inference Chip Jalapeño: From Zero to Tape-out in 9 Months with Broadcom</div>
+        <div class="news-tags">
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 24 日，OpenAI 与博通联合发布首款定制推理芯片 Jalapeño。采用 TSMC 3nm 制程、systolic array 架构搭配 HBM 高带宽内存，专为 LLM 推理场景量身打造，9 个月完成架构设计到流片。声称推理成本可降约 50%，预计 2026 年底进入数据中心部署。这是 OpenAI 从纯软件公司向硬件垂直整合迈出的第一步。</div>
+            <div class="news-summary-en">On June 24, OpenAI and Broadcom unveiled Jalapeño, a custom LLM inference ASIC. Built on TSMC 3nm with systolic array architecture and HBM memory, it went from architecture design to tape-out in just 9 months. Claims ~50% inference cost reduction, with data center deployment expected by late 2026. This marks OpenAI's first step from pure software to hardware vertical integration.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>OpenAI 正式进入芯片自研领域，与 Google（Axion）、Amazon（Trainium）、Microsoft（Maia 200）形成 AI 巨头自研芯片四方格局，对 NVIDIA GPU 依赖正在系统性降低。</div>
+            <div class="why-en"><strong>Why it matters:</strong>OpenAI joins Google (Axion), Amazon (Trainium), and Microsoft (Maia 200) in custom AI silicon, creating a four-way格局 of hyperscaler chip self-development systematically reducing NVIDIA GPU dependency.</div>
+        </div>
+        <a class="source-link" href="https://news.qq.com/rain/a/20260624A0B0Q000" target="_blank">腾讯新闻</a>
+        <a class="source-link" href="https://www.eet-china.com/news/202606258325.html" target="_blank">EET China</a>
+        <a class="source-link" href="https://www.ithome.com/0/968/175.htm" target="_blank">IT之家</a>
+    </div>
+
+    <!-- Story 4: LongCat-2.0 -->
+    <div class="news-item tag-cn tag-new">
+        <div class="news-title-cn">美团 LongCat-2.0 万亿参数开源：1.6T MoE，百万上下文，全流程国产算力</div>
+        <div class="news-title-en">Meituan LongCat-2.0 Trillion-Parameter Open-Source: 1.6T MoE, 1M Context, Domestic Chips</div>
+        <div class="news-tags">
+            <span class="news-tag tag-cn-badge">CN</span>
+            <span class="news-tag tag-open-badge">Open</span>
+            <span class="news-tag tag-new-badge">🆕 新来源</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 30 日，美团正式发布并开源 LongCat-2.0：总参数 1.6 万亿、每 token 激活约 480 亿的 MoE 语言模型。引入 LongCat 稀疏注意力（LSA，从 DeepSeek DSA 演进）和 N-gram Embedding 扩展，原生支持百万上下文。关键亮点：全流程在 5 万余国产算力芯片上训练完成，消耗 35 万亿 tokens，无回滚无 loss 突刺。在 Terminal-Bench 2.1 上达 70.8，SWE-Bench Pro 59.5，深度适配 Claude Code / OpenClaw / Hermes 等主流 Harness。</div>
+            <div class="news-summary-en">On June 30, Meituan released and open-sourced LongCat-2.0: a 1.6T total parameter / ~48B active per token MoE language model. It introduces LongCat Sparse Attention (LSA, evolved from DeepSeek's DSA) and N-gram Embedding expansion, natively supporting 1M context. Key highlight: trained entirely on 50,000+ domestic compute chips, consuming 35T tokens with no rollback or loss spikes. Achieves 70.8 on Terminal-Bench 2.1, 59.5 on SWE-Bench Pro, deeply adapted to Claude Code / OpenClaw / Hermes harnesses.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>这是首个在纯国产算力集群上完成万亿参数级前沿模型训练的开源项目，验证了国产算力平台的大规模训练可行性。LSA 稀疏注意力是对 DeepSeek DSA 的工程优化迭代，对长上下文推理效率有重要影响。</div>
+            <div class="why-en"><strong>Why it matters:</strong>First open-source trillion-parameter frontier model trained entirely on domestic (Chinese) compute chips, validating the feasibility of large-scale training on non-NVIDIA hardware. LSA sparse attention is an engineering optimization over DeepSeek's DSA, with significant implications for long-context inference efficiency.</div>
+        </div>
+        <a class="source-link" href="https://longcat.chat/blog/longcat-2.0/" target="_blank">LongCat Official</a>
+        <a class="source-link" href="https://github.com/meituan-longcat/LongCat-2.0" target="_blank">GitHub</a>
+        <a class="source-link" href="https://tech.meituan.com/2026/04/02/LongCat-Next.html" target="_blank">美团技术博客</a>
+        <div class="new-source-callout">🆕 新发现来源：longcat.chat / tech.meituan.com（美团 LongCat 系列）— 本期首次追踪</div>
+    </div>
+
+    <!-- Story 5: Colorado AI Act -->
+    <div class="news-item tag-policy">
+        <div class="news-title-cn">Colorado AI 法正式生效：美国首个州级 AI 监管法律从理论走向执行</div>
+        <div class="news-title-en">Colorado AI Act Takes Effect: First US State AI Law Moves from Theory to Enforcement</div>
+        <div class="news-tags">
+            <span class="news-tag tag-policy-badge">Policy</span>
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 30 日，Colorado 的《消费者 AI 保护法案》（SB24-205）正式生效，这是美国首个广泛覆盖的州级 AI 法律。对招聘、贷款、住房、医疗、教育、法律服务等"高风险 AI 系统"的开发者和部署者施加严格的透明度与风险管理义务。与此同时，联邦层面的《伟大美国 AI 法案》（Great American AI Act）269 页草案正在推进，拟 3 年内 preempt 所有州级 AI 法律。</div>
+            <div class="news-summary-en">On June 30, Colorado's Consumer Protections for AI Act (SB24-205) took effect — the first broad US state AI law. It imposes strict transparency and risk-management obligations on developers and deployers of "high-risk AI systems" in hiring, lending, housing, healthcare, education, and legal services. Meanwhile, the 269-page federal Great American AI Act draft is advancing, proposing to preempt all state AI laws for 3 years.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>美国 AI 监管从抽象原则进入可执行规则阶段。州-联邦之间的管辖权争夺将直接影响 OpenAI、Anthropic、Google 等前沿模型厂商的合规策略。</div>
+            <div class="why-en"><strong>Why it matters:</strong>US AI regulation moves from abstract principles to enforceable rules. The state-federal jurisdiction battle will directly impact compliance strategies for OpenAI, Anthropic, Google, and other frontier model developers.</div>
+        </div>
+        <a class="source-link" href="https://co-aims.com/blog/colorado-ai-act-sb-24-205-complete-compliance-guide" target="_blank">CO-AIMS Guide</a>
+        <a class="source-link" href="https://letsdatascience.com/news/colorado-ai-act-takes-effect-for-high-risk-systems-48d1ef79" target="_blank">Let's Data Science</a>
+        <a class="source-link" href="https://aiflashreport.com/archive/2026-06-30.html" target="_blank">AI Flash Report</a>
+    </div>
+</div>
+
+<!-- ===== OFFICIAL RELEASES ===== -->
+<div class="section-card">
+    <div class="card-title">
+        <span class="title-cn">📣 官方发布</span>
+        <span class="title-en">Official Releases</span>
+    </div>
+
+    <!-- OpenAI Codex Micro -->
+    <div class="news-item tag-us">
+        <div class="news-title-cn">OpenAI Codex Micro 硬件预告：7 月 15 日发布编程专用快捷键盘</div>
+        <div class="news-title-en">OpenAI Codex Micro Hardware Teaser: Programming Shortcut Pad Launching July 15</div>
+        <div class="news-tags">
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 30 日，OpenAI 开发者账号预告将与 Work Louder 合作推出 Codex 专用输入设备——一款方形 Macro Pad 可编程快捷键盘，7 月 15 日上线。这是 OpenAI 首款硬件产品（与 Jony Ive 正在研发的消费级 AI 设备 Gumdrop 不同），定位为 Codex 编程工作流的物理快捷键升级。</div>
+            <div class="news-summary-en">On June 30, OpenAI's developer account teased a Codex-branded hardware — a square Macro Pad with programmable shortcut keys, co-developed with Work Louder, launching July 15. This is OpenAI's first hardware product (distinct from the Jony Ive "Gumdrop" consumer AI device), positioned as a physical shortcut upgrade for Codex coding workflows.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>OpenAI 开始从纯软件向硬件-软件一体化延伸，Codex Micro 虽是轻量起步，但与 Jalapeño 芯片共同构成垂直整合信号。</div>
+            <div class="why-en"><strong>Why it matters:</strong>OpenAI begins extending from pure software to hardware-software integration. Codex Micro, while lightweight, joins Jalapeño chip as a vertical integration signal.</div>
+        </div>
+        <a class="source-link" href="https://www.theverge.com/ai-artificial-intelligence/959174/openai-codex-hardware-work-louder" target="_blank">The Verge</a>
+        <a class="source-link" href="https://tech.ifeng.com/c/8uNB1eaY1v4" target="_blank">凤凰科技</a>
+    </div>
+
+    <!-- Cursor iOS -->
+    <div class="news-item tag-us">
+        <div class="news-title-cn">Cursor 推出 iOS 移动应用：远程管控 AI 编程 Agent</div>
+        <div class="news-title-en">Cursor Launches iOS App: Remote Control for AI Coding Agents</div>
+        <div class="news-tags">
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 29 日，Cursor 发布 iOS 移动应用（公开测试版），允许开发者在手机上启动、提示和监督正在运行的 coding agent，支持语音输入和任意前沿模型选择。这不是在手机上写代码，而是将开发者角色从"写代码者"转向"AI Agent 管理者"，可与桌面端和云端 Agent 无缝衔接。</div>
+            <div class="news-summary-en">On June 29, Cursor launched an iOS mobile app (public beta) letting developers launch, prompt, and supervise running coding agents from their phone, with voice input and frontier model selection. Not about writing code on mobile — it shifts the developer role from "code writer" to "AI Agent manager," seamlessly bridging desktop and cloud agents.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>AI 编程工具正在重新定义开发者角色——从代码执行者转向 Agent 管理者，移动端控制层标志着"远程管工"模式正式成形。</div>
+            <div class="why-en"><strong>Why it matters:</strong>AI coding tools are redefining the developer role — from code executor to agent manager. The mobile control layer formalizes the "remote overseer" paradigm.</div>
+        </div>
+        <a class="source-link" href="https://cursor.com/blog/ios-mobile-app" target="_blank">Cursor Blog</a>
+        <a class="source-link" href="https://techcrunch.com/2026/06/29/cursor-now-has-a-mobile-app-for-guiding-your-coding-agent-on-the-go/" target="_blank">TechCrunch</a>
+    </div>
+
+    <!-- Anthropic on NVIDIA GB300 -->
+    <div class="news-item tag-us">
+        <div class="news-title-cn">Anthropic Claude 登陆 NVIDIA GB300 Blackwell Ultra + Azure Foundry</div>
+        <div class="news-title-en">Anthropic Claude Now on NVIDIA GB300 Blackwell Ultra via Azure Foundry</div>
+        <div class="news-tags">
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 29 日，Claude 模型在 Microsoft Azure Foundry 平台正式上线 NVIDIA GB300 Blackwell Ultra GPU，提供企业级可扩展基础设施用于构建自主领域专用 AI Agent。这标志着 Anthropic 从 SpaceX Colossus 到 NVIDIA/Azure 的算力渠道多元化。</div>
+            <div class="news-summary-en">On June 29, Claude models reached general availability on Microsoft Azure Foundry powered by NVIDIA GB300 Blackwell Ultra GPUs, providing scalable enterprise infrastructure for building autonomous, domain-specific AI agents. This signals Anthropic's compute channel diversification from SpaceX Colossus to NVIDIA/Azure.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>GB300 Blackwell Ultra 是 NVIDIA 最新一代 AI 加速器，Claude 在此平台 GA 意味着企业客户有了新的高性能部署路径，Anthropic 算力供应不再依赖单一来源。</div>
+            <div class="why-en"><strong>Why it matters:</strong>GB300 Blackwell Ultra is NVIDIA's latest AI accelerator. Claude GA on this platform gives enterprise customers a new high-performance deployment path, and Anthropic no longer relies on a single compute source.</div>
+        </div>
+        <a class="source-link" href="https://blogs.nvidia.com/blog/anthropic-nvidia-gb300-blackwell-ultra-microsoft-azure/" target="_blank">NVIDIA Blog</a>
+    </div>
+
+    <!-- Google Gemini personalized image gen -->
+    <div class="news-item tag-us">
+        <div class="news-title-cn">Google Gemini 扩展个性化 AI 图像生成至美国免费用户</div>
+        <div class="news-title-en">Google Gemini Expands Personalized AI Image Generation to Free US Users</div>
+        <div class="news-tags">
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 29 日，Google 将 Gemini 个性化图像生成功能扩展至美国免费用户。该功能利用 Google Photos 及关联应用数据，为用户生成贴合个人兴趣的定制化图像内容。Google Meet 也同步上线"AI 代我做笔记"功能，自动生成会议摘要并存入 Google Docs。</div>
+            <div class="news-summary-en">On June 29, Google expanded Gemini's personalized image generation to eligible free US users. The feature leverages data from Google Photos and connected apps to tailor visual content to individual interests. Google Meet also launched "Take notes for me," auto-generating meeting summaries saved to Google Docs.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>Google 将个人数据与 AI 生成深度结合的商业模式正在成型，从搜索到图像到会议纪要，AI 已嵌入 Google 全产品线。</div>
+            <div class="why-en"><strong>Why it matters:</strong>Google's business model deeply combining personal data with AI generation is taking shape — from search to images to meeting notes, AI is embedded across Google's full product line.</div>
+        </div>
+        <a class="source-link" href="https://techcrunch.com/2026/06/29/geminis-personalized-ai-image-generation-is-now-free-for-u-s-users/" target="_blank">TechCrunch</a>
+    </div>
+</div>
+
+<!-- ===== RESEARCH & TECH ===== -->
+<div class="section-card">
+    <div class="card-title">
+        <span class="title-cn">🔬 研究与技术</span>
+        <span class="title-en">Research & Technology</span>
+    </div>
+
+    <!-- Ornith-1.0 -->
+    <div class="news-item tag-research tag-new">
+        <div class="news-title-cn">Ornith-1.0：自改进开源 Agentic Coding 模型系列，9B 到 397B 四档发布</div>
+        <div class="news-title-en">Ornith-1.0: Self-Scaffolding Open-Source Agentic Coding Models, 9B to 397B</div>
+        <div class="news-tags">
+            <span class="news-tag tag-research-badge">Research</span>
+            <span class="news-tag tag-open-badge">Open</span>
+            <span class="news-tag tag-new-badge">🆕 新来源</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 25 日，DeepReinforce 团队发布 Ornith-1.0 自改进 agentic coding 模型系列（MIT 开源）。核心创新是联合优化 scaffold（任务编排策略）与 solution（解决方案）的 RL 训练框架——模型同时学习生成更好的编排策略和更好的代码，形成自改进闭环。397B MoE 在 Terminal-Bench 2.1 达 77.5、SWE-Bench Verified 82.4，超越 Claude Opus 4.7。9B Dense 在边缘设备部署下仍达 TB-2.1 43.1，超越 Gemma 4-31B。</div>
+            <div class="news-summary-en">On June 25, DeepReinforce released Ornith-1.0 (MIT license), a self-improving agentic coding model family. Core innovation: jointly optimizing scaffold (task orchestration strategy) and solution in RL training — the model simultaneously learns to generate better orchestration and better code, forming a self-improvement loop. The 397B MoE hits 77.5 on Terminal-Bench 2.1 and 82.4 on SWE-Bench Verified, surpassing Claude Opus 4.7. Even the 9B Dense reaches 43.1 on TB-2.1, beating Gemma 4-31B.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>"自改进训练框架"是开源编码模型的范式创新——不再依赖人工设计的固定 harness，而是让模型自动进化出最优编排策略，可持续驱动能力提升而不需手工调整。</div>
+            <div class="why-en"><strong>Why it matters:</strong>The self-improvement training framework is a paradigm innovation for open-source coding models — no longer relying on human-designed fixed harnesses, but letting the model auto-evolve optimal orchestration strategies for sustained capability gains without manual tuning.</div>
+        </div>
+        <a class="source-link" href="https://deep-reinforce.com/ornith_1_0.html" target="_blank">DeepReinforce</a>
+        <a class="source-link" href="https://github.com/deepreinforce-ai/Ornith-1" target="_blank">GitHub</a>
+        <a class="source-link" href="https://huggingface.co/collections/deepreinforce-ai/ornith-10" target="_blank">HuggingFace</a>
+        <div class="new-source-callout">🆕 新发现来源：deep-reinforce.com（DeepReinforce Ornith 系列）— 本期首次追踪</div>
+    </div>
+
+    <!-- Microsoft Memora -->
+    <div class="news-item tag-research">
+        <div class="news-title-cn">微软研究院 Memora：调和 AI 记忆的抽象性与具体性</div>
+        <div class="news-title-en">Microsoft Research Memora: Balancing Abstraction and Specificity in AI Memory</div>
+        <div class="news-tags">
+            <span class="news-tag tag-research-badge">Research</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 29 日，微软研究院发布 Memora 谐波记忆表示框架，解决 AI Agent 长期记忆的核心矛盾：高层数据抽象（压缩通用知识）与底层具体细节（保留精确信息）之间的张力。Memora 使 AI 能够在保持高层泛化的同时不丢失细粒度信息，这对长程 Agent 任务至关重要。</div>
+            <div class="news-summary-en">On June 29, Microsoft Research published Memora, a harmonic memory representation framework resolving the core tension in AI agent long-term memory: balancing high-level data abstraction (compressing general knowledge) with low-level granular detail (preserving precise information). Memora enables AI to maintain generalizations without losing specificity, crucial for long-horizon agent tasks.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>Agent 记忆机制是 2026 年 AI 研究热点之一。Memora 的"谐波"设计既保留宏观理解又维持微观精度，是 Agent 长程自主运作的关键基础设施。</div>
+            <div class="why-en"><strong>Why it matters:</strong>Agent memory mechanisms are a 2026 AI research hotspot. Memora's "harmonic" design preserves both macro understanding and micro precision — key infrastructure for long-horizon autonomous agent operation.</div>
+        </div>
+        <a class="source-link" href="https://www.microsoft.com/en-us/research/blog/memora-a-harmonic-memory-representation-balancing-abstraction-and-specificity/" target="_blank">Microsoft Research</a>
+    </div>
+
+    <!-- DiScoFormer + AllenAI -->
+    <div class="news-item tag-research">
+        <div class="news-title-cn">DiScoFormer：统一密度与得分估计的 Transformer 架构（AllenAI / HuggingFace）</div>
+        <div class="news-title-en">DiScoFormer: Unified Transformer for Density and Score Estimation (AllenAI / HuggingFace)</div>
+        <div class="news-tags">
+            <span class="news-tag tag-research-badge">Research</span>
+            <span class="news-tag tag-open-badge">Open</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 29 日，AllenAI 与 Hugging Face 合作发布 DiScoFormer，一种新型 Transformer 架构，在单一模型中统一密度估计（似然方法）和得分估计（梯度方法）——这是概率建模的两个基础路径首次被桥接。该架构有望为生成模型、推理优化和不确定性估计提供更统一的框架。</div>
+            <div class="news-summary-en">On June 29, AllenAI and Hugging Face released DiScoFormer, a novel transformer architecture unifying density estimation (likelihood-based) and score estimation (gradient-based) in a single model — bridging two fundamental approaches to probabilistic modeling for the first time. Could provide a more unified framework for generative models, inference optimization, and uncertainty estimation.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>概率建模的两条主线（密度 vs. 得分）长期各自发展，DiScoFormer 的统一架构可能为下一代生成模型和推理系统奠定新基础。</div>
+            <div class="why-en"><strong>Why it matters:</strong>The two main branches of probabilistic modeling (density vs. score) have long developed separately. DiScoFormer's unified architecture could lay a new foundation for next-generation generative models and inference systems.</div>
+        </div>
+        <a class="source-link" href="https://huggingface.co/blog/allenai/discoformer" target="_blank">HuggingFace Blog</a>
+    </div>
+</div>
+
+<!-- ===== POLICY & INDUSTRY ===== -->
+<div class="section-card">
+    <div class="card-title">
+        <span class="title-cn">📋 政策与产业</span>
+        <span class="title-en">Policy & Industry</span>
+    </div>
+
+    <!-- Great American AI Act -->
+    <div class="news-item tag-policy">
+        <div class="news-title-cn">《伟大美国 AI 法案》草案推进：拟 3 年 preempt 所有州级 AI 法律</div>
+        <div class="news-title-en">Great American AI Act Draft Advances: Proposes 3-Year Preemption of All State AI Laws</div>
+        <div class="news-tags">
+            <span class="news-tag tag-policy-badge">Policy</span>
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 4 日发布的《伟大美国 AI 法案》（GAAIA）269 页讨论草案由众议员 Obernolte (R-CA) 和 Trahan (D-MA) 跨党派推进，拟对基础模型建立联邦安全评估框架，并在 3 年内 preempt 所有州级 AI 法律（包括刚生效的 Colorado 法）。这将引发联邦 vs. 州的管辖权争夺，直接影响 OpenAI、Anthropic、Google 等的合规架构。</div>
+            <div class="news-summary-en">The 269-page Great American AI Act (GAAIA) discussion draft, released June 4 by Reps. Obernolte (R-CA) and Trahan (D-MA), proposes a federal safety evaluation framework for foundation models and a 3-year preemption of all state AI laws (including the newly effective Colorado Act). This will trigger a federal-vs-state jurisdiction battle directly impacting OpenAI, Anthropic, and Google compliance architectures.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>如果 GAAIA 通过，Colorado 等州级 AI 法将被冻结 3 年，AI 监管格局将从碎片化转向集中化，行业合规成本可能大幅简化。</div>
+            <div class="why-en"><strong>Why it matters:</strong>If GAAIA passes, Colorado and other state AI laws would be frozen for 3 years, shifting the AI regulatory landscape from fragmented to centralized — potentially simplifying industry compliance costs significantly.</div>
+        </div>
+        <a class="source-link" href="https://obernolte.house.gov/media/press-releases/obernolte-trahan-release-discussion-draft-great-american-ai-act" target="_blank">House Press</a>
+        <a class="source-link" href="https://aiflashreport.com/archive/2026-06-30.html" target="_blank">AI Flash Report</a>
+    </div>
+
+    <!-- OpenAI IPO delay -->
+    <div class="news-item tag-policy">
+        <div class="news-title-cn">OpenAI IPO 推迟至 2027：坚守万亿估值，避开市场波动窗口</div>
+        <div class="news-title-en">OpenAI IPO Delayed to 2027: Holding $1T Valuation, Avoiding Market Volatility</div>
+        <div class="news-tags">
+            <span class="news-tag tag-policy-badge">Policy</span>
+            <span class="news-tag tag-us-badge">US</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">据多位参与内部审议的人士报道，OpenAI 倾向将 IPO 从原定 2026 下半年推迟至 2027。CVP Sarah Friar 坚守约 1 万亿美元估值底线，不愿降价换速度。投行团队警告当前科技板块波动、中国 AI 竞争加剧及盈利前景不明是推迟主因。OpenAI 已于 6 月 8 日向 SEC 秘密递交 S-1。</div>
+            <div class="news-summary-en">Multiple insiders report OpenAI is leaning toward delaying its IPO from late 2026 to 2027. CVP Sarah Friar holds the ~$1 trillion valuation floor, unwilling to lower price for speed. Bankers warned that tech sector volatility, intensifying Chinese AI competition, and uncertain profitability are the main reasons. OpenAI filed a confidential S-1 with SEC on June 8.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>史上最大 IPO 延期反映 AI 行业估值泡沫与现实营收的张力，也意味着 2026-2027 间 AI 资本市场的窗口期将更漫长。</div>
+            <div class="why-en"><strong>Why it matters:</strong>The largest-ever IPO delay reflects the tension between AI valuation bubble and real revenue, meaning the 2026-2027 AI capital market window will be longer.</div>
+        </div>
+        <a class="source-link" href="https://finance.sina.com.cn/jjxw/2026-06-26/doc-inieszry5228281.shtml" target="_blank">新浪财经</a>
+        <a class="source-link" href="https://news.qq.com/rain/a/20260626A028PY00" target="_blank">腾讯新闻</a>
+    </div>
+
+    <!-- South Korea chip investment -->
+    <div class="news-item tag-policy">
+        <div class="news-title-cn">韩国 $550B+ 内存晶圆厂投资：三星与 SK 海力士联手应对全球 AI 算力饥渴</div>
+        <div class="news-title-en">South Korea $550B+ Memory Fab Investment: Samsung & SK Hynix Join Forces Against Global AI Compute Hunger</div>
+        <div class="news-tags">
+            <span class="news-tag tag-policy-badge">Policy</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 29 日，韩国公布大规模半导体扩张计划。Samsung 与 SK Hynix 联合承诺超 $5500 亿投资新建内存晶圆厂（CNN 报道 $576B），总统李在明誓言巩固韩国在 AI 内存芯片的绝对领导地位。新晶圆厂将建在韩国西南部的光州等地，应对全球 AI 算力驱动的"RAMageddon"内存短缺。</div>
+            <div class="news-summary-en">On June 29, South Korea unveiled massive semiconductor expansion plans. Samsung and SK Hynix jointly committed over $550B (CNN reports $576B) for new memory fabs. President Lee Jae Myung vowed to cement Korea's absolute leadership in AI memory chips. New fabs will be built in Gwangju and the southwest region, addressing the global AI-driven "RAMageddon" memory shortage.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>AI 算力瓶颈正在从 GPU 转向 HBM 内存供应，$550B+ 级别的投资意味着全球内存供应链将迎来结构性重塑，对 NVIDIA GB300/GB400 交付节奏有直接影响。</div>
+            <div class="why-en"><strong>Why it matters:</strong>The AI compute bottleneck is shifting from GPUs to HBM memory supply. A $550B+ level investment means global memory supply chains face structural reshaping, directly impacting NVIDIA GB300/GB400 delivery timelines.</div>
+        </div>
+        <a class="source-link" href="https://techcrunch.com/2026/06/29/south-korean-tech-giants-commit-over-550b-to-ease-ramageddon/" target="_blank">TechCrunch</a>
+        <a class="source-link" href="https://apnews.com/article/korea-samsung-ai-hynix-chips-22352d95c7a821c5f4548b2d1a4ebde8" target="_blank">AP News</a>
+        <a class="source-link" href="https://www.cnn.com/2026/06/29/business/south-korea-ai-investment-samsung-skhynix" target="_blank">CNN</a>
+    </div>
+
+    <!-- Tidal AI music -->
+    <div class="news-item tag-policy">
+        <div class="news-title-cn">Tidal 停止 AI 生成音乐版税支付：7 月 15 日生效，部署冒充检测自动化工具</div>
+        <div class="news-title-en">Tidal Cuts Royalties for AI-Generated Music: Effective July 15, Deploys Automated Impersonation Detection</div>
+        <div class="news-tags">
+            <span class="news-tag tag-policy-badge">Policy</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">6 月 29 日，流媒体平台 Tidal 宣布即日起停止 100% AI 生成音乐的版税支付，7 月 15 日起实施视觉标识标注。同时部署自动化工具检测和移除冒充真实艺人的 AI 音轨（deepfake 声音克隆），保护音乐生态完整性。这不是完全禁止 AI 音乐，而是优先保障真人艺术家报酬和听众透明度。</div>
+            <div class="news-summary-en">On June 29, streaming platform Tidal ceased royalty payments for 100% AI-generated music effective immediately, with visual labeling icons starting July 15. It also deployed automated tools to detect and remove AI tracks impersonating real artists (deepfake voice clones), protecting the music ecosystem's integrity. Not an outright ban — prioritizing human artist compensation and listener transparency.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>这是首个主要流媒体平台对 AI 生成内容采取实质性经济制裁，标志着 AI 内容与人类创作的经济权益争夺进入实操阶段。</div>
+            <div class="why-en"><strong>Why it matters:</strong>First major streaming platform to impose substantive economic sanctions on AI-generated content, marking the AI vs. human creation economic rights battle entering operational phase.</div>
+        </div>
+        <a class="source-link" href="https://www.theverge.com/tech/959211/tidal-ai-music-policy-demonetizingdetect-label" target="_blank">The Verge</a>
+        <a class="source-link" href="https://techcrunch.com/2026/06/29/tidal-cracks-down-on-ai-music-by-cutting-off-monetization/" target="_blank">TechCrunch</a>
+    </div>
+</div>
+
+<!-- ===== OPEN SOURCE ===== -->
+<div class="section-card">
+    <div class="card-title">
+        <span class="title-cn">🔓 开源生态</span>
+        <span class="title-en">Open Source Ecosystem</span>
+    </div>
+
+    <!-- LongCat-2.0 (also in Top Stories, here as open source highlight) -->
+    <div class="news-item tag-open">
+        <div class="news-title-cn">美团 LongCat-2.0 开源万亿参数模型：国产算力验证 + LSA 稀疏注意力创新</div>
+        <div class="news-title-en">Meituan LongCat-2.0 Open-Sources Trillion-Parameter Model: Domestic Compute Validation + LSA Innovation</div>
+        <div class="news-tags">
+            <span class="news-tag tag-open-badge">Open</span>
+            <span class="news-tag tag-cn-badge">CN</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">LongCat-2.0 以 MIT 协议开源 1.6T MoE 模型权重与推理代码，架构三大创新：(1) LongCat 稀疏注意力 LSA（从 DeepSeek DSA 演进，引入流感知索引/跨层索引/层级化索引三项正交优化，长上下文推理效率大幅提升）；(2) N-gram Embedding 在 MoE 甜点区之外扩展参数效率（135B N-gram 参数控制在总参 10% 以内）；(3) ScMoE 使 dense 与 MoE 分支完全并行执行。全流程在 5 万+国产算力芯片上训练，Muon 优化器大规模部署，6D 并行策略 + 超节点架构。</div>
+            <div class="news-summary-en">LongCat-2.0 open-sources 1.6T MoE weights and inference code under MIT license. Three architectural innovations: (1) LSA sparse attention (evolved from DeepSeek DSA, with streaming-aware/cross-layer/hierarchical indexing); (2) N-gram Embedding expanding parameter efficiency beyond MoE sweet spot; (3) ScMoE enabling fully parallel dense+MoE execution. Entirely trained on 50K+ domestic chips, with Muon optimizer, 6D parallelism, and supernode architecture.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>中国开源模型领域首次出现万亿级规模且验证国产算力的项目。LSA 的三项正交优化为长上下文推理提供了可复用的工程方案，比 DSA 在实际延迟上有显著改善。</div>
+            <div class="why-en"><strong>Why it matters:</strong>First Chinese open-source trillion-scale model validating domestic compute. LSA's three orthogonal optimizations provide reusable engineering solutions for long-context inference with significant latency improvements over DSA.</div>
+        </div>
+        <a class="source-link" href="https://longcat.chat/blog/longcat-2.0/" target="_blank">LongCat Official</a>
+        <a class="source-link" href="https://github.com/meituan-longcat/LongCat-2.0" target="_blank">GitHub</a>
+    </div>
+
+    <!-- Ornith-1.0 (also in Research, here as open source highlight) -->
+    <div class="news-item tag-open">
+        <div class="news-title-cn">Ornith-1.0 MIT 开源：自改进 agentic coding，9B 超越 31B 竞品</div>
+        <div class="news-title-en">Ornith-1.0 MIT Open-Source: Self-Improving Agentic Coding, 9B Beats 31B Competitors</div>
+        <div class="news-tags">
+            <span class="news-tag tag-open-badge">Open</span>
+        </div>
+        <div class="news-summary">
+            <div class="news-summary-cn">Ornith-1.0 四档模型全部 MIT 协议开源：9B Dense（边缘部署）、31B Dense、35B MoE、397B MoE。基于 Gemma 4 和 Qwen 3.5 预训练基座，核心创新是自改进 RL 训练——模型同时学习生成 scaffold（编排策略）和 solution，形成无需人工设计 harness 的自动进化闭环。397B 在 SWE-Bench Verified 达 82.4 超越 Claude Opus 4.7；9B 仅 9B 参数在 TB-2.1 达 43.1，超越 Gemma 4-31B。</div>
+            <div class="news-summary-en">All four Ornith-1.0 model sizes are MIT-licensed: 9B Dense (edge deployment), 31B Dense, 35B MoE, 397B MoE. Built on Gemma 4 and Qwen 3.5 pretrained bases, the core innovation is self-improving RL training — jointly optimizing scaffold and solution for an auto-evolution loop without human-designed harnesses. The 397B hits 82.4 on SWE-Bench Verified surpassing Claude Opus 4.7; the 9B reaches 43.1 on TB-2.1, beating Gemma 4-31B.</div>
+        </div>
+        <div class="why-matters">
+            <div class="why-cn"><strong>为何重要：</strong>MIT 协议 + 自改进训练 = 开源编码模型的新范式。最小 9B 模型超越 31B 竞品说明训练方法论比参数规模更重要，对边缘部署场景意义重大。</div>
+            <div class="why-en"><strong>Why it matters:</strong>MIT license + self-improving training = a new paradigm for open-source coding models. The smallest 9B beating 31B competitors proves training methodology matters more than parameter scale, hugely significant for edge deployment scenarios.</div>
+        </div>
+        <a class="source-link" href="https://github.com/deepreinforce-ai/Ornith-1" target="_blank">GitHub</a>
+        <a class="source-link" href="https://huggingface.co/collections/deepreinforce-ai/ornith-10" target="_blank">HuggingFace</a>
+    </div>
+</div>
+
+<!-- ===== FOOTER & WHITELIST ===== -->
+<div class="footer">
+    <div class="footer-cn">🤖 AI 技术简报 · 早报 · 2026年7月1日</div>
+    <div class="footer-en">AI Technology Briefing · Morning Edition · July 1, 2026</div>
+    <div class="footer-divider"></div>
+    <div class="footer-cn">编辑：WorkBuddy AI 自动化系统 | 数据截至新加坡时间 2026-07-01 08:30</div>
+    <div class="footer-en">Edited by: WorkBuddy AI Automation System | Data as of SGT 2026-07-01 08:30</div>
+    <div class="footer-divider"></div>
+    <div class="footer-cn">⚠️ 简报内容基于公开信息自动整理，不构成投资建议或技术推荐</div>
+    <div class="footer-en">⚠️ Briefing content is auto-compiled from public sources, not investment advice or technical recommendations</div>
+
+    <div class="whitelist-section">
+        <div class="whitelist-title-cn">📡 追踪来源白名单</div>
+        <div class="whitelist-title-en">Tracked Source Whitelist</div>
+        <div class="whitelist-list">
+            <strong>US：</strong>OpenAI (openai.com) · Anthropic (anthropic.com) · Google DeepMind (deepmind.google) · Meta MSL (about.fb.com/news)<br>
+            <strong>China：</strong>Moonshot/Kimi (moonshot.ai, kimi.com) · MiniMax (minimaxi.com) · 智谱 (zhipuai.cn, open.bigmodel.cn) · Qwen (qwen.ai/blog) · DeepSeek (deepseek.com) · ByteDance Seed (seed.bytedance.com) · <span class="whitelist-new">🆕 美团 LongCat (longcat.chat, tech.meituan.com ← 2026-07-01 新增)</span><br>
+            <strong>Singapore：</strong>A*STAR (a-star.edu.sg) · GovTech (tech.gov.sg) · NUS (nus.edu.sg) · MDDI (mddi.gov.sg) · Singtel (singtel.com) · PAIR (pair.gov.sg)<br>
+            <strong>Media：</strong>Reuters · MIT Tech Review · CNBC · Forbes · IEEE Spectrum · AI Critique · AI Flash Report · WinBuzzer · Kersai · Straits Times · AgenticWire · <span class="whitelist-new">🆕 explainx.ai (← 2026-06-30 新增)</span> · Legalithm<br>
+            <strong>Open Source/Research：</strong>HuggingFace Blog · arXiv cs.AI · OpenBMB · HKUDS · Marktechpost · PaddlePaddle · ServiceNow · <span class="whitelist-new">🆕 DeepReinforce (deep-reinforce.com ← 2026-07-01 新增)</span><br>
+            <strong>Computer Use：</strong>H Company (hcompany.ai)<br>
+            <strong>AI Governance：</strong>Plural Policy · UK AISI · Stanford HAI · Mayer Brown · EU Council · Inside Global Tech<br>
+        </div>
+        <div class="whitelist-note-cn">动态规则：搜索中发现新公司重要 AI 动态时，访问官方原文后追加至白名单，用 🆕 标注当期新增</div>
+        <div class="whitelist-note-en">Dynamic rule: When important AI updates from new companies are found during search, visit official source and append to whitelist, marking new entries with 🆕</div>
+    </div>
+</div>
+
+</body>
+</html>
