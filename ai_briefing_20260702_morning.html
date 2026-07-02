@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 · 早报 · 2026-07-02</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<style>
+:root {
+  --bg: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #263548;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --accent: #a78bfa;
+  --accent-hover: #8b5cf6;
+  --border: #334155;
+  --tag-us: #3b82f6;
+  --tag-cn: #ef4444;
+  --tag-sg: #f97316;
+  --tag-research: #22c55e;
+  --tag-open: #a78bfa;
+  --tag-policy: #eab308;
+  --tag-new: #06b6d4;
+  --radius: 12px;
+  --font-cn: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-en: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-en);
+  line-height: 1.7;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+/* Header */
+.header { text-align: center; margin-bottom: 32px; }
+.header-icon { font-size: 48px; margin-bottom: 8px; }
+.header-title-cn { font-family: var(--font-cn); font-size: 28px; font-weight: 700; color: var(--accent); }
+.header-title-en { font-size: 14px; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+.header-date-cn { font-family: var(--font-cn); font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+.header-date-en { font-size: 12px; color: var(--text-dim); }
+
+/* Trends Card */
+.trends-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+}
+.trends-title-cn { font-family: var(--font-cn); font-size: 18px; font-weight: 600; color: var(--accent); }
+.trends-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; }
+.trend-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(51,65,85,0.4);
+}
+.trend-item:last-child { border-bottom: none; }
+.trend-bullet { color: var(--accent); font-size: 14px; }
+.trend-cn { font-family: var(--font-cn); font-size: 14px; color: var(--text); flex: 1; }
+.trend-en { font-size: 12px; color: var(--text-muted); font-style: italic; flex: 1; }
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.stat-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  flex: 1;
+  min-width: 140px;
+  text-align: center;
+}
+.stat-value { font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-label-cn { font-family: var(--font-cn); font-size: 11px; color: var(--text-muted); }
+.stat-label-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+.stat-unit-cn { font-family: var(--font-cn); font-size: 11px; color: var(--text-dim); }
+.stat-unit-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+
+/* Section Card */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.section-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(167,139,250,0.06);
+}
+.card-title .title-cn { font-family: var(--font-cn); font-size: 18px; font-weight: 600; color: var(--accent); }
+.card-title .title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-left: 8px; }
+
+/* News Item */
+.news-item {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(51,65,85,0.5);
+  position: relative;
+}
+.news-item:last-child { border-bottom: none; }
+.news-item.top-story { border-left: 4px solid var(--accent); }
+.news-item.tag-us { border-left: 4px solid var(--tag-us); }
+.news-item.tag-cn { border-left: 4px solid var(--tag-cn); }
+.news-item.tag-sg { border-left: 4px solid var(--tag-sg); }
+.news-item.tag-research { border-left: 4px solid var(--tag-research); }
+.news-item.tag-open { border-left: 4px solid var(--tag-open); }
+.news-item.tag-policy { border-left: 4px solid var(--tag-policy); }
+.news-item.tag-new { border-left: 4px solid var(--tag-new); }
+
+/* Tag badges */
+.tag-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 6px;
+  letter-spacing: 0.5px;
+}
+.tag-us .tag-badge { background: rgba(59,130,246,0.2); color: var(--tag-us); }
+.tag-cn .tag-badge { background: rgba(239,68,68,0.2); color: var(--tag-cn); }
+.tag-sg .tag-badge { background: rgba(249,115,22,0.2); color: var(--tag-sg); }
+.tag-research .tag-badge { background: rgba(34,197,94,0.2); color: var(--tag-research); }
+.tag-open .tag-badge { background: rgba(167,139,250,0.2); color: var(--tag-open); }
+.tag-policy .tag-badge { background: rgba(234,179,8,0.2); color: var(--tag-policy); }
+.tag-new .tag-badge { background: rgba(6,182,212,0.2); color: var(--tag-new); }
+.top-story .tag-badge { background: rgba(167,139,250,0.2); color: var(--accent); }
+
+.news-title-cn { font-family: var(--font-cn); font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.5; }
+.news-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+
+.news-summary {
+  margin-top: 10px;
+  display: flex;
+  gap: 16px;
+}
+.news-summary-cn {
+  font-family: var(--font-cn);
+  font-size: 14px;
+  color: var(--text);
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+  flex: 1;
+}
+.news-summary-en {
+  font-size: 13px;
+  color: var(--text-muted);
+  border-left: 2px solid var(--text-dim);
+  padding-left: 12px;
+  flex: 1;
+}
+
+.why-matters {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(167,139,250,0.08);
+  border-radius: 8px;
+}
+.why-cn { font-family: var(--font-cn); font-size: 13px; color: var(--text); }
+.why-cn strong { color: var(--accent); }
+.why-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 4px; }
+.why-en strong { color: var(--accent); }
+
+.source-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(167,139,250,0.3);
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.source-link:hover { background: rgba(167,139,250,0.15); }
+
+/* Flag notice */
+.flag-notice {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: rgba(249,115,22,0.12);
+  border-radius: 6px;
+  font-family: var(--font-cn);
+  font-size: 12px;
+  color: var(--tag-sg);
+  border: 1px solid rgba(249,115,22,0.3);
+}
+
+/* New source callout */
+.new-source-callout {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: rgba(6,182,212,0.12);
+  border-radius: 6px;
+  font-family: var(--font-cn);
+  font-size: 12px;
+  color: var(--tag-new);
+  border: 1px solid rgba(6,182,212,0.3);
+}
+.new-source-callout::before { content: '🆕 '; }
+
+/* Whitelist Section */
+.whitelist-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-top: 24px;
+}
+.whitelist-title-cn { font-family: var(--font-cn); font-size: 16px; font-weight: 600; color: var(--accent); }
+.whitelist-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; }
+.whitelist-list {
+  margin-top: 12px;
+  font-family: var(--font-cn);
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+.whitelist-list span.new-tag { color: var(--tag-new); }
+.whitelist-note-cn { font-family: var(--font-cn); font-size: 11px; color: var(--text-dim); margin-top: 8px; }
+.whitelist-note-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+
+/* Footer */
+.footer {
+  margin-top: 28px;
+  text-align: center;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+.footer-cn { font-family: var(--font-cn); font-size: 11px; color: var(--text-dim); }
+.footer-en { font-size: 10px; color: var(--text-dim); font-style: italic; }
+.footer a { color: var(--accent); text-decoration: none; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .news-summary { flex-direction: column; gap: 8px; }
+  .stats-bar { gap: 8px; }
+  .stat-item { min-width: 100px; padding: 8px; }
+  body { padding: 12px 8px 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-icon">🤖</div>
+  <div class="header-title-cn">AI 简报 · 早报</div>
+  <div class="header-title-en">AI Briefing · Morning Edition</div>
+  <div class="header-date-cn">2026年7月2日 · 星期四</div>
+  <div class="header-date-en">Thursday, July 2, 2026 · SGT</div>
+</div>
+
+<!-- Trends Card -->
+<div class="trends-card">
+  <div class="trends-title-cn">核心趋势</div>
+  <div class="trends-title-en">Key Trends</div>
+  <div class="trend-item">
+    <span class="trend-bullet">▸</span>
+    <span class="trend-cn">Anthropic 一日三发：Sonnet 5 + Claude Science + Fable 5 全球恢复，Agent 能力继续下探中端价位</span>
+    <span class="trend-en">Anthropic triple-launch: Sonnet 5 + Claude Science + Fable 5 global redeployment, agentic capability pushed into mid-tier pricing</span>
+  </div>
+  <div class="trend-item">
+    <span class="trend-bullet">▸</span>
+    <span class="trend-cn">AI 基础设施争夺白热化：OpenAI 自研芯片 Jalapeño + Meta 入局云算力 + DeepSeek 峰谷定价</span>
+    <span class="trend-en">AI infrastructure race intensifies: OpenAI's Jalapeño chip + Meta enters cloud compute + DeepSeek peak/off-peak pricing</span>
+  </div>
+  <div class="trend-item">
+    <span class="trend-bullet">▸</span>
+    <span class="trend-cn">开源万亿参数竞赛升温：美团 LongCat-2.0 开源 1.6T MoE，国产算力训练全流程</span>
+    <span class="trend-en">Open-source trillion-parameter race heats up: Meituan LongCat-2.0 open-sources 1.6T MoE, trained entirely on domestic compute</span>
+  </div>
+  <div class="trend-item">
+    <span class="trend-bullet">▸</span>
+    <span class="trend-cn">AI 安全治理新范式：Anthropic 提议 Glasswing 越狱分级框架，Fable 5 重部署引出出口管制反思</span>
+    <span class="trend-en">New AI safety governance paradigm: Anthropic proposes Glasswing jailbreak severity framework; Fable 5 redeployment sparks export-control reflection</span>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value">6</div>
+    <div class="stat-label-cn">官方发布</div>
+    <div class="stat-label-en">Official Releases</div>
+    <div class="stat-unit-cn">本周密集</div>
+    <div class="stat-unit-en">This week</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">1.6T</div>
+    <div class="stat-label-cn">开源最大模型</div>
+    <div class="stat-label-en">Largest Open Model</div>
+    <div class="stat-unit-cn">参数量</div>
+    <div class="stat-unit-en">Parameters</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">$2</div>
+    <div class="stat-label-cn">Sonnet 5 输入价</div>
+    <div class="stat-label-en">Sonnet 5 Input Price</div>
+    <div class="stat-unit-cn">/百万 token</div>
+    <div class="stat-unit-en">/M tokens</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">9mo</div>
+    <div class="stat-label-cn">Jalapeño 流片周期</div>
+    <div class="stat-label-en">Jalapeño Tape-out</div>
+    <div class="stat-unit-cn">创 ASIC 速度纪录</div>
+    <div class="stat-unit-en">Record ASIC speed</div>
+  </div>
+</div>
+
+<!-- ============ TOP STORIES ============ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="card-title"><span class="title-cn">头条 · Top Stories</span><span class="title-en">Top Stories</span></div>
+  </div>
+
+  <!-- Story 1: Anthropic Sonnet 5 -->
+  <div class="news-item top-story">
+    <span class="tag-badge">US</span>
+    <span class="tag-badge">TOP</span>
+    <div class="news-title-cn">Anthropic 发布 Claude Sonnet 5：最强中端 Agent 模型，性能逼近 Opus 4.8</div>
+    <div class="news-title-en">Anthropic releases Claude Sonnet 5: most agentic mid-tier model, performance nears Opus 4.8</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 于6月30日发布 Claude Sonnet 5，定位为迄今智能体能力最强的 Sonnet 系列模型。在推理、工具使用、编程和知识工作等 Agent 关键维度上较前代 Sonnet 4.6 显著增强，部分任务性能逼近 Opus 4.8。定价为推广期 $2/$10 per MTok（8月31日后调整为 $3/$15）。安全评估显示 Sonnet 5 在 Agent 场景下总体安全性优于 Sonnet 4.6，但网络安全能力仍远低于 Opus 级模型。Sonnet 5 已成为 Free 和 Pro 计划的默认模型。</div>
+      <div class="news-summary-en">Anthropic released Claude Sonnet 5 on June 30, positioned as the most agentic Sonnet model to date. It significantly improves over Sonnet 4.6 on reasoning, tool use, coding, and knowledge work, approaching Opus 4.8 performance on some tasks. Introductory pricing at $2/$10 per MTok (adjusting to $3/$15 after Aug 31). Safety evaluations show overall improvement in agentic contexts over Sonnet 4.6, with substantially lower cyber capabilities than Opus-class models. Sonnet 5 is now the default model for Free and Pro plans.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Sonnet 5 将此前仅旗舰级模型才具备的自主规划与工具使用能力下探至中端价位，意味着 Agent 能力的性价比门槛正在急剧降低，中小团队和独立开发者也能部署可靠的多步自动化流程。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Sonnet 5 pushes previously flagship-only autonomous planning and tool-use capabilities into mid-tier pricing, dramatically lowering the cost threshold for reliable multi-step agentic workflows — now accessible to smaller teams and individual developers.</div>
+    </div>
+    <div class="flag-notice">⚑ 待观察：PAIR Chat 是否跟进升级 — Anthropic 发布新 Sonnet 系列后，新加坡 PAIR Chat 通常在 1-3 个月内跟进底层模型更新。当前 PAIR Chat 底层为 Claude Sonnet 4（2025 Q3），若升级至 Sonnet 5 将是重要信号。</div>
+    <a class="source-link" href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">Anthropic Official →</a>
+    <a class="source-link" href="https://www.anthropic.com/claude-sonnet-5-system-card" target="_blank">System Card →</a>
+  </div>
+
+  <!-- Story 2: Claude Science -->
+  <div class="news-item top-story">
+    <span class="tag-badge">US</span>
+    <span class="tag-badge">TOP</span>
+    <div class="news-title-cn">Anthropic 同日推出 Claude Science：面向科研人员的 AI 工作台</div>
+    <div class="news-title-en">Anthropic simultaneously launches Claude Science: an AI workbench for scientists</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 发布 Claude Science，一款专为科研人员设计的 AI 工作台应用。它集成超过 60 个科研技能和数据库连接器（覆盖基因组学、蛋白质组学、化学信息学等），原生渲染 3D 蛋白质结构、基因组浏览器轨道、化学分子等科学可视化。核心特点包括：全流程可审计（每个输出附带代码、环境、消息历史）、自动管理计算资源（支持本地/HPC/按需 GPU）、内置审阅 Agent 检查引用和计算错误。Pro/Max/Team/Enterprise 用户可立即使用 Beta 版。</div>
+      <div class="news-summary-en">Anthropic launched Claude Science, an AI workbench app designed for scientific researchers. It integrates over 60 scientific skills and database connectors (covering genomics, proteomics, cheminformatics, etc.), natively renders 3D protein structures, genome browser tracks, and chemical molecules. Key features: fully auditable outputs (code, environment, message history attached), automated compute management (local/HPC/on-demand GPU), and a built-in reviewer agent that checks citations and calculations. Available in beta for Pro/Max/Team/Enterprise users.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Claude Science 代表了 AI 从通用对话工具向垂直领域深度 Agent 平台的转型。科研工作天然需要跨数据库检索、可审计流程和计算资源调度——这正是 Agent 架构的理想应用场景。Anthropic 同日发布 60+ 预配置技能意味着"零代码部署"科研 Agent 已经成为现实。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Claude Science represents AI's shift from general chat tools to deep vertical-domain agent platforms. Scientific work inherently requires cross-database retrieval, auditable processes, and compute scheduling — ideal for agentic architecture. Anthropic's simultaneous launch of 60+ pre-configured skills means "zero-code deployment" of research agents is now reality.</div>
+    </div>
+    <a class="source-link" href="https://www.anthropic.com/news/claude-science-ai-workbench" target="_blank">Anthropic Official →</a>
+  </div>
+
+  <!-- Story 3: Fable 5 Redeployment -->
+  <div class="news-item top-story">
+    <span class="tag-badge">US</span>
+    <span class="tag-badge">TOP</span>
+    <div class="news-title-cn">Fable 5 全球恢复上线，Anthropic 联合 Glasswing 合作方提议越狱严重度分级框架</div>
+    <div class="news-title-en">Fable 5 restored globally; Anthropic and Glasswing partners propose jailbreak severity classification framework</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月30日，Anthropic 宣布 Fable 5 于7月1日全球恢复访问。此前因美国政府出口管制要求，Fable 5 和 Mythos 5 在6月12日被暂停。恢复伴随强化安全措施：针对 Amazon 研究团队报告的绕过技术训练了改进分类器，阻断率超 99%。同时，Anthropic 联合 Amazon、Microsoft、Google 等 Glasswing 合作方提出越狱严重度四级评估框架（能力增益、增益广度、武器化难度、可发现性），并启动 HackerOne 越狱赏金计划。</div>
+      <div class="news-summary-en">On June 30, Anthropic announced Fable 5's global restoration effective July 1. Access was suspended June 12 under US government export controls. Restoration includes strengthened safeguards: an improved classifier targeting the bypass technique reported by Amazon researchers, blocking over 99% of attempts. Anthropic also proposed a 4-criteria jailbreak severity framework (capability gain, breadth, weaponization ease, discoverability) with Glasswing partners (Amazon, Microsoft, Google), and launched a HackerOne bounty program for Fable 5 cyber jailbreaks.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Fable 5 事件从暂停到恢复仅 18 天，展示了 AI 安全治理在商业压力下的动态博弈。越狱分级框架的提出标志着行业从"一刀切封锁"转向"精细量化评估"，这是 AI 安全领域的重要范式转变。</div>
+      <div class="why-en"><strong>Why it matters:</strong>The Fable 5 suspension-to-restoration cycle took only 18 days, revealing the dynamic tension between AI safety governance and commercial pressure. The proposed jailbreak severity framework signals an industry shift from blanket blocking to nuanced quantitative assessment — a significant paradigm change in AI safety.</div>
+    </div>
+    <a class="source-link" href="https://www.anthropic.com/news/redeploying-fable-5" target="_blank">Anthropic Official →</a>
+  </div>
+</div>
+
+<!-- ============ 官方发布 ============ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="card-title"><span class="title-cn">官方发布 · Official Releases</span><span class="title-en">Official Releases</span></div>
+  </div>
+
+  <!-- GPT-5.6 Series -->
+  <div class="news-item tag-us">
+    <span class="tag-badge">US</span>
+    <div class="news-title-cn">OpenAI 发布 GPT-5.6 系列：旗舰 Sol / 均衡 Terra / 轻量 Luna 三档齐发</div>
+    <div class="news-title-en">OpenAI launches GPT-5.6 series: flagship Sol, balanced Terra, lightweight Luna</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月26日，OpenAI 公布 GPT-5.6 系列，包括旗舰 Sol、均衡型 Terra 和轻量 Luna 三款差异化模型。Sol 在编程基准 Terminal-Bench 2.1 上得分 88.8%（Ultra 模式 91.9%），超越 Claude Mythos 5（88.0%）。所有三档首次在网络安全和生物/化学领域均被标记为"高风险能力"级别。Sol 仅面向可信合作伙伴提供预览，定价 $5/$30 per MTok，约为 Anthropic Fable 5 对应价格的一半。</div>
+      <div class="news-summary-en">On June 26, OpenAI unveiled the GPT-5.6 series: flagship Sol, balanced Terra, and lightweight Luna. Sol scores 88.8% on Terminal-Bench 2.1 (91.9% in Ultra mode), surpassing Claude Mythos 5 (88.0%). All three tiers are for the first time rated "High Risk" in cybersecurity and bio/chem domains. Sol preview is available only to trusted partners at $5/$30 per MTok — roughly half Anthropic's Fable 5 pricing.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GPT-5.6 系列首次将高风险能力评级覆盖到轻量模型，表明 AI 安全评估正在向全系列下沉。Sol 的有限预览模式也反映了美国政府对前沿模型商业化的审慎态度。</div>
+      <div class="why-en"><strong>Why it matters:</strong>GPT-5.6 extends "High Risk" ratings to lightweight models for the first time, signaling safety assessments are sinking to the full model lineup. Sol's limited preview also reflects the US government's cautious stance on frontier model commercialization.</div>
+    </div>
+    <a class="source-link" href="https://openai.com/index/gpt-5-6" target="_blank">OpenAI →</a>
+  </div>
+
+  <!-- DeepSeek V4 -->
+  <div class="news-item tag-cn">
+    <span class="tag-badge">CN</span>
+    <div class="news-title-cn">DeepSeek 宣布 V4 正式版7月中旬上线，引入峰谷 API 定价机制</div>
+    <div class="news-title-en">DeepSeek announces V4 official launch in mid-July, introduces peak/off-peak API pricing</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月29日，DeepSeek 向用户发送邮件通知，V4 正式版计划于7月中旬上线，带来更多功能优化和性能提升。1M token 上下文窗口将成为全系列标配。同时首次引入峰谷定价：高峰时段（9:00-12:00, 14:00-18:00）API 价格为低谷时段的两倍。此前 V4-preview 版本已在 OpenRouter 上跻身全球调用量前三。</div>
+      <div class="news-summary-en">On June 29, DeepSeek notified users that V4 official is scheduled for mid-July with feature enhancements and performance upgrades. 1M-token context window becomes standard across the lineup. Peak/off-peak API pricing is introduced for the first time: peak hours (9AM-12PM, 2PM-6PM) charge double the off-peak rate. The V4 preview previously ranked top 3 globally by call volume on OpenRouter.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>峰谷定价是中国 AI API 市场的首次尝试，标志着低价竞争策略正在向精细化资源管理转型。DeepSeek V4 的全系列标配 1M 上下文也显示长上下文能力正从旗舰下沉至全线。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Peak/off-peak pricing is the first such attempt in China's AI API market, marking a shift from aggressive low-price competition to refined resource management. DeepSeek V4 standardizing 1M context across the lineup also shows long-context capability moving from flagship to full-line.</div>
+    </div>
+    <a class="source-link" href="https://deepseek.com" target="_blank">DeepSeek →</a>
+    <a class="source-link" href="https://technode.com/2026/06/30/deepseek-to-launch-v4-in-mid-july-with-new-peak-time-api-pricing/" target="_blank">TechNode →</a>
+  </div>
+
+  <!-- Jalapeño Chip -->
+  <div class="news-item tag-us">
+    <span class="tag-badge">US</span>
+    <div class="news-title-cn">OpenAI 与博通联合发布首款自研推理芯片 Jalapeño，9个月完成流片</div>
+    <div class="news-title-en">OpenAI and Broadcom unveil first custom inference chip Jalapeño, tape-out in 9 months</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月24日，OpenAI 与博通联合发布 Jalapeño——OpenAI 首款"智能处理器"（Intelligence Processor）。这是一款专为 LLM 推理设计的 ASIC，采用全新架构（非通用 GPU 改造），减少数据搬运、平衡算力/内存/网络资源以逼近理论峰值利用率。从设计到流片仅 9 个月，被描述为高性能半导体领域最快的 ASIC 开发周期。早期测试显示每瓦性能显著优于当前最先进产品。预计2026年底开始千兆瓦级数据中心部署。AI 模型深度参与了芯片设计流程。</div>
+      <div class="news-summary-en">On June 24, OpenAI and Broadcom unveiled Jalapeño — OpenAI's first Intelligence Processor. It's a blank-slate ASIC designed for LLM inference, reducing data movement and balancing compute/memory/network to approach theoretical peak utilization. Design-to-tape-out in just 9 months, described as the fastest ASIC development cycle in high-performance semiconductors. Early testing shows substantially better performance per watt than current state-of-the-art. Gigawatt-scale data center deployment planned by end of 2026. AI models were deeply involved in the chip design process.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Jalapeño 标志 OpenAI 从纯模型公司向全栈基础设施提供商的战略转型。AI 参与芯片设计（"AI 设计硬件"）可能是半导体行业的新范式。9个月流片速度证明 ASIC 开发周期可以在 AI 辅助下大幅压缩。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Jalapeño marks OpenAI's strategic shift from a pure model company to a full-stack infrastructure provider. AI participating in chip design ("AI designing hardware") could become a new paradigm for the semiconductor industry. The 9-month tape-out proves ASIC development cycles can be dramatically compressed with AI assistance.</div>
+    </div>
+    <a class="source-link" href="https://www.broadcom.com/company/news/product-releases/64506" target="_blank">Broadcom Official →</a>
+  </div>
+
+  <!-- OpenAI Codex Micro -->
+  <div class="news-item tag-us">
+    <span class="tag-badge">US</span>
+    <div class="news-title-cn">OpenAI 首款硬件产品：与 Work Louder 合作推出 Codex Micro 可编程键盘</div>
+    <div class="news-title-en">OpenAI's first hardware product: Codex Micro programmable keyboard with Work Louder</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月30日，OpenAI 开发者官方账号宣布将与客制化外设品牌 Work Louder 合作，于7月15日推出 Codex Micro——一款可编程宏键盘，配备 12 个自定义机械按键，专为 AI 编码快捷操作设计。这是 OpenAI 进军硬件领域的首款产品。此前 OpenAI 正与前苹果设计官 Jony Ive 打造代号为 Gumdrop 的消费级 AI 硬件。</div>
+      <div class="news-summary-en">On June 30, OpenAI's developer account announced a partnership with custom peripheral brand Work Louder to launch Codex Micro on July 15 — a programmable macro keyboard with 12 customizable mechanical keys designed for AI coding shortcuts. This is OpenAI's first hardware product. OpenAI is also working with former Apple design chief Jony Ive on a consumer AI device codenamed Gumdrop.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Codex Micro 作为 OpenAI 首款硬件产品，虽然形态保守（可编程键盘而非全新终端），但标志着 OpenAI 开始在物理交互层构建品牌触点，为后续 Jony Ive 合作的高端硬件铺路。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Though conservative in form (a macro pad, not a new terminal), Codex Micro as OpenAI's first hardware product signals the company building brand touchpoints at the physical interaction layer, paving the way for the higher-end Jony Ive collaboration.</div>
+    </div>
+    <a class="source-link" href="https://www.itbear.com.cn/html/2026-06/1419813.html" target="_blank">IT Bear →</a>
+  </div>
+</div>
+
+<!-- ============ 研究与技术 ============ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="card-title"><span class="title-cn">研究与技术 · Research & Technology</span><span class="title-en">Research & Technology</span></div>
+  </div>
+
+  <!-- Meta Compute -->
+  <div class="news-item tag-us">
+    <span class="tag-badge">US</span>
+    <div class="news-title-cn">Meta 入局 AI 云算力市场：计划出售过剩算力与模型托管服务</div>
+    <div class="news-title-en">Meta enters AI cloud compute market: plans to sell excess compute capacity and model hosting</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7月1日，Bloomberg 报道 Meta 正在开发名为 Meta Compute 的云基础设施业务，出售 AI 算力和模型托管服务，直接对标 AWS、Google Cloud、Azure。业务由基础设施负责人 Santosh Janardhan、Meta 超智慧实验室负责人 Daniel Gross 及总裁 Dina Powell McCormick 牵头。Meta 已承诺投入 $182.9B 用于 AI 基础设施。与 SpaceX/xAI 类似，Meta 计划模仿 CoreWeave 模式出售原始算力，也可能像 AWS 一样托管包括 Muse Spark在内的多种模型。</div>
+      <div class="news-summary-en">On July 1, Bloomberg reported Meta is developing a cloud infrastructure business called Meta Compute, selling AI compute and model hosting to compete with AWS, Google Cloud, and Azure. Led by infrastructure head Santosh Janardhan, MSL leader Daniel Gross, and president Dina Powell McCormick. Meta has committed $182.9B to AI infrastructure. Like SpaceX/xAI, Meta plans to sell raw compute (CoreWeave model) and may host various models including Muse Spark (AWS model).</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Meta 从"内循环"AI 公司转向对外出售算力，意味着万亿级基础设施投入正在催生新的商业模式。如果 AI 模型需求无法独立支撑营收，数据中心本身可能成为回报来源——但"算力泡沫"质疑声也在增大。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Meta pivoting from "internal-loop" AI to selling compute externally means trillion-scale infrastructure investment is spawning new business models. If AI model demand can't sustain revenue alone, data centers themselves may become the payoff — though "compute bubble" skepticism is also growing.</div>
+    </div>
+    <a class="source-link" href="https://techcrunch.com/2026/07/01/meta-like-spacex-looks-to-turn-excess-ai-compute-into-cash/" target="_blank">TechCrunch →</a>
+    <a class="source-link" href="https://www.latimes.com/business/story/2026-07-01/meta-plots-ai-cloud-business-to-challenge-amazon-microsoft-google" target="_blank">LA Times →</a>
+  </div>
+
+  <!-- Zhipu GLM-5.2 -->
+  <div class="news-item tag-cn">
+    <span class="tag-badge">CN</span>
+    <div class="news-title-cn">智谱 GLM-5.2 全量开放并开源：MIT 协议，1M 真正可用上下文窗口</div>
+    <div class="news-title-en">Zhipu GLM-5.2 fully open and open-sourced: MIT license, truly usable 1M context window</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月13日，智谱宣布 GLM-5.2 面向全量用户开放并同步开源（MIT 协议），采用 MoE 稀疏混合架构。GLM-5.2 首次实现真正可用的 1M 上下文窗口（非仅理论支持），同日发布 ZCode 3.0 编程工具（切换自研 Agent 内核）。社区关注焦点已转向 GLM-5.3 Vision 版本，社区投票显示视觉能力为最受期待功能。</div>
+      <div class="news-summary-en">On June 13, Zhipu announced GLM-5.2 fully open to users and open-sourced under MIT license, using MoE architecture. GLM-5.2 achieves a truly usable 1M context window (not just theoretical), and ZCode 3.0 coding tool launched simultaneously (switching to self-developed Agent kernel). Community focus has shifted to GLM-5.3 Vision, with community polls showing vision as the most anticipated feature.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GLM-5.2 的 MIT 协议开源是中国大模型厂商中最宽松的开源策略之一。1M 真正可用上下文意味着长文档分析的实际可用性大幅提升，而非仅限于基准测试。</div>
+      <div class="why-en"><strong>Why it matters:</strong>GLM-5.2's MIT license is among the most permissive open-source strategies from Chinese LLM providers. A truly usable 1M context means real-world long-document analysis is substantially improved, not just benchmark-ready.</div>
+    </div>
+    <a class="source-link" href="https://docs.bigmodel.cn/cn/update/new-releases" target="_blank">Zhipu Official →</a>
+    <a class="source-link" href="https://www.aitoollab.cn/articles/glm-52-zcode-3-release-analysis-202606/" target="_blank">AIToolLab →</a>
+  </div>
+</div>
+
+<!-- ============ 政策与产业 ============ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="card-title"><span class="title-cn">政策与产业 · Policy & Industry</span><span class="title-en">Policy & Industry</span></div>
+  </div>
+
+  <!-- EU AI Act Digital Omnibus -->
+  <div class="news-item tag-policy">
+    <span class="tag-badge">Policy</span>
+    <div class="news-title-cn">EU AI Act Digital Omnibus 预计7月正式通过，高风险 AI 义务时间线调整</div>
+    <div class="news-title-en">EU AI Act Digital Omnibus expected to formally pass in July; high-risk AI obligations timeline adjusted</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">根据最新追踪信息，EU AI Act 的 Digital Omnibus 修订协议预计在2026年7月正式通过并在官方公报发布。修订内容包括推迟高风险 AI 系统义务的生效时间，企业需据此重新调整合规优先级。此前5月的协议已同意延迟高风险 AI 义务，但正式法律生效仍需完成公报发布流程。</div>
+      <div class="news-summary-en">Per latest tracking, the EU AI Act's Digital Omnibus amendment is expected to formally pass in July 2026 with publication in the Official Journal. The revision delays high-risk AI system obligations, requiring companies to reprioritize compliance programs. While the May agreement already consented to delay, formal legal effect still requires Official Journal publication.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>EU AI Act 高风险义务的延迟意味着企业合规窗口扩大，但也增加了不确定性。对于全球 AI 公司而言，7月的正式通过将锁定最终时间线，直接影响产品发布策略。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Delayed high-risk obligations expand compliance windows but add uncertainty. For global AI companies, July's formal passage will lock the final timeline, directly impacting product launch strategies.</div>
+    </div>
+    <a class="source-link" href="https://axis-intelligence.com/eu-ai-act-news/" target="_blank">Axis Intelligence →</a>
+    <a class="source-link" href="https://www.skadden.com/insights/publications/2026/05/ai-act-state-of-play" target="_blank">Skadden →</a>
+  </div>
+
+  <!-- Anthropic Policy on the AI Exponential -->
+  <div class="news-item tag-policy">
+    <span class="tag-badge">Policy</span>
+    <div class="news-title-cn">Anthropic 发布"AI 指数级发展"政策提案，呼吁制度准备跟上技术加速</div>
+    <div class="news-title-en">Anthropic publishes "Policy on the AI Exponential" proposal, urging institutional readiness for accelerating progress</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月10日，Anthropic 发布政策提案《Policy on the AI Exponential》，指出 AI 正以指数速度进步，但政策制定过程是为较慢世界设计的。提案提出了一系列制度准备建议，以使现有机构能够应对 AI 加速发展带来的挑战。这与 Fable 5 出口管制事件形成呼应——技术进步速度正在超越现有监管框架的适应能力。</div>
+      <div class="news-summary-en">On June 10, Anthropic published "Policy on the AI Exponential," noting AI is advancing at exponential speed while policymaking was built for a slower world. The proposal offers institutional readiness recommendations to help existing governance structures cope with AI's accelerating pace. This echoes the Fable 5 export control episode — technological progress is outpacing regulatory frameworks' adaptive capacity.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Anthropic 的政策提案与其 Fable 5 出口管制经历形成闭环叙事：技术加速 → 监管滞后 → 紧急管控 → 商业损失 → 制度改革呼吁。这条路径可能成为 AI 行业与政府博弈的典型模式。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Anthropic's policy proposal forms a closed-loop narrative with its Fable 5 export control experience: tech acceleration → regulatory lag → emergency control → commercial loss → institutional reform call. This path may become the typical pattern of AI industry-government dynamics.</div>
+    </div>
+    <a class="source-link" href="https://www.anthropic.com/policy-on-the-ai-exponential" target="_blank">Anthropic Official →</a>
+  </div>
+</div>
+
+<!-- ============ 开源生态 ============ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="card-title"><span class="title-cn">开源生态 · Open Source Ecosystem</span><span class="title-en">Open Source Ecosystem</span></div>
+  </div>
+
+  <!-- Meituan LongCat-2.0 -->
+  <div class="news-item tag-cn">
+    <span class="tag-badge">CN</span>
+    <div class="news-title-cn">美团开源 LongCat-2.0：1.6T 参数 MoE 模型，国产算力训练推理全流程</div>
+    <div class="news-title-en">Meituan open-sources LongCat-2.0: 1.6T-parameter MoE model, entire train-infer pipeline on domestic compute</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6月30日，美团正式发布 LongCat-2.0 并宣布对外开源（权重即将发布）。总参数1.6万亿，每 token 激活约48B参数。这是业界首个完全依靠国产 AI ASIC 超级集群完成训练和大规模部署的万亿参数模型。预训练覆盖超过35万亿 token，全程无不可恢复的 loss spike。原生支持 1M 上下文，引入 LongCat Sparse Attention 机制。在编码和 Agent 任务上表现强劲。此前测试版在 OpenRouter 调用量跻身全球前三。</div>
+      <div class="news-summary-en">On June 30, Meituan released LongCat-2.0 and announced open-sourcing (weights coming soon). 1.6 trillion total parameters, ~48B activated per token. This is the first trillion-parameter model fully trained and deployed on domestic AI ASIC super-pods. Pretraining spans 35+ trillion tokens with zero irrecoverable loss spikes. Native 1M context with LongCat Sparse Attention. Strong performance on coding and agentic tasks. The preview version ranked top 3 globally by call volume on OpenRouter.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>LongCat-2.0 证明国产算力（AI ASIC）可以支撑万亿参数级前沿训练，打破了"只有 NVIDIA GPU 才能训练前沿模型"的认知。35T token 无 loss spike 的稳定训练记录也展示了国产基础设施的成熟度。1.6T 参数进入开源生态将进一步推高开源模型的上限。</div>
+      <div class="why-en"><strong>Why it matters:</strong>LongCat-2.0 proves domestic AI ASICs can support trillion-parameter frontier training, breaking the perception that only NVIDIA GPUs can train frontier models. The 35T-token zero-spike record demonstrates domestic infrastructure maturity. 1.6T parameters entering the open-source ecosystem further pushes the upper bound of open models.</div>
+    </div>
+    <a class="source-link" href="https://github.com/meituan-longcat/LongCat-2.0" target="_blank">GitHub →</a>
+    <a class="source-link" href="https://longcat.chat/blog/longcat-2.0" target="_blank">LongCat Blog →</a>
+  </div>
+
+  <!-- Qwen 3.6 -->
+  <div class="news-item tag-cn">
+    <span class="tag-badge">CN</span>
+    <div class="news-title-cn">Qwen3.6-Plus 上线：承上启下的中高端版本，API 即时可用</div>
+    <div class="news-title-en">Qwen3.6-Plus launched: pivotal mid-to-high-tier release, available immediately via API</div>
+    <div class="news-summary">
+      <div class="news-summary-cn">继 Qwen3.5 系列2月发布后，Qwen 正式推出 Qwen3.6-Plus，定位为承上启下的中高端版本，平衡性能与成本。API 即时可用，作为 Qwen 3.5 → 3.7 之间的桥梁产品，为开发者提供更优的成本质量比。</div>
+      <div class="news-summary-en">Following the Qwen3.5 series in February, Qwen officially launched Qwen3.6-Plus, positioned as a pivotal mid-to-high-tier release balancing performance and cost. Available immediately via API, it bridges Qwen 3.5 → 3.7 with a refined cost-quality ratio for developers.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Qwen 的快速迭代节奏（3.5 → 3.6 → 3.7）展示了中国开源模型的敏捷发布策略。3.6-Plus 的定位为开发者提供了旗舰级与经济级之间的精准选择。</div>
+      <div class="why-en"><strong>Why it matters:</strong>Qwen's rapid iteration pace (3.5 → 3.6 → 3.7) demonstrates Chinese open-source models' agile release strategy. 3.6-Plus gives developers a precise choice between flagship and budget tiers.</div>
+    </div>
+    <a class="source-link" href="https://qwen.ai/blog?id=qwen3.6" target="_blank">Qwen Official →</a>
+  </div>
+</div>
+
+<!-- ============ Whitelist ============ -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">追踪来源白名单</div>
+  <div class="whitelist-title-en">Tracked Source Whitelist</div>
+  <div class="whitelist-list">
+    <strong>US：</strong>OpenAI (openai.com) · Anthropic (anthropic.com) · Google DeepMind (deepmind.google) · Meta (about.fb.com/news)<br>
+    <strong>China：</strong>Moonshot/Kimi (moonshot.ai, kimi.com) · MiniMax (minimaxi.com) · 智谱 (zhipuai.cn) · Qwen (qwen.ai) · DeepSeek (deepseek.com) · ByteDance Seed (seed.bytedance.com) · Meituan LongCat (longcat.chat)<br>
+    <strong>Singapore：</strong>A*STAR (a-star.edu.sg) · GovTech (tech.gov.sg) · DSAI (smartnation.sg) · NUS AI (nus.edu.sg) · MDDI (mddi.gov.sg) · Singtel RE:AI (singtel.com) · <span class="new-tag">🆕 PAIR Chat (pair.gov.sg)</span><br>
+    <strong>SG GovTech Tools：</strong>PAIR Chat · AIBots · Transcribe · Pair Noms · Pair Search<br>
+    <strong>Media：</strong>Reuters · MIT Tech Review · Xinhua EN · CNBC · Forbes · IEEE Spectrum · AI Critique · AI Flash Report · WinBuzzer · Kersai · AI Release Tracker · Straits Times Tech · AgenticWire · explainx.ai · Legalithm<br>
+    <strong>Open Source/Research：</strong>Hugging Face · arXiv CS.AI · OpenBMB · HKUDS · Marktechpost · PaddlePaddle on HF · ServiceNow on HF · DeepReinforce Ornith<br>
+    <strong>Computer Use：</strong>H Company (hcompany.ai)<br>
+    <strong>AI Governance：</strong>Plural Policy · UK AISI · Stanford HAI · Mayer Brown · EU Council · Inside Global Tech<br>
+    <strong>China Extended：</strong>Knightli · Kimi K2 Official · Meituan LongCat
+  </div>
+  <div class="whitelist-note-cn">动态白名单：搜索时若发现新公司重要动态，访问官方原文后将 URL 追加至白名单。本期无新增来源。</div>
+  <div class="whitelist-note-en">Dynamic whitelist: when significant new company developments are discovered during search, their official URLs are appended. No new sources added this edition.</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-cn">🤖 AI 简报 · 早报 · 2026-07-02 · 由自动化系统生成</div>
+  <div class="footer-en">AI Briefing · Morning Edition · Generated by automated system</div>
+  <div class="footer-cn" style="margin-top:4px;">数据截至新加坡时间 2026-07-02 08:30 SGT</div>
+  <div class="footer-en" style="margin-top:2px;">Data as of July 2, 2026 08:30 SGT</div>
+  <div class="footer-cn" style="margin-top:4px;">访问 https://kidultop.github.io/investment-reports/ 查看完整简报列表</div>
+  <div class="footer-en" style="margin-top:2px;">Visit https://kidultop.github.io/investment-reports/ for full briefing archive</div>
+</div>
+
+</body>
+</html>
