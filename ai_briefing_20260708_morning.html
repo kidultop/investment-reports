@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 早报 | AI Morning Briefing - 2026-07-08</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #27354f;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #a78bfa;
+            --accent-light: #c4b5fd;
+            --border: #334155;
+            --us: #38bdf8;
+            --cn: #f87171;
+            --sg: #fb923c;
+            --research: #4ade80;
+            --open: #a78bfa;
+            --policy: #facc15;
+            --new-source: #2dd4bf;
+            --radius: 14px;
+            --shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+        header {
+            text-align: center;
+            padding: 48px 20px 32px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 32px;
+        }
+        .header-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        h1 {
+            margin: 0 0 8px;
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin: 0;
+        }
+        .subtitle-en {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 28px 0 32px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .stat-label-cn {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .stat-label-en {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .trends-card {
+            background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(139,92,246,0.08));
+            border: 1px solid rgba(167,139,250,0.25);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow);
+        }
+        .trends-title-cn {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin-bottom: 4px;
+        }
+        .trends-title-en {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 18px;
+        }
+        .trend-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding-left: 14px;
+            border-left: 3px solid var(--accent);
+        }
+        .trend-item:last-child { margin-bottom: 0; }
+        .trend-cn { font-size: 0.95rem; color: var(--text); }
+        .trend-en { font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-top: 2px; }
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow);
+        }
+        .card-title {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 22px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .title-cn { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+        .title-en { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+        .news-list { display: flex; flex-direction: column; gap: 20px; }
+        .news-item {
+            background: rgba(15,23,42,0.5);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .news-item:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent);
+        }
+        .news-item.top { border-left: 4px solid var(--accent); }
+        .news-item.us { border-left: 4px solid var(--us); }
+        .news-item.cn { border-left: 4px solid var(--cn); }
+        .news-item.sg { border-left: 4px solid var(--sg); }
+        .news-item.research { border-left: 4px solid var(--research); }
+        .news-item.open { border-left: 4px solid var(--open); }
+        .news-item.policy { border-left: 4px solid var(--policy); }
+        .news-item.new-source { border-left: 4px solid var(--new-source); }
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .news-title-cn {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+        .news-title-en {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.35;
+        }
+        .news-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+            color: #fff;
+        }
+        .tag-us { background: var(--us); }
+        .tag-cn { background: var(--cn); }
+        .tag-sg { background: var(--sg); }
+        .tag-research { background: var(--research); color: #0f172a; }
+        .tag-open { background: var(--open); }
+        .tag-policy { background: var(--policy); color: #0f172a; }
+        .tag-new { background: var(--new-source); color: #0f172a; }
+        .news-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 14px 0;
+            padding-left: 14px;
+            border-left: 2px solid var(--border);
+        }
+        .news-summary-cn { font-size: 0.95rem; color: var(--text); }
+        .news-summary-en { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+        .why-matters {
+            background: rgba(167,139,250,0.08);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 14px;
+        }
+        .why-cn { font-size: 0.9rem; color: var(--text); }
+        .why-cn strong { color: var(--accent-light); }
+        .why-en { font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-top: 6px; }
+        .why-en strong { color: var(--accent-light); }
+        .news-source {
+            margin-top: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--accent-light);
+            text-decoration: none;
+            border: 1px solid rgba(167,139,250,0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .news-source:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+        .new-source-callout {
+            background: rgba(45,212,191,0.1);
+            border: 1px solid rgba(45,212,191,0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: var(--new-source);
+        }
+        .new-source-callout strong { color: var(--new-source); }
+        .whitelist-card {
+            background: rgba(30,41,59,0.7);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+        .whitelist-title-cn { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .whitelist-title-en { font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-bottom: 14px; }
+        .whitelist-note-cn { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; }
+        .whitelist-note-en { font-size: 0.75rem; color: var(--text-muted); font-style: italic; margin-bottom: 16px; }
+        .whitelist-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+        }
+        .whitelist-category {
+            background: rgba(15,23,42,0.5);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        .whitelist-category-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent-light);
+            margin-bottom: 8px;
+        }
+        .whitelist-category ul {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .whitelist-category li { margin-bottom: 4px; }
+        .new-source-mark { color: var(--new-source); font-weight: 600; }
+        footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .footer-cn { margin-bottom: 4px; }
+        .footer-en { font-style: italic; font-size: 0.75rem; margin-bottom: 12px; }
+        @media (max-width: 640px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .news-header { flex-direction: column; }
+            .news-title-en { margin-bottom: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-badge">MORNING BRIEFING</div>
+            <h1>AI 早报</h1>
+            <p class="subtitle">2026年7月8日 · Wednesday</p>
+            <p class="subtitle-en">AI Morning Briefing · July 8, 2026</p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label-cn">本期报道</div>
+                <div class="stat-label-en">Stories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label-cn">标准分区</div>
+                <div class="stat-label-en">Sections</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label-cn">地区来源</div>
+                <div class="stat-label-en">Regions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label-cn">新增来源</div>
+                <div class="stat-label-en">New Sources</div>
+            </div>
+        </div>
+
+        <div class="trends-card">
+            <div class="trends-title-cn">核心趋势</div>
+            <div class="trends-title-en">Key Trends</div>
+            <div class="trend-item">
+                <div>
+                    <div class="trend-cn">OpenAI 与 Anthropic 同步推进旗舰模型与基础设施：GPT-5.6 系列开启限量预览，Jalapeño 自研推理芯片首次亮相。</div>
+                    <div class="trend-en">OpenAI and Anthropic both push frontier models and infrastructure: GPT-5.6 series begins limited preview, while Jalapeño custom inference chip debuts.</div>
+                </div>
+            </div>
+            <div class="trend-item">
+                <div>
+                    <div class="trend-cn">AI 应用开始深入科学研究和代码代理工作流：Claude Science 科学家工作台上线，Claude Code 的演进过程正式公开。</div>
+                    <div class="trend-en">AI applications are penetrating scientific research and coding-agent workflows: Claude Science launches, and the making of Claude Code is published.</div>
+                </div>
+            </div>
+            <div class="trend-item">
+                <div>
+                    <div class="trend-cn">中国开源模型加速进入国际平台：Kimi K2.7 Code 成为 GitHub Copilot 首个可选开源模型，DeepSeek V4 正式版即将引入峰谷定价。</div>
+                    <div class="trend-en">Chinese open-weight models are accelerating into global platforms: Kimi K2.7 Code becomes the first open-weight model in GitHub Copilot, and DeepSeek V4 official will introduce peak pricing.</div>
+                </div>
+            </div>
+            <div class="trend-item">
+                <div>
+                    <div class="trend-cn">环境学习成为新的评估前沿：ByteDance Seed 发布 EdgeBench，提出真实世界环境学习中的 log-sigmoid 扩展规律。</div>
+                    <div class="trend-en">Environment learning is emerging as a new evaluation frontier: ByteDance Seed releases EdgeBench, proposing a log-sigmoid scaling law for real-world environment learning.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">头条</span>
+                <span class="title-en">Top Stories</span>
+            </div>
+            <div class="news-list">
+                <div class="news-item top">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">OpenAI 发布 GPT-5.6 系列并启动限量预览</div>
+                            <div class="news-title-en">OpenAI previews GPT-5.6 series with limited trusted-partner access</div>
+                        </div>
+                        <span class="news-tag tag-us">🇺🇸 US</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">OpenAI 于 6 月 26 日发布 GPT-5.6 系列，包括旗舰模型 Sol、均衡模型 Terra 和轻量模型 Luna。Sol 在 Terminal-Bench 2.1、GeneBench v1 和 ExploitBench 等基准上刷新了 OpenAI 内部最佳成绩，并引入 max 推理强度与 ultra 子代理模式。应美国政府要求，系列目前仅向少量可信合作伙伴限量预览。</div>
+                        <div class="news-summary-en">OpenAI announced the GPT-5.6 family on June 26, with flagship Sol, balanced Terra, and fast Luna. Sol sets new internal records on Terminal-Bench 2.1, GeneBench v1, and ExploitBench, and introduces a max reasoning effort and an ultra sub-agent mode. At the U.S. government’s request, the series is currently in a limited preview for trusted partners.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>GPT-5.6 的命名体系从单一数字转向代际 + 持久能力层级（Sol/Terra/Luna），意味着 OpenAI 开始把模型发布节奏产品化；同时“政府预览”机制也可能成为前沿模型发布的新流程标杆。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> GPT-5.6 shifts OpenAI’s naming from monolithic numbers to generation + durable capability tiers (Sol/Terra/Luna), signaling a productized release cadence; the government-preview process may also become a template for frontier model releases.</div>
+                    </div>
+                    <a class="news-source" href="https://openai.com/index/previewing-gpt-5-6-sol/" target="_blank">来源 Source · OpenAI</a>
+                </div>
+
+                <div class="news-item top">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">Anthropic 发布 Claude Sonnet 5 与 Claude Science</div>
+                            <div class="news-title-en">Anthropic launches Claude Sonnet 5 and Claude Science workbench</div>
+                        </div>
+                        <span class="news-tag tag-us">🇺🇸 US</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">6 月 30 日，Anthropic 同时推出 Claude Sonnet 5 与 Claude Science。Sonnet 5 在 Agentic 搜索、计算机使用、代码和知识工作上较前代 Sonnet 4.6 显著提升，部分任务接近 Opus 4.8，定价为输入 $2/百万 token、输出 $10/百万 token（优惠期至 8 月 31 日）。Claude Science 则是面向科学家的 AI 工作台，整合 60 多种生命科学工具与数据库，可生成可审计的研究产物。</div>
+                        <div class="news-summary-en">On June 30, Anthropic launched Claude Sonnet 5 and Claude Science. Sonnet 5 substantially improves agentic search, computer use, coding, and knowledge work over Sonnet 4.6, approaching Opus 4.8 on some tasks, with introductory pricing at $2/MTok input and $10/MTok output through August 31. Claude Science is an AI workbench for scientists, integrating 60+ life-sciences tools and databases to produce auditable research artifacts.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>Claude Science 把“AI for Science”从单点模型能力扩展到完整科研流水线，覆盖文献分析、实验设计、计算作业调度与论文可复现性；Sonnet 5 则进一步压低高质量代理能力的成本门槛。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> Claude Science extends "AI for Science" from point-model capabilities to full research pipelines, covering literature analysis, experiment design, compute scheduling, and reproducibility; Sonnet 5 further lowers the cost barrier for high-quality agentic performance.</div>
+                    </div>
+                    <a class="news-source" href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank">来源 Source · Anthropic</a>
+                </div>
+
+                <div class="news-item top new-source">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">GitHub Copilot 首次接入开源模型 Kimi K2.7 Code</div>
+                            <div class="news-title-en">GitHub Copilot adds Kimi K2.7 Code as its first open-weight model</div>
+                        </div>
+                        <span class="news-tag tag-cn">🇨🇳 CN</span>
+                        <span class="news-tag tag-open">Open</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">7 月 1 日，GitHub 宣布月之暗面 Kimi K2.7 Code 开源模型正式接入 GitHub Copilot，成为 Copilot 模型选择器中首个开源权重模型。该模型由 GitHub 托管在微软 Azure 上，7 月 7 日起进一步覆盖 Copilot Business 和 Enterprise 计划。Kimi 称 K2.7 Code 在长上下文编程任务的指令遵循、长程任务性能和过度思考倾向上均有显著改善，平均 token 消耗减少 30%。</div>
+                        <div class="news-summary-en">On July 1, GitHub announced that Moonshot AI’s open-weight Kimi K2.7 Code is now available in GitHub Copilot, the first open-weight model in the Copilot model picker. Hosted by GitHub on Microsoft Azure, it expanded to Copilot Business and Enterprise plans on July 7. Kimi says K2.7 Code improves instruction following and long-horizon coding performance while reducing average token consumption by 30%.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>全球最大编程助手首次向中国开源模型开放模型槽位，不仅降低了开发者使用成本，也标志着中国开源代码模型进入国际主流开发者工具链。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> The world’s largest coding assistant is opening its model picker to a Chinese open-weight model, lowering costs for developers and signaling Chinese open-source code models have entered mainstream global developer tooling.</div>
+                    </div>
+                    <a class="news-source" href="https://github.blog/changelog/2026-07-07-kimi-k2-7-now-available-for-copilot-business-and-enterprise/" target="_blank">来源 Source · GitHub Changelog</a>
+                    <div class="new-source-callout">🆕 新发现来源 New source: GitHub Changelog (github.blog) — 2026-07-08 加入白名单</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">官方发布</span>
+                <span class="title-en">Official Releases</span>
+            </div>
+            <div class="news-list">
+                <div class="news-item us">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">OpenAI 与 Broadcom 联合发布自研推理芯片 Jalapeño</div>
+                            <div class="news-title-en">OpenAI and Broadcom unveil Jalapeño LLM-optimized inference chip</div>
+                        </div>
+                        <span class="news-tag tag-us">🇺🇸 US</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">6 月 24 日，OpenAI 与 Broadcom 联合发布首款 Intelligence Processor Jalapeño。该芯片从架构到流片仅耗时 9 个月，专为当前与未来大语言模型推理设计，工程样片已在实验室运行 GPT-5.3-Codex-Spark 等负载。OpenAI 表示早期测试显示其每瓦性能显著优于当前最先进方案，计划与微软等合作伙伴在 2026 年底前部署吉瓦级数据中心。</div>
+                        <div class="news-summary-en">On June 24, OpenAI and Broadcom unveiled Jalapeño, OpenAI’s first Intelligence Processor. Designed from scratch for LLM inference, the chip went from architecture to tape-out in nine months, with engineering samples already running workloads like GPT-5.3-Codex-Spark in the lab. OpenAI says early testing shows substantially better performance per watt than current state-of-the-art, with plans for gigawatt-scale data centers by end of 2026.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>Jalapeño 标志着 OpenAI 从模型公司向全栈 AI 基础设施商转型，自研芯片与 Broadcom 的硅片实现、Celestica 的系统集成能力结合，可能重塑推理成本结构。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> Jalapeño marks OpenAI’s shift from a model company to a full-stack AI infrastructure provider; combining in-house chip design with Broadcom silicon and Celestica systems could reshape inference cost structures.</div>
+                    </div>
+                    <a class="news-source" href="https://openai.com/index/openai-broadcom-jalapeno-inference-chip/" target="_blank">来源 Source · OpenAI</a>
+                </div>
+
+                <div class="news-item us">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">Anthropic 推出 Claude Science 科学家 AI 工作台</div>
+                            <div class="news-title-en">Anthropic introduces Claude Science, an AI workbench for scientists</div>
+                        </div>
+                        <span class="news-tag tag-us">🇺🇸 US</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">6 月 30 日，Anthropic 发布 Claude Science 公测版，面向 Pro、Max、Team 和 Enterprise 用户。该平台把 PubMed、Jupyter、R、HPC 终端等 60 多种工具整合进统一环境，内置 3D 蛋白结构、基因组浏览器轨迹、化学结构等可视化，并可通过 SSH 接入实验室自有集群或 Modal 按需算力。所有输出附带代码、环境和对话历史，确保可审计与可复现。</div>
+                        <div class="news-summary-en">On June 30, Anthropic released Claude Science in beta for Pro, Max, Team, and Enterprise users. The platform integrates 60+ tools such as PubMed, Jupyter, R, and HPC terminals into a unified environment, renders 3D proteins, genome-browser tracks, and chemical structures, and can connect to lab clusters over SSH or Modal on-demand compute. Every output includes code, environment, and conversation history to ensure auditability and reproducibility.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>Claude Science 把多代理协调、工具调用和科学可复现性打包为产品，可能缩短从假设到实验再到论文产出的周期，是“AI 科学家”从 demo 走向实际科研基础设施的关键一步。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> Claude Science packages multi-agent coordination, tool use, and scientific reproducibility into a product, potentially shortening the cycle from hypothesis to experiment to manuscript, a key step for "AI scientists" moving from demos to research infrastructure.</div>
+                    </div>
+                    <a class="news-source" href="https://www.anthropic.com/news/claude-science-ai-workbench" target="_blank">来源 Source · Anthropic</a>
+                </div>
+
+                <div class="news-item cn new-source">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">DeepSeek V4 正式版将于 7 月中旬上线并引入峰谷定价</div>
+                            <div class="news-title-en">DeepSeek V4 official launch to arrive mid-July with peak/off-peak pricing</div>
+                        </div>
+                        <span class="news-tag tag-cn">🇨🇳 CN</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">DeepSeek 官方宣布 V4 正式版将于 7 月中旬上线，结束自 4 月以来的预览期。正式版将在功能优化和性能提升之外，首次引入 API 峰谷定价：北京时间每日 9:00–12:00 和 14:00–18:00 为高峰时段，价格为基准价 2 倍；低谷时段维持现有价格。用户将提前 24 小时收到邮件通知，并可申请退还余额。</div>
+                        <div class="news-summary-en">DeepSeek officially announced that the V4 official release will arrive in mid-July, ending the preview period that began in April. Beyond feature and performance improvements, the official launch will introduce peak/off-peak API pricing: 2× baseline during Beijing peak hours (9:00–12:00 and 14:00–18:00), with off-peak prices unchanged. Users will receive 24-hour email notice and can apply for refunds of remaining balances.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>峰谷定价是中国开源大模型从“无限低价 preview”转向可持续商业化运营的信号，同时也为全球 API 定价提供了需求侧管理的参考范式。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> Peak pricing signals China’s open-source models are moving from unlimited low-cost previews toward sustainable commercial operations, and provides a demand-side pricing reference for global API providers.</div>
+                    </div>
+                    <a class="news-source" href="https://technode.com/2026/06/30/deepseek-to-launch-v4-in-mid-july-with-new-peak-time-api-pricing/" target="_blank">来源 Source · TechNode</a>
+                    <a class="news-source" href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" style="margin-left:8px;">定价 Pricing · DeepSeek</a>
+                    <div class="new-source-callout">🆕 新发现来源 New source: TechNode (technode.com) — 2026-07-08 加入白名单</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">研究与技术</span>
+                <span class="title-en">Research & Technology</span>
+            </div>
+            <div class="news-list">
+                <div class="news-item research">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">ByteDance Seed 发布 EdgeBench：真实世界环境学习扩展规律</div>
+                            <div class="news-title-en">ByteDance Seed releases EdgeBench, unveiling scaling laws of environment learning</div>
+                        </div>
+                        <span class="news-tag tag-cn">🇨🇳 CN</span>
+                        <span class="news-tag tag-research">Research</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">7 月 2 日，ByteDance Seed 团队发布 EdgeBench，一个包含 134 个真实世界任务的超长程基准，用于衡量 AI 代理在环境中的学习能力而非单次表现。任务运行时长 12–72 小时，覆盖科学、软件工程、优化、知识工作、形式数学和游戏。研究发现，代理学习曲线可精确拟合为 log-sigmoid 函数，且环境学习速度大约每 3 个月翻一倍。团队已开源 51 个任务和完整评估框架。</div>
+                        <div class="news-summary-en">On July 2, ByteDance Seed released EdgeBench, an ultra-long-horizon benchmark of 134 real-world tasks that measures how agents learn from environments rather than one-shot performance. Tasks run 12–72 hours across science, software engineering, optimization, knowledge work, formal math, and games. The study finds learning curves closely fit a log-sigmoid function and that environment-learning speed roughly doubles every three months. The team open-sourced 51 tasks and the full evaluation framework.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>当现有基准逐渐饱和，环境学习有望成为评估代理持续改进能力的下一前沿；EdgeBench 的 log-sigmoid 规律和每季度翻倍的速度预测，为评估代理能否“边做边学”提供了量化框架。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> As static benchmarks saturate, environment learning may become the next frontier for measuring agents' ability to improve continuously; EdgeBench’s log-sigmoid law and its forecast of doubling learning speed every quarter provide a quantitative framework for evaluating "learning while doing."</div>
+                    </div>
+                    <a class="news-source" href="https://edge-bench.org/" target="_blank">来源 Source · EdgeBench</a>
+                    <a class="news-source" href="https://arxiv.org/abs/2607.05155" target="_blank" style="margin-left:8px;">论文 Paper · arXiv</a>
+                </div>
+
+                <div class="news-item research">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">OpenAI 推出 GeneBench-Pro：评估 AI 的科研判断力</div>
+                            <div class="news-title-en">OpenAI introduces GeneBench-Pro to benchmark AI scientific judgment</div>
+                        </div>
+                        <span class="news-tag tag-us">🇺🇸 US</span>
+                        <span class="news-tag tag-research">Research</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">6 月 30 日，OpenAI 发布 GeneBench-Pro，一个研究级基准，包含 129 个跨基因组学、定量生物学和转化医学的问题，用于评估模型在 messy 真实数据中的科研判断力。每个问题都是独立的科学分析，人类专家估计平均需要 20–40 小时完成。GPT-5.6 Sol 在最高推理强度下通过率为 28.7%，较 GPT-5 时代提升近 6 倍。OpenAI 已在 Hugging Face 开源 10 个代表性问题。</div>
+                        <div class="news-summary-en">On June 30, OpenAI released GeneBench-Pro, a research-level benchmark of 129 problems spanning genomics, quantitative biology, and translational medicine, designed to evaluate models’ scientific judgment on messy, realistic data. Each problem is a self-contained scientific analysis that experts estimate takes 20–40 hours. GPT-5.6 Sol reaches 28.7% at maximum reasoning effort, roughly 6× higher than the GPT-5 era. OpenAI has open-sourced 10 representative problems on Hugging Face.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>GeneBench-Pro 把评估重点从“知识 recall”转向“研究品味”——包括问题选择、假设修正、迭代实验和判断结果是否可决策，这正是 AI 在科学领域产生实际价值的关键差距。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> GeneBench-Pro shifts evaluation from knowledge recall to research taste—problem selection, hypothesis revision, iterative experimentation, and deciding when results are decision-ready—precisely the gap AI must close to deliver real value in science.</div>
+                    </div>
+                    <a class="news-source" href="https://openai.com/index/introducing-genebench-pro/" target="_blank">来源 Source · OpenAI</a>
+                    <a class="news-source" href="https://huggingface.co/datasets/ajh-oai/genebench-pro-public-package" target="_blank" style="margin-left:8px;">数据集 Dataset · Hugging Face</a>
+                </div>
+
+                <div class="news-item research">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">Anthropic 发布《Claude Code 的诞生》长文</div>
+                            <div class="news-title-en">Anthropic publishes “The Making of Claude Code”</div>
+                        </div>
+                        <span class="news-tag tag-us">🇺🇸 US</span>
+                        <span class="news-tag tag-research">Research</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">7 月 6 日，Anthropic 发布长文回顾 Claude Code 从内部 CLI 到公开编码代理的演进历程，由参与构建的研究人员、工程师和早期用户共同讲述。文章涵盖产品设计、模型能力边界、工具调用与长期上下文管理等方面的经验，是了解 Anthropic 如何打磨代码代理的少有第一手资料。</div>
+                        <div class="news-summary-en">On July 6, Anthropic published a long-form article tracing Claude Code’s evolution from an internal CLI to a public coding agent, told by researchers, engineers, and early users who built it. It covers product design, model capability limits, tool use, and long-context management, offering rare first-hand insight into how Anthropic refined a coding agent.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>在“代理能写代码”成为共识后，真正的壁垒转向工程细节、上下文保持与人在回路设计。该文为构建生产级代码代理提供了可借鉴的方法论。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> After "agents can code" became consensus, the real moat is shifting to engineering details, context retention, and human-in-the-loop design. This article offers a methodology for building production-grade coding agents.</div>
+                    </div>
+                    <a class="news-source" href="https://www.anthropic.com/features/making-of-claude-code" target="_blank">来源 Source · Anthropic</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">政策与产业</span>
+                <span class="title-en">Policy & Industry</span>
+            </div>
+            <div class="news-list">
+                <div class="news-item policy">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">OpenAI 就 GPT-5.6 与美国政府展开先行预览与协调</div>
+                            <div class="news-title-en">OpenAI previews GPT-5.6 with U.S. government before broader release</div>
+                        </div>
+                        <span class="news-tag tag-us">🇺🇸 US</span>
+                        <span class="news-tag tag-policy">Policy</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">OpenAI 在 GPT-5.6 发布公告中明确表示，已应美国政府要求向少量可信合作伙伴提供限量预览，并将参与方的信息同步给政府。公司同时强调，不希望这种政府访问流程成为长期默认，称这会延迟最先进工具到达用户、开发者和网络防御者手中，但短期内认为这是通向更广泛可用性的最强路径。</div>
+                        <div class="news-summary-en">In its GPT-5.6 announcement, OpenAI stated it provided a limited preview to a small group of trusted partners at the U.S. government’s request and shared participants with the government. It also emphasized it does not want this government-access process to become the long-term default, arguing it delays the best tools from reaching users, developers, and cyber defenders, but views it as the strongest short-term path to broader availability.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>这是美国前沿 AI 模型在政府协调与市场化发布之间寻找平衡的最新案例，也可能影响未来 Cyber Executive Order 框架下模型发布的 repeatable process。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> This is the latest example of a U.S. frontier AI model balancing government coordination with market release, and could shape the repeatable process for model releases under a future Cyber Executive Order framework.</div>
+                    </div>
+                    <a class="news-source" href="https://openai.com/index/previewing-gpt-5-6-sol/" target="_blank">来源 Source · OpenAI</a>
+                </div>
+
+                <div class="news-item cn new-source">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">DeepSeek 峰谷定价：高峰 API 价格为基准 2 倍</div>
+                            <div class="news-title-en">DeepSeek introduces 2× peak-hour pricing for V4 API</div>
+                        </div>
+                        <span class="news-tag tag-cn">🇨🇳 CN</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">DeepSeek V4 官方版的 API 定价将区分高峰与低谷：北京时间工作日 9:00–12:00、14:00–18:00 执行高峰价，其余时间为低谷价。以 v4-pro 为例，低谷输入（缓存命中）$0.003625/百万 token，高峰期翻倍；v4-flash 低谷输入（缓存命中）$0.0028/百万 token。即使高峰价翻倍，仍显著低于美国前沿模型 API。</div>
+                        <div class="news-summary-en">DeepSeek V4 API pricing will differentiate peak and off-peak hours: Beijing 9:00–12:00 and 14:00–18:00 on weekdays will use peak rates, with other times off-peak. For v4-pro, off-peak input (cache hit) is $0.003625/MTok, doubling at peak; v4-flash off-peak input (cache hit) is $0.0028/MTok. Even at 2× peak pricing, rates remain well below U.S. frontier model APIs.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>峰谷定价是中国大模型商业化的关键转变：从补贴式低价 preview 转向需求管理，同时保留价格优势以吸引全球开发者。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> Peak/off-peak pricing marks a key shift in Chinese model commercialization: from subsidized low-cost previews to demand management while retaining a price advantage to attract global developers.</div>
+                    </div>
+                    <a class="news-source" href="https://technode.com/2026/06/30/deepseek-to-launch-v4-in-mid-july-with-new-peak-time-api-pricing/" target="_blank">来源 Source · TechNode</a>
+                    <a class="news-source" href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" style="margin-left:8px;">定价 Pricing · DeepSeek</a>
+                    <div class="new-source-callout">🆕 新发现来源 New source: TechNode (technode.com) — 2026-07-08 加入白名单</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">开源生态</span>
+                <span class="title-en">Open Source Ecosystem</span>
+            </div>
+            <div class="news-list">
+                <div class="news-item open new-source">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">Kimi K2.7 Code 作为开源权重模型进入 GitHub Copilot</div>
+                            <div class="news-title-en">Kimi K2.7 Code open-weight model enters GitHub Copilot</div>
+                        </div>
+                        <span class="news-tag tag-cn">🇨🇳 CN</span>
+                        <span class="news-tag tag-open">Open</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">Kimi K2.7 Code 是 Copilot 模型选择器中首个开源权重模型，默认对 Business 和 Enterprise 计划关闭，需管理员在设置中显式启用。模型支持 VS Code 1.127.0+、Visual Studio 17.14.6+、JetBrains 1.9.1-251+、Xcode、Eclipse、CLI、GitHub Mobile 等多个平台，按提供商目录价计费。</div>
+                        <div class="news-summary-en">Kimi K2.7 Code is the first open-weight model in the Copilot model picker. It is off by default for Business and Enterprise plans and requires administrators to explicitly enable it in settings. The model supports VS Code 1.127.0+, Visual Studio 17.14.6+, JetBrains 1.9.1-251+, Xcode, Eclipse, CLI, GitHub Mobile, and more, billed at provider list pricing.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>开源权重模型首次进入 Copilot 这一全球最大 AI 编程助手，意味着闭源与开源模型将在同一开发者工作流中直接竞争，也可能推动更多中国模型进入国际生态。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> An open-weight model entering Copilot, the world’s largest AI coding assistant, means closed-source and open-source models will compete directly in the same developer workflow, and may pave the way for more Chinese models in global ecosystems.</div>
+                    </div>
+                    <a class="news-source" href="https://github.blog/changelog/2026-07-01-kimi-k2-7-is-now-available-in-github-copilot/" target="_blank">来源 Source · GitHub Changelog</a>
+                    <div class="new-source-callout">🆕 新发现来源 New source: GitHub Changelog (github.blog) — 2026-07-08 加入白名单</div>
+                </div>
+
+                <div class="news-item open">
+                    <div class="news-header">
+                        <div>
+                            <div class="news-title-cn">EdgeBench 开源 51 个任务与评估框架</div>
+                            <div class="news-title-en">EdgeBench open-sources 51 tasks and evaluation framework</div>
+                        </div>
+                        <span class="news-tag tag-cn">🇨🇳 CN</span>
+                        <span class="news-tag tag-open">Open</span>
+                    </div>
+                    <div class="news-summary">
+                        <div class="news-summary-cn">ByteDance Seed 团队在发布 EdgeBench 论文的同时，开源了 134 个任务中的 51 个以及完整评估框架，托管于 GitHub。代码包含任务环境、隐藏裁判（hidden judge）和排行榜基础设施，便于研究社区复现环境学习扩展规律并提交新代理。</div>
+                        <div class="news-summary-en">Alongside the EdgeBench paper, ByteDance Seed open-sourced 51 of 134 tasks and the full evaluation framework on GitHub. The release includes task environments, a hidden judge, and leaderboard infrastructure, enabling the research community to reproduce environment-learning scaling laws and submit new agents.</div>
+                    </div>
+                    <div class="why-matters">
+                        <div class="why-cn"><strong>为何重要：</strong>环境学习基准需要真实可交互的任务环境，开源任务和裁判是社区建立统一评估标准的前提，也是未来 agent 能力比较的基础设施。</div>
+                        <div class="why-en"><strong>Why it matters:</strong> Environment-learning benchmarks require real, interactive task environments; open-sourcing tasks and judges is a prerequisite for a unified evaluation standard and the infrastructure for future agent capability comparisons.</div>
+                    </div>
+                    <a class="news-source" href="https://github.com/ByteDance-Seed/EdgeBench" target="_blank">代码 Code · GitHub</a>
+                    <a class="news-source" href="https://edge-bench.org/" target="_blank" style="margin-left:8px;">官网 Site · EdgeBench</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="whitelist-card">
+            <div class="whitelist-title-cn">追踪来源白名单</div>
+            <div class="whitelist-title-en">Tracked Source Whitelist</div>
+            <div class="whitelist-note-cn">以下为当前简报追踪的官方与权威来源，🆕 标注为本期新增。</div>
+            <div class="whitelist-note-en">Official and authoritative sources currently tracked by this briefing; 🆕 marks newly added this issue.</div>
+            <div class="whitelist-list">
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">US</div>
+                    <ul>
+                        <li>OpenAI News/Research (openai.com/news, openai.com/research)</li>
+                        <li>Anthropic Newsroom/Research (anthropic.com/news, anthropic.com/research)</li>
+                        <li>Google DeepMind (deepmind.google/blog)</li>
+                        <li>Meta Superintelligence Labs (about.fb.com/news)</li>
+                    </ul>
+                </div>
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">China</div>
+                    <ul>
+                        <li>Moonshot/Kimi (moonshot.ai, kimi.com)</li>
+                        <li>MiniMax (minimaxi.com)</li>
+                        <li>智谱 Zhipu (zhipuai.cn, open.bigmodel.cn, z.ai)</li>
+                        <li>Qwen/Alibaba Cloud (qwen.ai/blog)</li>
+                        <li>DeepSeek (deepseek.com, api-docs.deepseek.com)</li>
+                        <li>ByteDance Seed (seed.bytedance.com)</li>
+                    </ul>
+                </div>
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">Singapore</div>
+                    <ul>
+                        <li>A*STAR AI Division (a-star.edu.sg/aiml)</li>
+                        <li>GovTech Singapore (tech.gov.sg)</li>
+                        <li>Singapore DSAI (smartnation.sg)</li>
+                        <li>NUS AI Research (nus.edu.sg/computing/ai-research)</li>
+                        <li>MDDI Singapore (mddi.gov.sg/newsroom)</li>
+                        <li>Singtel Digital InfraCo (singtel.com/about-us/media-centre)</li>
+                    </ul>
+                </div>
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">Media</div>
+                    <ul>
+                        <li>Reuters AI (reuters.com/technology)</li>
+                        <li>MIT Tech Review (technologyreview.com/topic/artificial-intelligence)</li>
+                        <li>Xinhua EN (xinhuanet.com/english)</li>
+                        <li>CNBC Technology (cnbc.com)</li>
+                        <li>Forbes AI 50 (forbes.com)</li>
+                        <li>AI Critique (aicritique.org)</li>
+                        <li>IEEE Spectrum (spectrum.ieee.org)</li>
+                        <li>AI Flash Report (aiflashreport.com)</li>
+                        <li>WinBuzzer (winbuzzer.com)</li>
+                        <li>Kersai AI Analysis (kersai.com)</li>
+                        <li>AI Release Tracker (aireleasetracker.com)</li>
+                        <li>Straits Times Tech (straitstimes.com/tech)</li>
+                        <li>AgenticWire News (agenticwire.news)</li>
+                        <li>explainx.ai (explainx.ai)</li>
+                        <li>Legalithm (legalithm.com)</li>
+                        <li class="new-source-mark">🆕 TechNode (technode.com) — 2026-07-08</li>
+                    </ul>
+                </div>
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">Open Source / Research</div>
+                    <ul>
+                        <li>Hugging Face Blog (huggingface.co/blog)</li>
+                        <li>arXiv CS.AI (arxiv.org/list/cs.AI)</li>
+                        <li>OpenBMB (openbmb.org)</li>
+                        <li>HKUDS (hku-datascience.github.io)</li>
+                        <li>Marktechpost (marktechpost.com)</li>
+                        <li>PaddlePaddle on HF (huggingface.co/blog/PaddlePaddle)</li>
+                        <li>ServiceNow on HF (huggingface.co/blog/ServiceNow)</li>
+                        <li>DeepReinforce Ornith (deep-reinforce.com)</li>
+                        <li class="new-source-mark">🆕 GitHub Changelog (github.blog) — 2026-07-08</li>
+                    </ul>
+                </div>
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">Computer Use Research</div>
+                    <ul>
+                        <li>H Company (hcompany.ai)</li>
+                        <li>Hugging Face Computer Use (huggingface.co/blog/Hcompany/holo3)</li>
+                    </ul>
+                </div>
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">AI Governance / Policy</div>
+                    <ul>
+                        <li>Plural Policy (pluralpolicy.com/blog)</li>
+                        <li>UK AI Security Institute (aisi.gov.uk/blog)</li>
+                        <li>Stanford HAI (hai.stanford.edu)</li>
+                        <li>Mayer Brown AI Policy (mayerbrown.com)</li>
+                        <li>EU Council (consilium.europa.eu)</li>
+                        <li>Inside Global Tech (insideglobaltech.com)</li>
+                    </ul>
+                </div>
+                <div class="whitelist-category">
+                    <div class="whitelist-category-title">China Extended</div>
+                    <ul>
+                        <li>Knightli AI Analysis (knightli.com)</li>
+                        <li>Kimi K2 Official (kimi-k2.org)</li>
+                        <li>Meituan LongCat (longcat.chat, tech.meituan.com)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-cn">AI 早报由自动化工作流生成 · 2026-07-08 08:25 SGT</div>
+            <div class="footer-en">AI Morning Briefing generated by automation workflow · 2026-07-08 08:25 SGT</div>
+            <div class="footer-cn">报告存档：https://kidultop.github.io/investment-reports/</div>
+            <div class="footer-en">Archive: https://kidultop.github.io/investment-reports/</div>
+            <div class="footer-cn">所有内容仅供参考，请自行核实来源与事实。</div>
+            <div class="footer-en">All content is for reference only; please verify sources and facts independently.</div>
+        </footer>
+    </div>
+</body>
+</html>
