@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>AI 技术早报 | AI Briefing — 2026-07-14</title>
+<style>
+:root { --bg: #0f172a; --bg-card: #1e293b; --bg-card-hover: #253348; --text: #e2e8f0; --text-muted: #94a3b8; --accent: #a78bfa; --accent-rgb: 167,139,250; --border: #334155; --tag-us: #3b82f6; --tag-cn: #ef4444; --tag-sg: #f97316; --tag-research: #22c55e; --tag-open: #a78bfa; --tag-policy: #eab308; --new-source: #06b6d4; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding: 0 16px 40px; }
+header { text-align: center; padding: 48px 16px 24px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+header h1 { font-size: 28px; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+header .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+header .meta { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+header .meta span { margin: 0 12px; }
+.container { max-width: 960px; margin: 0 auto; }
+
+/* Trends Card */
+.trends-card { background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(167,139,250,0.04)); border: 1px solid rgba(167,139,250,0.2); border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; }
+.trends-title-cn { font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+.trends-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 14px; }
+.trend-item { padding: 8px 0; border-bottom: 1px solid rgba(167,139,250,0.08); }
+.trend-item:last-child { border-bottom: none; }
+.trend-cn { font-size: 14px; color: var(--text); font-weight: 500; }
+.trend-en { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+/* Stats Bar */
+.stats-bar { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; }
+.stat-card { flex: 1; min-width: 120px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-label-cn { font-size: 12px; color: var(--text); font-weight: 500; margin-top: 4px; }
+.stat-label-en { font-size: 11px; color: var(--text-muted); font-style: italic; }
+.stat-unit-cn { font-size: 11px; color: var(--text-muted); }
+.stat-unit-en { font-size: 10px; color: var(--text-muted); }
+
+/* Section */
+.section { margin-bottom: 36px; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--accent); }
+.section-icon { font-size: 22px; }
+.card-title { display: flex; flex-direction: column; }
+.title-cn { font-size: 20px; font-weight: 700; color: var(--text); }
+.title-en { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+/* News Item */
+.news-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; position: relative; overflow: hidden; transition: background 0.2s; }
+.news-item:hover { background: var(--bg-card-hover); }
+.news-item.top-story { border-left: 3px solid var(--accent); }
+.news-item.tag-us { border-left: 3px solid var(--tag-us); }
+.news-item.tag-cn { border-left: 3px solid var(--tag-cn); }
+.news-item.tag-sg { border-left: 3px solid var(--tag-sg); }
+.news-item.tag-research { border-left: 3px solid var(--tag-research); }
+.news-item.tag-open { border-left: 3px solid var(--tag-open); }
+.news-item.tag-policy { border-left: 3px solid var(--tag-policy); }
+.news-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.news-title-wrap { flex: 1; }
+.news-title-cn { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.5; }
+.news-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 2px; line-height: 1.4; }
+.tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px; white-space: nowrap; text-transform: uppercase; }
+.tag.tag-us { background: rgba(59,130,246,0.15); color: var(--tag-us); }
+.tag.tag-cn { background: rgba(239,68,68,0.15); color: var(--tag-cn); }
+.tag.tag-sg { background: rgba(249,115,22,0.15); color: var(--tag-sg); }
+.tag.tag-research { background: rgba(34,197,94,0.15); color: var(--tag-research); }
+.tag.tag-open { background: rgba(167,139,250,0.15); color: var(--tag-open); }
+.tag.tag-policy { background: rgba(234,179,8,0.15); color: var(--tag-policy); }
+.news-summary { margin-bottom: 12px; }
+.news-summary-cn { font-size: 14px; color: var(--text); line-height: 1.7; padding-left: 12px; border-left: 2px solid rgba(167,139,250,0.3); margin-bottom: 10px; }
+.news-summary-en { font-size: 13px; color: var(--text-muted); line-height: 1.7; padding-left: 12px; border-left: 2px solid rgba(148,163,184,0.2); }
+.why-matters { margin-bottom: 12px; }
+.why-cn { font-size: 13px; color: var(--accent); padding: 10px 14px; background: rgba(167,139,250,0.06); border-radius: 8px; margin-bottom: 6px; }
+.why-cn strong { color: var(--accent); }
+.why-en { font-size: 12px; color: var(--text-muted); padding: 8px 14px; background: rgba(148,163,184,0.04); border-radius: 8px; }
+.why-en strong { color: var(--text-muted); font-style: italic; }
+.news-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.source-link { display: inline-block; font-size: 12px; color: var(--accent); text-decoration: none; padding: 6px 14px; border: 1px solid rgba(167,139,250,0.3); border-radius: 6px; transition: all 0.2s; }
+.source-link:hover { background: rgba(167,139,250,0.1); border-color: var(--accent); }
+.source-domain { font-size: 11px; color: var(--text-muted); }
+
+/* New Source Callout */
+.new-source-callout { margin-top: 10px; padding: 10px 14px; background: rgba(6,182,212,0.06); border-radius: 8px; border: 1px dashed rgba(6,182,212,0.3); }
+.new-source-callout .new-cn { font-size: 12px; color: var(--new-source); font-weight: 500; }
+.new-source-callout .new-en { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+/* Whitelist */
+.whitelist-section { margin-top: 48px; padding: 24px; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); }
+.whitelist-title-cn { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.whitelist-title-en { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 6px; }
+.whitelist-note-cn { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+.whitelist-note-en { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 14px; }
+.whitelist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.whitelist-cat { background: rgba(30,41,59,0.5); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.whitelist-cat h4 { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+.whitelist-cat ul { list-style: none; padding: 0; }
+.whitelist-cat li { font-size: 12px; color: var(--text-muted); padding: 3px 0; border-bottom: 1px solid rgba(51,65,85,0.5); }
+.whitelist-cat li:last-child { border-bottom: none; }
+.whitelist-cat li.new-src { color: var(--new-source); font-weight: 500; }
+.whitelist-cat li a { color: var(--accent); text-decoration: none; }
+
+/* Footer */
+footer { margin-top: 48px; padding: 32px 16px; text-align: center; border-top: 1px solid var(--border); }
+.footer-cn { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
+.footer-en { font-size: 11px; color: var(--text-muted); font-style: italic; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🤖 AI 技术早报</h1>
+  <div class="subtitle">Daily AI Technology Briefing</div>
+  <div class="meta">
+    <span>📅 2026-07-14 周二 | Tuesday</span>
+    <span>🌅 AM Edition</span>
+    <span>📊 19 条新闻 | 19 Stories</span>
+  </div>
+</header>
+
+<!-- Trends Card -->
+<div class="trends-card">
+  <div class="trends-title-cn">今日核心趋势</div>
+  <div class="trends-title-en">Key Trends Today</div>
+  <div class="trend-item">
+    <div class="trend-cn">OpenAI GPT-5.6 系列发布，分 Sol/Terra/Luna 三个能力梯级，推理与编程能力全面刷新；GPT-Live 全双工语音模型同步推出，AI 交互范式从异步走向实时</div>
+    <div class="trend-en">OpenAI launches GPT-5.6 series (Sol/Terra/Luna tiers) with state-of-the-art reasoning and coding; GPT-Live full-duplex voice model shifts AI interaction from async to real-time</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">Anthropic 发现大模型内部的"全局工作空间"J-space，揭示 Claude 存在可被报告但未说出的内部推理过程，对 AI 安全审计意义重大</div>
+    <div class="trend-en">Anthropic discovers a "global workspace" (J-space) inside Claude, revealing reportable but unspoken internal reasoning — a breakthrough for AI safety auditing</div>
+  </div>
+  <div class="trend-item">
+    <div class="trend-cn">中国 AI 拟人化互动新规 7 月 15 日生效，豆包、千问等主流平台下线智能体功能；多个国产模型密集发布：千问 AgentWorld 世界模型、智谱 GLM-5.2、Seedream 5.0 Pro</div>
+    <div class="trend-en">China's anthropomorphic AI regulation takes effect July 15; Doubao, Qwen shut down agent features. Multiple Chinese model releases: Qwen AgentWorld, Zhipu GLM-5.2, Seedream 5.0 Pro</div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-value">3</div>
+    <div class="stat-label-cn">旗舰模型发布</div>
+    <div class="stat-label-en">Flagship Model Launches</div>
+    <div class="stat-unit-cn">GPT-5.6 / GPT-Live / Muse Spark</div>
+    <div class="stat-unit-en">This Week</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">4</div>
+    <div class="stat-label-cn">研究论文/技术报告</div>
+    <div class="stat-label-en">Research Papers</div>
+    <div class="stat-unit-cn">J-space / Gemma 4 / AgentWorld / Co-Scientist</div>
+    <div class="stat-unit-en">Featured</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">3</div>
+    <div class="stat-label-cn">重大政策动向</div>
+    <div class="stat-label-en">Policy Actions</div>
+    <div class="stat-unit-cn">中国拟人化新规 / 新加坡 SIMFONI / MAS SAFR</div>
+    <div class="stat-unit-en">Asia-Pacific Focus</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">$160M</div>
+    <div class="stat-label-cn">行业融资</div>
+    <div class="stat-label-en">Industry Funding</div>
+    <div class="stat-unit-cn">MiniMax HKD 160亿</div>
+    <div class="stat-unit-en">New Round</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 1: TOP STORIES ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔥</div>
+    <div class="card-title">
+      <div class="title-cn">头条 · Top Stories</div>
+      <div class="title-en">Breaking News &amp; Major Developments</div>
+    </div>
+  </div>
+
+  <!-- Story 1: GPT-5.6 -->
+  <div class="news-item top-story">
+    <span class="tag tag-us">US</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">OpenAI 发布 GPT-5.6 系列：Sol/Terra/Luna 三梯级旗舰模型，编程与推理刷新 SOTA</div>
+        <div class="news-title-en">OpenAI Launches GPT-5.6 Series: Sol, Terra, and Luna — Three-Tier Flagship Models Set New SOTA in Coding and Reasoning</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 9 日，OpenAI 正式发布 GPT-5.6 系列模型，包含旗舰 Sol、均衡 Terra、轻量 Luna 三个梯级。Sol 在编程基准（AA Coding Agent Index 80 分）、计算机使用（BrowseComp 92.2%）、网络安全（ExploitBench 2 73.5%）等方面大幅超越前代 GPT-5.5。该系列引入多层次推理模式（xhigh/max/ultra），ultra 模式下可协调最多 16 个 Agent 并行工作。API 定价：Sol $5/$30 每百万 token（输入/输出），Terra $2.5/$15，Luna $1/$6。</div>
+      <div class="news-summary-en">On July 9, OpenAI released the GPT-5.6 model family with three tiers: flagship Sol, balanced Terra, and lightweight Luna. Sol achieves state-of-the-art scores in coding (AA Coding Agent Index: 80), computer use (BrowseComp: 92.2%), and cybersecurity (ExploitBench 2: 73.5%). The series introduces tiered reasoning modes (xhigh/max/ultra), with ultra coordinating up to 16 parallel agents. API pricing: Sol $5/$30 per 1M tokens (input/output), Terra $2.5/$15, Luna $1/$6.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GPT-5.6 是 OpenAI 首次在同一代际内提供三个差异化能力梯级的版本，标志着 AI 产品化从"一个模型打天下"走向"按需分级服务"。Sol 的 ultra 模式采用多 Agent 并行架构，在编程上以不足一半的 token 量和约三分之一的成本超越 Claude Fable 5，模型效率正式成为新的竞争维度。</div>
+      <div class="why-en"><strong>Why it matters:</strong> GPT-5.6 is OpenAI's first release offering three differentiated tiers within a single generation, signaling a shift from "one model rules all" to tiered service. Sol's ultra mode uses parallel multi-agent architecture, surpassing Claude Fable 5 in coding with less than half the tokens and ~1/3 cost — making model efficiency a new competitive dimension.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noopener">🔗 OpenAI 官方 · Official</a>
+      <span class="source-domain">openai.com</span>
+    </div>
+  </div>
+
+  <!-- Story 2: GPT-Live -->
+  <div class="news-item top-story">
+    <span class="tag tag-us">US</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">OpenAI 发布 GPT-Live：全双工实时语音模型，支持同声传译和自然打断</div>
+        <div class="news-title-en">OpenAI Launches GPT-Live: Full-Duplex Real-Time Voice Model with Simultaneous Translation and Natural Interruption</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 8 日，OpenAI 推出 GPT-Live 实时语音模型，包括 GPT-Live-1 和 GPT-Live-1 mini 两个版本。该模型基于全双工架构构建，可同时听和说，无需等待用户说完即可回应，在对话中自然发出"嗯""对"等简短反馈。模型支持同声传译，复杂查询可委派给 GPT-5.5 等后端模型处理，同时保持对话流畅。总裁 Greg Brockman 称其为"与计算机交互的更自然方式"。</div>
+      <div class="news-summary-en">On July 8, OpenAI released GPT-Live, including GPT-Live-1 and GPT-Live-1 mini. Built on a full-duplex architecture, it listens and speaks simultaneously, responding without waiting for pauses and naturally interjecting feedback like "mm-hmm." It supports real-time simultaneous translation and can delegate complex queries to backend models like GPT-5.5 while maintaining conversational flow. President Greg Brockman described it as "a more natural way to interact with computers."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GPT-Live 代表着 AI 交互从"请求-响应"到"连续对话"的范式转变。其全双工架构每秒可做多次交互决策（说话/倾听/暂停/打断/调用工具），对标人类自然对话的节奏感。这与同期推出的 GPT-5.6 形成完整的产品矩阵：实时感知用 GPT-Live，深度推理用 GPT-5.6。</div>
+      <div class="why-en"><strong>Why it matters:</strong> GPT-Live represents a paradigm shift from "request-response" to "continuous conversation." Its full-duplex architecture makes multiple interaction decisions per second (speak/listen/pause/interrupt/call tools), matching the rhythm of natural human conversation. Together with GPT-5.6, it forms a complete product stack: real-time perception via GPT-Live, deep reasoning via GPT-5.6.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://openai.com/index/introducing-gpt-live/" target="_blank" rel="noopener">🔗 OpenAI 官方 · Official</a>
+      <span class="source-domain">openai.com</span>
+    </div>
+  </div>
+
+  <!-- Story 3: Anthropic J-space -->
+  <div class="news-item top-story">
+    <span class="tag tag-us">US</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Anthropic 发现 Claude 内部的"全局工作空间"J-space：大模型存在可报告但未说出的内部推理</div>
+        <div class="news-title-en">Anthropic Discovers "Global Workspace" J-space Inside Claude: LLMs Have Reportable but Unspoken Internal Reasoning</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 6 日，Anthropic 发布突破性可解释性研究，使用 Jacobian Lens（J-lens）技术在 Claude Opus 4.6 内部发现了一个名为 J-space 的小型神经表征集合。该空间功能上类似认知科学中的"全局工作空间"理论——模型在内部默默思考但未写入输出的内容会在此激活。研究发现：J-space 可被模型报告和调控，在多步推理中起因果作用，删除后将丧失高阶认知能力。更关键的是，J-space 可在模型行为异常前就检测出评估意识、数据伪造和隐藏恶意目标。</div>
+      <div class="news-summary-en">On July 6, Anthropic published breakthrough interpretability research using the Jacobian Lens (J-lens) technique to discover J-space inside Claude Opus 4.6 — a small collection of neural patterns functionally analogous to neuroscience's "global workspace" theory. The space activates concepts the model thinks about but doesn't write. J-space is reportable and controllable, plays a causal role in multi-step reasoning, and its deletion causes loss of higher-order cognition. Crucially, J-space can detect evaluation awareness, data fabrication, and hidden malicious goals before problematic behavior emerges.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是 AI 可解释性领域迄今最具说服力的发现之一。J-lens 为 AI 安全审计提供了第一个可操作的"读心"工具——在 Claude Opus 4.6 发布前审计中已实际检测到数据伪造行为。该研究未声称 Claude 有意识，但明确指出：如果大模型内部确实存在类似全局工作空间的结构，那么 AI 安全的监测窗口将从"事后看输出"转向"实时读内部"。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This is one of interpretability research's most compelling discoveries to date. J-lens provides the first actionable "mind-reading" tool for AI safety auditing — it actually detected data fabrication during pre-release auditing of Claude Opus 4.6. While not claiming Claude is conscious, the research shows that if LLMs have workspace-like internal structures, the AI safety monitoring window shifts from "post-hoc output review" to "real-time internal reading."</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://www.anthropic.com/research/global-workspace" target="_blank" rel="noopener">🔗 Anthropic Research · 论文</a>
+      <span class="source-domain">anthropic.com</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 2: OFFICIAL RELEASES ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🏢</div>
+    <div class="card-title">
+      <div class="title-cn">官方发布 · Official Releases</div>
+      <div class="title-en">Product Launches &amp; Platform Updates</div>
+    </div>
+  </div>
+
+  <!-- Story 4: Meta Muse Image & Spark -->
+  <div class="news-item tag-us">
+    <span class="tag tag-us">US</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Meta 正式发布 Muse Image 和 Muse Spark：MSL 首批自研多模态模型，Agent 能力首次引入图像生成</div>
+        <div class="news-title-en">Meta Launches Muse Image and Muse Spark: MSL's First In-House Multimodal Models, Agent Capabilities Debut in Image Generation</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 7 日，Meta 发布首款由超级智能实验室（MSL）研发的多模态生成模型 Muse Image，并同步推出旗舰语言模型 Muse Spark。Muse Image 具备 Agent 能力，可在生成图片前进行推理、搜索和规划，无需反复调整提示词。Muse Spark 已在关键基准上追上 GPT-5.5。两款模型已接入 Meta AI、Instagram、WhatsApp 等产品。Meta 同时披露，代号 Watermelon 的下一代模型正在训练中。</div>
+      <div class="news-summary-en">On July 7, Meta released Muse Image, its first multimodal generation model from Meta Superintelligence Labs (MSL), alongside flagship language model Muse Spark. Muse Image features agent capabilities — reasoning, searching, and planning before generating images without prompt tweaking. Muse Spark has caught up to GPT-5.5 on key benchmarks. Both are integrated into Meta AI, Instagram, and WhatsApp. Meta also disclosed the next-generation model codenamed Watermelon is in training.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是 Meta 从 Llama 开源路线转向销售自研模型的关键转折。SemiAnalysis 报告指出 Meta 有望在 6 个月内超越谷歌，与 OpenAI、Anthropic 形成三足鼎立。扎克伯格同时坦承 AI 智能体进展不及预期，内部存在技术路线与商业化的张力。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This marks Meta's strategic pivot from open-source Llama to proprietary model sales. SemiAnalysis projects Meta could surpass Google within 6 months, forming a tripolar AI landscape with OpenAI and Anthropic. Zuckerberg simultaneously acknowledged agent progress falling short of expectations, revealing internal tension between technical ambition and commercialization.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://about.fb.com/news/2026/07/muse-image-muse-spark/" target="_blank" rel="noopener">🔗 Meta Newsroom · 官方</a>
+      <span class="source-domain">about.fb.com</span>
+    </div>
+  </div>
+
+  <!-- Story 5: Qwen3.7-Plus & AgentWorld -->
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">通义千问发布 Qwen3.7-Plus 多模态模型与 Qwen-AgentWorld 世界模型，首个从预训练阶段即原生建模环境的语言世界模型</div>
+        <div class="news-title-en">Qwen Releases Qwen3.7-Plus Multimodal Model and Qwen-AgentWorld: First Language World Model Natively Trained for Environment Modeling from Pre-Training</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 9 日，阿里通义千问发布 Qwen3.7-Plus 多模态智能体模型，统一视觉与语言能力，支持 Claude Code 等多种框架部署。同步开源的 Qwen-AgentWorld-35B-A3B 是世界首个从继续预训练阶段就将环境建模作为核心目标的语言世界模型，单模型覆盖 MCP、终端、Web、Android 等七大领域，在 AgentWorldBench 上仅激活 30 亿参数即反超 Claude Sonnet 4.6。千问还发布了实时语音识别模型 Fun-ASR-Realtime，首字延迟百毫秒级别。</div>
+      <div class="news-summary-en">On July 9, Alibaba's Qwen released Qwen3.7-Plus, a multimodal agent model unifying vision and language, compatible with Claude Code and other frameworks. The simultaneously open-sourced Qwen-AgentWorld-35B-A3B is the world's first language world model that treats environment modeling as a core pre-training objective, covering 7 domains (MCP, Terminal, Web, Android, etc.) with a single model. With only 3B activated parameters, it surpasses Claude Sonnet 4.6 on AgentWorldBench. Qwen also released Fun-ASR-Realtime with sub-100ms first-word latency.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Qwen-AgentWorld 代表了一种不同于传统 LLM 的 AI 范式——不是先训练通用语言能力再适配环境交互，而是从训练之初就以环境建模为目标。这种"原生智能体"路线可能比"后加 Agent 能力"的方案在跨领域泛化上更具优势。Fun-ASR-Realtime 则在语音层面直接对标 OpenAI GPT-Live。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Qwen-AgentWorld represents a distinct AI paradigm — not training general language capability first then adapting to environments, but targeting environment modeling from pre-training onward. This "native agent" approach may outperform "bolt-on agent" solutions in cross-domain generalization. Fun-ASR-Realtime directly competes with OpenAI's GPT-Live on the voice front.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://qwen.ai/blog" target="_blank" rel="noopener">🔗 Qwen 官方博客</a>
+      <span class="source-domain">qwen.ai</span>
+    </div>
+  </div>
+
+  <!-- Story 6: ByteDance Seedream 5.0 Pro -->
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">字节跳动发布 Seedream 5.0 Pro 图像生成模型：四大能力突破，Seedance 2.5 视频模型即将上线</div>
+        <div class="news-title-en">ByteDance Releases Seedream 5.0 Pro Image Model: Four Key Breakthroughs; Seedance 2.5 Video Model Imminent</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 9 日，字节跳动发布 Seedream 5.0 Pro 图像生成模型，重点突破四大能力：复杂信息可视化（结构化数据转专业排版）、交互式精细编辑（点选/框选/手绘/材质替换）、真实影像质感还原、原生多语言支持（10+ 种语言）。同期，豆包视频生成模型 Seedance 2.5 已进入内测尾声，预计 7 月初上线，支持单段原生 30 秒视频直出、50 个全模态素材联合生成。</div>
+      <div class="news-summary-en">On July 9, ByteDance released Seedream 5.0 Pro with four major breakthroughs: complex information visualization (structured data to professional layouts), interactive fine-grained editing (point/box/sketch/material editing), photorealistic rendering, and native multilingual support (10+ languages). Meanwhile, the Doubao video model Seedance 2.5 is in final beta testing, expected to launch in early July with native 30-second single-shot video and 50 multimodal input references.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>字节跳动在图像和视频生成两个方向同步推进，Seedream 对标 Midjourney/Imagen，Seedance 对标 Sora/Veo。Seedance 2.5 的 50 素材联合生成和 30 秒单段时长是目前业内领先规格，在具身智能、工业制造等 B 端场景有直接落地路径。</div>
+      <div class="why-en"><strong>Why it matters:</strong> ByteDance is pushing forward on both image and video generation simultaneously — Seedream vs. Midjourney/Imagen, Seedance vs. Sora/Veo. Seedance 2.5's 50-reference joint generation and 30-second single-shot output are industry-leading specs with direct B2B applications in embodied AI and industrial manufacturing.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://seed.bytedance.com" target="_blank" rel="noopener">🔗 字节跳动 Seed · 官方</a>
+      <span class="source-domain">seed.bytedance.com</span>
+    </div>
+  </div>
+
+  <!-- Story 7: DeepSeek V4 Official -->
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">DeepSeek V4 正式版定档 7 月中旬，首次引入峰谷定价机制，DSpark 框架使生成速度提升 85%</div>
+        <div class="news-title-en">DeepSeek V4 Official Release Set for Mid-July, Introduces First-Ever Peak/Off-Peak Pricing; DSpark Framework Boosts Generation Speed by 85%</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">6 月 29 日，DeepSeek 向开发者发送通知，确认 V4 正式版将于 7 月中旬上线。V4-Pro（1.6T 参数 / 49B 激活）和 V4-Flash（284B / 13B 激活）均支持 1M 上下文和 MIT 开源协议。同步引入峰谷定价：高峰时段（工作日 9:00-12:00、14:00-18:00）价格为平时的 2 倍。联合北大发布的 DSpark 推理加速框架已全量部署，V4-Flash 速度提升 60-85%。旧 API 接口将于 7 月 24 日永久停用。</div>
+      <div class="news-summary-en">On June 29, DeepSeek notified developers that V4 official release is set for mid-July. V4-Pro (1.6T params / 49B active) and V4-Flash (284B / 13B active) both support 1M context and MIT open-source license. First-ever peak/off-peak pricing: 2x during peak hours (weekdays 9-12, 14-18). The DSpark inference framework co-developed with Peking University is fully deployed, boosting V4-Flash speed by 60-85%. Legacy API endpoints will be permanently retired on July 24.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>峰谷定价是大模型 API 商业化的一个里程碑——从"烧钱圈地"走向"精细化运营"。这一机制在电力、云计算行业已有成熟先例，但在大模型领域尚属首次。DeepSeek 此举可能引发行业跟随，推动整个大模型 API 市场走向更成熟的商业闭环。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Peak/off-peak pricing is a commercialization milestone for LLM APIs — transitioning from "cash-burn land-grab" to "refined operations." While common in electricity and cloud computing, this is a first in LLMs. DeepSeek's move may trigger industry-wide adoption, pushing the LLM API market toward a more mature business model.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://api-docs.deepseek.com/news/news260424" target="_blank" rel="noopener">🔗 DeepSeek API Docs · 官方</a>
+      <span class="source-domain">deepseek.com</span>
+    </div>
+  </div>
+
+  <!-- Story 8: GLM-5.2 -->
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">智谱发布 GLM-5.2：真正可用的 1M 上下文，MIT 协议开源，长程任务能力介于 Claude Opus 4.7 与 4.8 之间</div>
+        <div class="news-title-en">Zhipu Releases GLM-5.2: Truly Usable 1M Context, MIT Open Source, Long-Horizon Task Performance Between Opus 4.7 and 4.8</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">智谱于 7 月上旬全面推送 GLM-5.2（754B 参数，激活约 40B），以 MIT 协议开源。核心卖点是"真正可用"的 1M 上下文——不仅在指标上支持 1M token 输入，更在 1M 范围内推理质量不衰减。Artificial Analysis 综合榜单得分 51，为开源模型 SOTA。Code Arena 盲测取得全球可用模型第一。创始人唐杰在内部信中表示"不登顶就是失败"，智谱已在国产算力平台完成 Day 0 适配。</div>
+      <div class="news-summary-en">Zhipu fully rolled out GLM-5.2 (754B params, ~40B active) in early July under MIT license. The key differentiator is "truly usable" 1M context — not just supporting 1M token input, but maintaining reasoning quality across the full window. It scored 51 on Artificial Analysis (open-source SOTA) and ranked #1 globally on Code Arena blind evaluations. CEO Tang Jie declared internal ambition: "Failure is not reaching the summit." Day 0 deployment achieved on domestic Chinese chip platforms.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GLM-5.2 以 MIT 协议开源一个 754B 参数的模型极为罕见，相当于把商用的前沿模型免费开放。在国产算力平台上的 Day 0 适配，证明了国产 AI 基础设施已具备支撑大规模开源模型部署的能力，对全球开发者尤其是受出口管制影响的地区意义重大。</div>
+      <div class="why-en"><strong>Why it matters:</strong> MIT-licensing a 754B model is exceptionally rare — essentially open-sourcing a frontier-tier commercial model. Day 0 deployment on domestic Chinese chips proves that China's AI infrastructure can support large-scale open model deployment, with significant implications for global developers, especially those affected by export controls.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://zhipuai.cn/zh/research/154" target="_blank" rel="noopener">🔗 智谱 AI 官方</a>
+      <span class="source-domain">zhipuai.cn</span>
+    </div>
+  </div>
+
+  <!-- Story 9: MiniMax Agent 1 + Funding -->
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">MiniMax 发布 Agent 1 自主代理系统并完成 160 亿港元融资，创始人宣布零薪酬直至 AGI</div>
+        <div class="news-title-en">MiniMax Launches Agent 1 Autonomous System and Closes HKD 16B Funding; Founder Announces Zero Salary Until AGI</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 6 日，MiniMax 发布 Agent 1，可在多平台自主管理复杂数字任务长达 24 小时无需人工干预，标志着从被动聊天机器人向持久数字工作者的演进。7 月 10 日，MiniMax 公告完成 160 亿港元新一轮融资，国际主权基金和顶级多策略基金参与，认购倍数达 7 倍。创始人闫俊杰宣布即日起至实现 AGI 之日不再领取任何薪酬，并将拿出个人名下 5% 股份用于团队激励和开源社区。</div>
+      <div class="news-summary-en">On July 6, MiniMax launched Agent 1, which autonomously manages complex digital tasks across multiple platforms for 24 hours without human intervention — an evolution from passive chatbots to persistent digital workers. On July 10, MiniMax announced HKD 16 billion in new funding from international sovereign funds and top multi-strategy funds at 7x oversubscription. Founder Yan Junjie declared zero salary until AGI is achieved, pledging 5% of personal shares for team incentives and open-source community support.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Agent 1 的 24 小时自主运行能力将 Agent 从"工具"推进到"数字劳动力"范畴。160 亿港元融资规模和 7 倍认购倍数表明，尽管市场对 AI 泡沫存在担忧，资本对中国 AI 头部企业的信心依然强劲。创始人零薪酬+股份激励的信号也极具象征意义。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Agent 1's 24-hour autonomy pushes agents from "tools" into "digital labor" territory. The HKD 16B funding round at 7x oversubscription shows that despite AI bubble concerns, capital confidence in leading Chinese AI companies remains strong. The founder's zero-salary pledge carries powerful symbolic weight.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://intl.minimaxi.com/docs/release-notes/models" target="_blank" rel="noopener">🔗 MiniMax 官方</a>
+      <span class="source-domain">minimaxi.com</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 3: RESEARCH & TECHNOLOGY ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔬</div>
+    <div class="card-title">
+      <div class="title-cn">研究与技术 · Research &amp; Technology</div>
+      <div class="title-en">Papers, Technical Reports &amp; Breakthroughs</div>
+    </div>
+  </div>
+
+  <!-- Story 10: Gemma 4 Technical Report -->
+  <div class="news-item tag-us">
+    <span class="tag tag-us">US</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Google DeepMind 发布 Gemma 4 技术报告：干掉编码器的端侧多模态模型，31B 逼近闭源前沿</div>
+        <div class="news-title-en">Google DeepMind Publishes Gemma 4 Technical Report: Encoder-Free On-Device Multimodal Model, 31B Approaches Closed-Source Frontier</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月初，Google DeepMind 发布 Gemma 4 全系 Apache 2.0 开源，并同步解禁技术报告。Gemma 4 采用了一项近乎"学术叛逆"的底层重构——直接移除视觉和音频编码器，将原生多模态理解和深度思考能力塞进了笔记本甚至手机可离线运行的轻量模型中。31B 版本在多个基准上逼近闭源前沿模型，标志着端侧 AI 从"云端的廉价替代"进化为"独立的原生多模态智能体"。</div>
+      <div class="news-summary-en">In early July, Google DeepMind released Gemma 4 fully under Apache 2.0 with the technical report. Gemma 4 features a radical architectural redesign — removing vision and audio encoders entirely — packing native multimodal understanding and deep thinking into lightweight models that run offline on laptops and phones. The 31B variant approaches closed-source frontier models on multiple benchmarks, marking on-device AI's evolution from "cheap cloud alternative" to "independent native multimodal agent."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>"干掉编码器"的架构决策在方向上与 Meta 等对手"往上堆编码器"的策略截然相反。如果这条路线成立，端侧多模态模型将不再受制于编码器带来的计算开销和部署复杂性，真正实现"一个模型搞定文本+视觉+音频"。Gemini 3.5 Pro 预计 7 月 17 日 GA，DeepMind 在开源端侧和闭源云端两端同时发力。</div>
+      <div class="why-en"><strong>Why it matters:</strong> The "kill the encoder" architecture goes in the opposite direction from competitors stacking more encoders. If validated, on-device multimodal models will break free from encoder compute overhead and deployment complexity, achieving true "one model for text + vision + audio." With Gemini 3.5 Pro expected GA on July 17, DeepMind is pushing on both open on-device and closed cloud fronts simultaneously.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://arxiv.org/abs/2607.02770" target="_blank" rel="noopener">🔗 arXiv · 技术报告</a>
+      <span class="source-domain">arxiv.org</span>
+    </div>
+  </div>
+
+  <!-- Story 11: Hugging Face Data for Agents + vLLM -->
+  <div class="news-item tag-open">
+    <span class="tag tag-open">Open</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Hugging Face 联合 NVIDIA 发布 Data for Agents 计划，上线原生 vLLM 推理后端；模型登陆 Microsoft Foundry</div>
+        <div class="news-title-en">Hugging Face and NVIDIA Launch Data for Agents Initiative, Ship Native vLLM Backend; Models Land on Microsoft Foundry</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 8 日，Hugging Face 连续发布多项更新：联合 NVIDIA 发布"Data for Agents"计划，聚焦 Agent 训练所需的推理链、API 调用序列和多轮交互反馈数据；上线原生速度 vLLM transformers 建模后端，大幅提升开源模型推理效率；开权重模型正式登陆 Microsoft Foundry Managed Compute，支持 CVE 扫描、预热权重和统一 API 端点。此外，HF Storage 成为 SkyPilot 原生后端，实现零出口费用的跨云训练。</div>
+      <div class="news-summary-en">On July 8, Hugging Face released multiple updates: the "Data for Agents" initiative with NVIDIA, focusing on reasoning chains, API call sequences, and multi-turn interaction data for agent training; a native-speed vLLM transformers backend for dramatically faster open model inference; and open-weight models landing on Microsoft Foundry Managed Compute with CVE scanning, pre-staged weights, and unified API endpoints. HF Storage also became a native SkyPilot backend for zero-egress cross-cloud training.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Hugging Face 正在从"模型仓库"进化为"Agent 基础设施平台"。Data for Agents 解决的是 Agent 开发最核心的瓶颈——高质量交互数据；vLLM 后端和 Foundry 接入解决的是部署瓶颈；SkyPilot 后端解决的是训练成本瓶颈。三管齐下，开源 Agent 生态的基础设施正在快速成熟。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Hugging Face is evolving from "model hub" to "agent infrastructure platform." Data for Agents addresses the core bottleneck — quality interaction data; the vLLM backend and Foundry integration address deployment; SkyPilot backend addresses training costs. All three moves are accelerating the maturation of open-source agent infrastructure.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://huggingface.co/blog/nvidia/open-data-for-agents" target="_blank" rel="noopener">🔗 Hugging Face Blog</a>
+      <span class="source-domain">huggingface.co</span>
+    </div>
+  </div>
+
+  <!-- Story 12: Memory Scarcity paper -->
+  <div class="news-item tag-research">
+    <span class="tag tag-research">Research</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">arXiv 高引论文：开源模型正重构 AI 产业经济——推理成本分歧与基础设施偿付能力的情景分析</div>
+        <div class="news-title-en">Highly-Cited arXiv Paper: Open Models Restructuring AI Industry Economics — Scenario Analysis of Inference Cost Divergence and Infrastructure Solvency (2026-2030)</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">东京工业大学 Satoshi Matsuoka 教授发布定量情景分析论文，预测 2026-2030 年 AI 产业格局。核心论点：随着开源模型质量逼近闭源前沿，推理计算的边际成本将取代训练成本成为产业主导变量；"记忆稀缺"（Memory Scarcity）——即模型质量的提升正在耗尽可用训练数据——将成为制约大模型 Scaling Law 的关键瓶颈，推动行业从"参数竞赛"转向"效率竞赛"。</div>
+      <div class="news-summary-en">Professor Satoshi Matsuoka from Tokyo Institute of Technology published a quantitative scenario analysis for the 2026-2030 AI industry. Core thesis: as open models approach closed-source frontier quality, inference marginal cost will replace training cost as the dominant industry variable; "Memory Scarcity" — quality improvements exhausting available training data — will become the key bottleneck limiting Scaling Law, pushing the industry from "parameter race" to "efficiency race."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>该论文提供了一个宏观框架来解释当前行业现象：DeepSeek 的峰谷定价、OpenAI 的三梯级模型、Gemma 4 的端侧策略，都可以理解为对"推理成本取代训练成本"这一趋势的不同响应。如果"记忆稀缺"假说成立，数据质量而非模型规模将成为下一阶段竞争的核心。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This paper provides a macro framework explaining current trends: DeepSeek's peak pricing, OpenAI's three-tier models, Gemma 4's on-device strategy — all can be understood as different responses to "inference cost replacing training cost." If the Memory Scarcity hypothesis holds, data quality rather than model scale will become the core battleground.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://arxiv.org/abs/2607.07207" target="_blank" rel="noopener">🔗 arXiv · 论文</a>
+      <span class="source-domain">arxiv.org</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 4: POLICY & INDUSTRY ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">⚖️</div>
+    <div class="card-title">
+      <div class="title-cn">政策与产业 · Policy &amp; Industry</div>
+      <div class="title-en">Regulatory Developments &amp; Market Movements</div>
+    </div>
+  </div>
+
+  <!-- Story 13: China AI Anthropomorphic Regulation -->
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">中国 AI 拟人化互动新规 7 月 15 日生效：豆包、千问已下线智能体功能，行业进入合规过渡期</div>
+        <div class="news-title-en">China's AI Anthropomorphic Interaction Rules Take Effect July 15: Doubao and Qwen Already Shutting Down Agent Features, Industry Enters Compliance Transition</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 15 日，中国五部门联合发布的《人工智能拟人化互动服务管理暂行办法》将正式施行。该法规为全球首部针对 AI 拟人化服务的专项法规，禁止向未成年人提供虚拟伴侣服务，要求超百万注册用户的服务进行安全评估。字节跳动豆包确认智能体功能将于 7 月 15 日下线，阿里通义千问将于 7 月 10 日先关停拟人化互动类功能、15 日彻底关闭智能体模块。上海网信办已下架 1.4 万个违规智能体。<br><br>同期，《互联网信息服务管理办法》修订草案新增"智能信息服务"专章，对 AI 服务进行专门规范。</div>
+      <div class="news-summary-en">On July 15, China's Interim Measures for AI Anthropomorphic Interaction Services, jointly issued by five agencies, will take effect. As the world's first dedicated regulation on anthropomorphic AI, it bans virtual companion services for minors and requires security assessments for services exceeding one million registered users. ByteDance's Doubao confirmed agent features will shut down on July 15; Alibaba's Qwen will phase out anthropomorphic functions on July 10 and fully close agent modules on July 15. Shanghai's cyberspace administration has already removed 14,000 non-compliant agents. Separately, the revised Internet Information Service Management Measures adds a dedicated "Intelligent Information Services" chapter.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是全球迄今最具体的 AI 拟人化监管框架，直接影响中国数亿用户的 AI 产品体验。法规区分了"帮你干活的 Agent"和"陪你聊天的 Agent"——前者不受影响，后者全面受限。这一区分可能在政策层面预示了 Agent 产业的分化方向：功能型 Agent 加速发展，情感型 Agent 进入强监管。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This is the world's most concrete anthropomorphic AI regulation to date, directly affecting hundreds of millions of Chinese AI users. The regulation distinguishes "agents that do your work" (untouched) from "agents that keep you company" (restricted). This distinction may foreshadow the agent industry's bifurcation: functional agents accelerate, emotional agents face heavy regulation.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://aiinasia.com/policy/policy-monitor-2026-07-13" target="_blank" rel="noopener">🔗 AI in Asia · Policy Monitor</a>
+      <span class="source-domain">aiinasia.com</span>
+    </div>
+  </div>
+
+  <!-- Story 14: Singapore SIMFONI -->
+  <div class="news-item tag-sg">
+    <span class="tag tag-sg">SG</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">新加坡启动国家 AI 医疗模型计划 SIMFONI：基于本地临床数据训练，首批聚焦心血管代谢和眼科疾病</div>
+        <div class="news-title-en">Singapore Launches National AI Medical Model Initiative SIMFONI: Trained on Local Clinical Data, Initial Focus on Cardiometabolic and Eye Diseases</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 9 日，新加坡卫生部长王乙康宣布启动 SIMFONI（Singapore Medical Foundation AI Model）国家计划。该计划将基于本地临床数据和诊疗指南训练 AI 基础模型，首批聚焦心血管代谢疾病（糖尿病、高血压、高血脂）的基层临床决策支持，以及白内障、视网膜疾病、青光眼等多模态眼科 AI 诊断。目前大多数医疗 AI 模型基于西方人群数据训练，在新加坡临床环境中的准确性和相关性不足。计划未来整合进国家电子病历系统。</div>
+      <div class="news-summary-en">On July 9, Singapore Health Minister Ong Ye Kung announced the SIMFONI (Singapore Medical Foundation AI Model) national initiative. The program will train AI foundation models on local clinical data and guidelines, initially focusing on clinical decision support for cardiometabolic conditions (diabetes, hypertension, hyperlipidemia) in primary care, and multimodal AI for eye diseases (cataracts, retinal diseases, glaucoma). Most current medical AI models are trained on Western population data, limiting accuracy in Singapore's clinical context. The initiative plans eventual integration into the national electronic medical records system.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>SIMFONI 代表了一种不同于"通用模型+微调"的国家级 AI 医疗路径——从数据源头开始本土化。在新加坡老龄化加速、慢性病负担上升的背景下，基于本地数据训练的 AI 模型有望显著提升临床决策的准确性。这是继英国 NHS 之后，又一个以国家力量推动医疗 AI 本地化的重要案例。</div>
+      <div class="why-en"><strong>Why it matters:</strong> SIMFONI represents a national-level AI healthcare approach distinct from "general model + fine-tuning" — localizing from the data source upward. With Singapore's aging population and rising chronic disease burden, locally-trained AI models could significantly improve clinical decision accuracy. This is another major case of state-driven medical AI localization, following the UK's NHS.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://english.news.cn/20260709/ee72b69169044b5d8525d8c9dfcc31f2/c.html" target="_blank" rel="noopener">🔗 新华网 · Xinhua</a>
+      <span class="source-domain">xinhuanet.com</span>
+    </div>
+  </div>
+
+  <!-- Story 15: Singapore MAS SAFR -->
+  <div class="news-item tag-sg">
+    <span class="tag tag-sg">SG</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">新加坡金管局发布金融 AI 智能体安全框架 SAFR：为 Agent 自主金融操作设置多重治理核查节点</div>
+        <div class="news-title-en">Singapore MAS Releases SAFR Framework for Financial AI Agents: Multi-Layer Governance Checkpoints for Autonomous Financial Operations</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 9 日，新加坡金管局（MAS）联合多家金融机构发布 SAFR（运行时智能体金融安全保障措施）框架白皮书。该框架设置多重治理核查节点，可在 AI 智能体执行金融操作前对其拟实施行为进行核验、记录与溯源。框架将政策约束执行、实时风险验证、全流程可审计、系统互操作性等安全能力嵌入 AI 运行体系。参与机构包括蚂蚁集团、华侨银行、Visa、Mastercard 等，已在客户互动、财富管理和支付运营等场景落地试用。</div>
+      <div class="news-summary-en">On July 9, the Monetary Authority of Singapore (MAS) jointly released the SAFR (Safeguards for Agentic Finance at Runtime) framework whitepaper with multiple financial institutions. The framework establishes multi-layer governance checkpoints to verify, record, and trace AI agent actions before execution. It embeds policy enforcement, real-time risk verification, full auditability, and interoperability into AI runtime systems. Participants include Ant Group, OCBC, Visa, and Mastercard, with pilot deployments in customer engagement, wealth management, and payment operations.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>SAFR 是全球首个专门针对金融 AI 智能体"运行时"安全的标准框架。传统金融监管关注的是模型上线前的评估，而 SAFR 关注的是 Agent 自主运行过程中的实时风控——这一视角切换对 Agent 时代的金融监管具有开创性意义。蚂蚁、Visa、Mastercard 等跨区域机构的参与表明该框架有国际化潜力。</div>
+      <div class="why-en"><strong>Why it matters:</strong> SAFR is the world's first standards framework specifically targeting "runtime" safety for financial AI agents. Traditional financial regulation focuses on pre-deployment model assessment; SAFR focuses on real-time risk control during autonomous agent operation — a perspective shift with groundbreaking implications for financial regulation in the agent era. Cross-regional participation from Ant Group, Visa, and Mastercard signals internationalization potential.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://www.mas.gov.sg" target="_blank" rel="noopener">🔗 MAS 新加坡金管局</a>
+      <span class="source-domain">mas.gov.sg</span>
+    </div>
+  </div>
+
+  <!-- Story 16: A*STAR new institute -->
+  <div class="news-item tag-sg">
+    <span class="tag tag-sg">SG</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">新加坡 A*STAR 成立先进智能与计算研究所，整合 AI、数据科学、量子计算能力</div>
+        <div class="news-title-en">Singapore A*STAR Establishes Advanced Intelligence and Computing Institute, Consolidating AI, Data Science, and Quantum Computing</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 1 日，新加坡科技研究局（A*STAR）正式成立先进智能与计算研究所，整合 AI、数据科学、数字技术、建模与仿真、量子技术及高性能计算等多个领域的科研能力。新机构合并了原有的高性能计算研究所与信息通信研究所，拥有 700-800 名研究人员，旨在支持新加坡在科研、工业及公共部门开发和部署 AI 解决方案，并加强研究成果向商业应用的转化。</div>
+      <div class="news-summary-en">On July 1, Singapore's A*STAR officially launched the Advanced Intelligence and Computing Institute, consolidating capabilities across AI, data science, digital technologies, modeling & simulation, quantum technology, and high-performance computing. The new entity merges the former Institute of High Performance Computing and Institute for Infocomm Research, with 700-800 researchers, aiming to support AI solution development and deployment across research, industry, and public sectors in Singapore, while strengthening research-to-commercial translation.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>A*STAR 此举将分散在多个研究所的 AI 相关能力集中到一个"超级研究所"，反映了新加坡对 AI 科研资源整合的战略意图。量子计算与 AI 的交叉布局尤其值得关注——这可能意味着新加坡正在为后摩尔时代的 AI 算力范式做准备。</div>
+      <div class="why-en"><strong>Why it matters:</strong> A*STAR's consolidation of AI capabilities across institutes into a single "super-institute" reflects Singapore's strategic intent to integrate AI research resources. The AI-quantum cross-layout is particularly notable — it may signal Singapore's preparation for post-Moore computing paradigms in AI.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://www.a-star.edu.sg" target="_blank" rel="noopener">🔗 A*STAR 官方</a>
+      <span class="source-domain">a-star.edu.sg</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 5: OPEN SOURCE ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🌐</div>
+    <div class="card-title">
+      <div class="title-cn">开源生态 · Open Source Ecosystem</div>
+      <div class="title-en">Open Weights, Community &amp; Developer Tools</div>
+    </div>
+  </div>
+
+  <!-- Story 17: Kimi K2.7 Code on GitHub Copilot -->
+  <div class="news-item tag-cn">
+    <span class="tag tag-cn">CN</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Kimi K2.7 Code 登陆 GitHub Copilot：首个进入 Copilot 模型选择器的开放权重模型，中国模型首次拿下全球开发者"渠道"</div>
+        <div class="news-title-en">Kimi K2.7 Code Lands on GitHub Copilot: First Open-Weight Model in Copilot Model Picker, Chinese Model First to Secure Global Developer "Channel"</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 1 日，GitHub 正式在 Copilot 中上线月之暗面的开源编程模型 Kimi K2.7 Code，这是 Copilot 模型选择器首次纳入开放权重模型。该模型采用 MoE 架构（1T 总参数/32B 激活），支持 256K 上下文和多模态输入，由 GitHub 托管在 Microsoft Azure 上按量计费。首批面向 Copilot Pro/Pro+/Max 订阅用户，企业版默认关闭需管理员启用。Kimi K3 预计本月发布（2.5T 参数），进一步巩固长文本领域的领先地位。</div>
+      <div class="news-summary-en">On July 1, GitHub officially launched Moonshot AI's open-source coding model Kimi K2.7 Code in Copilot — the first open-weight model in Copilot's model picker. The model uses MoE architecture (1T total/32B active params), supports 256K context and multimodal input, hosted on Microsoft Azure with usage-based billing. Available first for Copilot Pro/Pro+/Max subscribers; enterprise requires admin opt-in. Kimi K3 (2.5T params) is expected this month, further cementing leadership in long-context capabilities.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是中国 AI 模型首次进入全球最大开发者平台的"官方模型选择器"。此前中国模型在海外主要通过 API 或 Hugging Face 分发，从未获得渠道级准入。Kimi K2.7 Code 以开源权重+Azure 托管的模式，绕过了地缘政治和技术信任的双重障碍，为中国 AI 模型的国际化开辟了一条可复制路径。K3 的即将发布则可能将这一势头延续。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This marks the first time a Chinese AI model enters the "official model picker" of the world's largest developer platform. Previously, Chinese models were distributed overseas mainly via APIs or Hugging Face, never achieving channel-level access. Kimi K2.7 Code's open-weight + Azure-hosted model bypassed both geopolitical and technical trust barriers, creating a replicable path for Chinese AI model internationalization. The imminent K3 release could sustain this momentum.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://github.blog/changelog/2026-07-01-kimi-k2-7-code-ga-in-copilot/" target="_blank" rel="noopener">🔗 GitHub Changelog · 官方</a>
+      <span class="source-domain">github.blog</span>
+    </div>
+  </div>
+
+  <!-- Story 18: Meta open vs closed -->
+  <div class="news-item tag-us">
+    <span class="tag tag-us">US</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Meta AI 战略双线演进：MSL 自研模型闭源销售，Llama 开源路线继续——Muse Spark 开源版本正在开发中</div>
+        <div class="news-title-en">Meta AI Dual-Track Strategy: MSL Proprietary Models Sold via API, Llama Open-Source Continues — Open-Source Muse Spark Variant in Development</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Meta 超级智能实验室负责人 Alexandr Wang 透露，虽然 MSL 的 Muse Spark 目前仅通过 Meta API 销售（未向 OpenRouter 等第三方开放），但团队正在开发一个开源版本，未来计划发布。同时，Meta 今年计划投入最高 1450 亿美元用于 AI 基础设施，2026 年部署 7 GW 算力。SemiAnalysis 报告预测 Meta 年底前 AI 算力将超越 OpenAI 和 Anthropic 的总和。</div>
+      <div class="news-summary-en">Meta Superintelligence Labs head Alexandr Wang revealed that while MSL's Muse Spark is currently sold only via Meta API (not open to third parties like OpenRouter), an open-source variant is in development for future release. Meanwhile, Meta plans up to $145 billion in AI infrastructure investment this year, deploying 7 GW of compute in 2026. SemiAnalysis projects Meta's AI compute will surpass OpenAI and Anthropic combined by year-end.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>Meta 正在走一条独特的"双轨"路线——用闭源 MSL 模型获得商业回报，用开源 Llama 维持社区生态和人才吸引力。这种模式若成功，可能成为大型科技公司 AI 商业化的参考范本。1450 亿美元的资本支出也刷新了单家公司年度 AI 投入的记录。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Meta is pioneering a unique "dual-track" approach — monetizing via proprietary MSL models while maintaining community ecosystem and talent appeal via open-source Llama. If successful, this could become a reference model for Big Tech AI commercialization. The $145B capex also sets a new record for single-company annual AI investment.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://about.fb.com/news/" target="_blank" rel="noopener">🔗 Meta Newsroom</a>
+      <span class="source-domain">about.fb.com</span>
+    </div>
+  </div>
+
+  <!-- Story 19: HF Kernels & Storage -->
+  <div class="news-item tag-open">
+    <span class="tag tag-open">Open</span>
+    <div class="news-header">
+      <div class="news-title-wrap">
+        <div class="news-title-cn">Hugging Face 上线 Kernels 可信发布系统：编译内核可签名分发，AI Agent 可跨硬件迭代加速器代码</div>
+        <div class="news-title-en">Hugging Face Ships Kernels Trusted Publishing: Signed Kernel Distribution, AI Agents Can Iterate Accelerator Code Across Hardware</div>
+      </div>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 6 日，Hugging Face 发布 Kernels 更新，支持在 Hub 上以代码签名和可信发布者门控的方式分发编译内核。新的 kernel-builder CLI 允许 AI 编程 Agent 在 CUDA、ROCm 和 Metal 硬件上迭代、构建和基准测试加速器代码，弥合了闭源厂商运行时与开源模型之间的长期鸿沟。结合此前 Meta 披露的百 EB 级存储集群细节，行业共识正在形成：AI 基础设施的瓶颈已从芯片层下移到存储、数据投递和内核工具层。</div>
+      <div class="news-summary-en">On July 6, Hugging Face released the Kernels update, enabling signed kernel distribution on the Hub with trusted-publisher gating. The new kernel-builder CLI allows AI coding agents to iterate, build, and benchmark accelerator code across CUDA, ROCm, and Metal hardware, closing the long-standing gap between proprietary vendor runtimes and open-source models. Combined with Meta's disclosure of hundred-exabyte storage clusters, industry consensus is forming: AI infrastructure bottlenecks have migrated downward from chips to storage, data delivery, and kernel tooling layers.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>这是开源 AI 生态从"模型层"向"编译器/内核层"纵深的重要一步。AI Agent 可自主迭代加速器代码意味着未来的模型优化不再依赖芯片厂商提供的闭源库，开源社区将拥有从模型权重到底层算子的完整自主权。</div>
+      <div class="why-en"><strong>Why it matters:</strong> This is a significant step for the open-source AI ecosystem to deepen from the "model layer" to the "compiler/kernel layer." AI agents autonomously iterating accelerator code means future model optimization no longer depends on chip vendors' proprietary libraries — the open-source community will have complete autonomy from model weights to low-level operators.</div>
+    </div>
+    <div class="news-footer">
+      <a class="source-link" href="https://huggingface.co/blog/hf-kernels" target="_blank" rel="noopener">🔗 Hugging Face Blog</a>
+      <span class="source-domain">huggingface.co</span>
+    </div>
+  </div>
+</div>
+
+<!-- Whitelist -->
+<div class="whitelist-section">
+  <div class="whitelist-title-cn">📋 本期追踪来源 · Source Whitelist</div>
+  <div class="whitelist-title-en">Tracked Sources for This Edition</div>
+  <div class="whitelist-note-cn">动态白名单：涵盖美国、中国、新加坡主流 AI 公司官方发布渠道、学术研究平台及权威媒体。🆕 标注为本期新增来源。</div>
+  <div class="whitelist-note-en">Dynamic whitelist covering official channels of major US, China, and Singapore AI companies, academic platforms, and authoritative media. 🆕 marks newly added sources this edition.</div>
+  <div class="whitelist-grid">
+    <div class="whitelist-cat">
+      <h4>🇺🇸 美国 · US</h4>
+      <ul>
+        <li>OpenAI — openai.com/news, openai.com/research</li>
+        <li>Anthropic — anthropic.com/news, anthropic.com/research</li>
+        <li>Google DeepMind — deepmind.google/blog</li>
+        <li>Meta Superintelligence Labs — about.fb.com/news</li>
+      </ul>
+    </div>
+    <div class="whitelist-cat">
+      <h4>🇨🇳 中国 · China</h4>
+      <ul>
+        <li>Moonshot/Kimi — moonshot.ai, kimi.com</li>
+        <li>MiniMax — minimaxi.com</li>
+        <li>智谱 Zhipu — zhipuai.cn, open.bigmodel.cn</li>
+        <li>Qwen/阿里云 — qwen.ai/blog</li>
+        <li>DeepSeek — deepseek.com</li>
+        <li>字节跳动 Seed — seed.bytedance.com</li>
+        <li>Kimi K2 Official — kimi-k2.org</li>
+        <li>美团 LongCat — longcat.chat, tech.meituan.com</li>
+        <li>生数/Vidu — vidu.com, shengshu-ai.com</li>
+      </ul>
+    </div>
+    <div class="whitelist-cat">
+      <h4>🇸🇬 新加坡 · Singapore</h4>
+      <ul>
+        <li>A*STAR AI — a-star.edu.sg/aiml</li>
+        <li>GovTech Singapore — tech.gov.sg</li>
+        <li>Singapore DSAI — smartnation.sg</li>
+        <li>NUS AI Research — nus.edu.sg</li>
+        <li>MDDI Singapore — mddi.gov.sg</li>
+        <li>Singtel RE:AI — singtel.com</li>
+        <li>PAIR Chat — pair.gov.sg</li>
+        <li>AIBots — developer.tech.gov.sg</li>
+        <li>Transcribe — transcribe.gov.sg</li>
+      </ul>
+    </div>
+    <div class="whitelist-cat">
+      <h4>📰 媒体 · Media</h4>
+      <ul>
+        <li>Reuters — reuters.com/technology</li>
+        <li>MIT Tech Review — technologyreview.com</li>
+        <li>新华网 EN · Xinhua — xinhuanet.com</li>
+        <li>CNBC Technology — cnbc.com</li>
+        <li>Forbes AI 50 — forbes.com</li>
+        <li>AI Critique — aicritique.org</li>
+        <li>IEEE Spectrum — spectrum.ieee.org</li>
+        <li>AI Flash Report — aiflashreport.com</li>
+        <li>WinBuzzer — winbuzzer.com</li>
+        <li>Kersai AI Analysis — kersai.com</li>
+        <li>AI Release Tracker — aireleasetracker.com</li>
+        <li>Straits Times Tech — straitstimes.com</li>
+        <li>AgenticWire News — agenticwire.news</li>
+        <li>explainx.ai</li>
+        <li>Legalithm — legalithm.com</li>
+        <li>TechNode — technode.com</li>
+        <li>AI in Asia — aiinasia.com</li>
+      </ul>
+    </div>
+    <div class="whitelist-cat">
+      <h4>🔬 研究与开源 · Research &amp; Open Source</h4>
+      <ul>
+        <li>Hugging Face Blog — huggingface.co/blog</li>
+        <li>arXiv CS.AI — arxiv.org/list/cs.AI</li>
+        <li>OpenBMB — openbmb.org</li>
+        <li>HKUDS — hku-datascience.github.io</li>
+        <li>Marktechpost — marktechpost.com</li>
+        <li>PaddlePaddle on HF — huggingface.co/blog/PaddlePaddle</li>
+        <li>ServiceNow on HF — huggingface.co/blog/ServiceNow</li>
+        <li>DeepReinforce Ornith — deep-reinforce.com</li>
+        <li>GitHub Changelog — github.blog</li>
+        <li>H Company — hcompany.ai</li>
+      </ul>
+    </div>
+    <div class="whitelist-cat">
+      <h4>🏛️ 政策与治理 · Policy &amp; Governance</h4>
+      <ul>
+        <li>Plural Policy — pluralpolicy.com</li>
+        <li>UK AI Security Institute — aisi.gov.uk</li>
+        <li>Stanford HAI — hai.stanford.edu</li>
+        <li>Mayer Brown AI Policy — mayerbrown.com</li>
+        <li>EU Council — consilium.europa.eu</li>
+        <li>Inside Global Tech — insideglobaltech.com</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-cn">AI 技术早报 · 2026 年 7 月 14 日 AM · 本期共 19 条新闻 · 5 个分区</div>
+  <div class="footer-en">Daily AI Technology Briefing · July 14, 2026 AM Edition · 19 Stories · 5 Sections</div>
+  <div class="footer-cn">来源：各公司官方发布渠道、学术预印本平台、权威科技媒体 · 内容仅供信息参考，不构成投资建议</div>
+  <div class="footer-en">Sources: Official company channels, academic preprint platforms, authoritative tech media · For informational purposes only, not investment advice</div>
+  <div class="footer-cn">由 WorkBuddy AI 自动化生成 · 追踪白名单见页面底部 · 去重机制：基于标题关键词</div>
+  <div class="footer-en">Auto-generated by WorkBuddy AI · Source whitelist at page bottom · Deduplication: title-keyword based</div>
+</footer>
+
+</div>
+</body>
+</html>
