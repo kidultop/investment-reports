@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily AI Briefing — 2026.07.16 Morning | AI 技术早报</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --accent: #a78bfa;
+            --accent-light: #c4b5fd;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --tag-us: #38bdf8;
+            --tag-cn: #f87171;
+            --tag-sg: #fb923c;
+            --tag-research: #4ade80;
+            --tag-open: #a78bfa;
+            --tag-policy: #facc15;
+            --tag-new: #2dd4bf;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 24px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .header .date {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label-cn {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .stat-label-en {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Trends Card */
+        .trends-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--accent);
+        }
+        .trends-title-cn {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .trends-title-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        .trend-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .trend-item:last-child { border-bottom: none; }
+        .trend-cn { font-size: 14px; }
+        .trend-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .title-cn { color: var(--accent); }
+        .title-en {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* News Items */
+        .news-item {
+            padding: 16px;
+            margin-bottom: 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            transition: background 0.2s;
+        }
+        .news-item:hover { background: var(--bg-card-hover); }
+        .news-item.tag-us { border-left-color: var(--tag-us); }
+        .news-item.tag-cn { border-left-color: var(--tag-cn); }
+        .news-item.tag-sg { border-left-color: var(--tag-sg); }
+        .news-item.tag-research { border-left-color: var(--tag-research); }
+        .news-item.tag-open { border-left-color: var(--tag-open); }
+        .news-item.tag-policy { border-left-color: var(--tag-policy); }
+        .news-item.tag-new { border-left-color: var(--tag-new); }
+
+        .news-title-cn {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .news-title-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .news-summary {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 10px;
+        }
+        .news-summary-cn {
+            flex: 1;
+            font-size: 13px;
+            color: var(--text);
+            padding-left: 12px;
+            border-left: 2px solid var(--border);
+        }
+        .news-summary-en {
+            flex: 1;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            padding-left: 12px;
+            border-left: 2px solid var(--border);
+        }
+
+        .why-matters {
+            background: rgba(167, 139, 250, 0.08);
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+        }
+        .why-cn {
+            font-size: 13px;
+            color: var(--accent-light);
+            margin-bottom: 4px;
+        }
+        .why-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .news-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .tag-us { background: rgba(56, 189, 248, 0.15); color: var(--tag-us); }
+        .tag-cn { background: rgba(248, 113, 113, 0.15); color: var(--tag-cn); }
+        .tag-sg { background: rgba(251, 146, 60, 0.15); color: var(--tag-sg); }
+        .tag-research { background: rgba(74, 222, 128, 0.15); color: var(--tag-research); }
+        .tag-open { background: rgba(167, 139, 250, 0.15); color: var(--tag-open); }
+        .tag-policy { background: rgba(250, 204, 21, 0.15); color: var(--tag-policy); }
+        .tag-new { background: rgba(45, 212, 191, 0.15); color: var(--tag-new); }
+
+        .source-link {
+            font-size: 12px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .source-link:hover { text-decoration: underline; }
+
+        .new-source-callout {
+            background: rgba(45, 212, 191, 0.08);
+            border: 1px solid var(--tag-new);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--tag-new);
+        }
+
+        /* Whitelist */
+        .whitelist-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .whitelist-title-cn {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .whitelist-title-en {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        .whitelist-note-cn {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .whitelist-note-en {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        .whitelist-category {
+            margin-bottom: 10px;
+        }
+        .whitelist-category-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .whitelist-items {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        .footer-cn { margin-bottom: 4px; }
+        .footer-en { font-style: italic; }
+
+        @media (max-width: 640px) {
+            .news-summary { flex-direction: column; }
+            .stats-bar { gap: 16px; }
+            body { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI 技术早报</h1>
+            <div class="subtitle">Daily AI Technology Briefing</div>
+            <div class="date">2026年7月16日 星期四 | Thursday, July 16, 2026</div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value">15</div>
+                <div class="stat-label-cn">条精选资讯</div>
+                <div class="stat-label-en">Curated Stories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">5</div>
+                <div class="stat-label-cn">个标准分区</div>
+                <div class="stat-label-en">Standard Sections</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">3</div>
+                <div class="stat-label-cn">大主线地区</div>
+                <div class="stat-label-en">Key Regions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">0</div>
+                <div class="stat-label-cn">本期新增来源</div>
+                <div class="stat-label-en">New Sources</div>
+            </div>
+        </div>
+
+        <div class="trends-card">
+            <div class="trends-title-cn">🔮 核心趋势</div>
+            <div class="trends-title-en">Core Trends</div>
+            <div class="trend-item">
+                <div class="trend-cn">中国端侧AI监管落地：Apple Intelligence通过备案，阿里千问与百度能力集成国行设备</div>
+                <div class="trend-en">China on-device AI regulation takes effect: Apple Intelligence approved, Alibaba Qwen and Baidu integrated into China-region Apple devices</div>
+            </div>
+            <div class="trend-item">
+                <div class="trend-cn">AI数学证明能力突破：GPT-5.6 Sol Ultra调用64个并行子智能体，1小时内完成50年图论猜想证明</div>
+                <div class="trend-en">AI mathematical reasoning breakthrough: GPT-5.6 Sol Ultra deploys 64 parallel sub-agents to prove a 50-year-old graph theory conjecture in under 1 hour</div>
+            </div>
+            <div class="trend-item">
+                <div class="trend-cn">全球AI治理框架加速成型：DeepMind CEO提议建立独立标准机构，参照金融业FINRA模式监管前沿模型</div>
+                <div class="trend-en">Global AI governance framework accelerates: DeepMind CEO proposes independent standards body modeled after financial industry's FINRA to regulate frontier models</div>
+            </div>
+        </div>
+
+        <!-- Top Stories -->
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">🔥 头条</span>
+                <span class="title-en">Top Stories</span>
+            </div>
+
+            <div class="news-item tag-cn">
+                <div class="news-title-cn">Apple Intelligence通过中国监管备案，阿里千问集成至国行苹果设备</div>
+                <div class="news-title-en">Apple Intelligence passes China regulatory filing; Alibaba Qwen integrated into China-region Apple devices</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月15日，国家网信办发布公告，苹果技术开发（上海）有限公司提交的"Apple智能"大模型正式通过生成式人工智能服务备案。阿里巴巴确认，阿里千问将作为AI能力集成至Apple智能，为iOS、iPadOS、macOS和visionOS的中国用户带来文本与图像理解、内容生成等能力。百度继续承担搜索及Siri相关能力建设。同期，华为小艺、vivo蓝心、小米澎湃及努比亚豆包大模型等7款端侧AI服务也完成备案。</div>
+                    <div class="news-summary-en">On July 15, China's Cyberspace Administration announced that Apple Technology Development (Shanghai)'s "Apple Intelligence" has passed generative AI service filing. Alibaba confirmed that its Qwen model will power Apple Intelligence for Chinese users across iOS, iPadOS, macOS, and visionOS. Baidu continues to provide search and Siri capabilities. Seven on-device AI services including Huawei Xiaoyi, vivo Blue Heart, Xiaomi HyperOS, and Nubia Doubao also completed filing.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>这是苹果在中国大陆推出AI功能的关键监管里程碑。国行苹果设备长期缺失AI能力，与华为、小米等竞品形成体验代差。千问集成后，苹果有望重新激活中国市场的升级需求。同时也标志着中国端侧AI监管框架正式落地。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> This is a critical regulatory milestone for Apple to launch AI features in mainland China. China-region Apple devices have lacked AI capabilities, creating a user experience gap with Huawei and Xiaomi competitors. Qwen integration could rekindle upgrade demand. It also marks the formal implementation of China's on-device AI regulatory framework.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-cn">🇨🇳 CN</span>
+                        <span class="tag tag-policy">Policy</span>
+                    </div>
+                    <a href="https://www.stcn.com/article/detail/4021157.html" class="source-link" target="_blank">来源：证券时报</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-us">
+                <div class="news-title-cn">GPT-5.6 Sol Ultra 1小时内完成50年图论猜想证明，调用64个并行子智能体</div>
+                <div class="news-title-en">GPT-5.6 Sol Ultra proves 50-year graph theory conjecture in under 1 hour using 64 parallel sub-agents</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月10日，OpenAI宣布GPT-5.6 Sol Ultra在不到1小时内完成了图论领域悬而未决50余年的"循环双覆盖猜想"（Cycle Double Cover Conjecture）完整证明。该模型同时调用64个并行子智能体协同工作，并部署专门的"对抗智能体"负责寻找漏洞。证明过程未引用任何文献、全程离线运行。OpenAI同步公布了完整的约700词Prompt及证明PDF。该猜想在数学界地位显赫，由Szekeres（1973）和Seymour（1979）分别独立提出，此前仅有部分条件下的证明结果。</div>
+                    <div class="news-summary-en">On July 10, OpenAI announced that GPT-5.6 Sol Ultra produced a complete proof of the Cycle Double Cover Conjecture — a 50-year-old open problem in graph theory — in under one hour. The model deployed 64 parallel sub-agents with dedicated adversarial agents tasked with finding flaws. The proof ran entirely offline without referencing any literature. OpenAI published the full ~700-word prompt and proof PDF. The conjecture was independently proposed by Szekeres (1973) and Seymour (1979); only partial results under special conditions existed previously.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>这是AI在纯数学领域独立证明重大猜想的首个案例。64个并行子智能体与对抗验证机制展示了多智能体协作在复杂推理中的威力。证明方法将问题转化为GF(3)有限域上的线性代数构造，体现了AI的创造性推理能力。不过，该证明尚未经过正式同行评审，数学界正在沉默审查。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> This is the first case of AI independently proving a major conjecture in pure mathematics. The 64 parallel sub-agents with adversarial verification demonstrate the power of multi-agent collaboration in complex reasoning. The proof transformed the problem into a linear algebra construction over GF(3), showing AI's creative reasoning ability. However, the proof has not undergone formal peer review; the mathematical community is conducting silent review.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-us">🇺🇸 US</span>
+                        <span class="tag tag-research">Research</span>
+                    </div>
+                    <a href="https://www.tmtpost.com/agent/ai-article?id=19053" class="source-link" target="_blank">来源：钛媒体</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-us">
+                <div class="news-title-cn">谷歌DeepMind CEO呼吁建立独立前沿AI监管标准机构，参照FINRA模式</div>
+                <div class="news-title-en">Google DeepMind CEO calls for independent frontier AI regulatory standards body, modeled after FINRA</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月15日，DeepMind首席执行官Demis Hassabis在X平台发表长文，呼吁建立一个新的独立监管机构，专门负责监督前沿AI模型的发布。他主张参照美国金融业监管局（FINRA）的模式，成立由行业出资、独立运营的"标准机构"，在模型发布前最多30天进行审查。该方案拟获得美国政府背书，但由AI实验室共同承担资金。Hassabis强调，该机构以技术为核心导向，初期自愿提交，成熟后前沿模型须通过审查方可部署。</div>
+                    <div class="news-summary-en">On July 15, DeepMind CEO Demis Hassabis published a long-form article on X calling for a new independent regulatory body to oversee frontier AI model releases. He proposed a FINRA-style industry-funded, independently operated "standards body" that would review models up to 30 days before release. The plan envisions US government endorsement with AI labs jointly funding operations. Hassabis emphasized a technology-centric approach: voluntary submission initially, then mandatory review before deployment once protocols mature.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>这是目前科技巨头提出的最具体的AI监管框架方案。FINRA模式的自律监管机制在金融行业运行成熟，若移植到AI领域，可能在政府不直接设立AI监管机构的情况下（特朗普政府已明确表示不会设立AI版FDA），建立有效的行业自律体系。该方案试图平衡创新支持与负责任行为。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> This is the most concrete AI regulatory framework proposed by a major tech leader to date. The FINRA-style self-regulatory model is proven in finance; if transplanted to AI, it could establish effective industry self-governance without direct government AI regulation (the Trump administration has stated there will be "no AI FDA"). The proposal attempts to balance innovation support with responsible behavior.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-us">🇺🇸 US</span>
+                        <span class="tag tag-policy">Policy</span>
+                    </div>
+                    <a href="https://www.163.com/dy/article/L1T3BVPI05118UGF.html" class="source-link" target="_blank">来源：至顶科技</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Official Releases -->
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">📢 官方发布</span>
+                <span class="title-en">Official Releases</span>
+            </div>
+
+            <div class="news-item tag-cn">
+                <div class="news-title-cn">网信办发布7款端侧AI备案信息，Apple智能、华为小艺等获批</div>
+                <div class="news-title-en">Cyberspace Administration releases 7 on-device AI filing approvals, including Apple Intelligence and Huawei Xiaoyi</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月15日，国家网信办公布新增7款提供手机端侧生成式人工智能服务备案信息，包括Apple智能、华为小艺、vivo蓝心、小米澎湃、OPPO安第斯、努比亚豆包大模型等。苹果"Apple智能"大模型于2026年7月8日完成备案，适用场景为苹果手机。这是继《生成式人工智能服务管理暂行办法》实施后，端侧AI服务的首次大规模备案。</div>
+                    <div class="news-summary-en">On July 15, China's Cyberspace Administration announced 7 newly approved on-device generative AI services, including Apple Intelligence, Huawei Xiaoyi, vivo Blue Heart, Xiaomi HyperOS, OPPO Andes, and Nubia Doubao. Apple's "Apple Intelligence" was filed on July 8, 2026, for iPhone devices. This is the first large-scale filing of on-device AI services since the implementation of the Generative AI Services Management Measures.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>端侧AI备案标志着中国生成式AI监管从云端服务延伸至终端设备，覆盖全链路。苹果、华为、小米、OPPO等主流厂商全部在列，意味着中国智能手机AI功能将全面合规上线。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> On-device AI filing marks the extension of China's generative AI regulation from cloud services to end devices, covering the full chain. Major vendors including Apple, Huawei, Xiaomi, and OPPO are all listed, meaning China smartphone AI features will launch in full compliance.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-cn">🇨🇳 CN</span>
+                        <span class="tag tag-policy">Policy</span>
+                    </div>
+                    <a href="https://www.163.com/dy/article/L1TAKM6205129QAF.html" class="source-link" target="_blank">来源：南方都市报</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-us">
+                <div class="news-title-cn">Anthropic推出Claude教师版，面向美国K12教育市场免费开放</div>
+                <div class="news-title-en">Anthropic launches Claude for Teachers, free for US K12 educators</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月14日，Anthropic宣布面向美国K12教育工作者推出Claude教师版（Claude for Teachers）。该产品免费向经认证的美国K12教师开放，提供匹配美国50个州课程标准、辅助备课、个性化教学材料生成、学生学习情况分析等功能。教师可在2027年6月30日前完成注册获得一年完整使用权限。Anthropic表示不会使用教师数据训练模型，学生信息受FERPA保护。该产品已与美国教师联合会、Teach for America合作。</div>
+                    <div class="news-summary-en">On July 14, Anthropic announced Claude for Teachers for US K12 educators. The product is free for certified US K12 teachers, offering curriculum alignment with all 50 state standards, lesson planning assistance, personalized learning material generation, and student performance analysis. Teachers who register by June 30, 2027 receive one full year of access. Anthropic stated that teacher data will not be used for model training, and student information is protected under FERPA. The product partners with the American Federation of Teachers and Teach for America.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>这标志着Anthropic从高等教育（Claude for Education）正式延伸至K12基础教育。与多家教育科技产品（ASSISTments、BriskTeaching、Canva Education、MagicSchool等）的合作意味着Claude正试图成为教育基础设施而非孤立工具。这是AI从"替代学生作业"转向"辅助教师工作"的务实落点。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> This marks Anthropic's formal extension from higher education (Claude for Education) to K12. Partnerships with edtech products (ASSISTments, BriskTeaching, Canva Education, MagicSchool) signal Claude's ambition to become educational infrastructure rather than a standalone tool. It represents a pragmatic shift from AI "replacing student work" to "assisting teacher workflows."</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-us">🇺🇸 US</span>
+                    </div>
+                    <a href="https://claude.com/blog/claude-for-teachers" class="source-link" target="_blank">来源：Anthropic Blog</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-us">
+                <div class="news-title-cn">Anthropic Fable 5订阅再度延期，OpenAI Codex跟进取消使用限制</div>
+                <div class="news-title-en">Anthropic extends Fable 5 subscription again; OpenAI Codex removes usage limits in response</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月12日，Anthropic宣布将Claude Fable 5在所有付费套餐上的订阅访问期限再度延长7天至7月19日，同时维持Claude Code每周使用限额50%的上调幅度。消息发布不到一小时，OpenAI宣布暂时取消Codex的5小时使用限制，覆盖Plus、Business及Pro全部付费计划。背景是Fable 5算力持续紧张，用户以高额账单截图和退订记录施压，迫使Anthropic多次妥协。Fable 5定价为每百万输入Token 10美元、输出Token 50美元；OpenAI Sol对应价格约为其一半。</div>
+                    <div class="news-summary-en">On July 12, Anthropic extended Claude Fable 5 subscription access by another 7 days to July 19 across all paid tiers, while maintaining a 50% increase in Claude Code weekly usage limits. Within an hour, OpenAI announced temporary removal of Codex's 5-hour usage limit for all Plus, Business, and Pro plans. The backdrop is Fable 5's persistent compute shortage, with users pressuring Anthropic via bill screenshots and cancellation records. Fable 5 is priced at $10/million input tokens and $50/million output tokens; OpenAI Sol is roughly half the price.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>这揭示了前沿AI推理业务的算力供需失衡。分析师Benedict Evans指出，当前AI推理毛利率约40%-50%，但尚未计入每年训练下一代模型的巨额开支。软件开发这一单一用例已实现产品市场匹配，若未来消费级场景同样实现匹配，现有全球基础设施将无法支撑。基础模型可能趋向低利润商品化基础设施。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> This reveals the supply-demand imbalance in frontier AI inference. Analyst Benedict Evans notes that while AI inference margins are ~40-50%, this doesn't account for massive annual training costs. Software development alone has achieved product-market fit; if a consumer-scale use case achieves similar fit, global infrastructure cannot support it. Foundation models may trend toward low-margin commodity infrastructure.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-us">🇺🇸 US</span>
+                    </div>
+                    <a href="https://k.sina.com.cn/article_7857201856_1d45362c0019084zz6.html" class="source-link" target="_blank">来源：新浪财经</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Research & Technology -->
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">🔬 研究与技术</span>
+                <span class="title-en">Research & Technology</span>
+            </div>
+
+            <div class="news-item tag-us">
+                <div class="news-title-cn">OpenAI公开GPT-5.6 Sol Ultra证明图论猜想的完整Prompt与方法论</div>
+                <div class="news-title-en">OpenAI publishes full Prompt and methodology for GPT-5.6 Sol Ultra's graph theory proof</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">OpenAI同步公布了GPT-5.6 Sol Ultra证明"循环双覆盖猜想"所使用的完整提示词（约700词）及证明PDF。Prompt的核心设计原则包括：不写解题步骤但定义清晰的验收标准；明确定义范围与边界情况；将复杂任务分解为多个独立子任务分配给不同智能体；早期保持研究路线多样性，让不同智能体尝试不同数学表示方法；安排专门的对抗智能体寻找漏洞和边界情况。系统预留8小时计算时间，最终仅耗时约1小时完成证明。</div>
+                    <div class="news-summary-en">OpenAI published the complete prompt (~700 words) and proof PDF used by GPT-5.6 Sol Ultra. Core prompt design principles include: defining clear acceptance criteria without prescribing solution steps; clearly defining scope and edge cases; decomposing complex tasks into independent subtasks for different agents; maintaining research diversity early on; and deploying dedicated adversarial agents to find flaws and edge cases. The system reserved 8 hours of compute but completed the proof in about 1 hour.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>Prompt设计揭示了驾驭前沿大模型的新方法论：不过度规定过程，而是精确定义交付标准与验收条件。对抗智能体的引入为AI生成内容的可靠性验证提供了新范式。这套方法论可复用于其他复杂科学推理任务。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> The prompt design reveals a new methodology for steering frontier models: don't over-prescribe process, but precisely define deliverables and acceptance criteria. Adversarial agents provide a new paradigm for reliability verification of AI-generated content. This methodology is reusable for other complex scientific reasoning tasks.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-us">🇺🇸 US</span>
+                        <span class="tag tag-research">Research</span>
+                    </div>
+                    <a href="https://new.qq.com/rain/a/20260713A06OLO00?refer=cp_1009" class="source-link" target="_blank">来源：QQ新闻</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-sg">
+                <div class="news-title-cn">南洋理工大学与微软研究院发布AI科研助手ResearchStudio-Idea</div>
+                <div class="news-title-en">NTU and Microsoft Research release AI research assistant ResearchStudio-Idea</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月14日，南洋理工大学与微软研究院联合发布AI科研助手ResearchStudio-Idea，该研究同时有新加坡国立大学及A*STAR参与。核心工具IdeaSpark通过Paper-Search搜索文献、Scoop-Check检查想法是否已被发表（通过四维比对给出1-5分碰撞等级）、以及IdeaSpark基于近两千篇顶级ML论文归纳的"研究套路卡片"生成有据可查的研究提案。arXiv预印本编号：2607.04439。该工具旨在解决AI生成研究想法"新颖但空洞"的问题。</div>
+                    <div class="news-summary-en">On July 14, NTU and Microsoft Research released ResearchStudio-Idea, with NUS and A*STAR also participating. The core tool IdeaSpark uses Paper-Search for literature retrieval, Scoop-Check to verify idea novelty (scoring 1-5 collision grade via four-dimensional comparison), and "research pattern cards" distilled from ~2,000 top ML papers to generate evidence-based research proposals. arXiv preprint: 2607.04439. The tool targets the "novel but empty" failure mode of AI-generated research ideas.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>这是首个系统性解决"AI生成想法看似新颖实则空洞"问题的工具。通过先读文献再找空白、再生成可被批评的提案，IdeaSpark为AI辅助科研提供了更严谨的方法论。新加坡三所公立医疗集群（NHG、NUHS、SingHealth）已参与验证相关技术。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> This is the first systematic tool addressing the "novel but empty" failure mode of AI-generated research ideas. By reading literature first, finding gaps, then generating criticizable proposals, IdeaSpark provides a more rigorous methodology for AI-assisted research. Singapore's three public healthcare clusters (NHG, NUHS, SingHealth) are already validating related technologies.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-sg">🇸🇬 SG</span>
+                        <span class="tag tag-research">Research</span>
+                    </div>
+                    <a href="https://www.techwalker.com/2026/0714/3193195.shtml" class="source-link" target="_blank">来源：科技行者</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-research">
+                <div class="news-title-cn">arXiv：弱到强泛化新方法Direct-OPD，4小时低成本提升小模型数学推理</div>
+                <div class="news-title-en">arXiv: Weak-to-Strong Generalization via Direct On-Policy Distillation, boosting small model math reasoning in 4 hours at low cost</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">清华大学（张亚勤团队）等研究者在arXiv发表论文（2607.05394），提出Direct On-Policy Distillation（Direct-OPD）方法，用于解决强化学习后训练（RLVR）在大模型上重复成本过高的问题。核心思路是：在小模型上运行RLVR（成本低），然后将学到的策略偏移信号迁移到更大的目标模型，而非直接模仿小模型的最终输出。实验证明，Direct-OPD能在4小时、8块A100 GPU上将Qwen3-1.7B的AIME 2024得分从48.3%提升至58.3%，优于逐步匹配的直接RL方法。</div>
+                    <div class="news-summary-en">Researchers from Tsinghua University (Ya-Qin Zhang's team) and others published on arXiv (2607.05394), proposing Direct On-Policy Distillation (Direct-OPD) to address the high cost of repeating RLVR on large models. The core idea: run RLVR on a smaller model (cheaper), then transfer the learned policy shift signal to the larger target model rather than imitating the small model's final output. Experiments show Direct-OPD boosts Qwen3-1.7B from 48.3% to 58.3% on AIME 2024 in just 4 hours on 8 A100 GPUs, outperforming step-matched direct RL.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>后训练成本正成为大模型发展的瓶颈。Direct-OPD提供了一种可复用的"弱到强"迁移范式，让RL的成果可以跨模型规模复用为隐式奖励信号，而非仅能作为最终模型被模仿。这对降低前沿模型推理能力提升的成本具有重要意义。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> Post-training costs are becoming a bottleneck in large model development. Direct-OPD provides a reusable "weak-to-strong" transfer paradigm, allowing RL outcomes to be reused across model scales as implicit reward signals rather than only as final models to imitate. This is significant for reducing the cost of improving frontier model reasoning capabilities.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-research">Research</span>
+                        <span class="tag tag-open">Open</span>
+                    </div>
+                    <a href="https://arxiv.org/abs/2607.05394" class="source-link" target="_blank">来源：arXiv 2607.05394</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy & Industry -->
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">⚖️ 政策与产业</span>
+                <span class="title-en">Policy & Industry</span>
+            </div>
+
+            <div class="news-item tag-policy">
+                <div class="news-title-cn">DeepMind CEO提议AI标准机构：前沿模型发布前须30天审查，成熟后强制准入</div>
+                <div class="news-title-en">DeepMind CEO proposes AI standards body: 30-day pre-release review for frontier models, mandatory approval once protocols mature</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">Demis Hassabis的提案建议：初期前沿实验室自愿在模型发布前最多30天提交审查；一旦评估协议成熟，将推进正式化，届时前沿模型须通过审查方可在美国市场部署；各实验室与标准机构合作处理发布后安全漏洞；机构由开源领域代表和技术专家组成，部分评估可外包给AI安全研究群体。该方案是在美国政府对Anthropic Mythos和OpenAI Sol临时审查基础上加以完善，旨在解决此前审查因技术专业性不足、决策过程不透明而受批评的问题。</div>
+                    <div class="news-summary-en">Demis Hassabis's proposal recommends: initially voluntary submission up to 30 days before release; once protocols mature, mandatory review before US market deployment; labs collaborate with the body on post-release vulnerabilities; the body comprises open-source representatives and technical experts, with some evaluations outsourced to AI safety researchers. This builds on the US government's ad-hoc reviews of Anthropic Mythos and OpenAI Sol, addressing prior criticisms about insufficient technical expertise and opaque decision-making.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>这是科技巨头首次系统性提出AI监管替代方案，而非被动应对政府立法。FINRA模式的自律监管在金融业已运行数十年，若成功移植，可为全球AI治理提供参照模板。但关键在于：行业能否真正接受约束自身利益的独立机构？</div>
+                    <div class="why-en"><strong>Why it matters:</strong> This is the first systematic AI regulatory alternative proposed by a tech giant rather than passive response to government legislation. FINRA-style self-regulation has operated in finance for decades; if successfully transplanted, it could provide a reference template for global AI governance. But the key question is: can the industry truly accept an independent body that constrains its own interests?</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-us">🇺🇸 US</span>
+                        <span class="tag tag-policy">Policy</span>
+                    </div>
+                    <a href="https://www.163.com/dy/article/L1T3BVPI05118UGF.html" class="source-link" target="_blank">来源：至顶科技</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-cn">
+                <div class="news-title-cn">知网下架AI署名论文，明确人工智能不得列为作者</div>
+                <div class="news-title-en">CNKI removes AI-authored papers, clarifying that AI cannot be listed as author</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">7月15日，同方知网数字科技有限公司发布声明称，近期部分期刊刊发了将DeepSeek、Gemini等人工智能列为作者的论文，引发版权权属和学术规范争议。对此类AI署名论文，知网已做下架处理。声明同时明确，使用AI须在论文中说明。此前，中国科协、中科院等已多次强调AI不能作为论文作者，但部分期刊执行不严。知网此举意味着学术数据库层面开始对AI署名问题进行实质性治理。</div>
+                    <div class="news-summary-en">On July 15, CNKI (Tongfang Zhiwang) issued a statement that some journals recently published papers listing AI systems such as DeepSeek and Gemini as authors, sparking copyright and academic ethics controversies. CNKI has removed such papers. The statement also clarifies that AI usage must be disclosed in papers. Previously, CAST and CAS had repeatedly emphasized that AI cannot be a paper author, but some journals were lax in enforcement. CNKI's move means academic databases are now substantively addressing AI authorship issues.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>AI生成内容的学术归属问题正在从规范讨论进入实际执行阶段。知网作为中国最大的学术数据库，其下架行动将对期刊投稿规范产生直接影响。这也反映了全球学术界对AI在知识生产中角色的重新审视。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> The academic attribution of AI-generated content is moving from normative discussion to actual enforcement. As China's largest academic database, CNKI's removal action will directly impact journal submission standards. This also reflects the global academic community's re-examination of AI's role in knowledge production.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-cn">🇨🇳 CN</span>
+                        <span class="tag tag-policy">Policy</span>
+                    </div>
+                    <a href="https://m.weibo.cn/status/5321219903327358" class="source-link" target="_blank">来源：大象新闻/微博</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-cn">
+                <div class="news-title-cn">字节跳动AI制药业务拆分独立融资，继续获火山引擎算力支持</div>
+                <div class="news-title-en">ByteDance spins off AI drug discovery business for independent financing, continues receiving Volcano Engine compute support</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">6月10日消息，字节跳动AI制药业务启动拆分与独立融资。新公司将由字节AI制药团队主导，拆分后字节仍将控股，核心团队、算法、技术平台和已有管线资产整体进入新主体。该业务将继续从火山引擎获得算力支持。这一架构在保留大厂资源入口的同时，将内部孵化的AI for Science业务推向独立资本化轨道。此前，字节跳动旗下Seed团队已发布多个生命科学相关模型（如Seeduplex语音模型、Seedream视频模型等）。</div>
+                    <div class="news-summary-en">On June 10, ByteDance's AI drug discovery business began spinning off for independent financing. The new company will be led by ByteDance's AI pharma team; ByteDance will remain the controlling shareholder, with core teams, algorithms, platforms, and pipeline assets transferred to the new entity. The business continues to receive compute support from Volcano Engine. This structure preserves Big Tech resource access while pushing the internally incubated AI-for-Science business toward independent capitalization. Previously, ByteDance's Seed team released multiple life science models (Seeduplex voice model, Seedream video model, etc.).</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>字节跳动成为继百度、阿里之后第三个将内部AI for Science业务独立分拆的中国科技巨头。这一模式既保留了大厂的算力和数据资源，又赋予业务独立融资和决策的灵活性。AI制药赛道2026年上半年合作密集落地，全球已有170余条AI设计药物管线进入临床。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> ByteDance becomes the third Chinese tech giant after Baidu and Alibaba to spin off internal AI-for-Science business. This model preserves Big Tech compute and data resources while granting the business independent financing and decision-making flexibility. The AI pharma track saw dense partnership deals in H1 2026, with over 170 AI-designed drug pipelines entering clinical stages globally.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-cn">🇨🇳 CN</span>
+                        <span class="tag tag-policy">Industry</span>
+                    </div>
+                    <a href="https://stock.jrj.com.cn/2026/07/16074457822715.shtml" class="source-link" target="_blank">来源：金融界</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Open Source -->
+        <div class="section-card">
+            <div class="card-title">
+                <span class="title-cn">🔓 开源生态</span>
+                <span class="title-en">Open Source</span>
+            </div>
+
+            <div class="news-item tag-open">
+                <div class="news-title-cn">DeepSeek V4 Preview持续开放，正式版及1M上下文峰谷定价机制按计划推进</div>
+                <div class="news-title-en">DeepSeek V4 Preview remains open; official version and 1M-context peak-valley pricing proceeding on schedule</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">DeepSeek官方通知，V4正式版计划于7月中旬上线，同步引入峰谷定价机制。当前V4 Preview已提供1M标准上下文窗口，采用双版本架构：V4-Pro（1.6T总参数/49B激活参数）与V4-Flash（284B总参数/13B激活参数）。官方API已支持OpenAI ChatCompletions和Anthropic APIs格式。deepseek-chat与deepseek-reasoner将于2026年7月24日15:59（UTC）后全面退役。V4系列无缝集成Claude Code、OpenClaw等主流AI编程工具。</div>
+                    <div class="news-summary-en">DeepSeek officially notified that the V4 official version is planned for mid-July launch with peak-valley pricing. The current V4 Preview offers 1M standard context via a dual-version architecture: V4-Pro (1.6T total / 49B active params) and V4-Flash (284B total / 13B active params). The official API supports OpenAI ChatCompletions and Anthropic APIs formats. deepseek-chat and deepseek-reasoner will be fully retired after July 24, 2026, 15:59 UTC. The V4 series integrates seamlessly with Claude Code, OpenClaw, and other mainstream AI coding tools.</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>DeepSeek V4的1M上下文和峰谷定价机制正在重新定义开源大模型的性价比标准。峰谷定价借鉴了电网和云计算的定价逻辑，用户可在非高峰时段以更低成本使用前沿模型能力。这对初创公司、研究人员和新兴市场的AI采用者具有实质吸引力。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> DeepSeek V4's 1M context and peak-valley pricing are redefining the cost-performance standard for open-source large models. Peak-valley pricing, borrowed from electricity grids and cloud computing, allows users to access frontier model capabilities at significantly lower costs during off-peak hours. This has substantial appeal for startups, researchers, and AI adopters in emerging markets.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-cn">🇨🇳 CN</span>
+                        <span class="tag tag-open">Open</span>
+                    </div>
+                    <a href="https://api-docs.deepseek.com/news/news260424" class="source-link" target="_blank">来源：DeepSeek API Docs</a>
+                </div>
+            </div>
+
+            <div class="news-item tag-open">
+                <div class="news-title-cn">OpenAI公开GPT-5.6 Sol Ultra完整证明PDF及Prompt，推动可复现AI研究</div>
+                <div class="news-title-en">OpenAI publishes full proof PDF and Prompt for GPT-5.6 Sol Ultra, advancing reproducible AI research</div>
+                <div class="news-summary">
+                    <div class="news-summary-cn">OpenAI通过其Codex工程负责人Thibault Sottiaux在X平台宣布，已将GPT-5.6 Sol Ultra证明"循环双覆盖猜想"的完整PDF和提示词公开。证明文件长约数十页，采用三次图归约、8-流定理及GF(3)线性代数构造的方法。提示词约700词，包含四条核心原则：定义验收标准而非解题步骤、明确边界情况、分解为独立子任务、保持早期路线多样性。OpenAI研究人员Noam Brown表示："与之前解决Erdős单位距离问题不同，这次创造奇迹的模型是今天对所有人公开可用的。"</div>
+                    <div class="news-summary-en">OpenAI's Codex engineering lead Thibault Sottiaux announced on X that the full proof PDF and prompt for GPT-5.6 Sol Ultra's proof of the Cycle Double Cover Conjecture have been published. The proof spans several dozen pages, using cubic graph reduction, 8-flow theorem, and GF(3) linear algebra construction. The ~700-word prompt contains four core principles: define acceptance criteria not solution steps, clarify edge cases, decompose into independent subtasks, and maintain early diversity. OpenAI researcher Noam Brown stated: "Unlike the previous Erdős unit distance problem, the model that created this miracle is publicly available to everyone today."</div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-cn"><strong>为何重要：</strong>公开完整证明和Prompt是AI研究可复现性的重要一步。学术界可以独立验证证明的正确性，同时研究Prompt工程如何驾驭前沿模型解决开放式科学问题。这种透明度对建立AI在科学领域的信任至关重要。</div>
+                    <div class="why-en"><strong>Why it matters:</strong> Publishing the full proof and prompt is an important step toward reproducibility in AI research. The academic community can independently verify the proof's correctness while studying how prompt engineering steers frontier models to solve open-ended scientific problems. This transparency is crucial for building trust in AI's role in science.</div>
+                </div>
+                <div class="news-meta">
+                    <div class="news-tags">
+                        <span class="tag tag-us">🇺🇸 US</span>
+                        <span class="tag tag-open">Open</span>
+                    </div>
+                    <a href="https://www.163.com/dy/article/L1S900KE0511ABV6.html" class="source-link" target="_blank">来源：新智元</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Whitelist -->
+        <div class="whitelist-section">
+            <div class="whitelist-title-cn">📋 当前追踪来源白名单</div>
+            <div class="whitelist-title-en">Tracked Source Whitelist</div>
+            <div class="whitelist-note-cn">本期无新增来源。白名单动态维护，遇新公司重要动态时自动扩展。</div>
+            <div class="whitelist-note-en">No new sources added this issue. Whitelist is dynamically maintained and expanded when new companies with significant AI developments are identified.</div>
+
+            <div class="whitelist-category">
+                <div class="whitelist-category-name">US 美国</div>
+                <div class="whitelist-items">OpenAI (openai.com/news, openai.com/research), Anthropic (anthropic.com/news, anthropic.com/research), Google DeepMind (deepmind.google/blog), Meta Superintelligence Labs (about.fb.com/news)</div>
+            </div>
+            <div class="whitelist-category">
+                <div class="whitelist-category-name">China 中国</div>
+                <div class="whitelist-items">Moonshot/Kimi (moonshot.ai, kimi.com), MiniMax (minimaxi.com), Zhipu AI (zhipuai.cn, open.bigmodel.cn), Qwen/Alibaba Cloud (qwen.ai/blog), DeepSeek (deepseek.com), ByteDance Seed (seed.bytedance.com), Kimi K2 Official (kimi-k2.org), Meituan LongCat (longcat.chat, tech.meituan.com), Shengshu/Vidu (vidu.com, shengshu-ai.com)</div>
+            </div>
+            <div class="whitelist-category">
+                <div class="whitelist-category-name">Singapore 新加坡</div>
+                <div class="whitelist-items">A*STAR AI Division (a-star.edu.sg/aiml), GovTech Singapore (tech.gov.sg), Singapore DSAI (smartnation.sg/digital-singapore/ai-sg), NUS AI Research (nus.edu.sg/computing/ai-research), MDDI Singapore (mddi.gov.sg/newsroom), Singtel Digital InfraCo (singtel.com/about-us/media-centre), PAIR Chat (pair.gov.sg, reports.open.gov.sg/pair/updates), AIBots (developer.tech.gov.sg/products/categories/productivity-tools/aibots), Transcribe (transcribe.gov.sg)</div>
+            </div>
+            <div class="whitelist-category">
+                <div class="whitelist-category-name">Media 媒体</div>
+                <div class="whitelist-items">Reuters AI (reuters.com/technology), MIT Tech Review (technologyreview.com/topic/artificial-intelligence), Xinhua EN (xinhuanet.com/english), CNBC Technology (cnbc.com), Forbes AI 50 (forbes.com), AI Critique (aicritique.org), IEEE Spectrum (spectrum.ieee.org), AI Flash Report (aiflashreport.com), WinBuzzer (winbuzzer.com), Kersai AI Analysis (kersai.com), AI Release Tracker (aireleasetracker.com), Straits Times Tech (straitstimes.com/tech), AgenticWire News (agenticwire.news), explainx.ai (explainx.ai), Legalithm (legalithm.com), TechNode (technode.com), AI in Asia (aiinasia.com)</div>
+            </div>
+            <div class="whitelist-category">
+                <div class="whitelist-category-name">Open Source / Research 开源与研究</div>
+                <div class="whitelist-items">Hugging Face Blog (huggingface.co/blog), arXiv CS.AI (arxiv.org/list/cs.AI), OpenBMB (openbmb.org), HKUDS (hku-datascience.github.io, hkuds.github.io/DeepTutor), Marktechpost (marktechpost.com), PaddlePaddle on HF (huggingface.co/blog/PaddlePaddle), ServiceNow on HF (huggingface.co/blog/ServiceNow), DeepReinforce Ornith (deep-reinforce.com), GitHub Changelog (github.blog), H Company (hcompany.ai), Hugging Face Computer Use (huggingface.co/blog/Hcompany/holo3)</div>
+            </div>
+            <div class="whitelist-category">
+                <div class="whitelist-category-name">AI Governance / Policy 治理与政策</div>
+                <div class="whitelist-items">Plural Policy (pluralpolicy.com/blog), UK AI Security Institute (aisi.gov.uk/blog), Stanford HAI (hai.stanford.edu), Mayer Brown AI Policy (mayerbrown.com), EU Council (consilium.europa.eu), Inside Global Tech (insideglobaltech.com)</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-cn">AI 技术早报 | 每日 08:00 & 20:00 自动更新 | 数据来源：上述白名单官方渠道与权威媒体</div>
+            <div class="footer-en">Daily AI Technology Briefing | Auto-updated at 08:00 & 20:00 SGT | Sources: Official channels and authoritative media listed above</div>
+            <div class="footer-cn" style="margin-top:8px">Generated: 2026-07-16 08:28 SGT | 发布地址：<a href="https://kidultop.github.io/investment-reports/ai_briefing_20260716_morning.html" style="color:var(--accent)">https://kidultop.github.io/investment-reports/ai_briefing_20260716_morning.html</a></div>
+            <div class="footer-en">Generated: 2026-07-16 08:28 SGT | Published at: <a href="https://kidultop.github.io/investment-reports/ai_briefing_20260716_morning.html" style="color:var(--accent)">https://kidultop.github.io/investment-reports/ai_briefing_20260716_morning.html</a></div>
+        </div>
+    </div>
+</body>
+</html>
