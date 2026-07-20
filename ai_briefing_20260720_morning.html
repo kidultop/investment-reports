@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 简报 · AI Briefing — 2026-07-20 Morning</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --accent: #a78bfa;
+  --accent-dim: #7c3aed;
+  --us: #38bdf8;
+  --cn: #f87171;
+  --sg: #fb923c;
+  --research: #4ade80;
+  --open: #a78bfa;
+  --policy: #facc15;
+  --new: #2dd4bf;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+
+.header { text-align: center; margin-bottom: 32px; }
+.header h1 { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.header .subtitle { font-size: 14px; color: var(--muted); }
+.header .date { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 28px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+.stat-number { font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-label-cn { font-size: 13px; color: var(--text); margin-top: 4px; }
+.stat-label-en { font-size: 11px; color: var(--muted); }
+.stat-unit-cn { font-size: 12px; color: var(--muted); }
+.stat-unit-en { font-size: 10px; color: var(--muted); }
+
+.trends-card { background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(124,58,237,0.05)); border: 1px solid var(--accent); border-radius: 12px; padding: 20px; margin-bottom: 28px; }
+.trends-title-cn { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.trends-title-en { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 16px; }
+.trend-item { display: flex; gap: 12px; margin-bottom: 12px; }
+.trend-number { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.trend-cn { font-size: 14px; color: var(--text); }
+.trend-en { font-size: 12px; color: var(--muted); }
+
+.section { margin-bottom: 32px; }
+.section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.section-icon { font-size: 20px; }
+.title-cn { font-size: 18px; font-weight: 700; color: var(--text); }
+.title-en { font-size: 13px; color: var(--muted); font-style: italic; margin-left: 8px; }
+
+.news-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+.news-item.top { border-left: 4px solid var(--accent); }
+.news-item.us { border-left: 4px solid var(--us); }
+.news-item.cn { border-left: 4px solid var(--cn); }
+.news-item.sg { border-left: 4px solid var(--sg); }
+.news-item.research { border-left: 4px solid var(--research); }
+.news-item.open { border-left: 4px solid var(--open); }
+.news-item.policy { border-left: 4px solid var(--policy); }
+
+.news-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.news-title-cn { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.4; }
+.news-title-en { font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.4; margin-top: 4px; }
+.news-tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+.tag-us { background: rgba(56,189,248,0.15); color: var(--us); }
+.tag-cn { background: rgba(248,113,113,0.15); color: var(--cn); }
+.tag-sg { background: rgba(251,146,60,0.15); color: var(--sg); }
+.tag-research { background: rgba(74,222,128,0.15); color: var(--research); }
+.tag-open { background: rgba(167,139,250,0.15); color: var(--open); }
+.tag-policy { background: rgba(250,204,21,0.15); color: var(--policy); }
+
+.news-summary { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px; }
+.news-summary-cn { font-size: 14px; color: var(--text); padding-left: 12px; border-left: 2px solid var(--accent); }
+.news-summary-en { font-size: 13px; color: var(--muted); padding-left: 12px; border-left: 2px solid var(--accent-dim); }
+
+.why-matters { background: rgba(15,23,42,0.5); border-radius: 8px; padding: 12px; }
+.why-cn { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+.why-en { font-size: 12px; color: var(--muted); }
+
+.news-source { margin-top: 12px; font-size: 12px; color: var(--muted); }
+.news-source a { color: var(--accent); text-decoration: none; word-break: break-all; }
+.news-source a:hover { text-decoration: underline; }
+
+.whitelist-section { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 28px; }
+.whitelist-title-cn { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.whitelist-title-en { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 12px; }
+.whitelist-note-cn { font-size: 13px; color: var(--text); margin-bottom: 8px; }
+.whitelist-note-en { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.whitelist-list { font-size: 12px; color: var(--muted); line-height: 1.8; }
+.whitelist-list .new-source { color: var(--new); font-weight: 600; }
+
+.footer { text-align: center; padding: 24px; border-top: 1px solid var(--border); margin-top: 32px; }
+.footer-cn { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.footer-en { font-size: 12px; color: var(--muted); }
+
+@media (max-width: 640px) {
+  .news-header { flex-direction: column; }
+  .news-tag { align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🤖 AI 简报 · AI Briefing</h1>
+    <div class="subtitle">每日 AI 要闻精选 · Daily AI News Briefing</div>
+    <div class="date">2026年7月20日 星期一 · Monday, July 20, 2026 · 早报 Morning Edition</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number">3</div>
+      <div class="stat-label-cn">头条新闻</div>
+      <div class="stat-label-en">Top Stories</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">5</div>
+      <div class="stat-label-cn">官方发布</div>
+      <div class="stat-label-en">Official Releases</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3</div>
+      <div class="stat-label-cn">研究技术</div>
+      <div class="stat-label-en">Research & Tech</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3</div>
+      <div class="stat-label-cn">政策产业</div>
+      <div class="stat-label-en">Policy & Industry</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3</div>
+      <div class="stat-label-cn">开源生态</div>
+      <div class="stat-label-en">Open Source</div>
+    </div>
+  </div>
+
+  <div class="trends-card">
+    <div class="trends-title-cn">📈 核心趋势 · Key Trends</div>
+    <div class="trends-title-en">Three forces shaping this week in AI</div>
+    <div class="trend-item">
+      <div class="trend-number">1</div>
+      <div>
+        <div class="trend-cn">开源模型进入3T参数时代，中美在Agentic Coding与长上下文上差距进一步缩小。</div>
+        <div class="trend-en">Open-source models enter the 3T-parameter era; the gap between Chinese and US labs on agentic coding and long-context narrows.</div>
+      </div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-number">2</div>
+      <div>
+        <div class="trend-cn">AI正从“能回答”走向“会完成”，具身智能与智能体手机成为WAIC 2026最大公约数。</div>
+        <div class="trend-en">AI is shifting from “answering questions” to “getting things done,” with embodied intelligence and agent-first phones dominating WAIC 2026.</div>
+      </div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-number">3</div>
+      <div>
+        <div class="trend-cn">AI安全与治理被提升到与技术创新同等高度，自动化红队、全球治理框架与儿童保护并行推进。</div>
+        <div class="trend-en">AI safety and governance are being elevated to the same level as innovation, with automated red-teaming, global governance frameworks and child protection advancing in parallel.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Stories -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔥</span>
+      <span class="title-cn">头条新闻</span>
+      <span class="title-en">Top Stories</span>
+    </div>
+
+    <div class="news-item top">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">WAIC 2026 上海闭幕：千余家企业、3000余项成果勾勒“具身、兴业、善治”三大主线</div>
+          <div class="news-title-en">WAIC 2026 Closes in Shanghai: 1,000+ Exhibitors and 3,000+ Achievements Sketch Three Main Threads</div>
+        </div>
+        <span class="news-tag tag-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">2026世界人工智能大会暨人工智能全球治理高级别会议于7月17日至20日在上海举行。本届大会以“智能伙伴 共创未来”为主题，展览面积首次突破10万平方米，1100余家企业参展，3000余项前沿成果集中亮相，超300款新品全球首发。大会首次设立算力展区，华为昇腾950超节点、曙光8000（登峰）全国产十万卡AI超集群、东方算芯DF1000等国产算力新品入选“镇馆之宝”。</div>
+        <div class="news-summary-en">The World Artificial Intelligence Conference (WAIC 2026) and the High-Level Meeting on Global AI Governance took place in Shanghai from July 17 to 20. With the theme “Intelligent Partners, Co-creating the Future,” the event covered over 100,000 square meters, hosted 1,100+ enterprises, showcased 3,000+ frontier achievements and saw 300+ global product debuts. A compute pavilion was introduced for the first time, featuring Huawei Atlas 950 super nodes, the Sugon 8000 domestic 100,000-card AI cluster and the Dongfang SUixin DF1000 chip among the top exhibits.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>大会同时覆盖技术、产业与治理，体现中国AI从单点突破走向系统竞争力，并将“算力”作为今年核心关键词，国产算力集群从“建得成”迈向“用得好”。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The conference integrates technology, industry and governance, showing Chinese AI moving from isolated breakthroughs to systemic competitiveness, with “compute” as the central theme and domestic clusters shifting from “built” to “usable at scale.”</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://sh.people.com.cn/n2/2026/0716/c134768-41641230.html" target="_blank">人民网 People's Daily · worldaic.com.cn</a></div>
+    </div>
+
+    <div class="news-item top">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">月之暗面发布 Kimi K3：2.8万亿参数开源模型，全球最大</div>
+          <div class="news-title-en">Moonshot AI Releases Kimi K3: 2.8-Trillion-Parameter Open-Source Model, World’s Largest</div>
+        </div>
+        <span class="news-tag tag-cn">CN / Open</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Moonshot AI在WAIC 2026开幕前夕发布新一代开源基础模型Kimi K3。模型总参数达2.8万亿，采用MoE架构（16个激活专家/896个总专家），支持1M token上下文和原生视觉理解。官方称K3面向长程编程、知识工作、深度研究与多模态理解等复杂场景优化，完整权重计划于7月27日前开放。</div>
+        <div class="news-summary-en">Moonshot AI released Kimi K3, a new open-source foundation model with 2.8 trillion parameters. Built on a Mixture-of-Experts architecture with 16 active experts out of 896, it supports a 1M-token context and native vision understanding. The company says K3 is optimized for long-horizon coding, knowledge work, deep research and multimodal reasoning, with full weights scheduled for release before July 27.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>K3是迄今公开权重中参数量最大的模型，标志着开源大模型正式进入“3T时代”，并进一步缩小中国开源模型与顶尖闭源模型的综合能力差距。</div>
+        <div class="why-en"><strong>Why it matters:</strong> K3 is the largest-parameter open-weight model released to date, marking the open-source community’s entry into the 3T era and further narrowing the gap between Chinese open models and top closed-source systems.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.moonshot.ai" target="_blank">Moonshot AI</a></div>
+    </div>
+
+    <div class="news-item top">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">OpenAI 发布 GPT-Red：用“AI红队”自我对抗，提升模型安全鲁棒性</div>
+          <div class="news-title-en">OpenAI Unveils GPT-Red: An AI Red-Team That Improves Model Robustness Through Self-Play</div>
+        </div>
+        <span class="news-tag tag-us">US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">OpenAI发布GPT-Red，一个专门用于攻击其他AI模型的自动化红队系统。GPT-Red通过自对弈强化学习训练，在不断发现提示注入等漏洞的同时，驱动防御模型同步变强。其生成的攻击数据被用于训练GPT-5.6，使后者在最难的提示注入基准上失败率降低约6倍。研究还揭示了一种名为“Fake Chain-of-Thought”的新型攻击。</div>
+        <div class="news-summary-en">OpenAI introduced GPT-Red, an automated red-teaming system trained to attack other AI models. Using self-play reinforcement learning, it discovers prompt-injection and related vulnerabilities while simultaneously training defender models to become more robust. The generated attacks were used to train GPT-5.6, cutting its failure rate on the hardest prompt-injection benchmarks by roughly 6×. The work also revealed a new “Fake Chain-of-Thought” attack class.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>GPT-Red将安全测试从人工驱动转向自动化、可扩展的自我对抗，是应对智能体时代攻击面持续扩大的关键尝试，也可能成为前沿模型安全栈的标准组件。</div>
+        <div class="why-en"><strong>Why it matters:</strong> GPT-Red shifts safety testing from human-driven to automated, scalable self-play, a key response to the expanding attack surface of the agentic era and a potential standard component of frontier model safety stacks.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://openai.com/index/unlocking-self-improvement-gpt-red/" target="_blank">OpenAI Research</a></div>
+    </div>
+  </div>
+
+  <!-- Official Releases -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📢</span>
+      <span class="title-cn">官方发布</span>
+      <span class="title-en">Official Releases</span>
+    </div>
+
+    <div class="news-item cn">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">DeepSeek V4 Preview 正式上线并开源：1.6T/49B 双版本、1M上下文</div>
+          <div class="news-title-en">DeepSeek V4 Preview Goes Live and Open-Source: 1.6T/49B Variants, 1M Context</div>
+        </div>
+        <span class="news-tag tag-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">DeepSeek V4 Preview正式上线并同步开源。系列包含V4-Pro（1.6T总参数/49B激活）和V4-Flash（284B总参数/13B激活），均支持1M token上下文。模型采用DeepSeek Sparse Attention，在保持长上下文能力的同时降低推理计算量，API兼容OpenAI与Anthropic格式。V4正式版将于7月中旬推出并引入峰谷定价。</div>
+        <div class="news-summary-en">DeepSeek V4 Preview is now live and open-sourced. The family includes V4-Pro (1.6T total / 49B active parameters) and V4-Flash (284B total / 13B active), both supporting 1M-token context. The models use DeepSeek Sparse Attention to reduce inference cost while maintaining long-context performance, and the API supports both OpenAI and Anthropic formats. The final V4 release is scheduled for mid-July with time-of-use pricing.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>V4-Pro在Agentic Coding、世界知识和推理能力上保持开源领先，同时峰谷定价是国产大模型首次引入分时计费，标志着API商业运营进入精细化阶段。</div>
+        <div class="why-en"><strong>Why it matters:</strong> V4-Pro leads open models on agentic coding, world knowledge and reasoning, while time-of-use pricing marks the first domestic large-model shift to granular commercial operations.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://api-docs.deepseek.com/news/news260424" target="_blank">DeepSeek API Docs</a></div>
+    </div>
+
+    <div class="news-item cn">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">字节跳动 Seed 发布 Seedream 5.0 Pro：多模态图像创作支持“返工”</div>
+          <div class="news-title-en">ByteDance Seed Releases Seedream 5.0 Pro: Multimodal Image Creation with Iterative Editing</div>
+        </div>
+        <span class="news-tag tag-cn">CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">字节跳动Seed团队发布多模态图像创作模型Seedream 5.0 Pro。相比前代，模型在图文匹配、结构合理性、文字渲染和画面美感上提升，新增复杂信息可视化、交互式精准编辑、真实影像与人像质感、多语种输入与生成四大能力。模型已上线火山方舟体验中心，后续将陆续接入豆包、即梦。</div>
+        <div class="news-summary-en">ByteDance Seed released Seedream 5.0 Pro, a multimodal image-generation model. It improves text-image alignment, structural coherence, typography and aesthetics, and adds four core capabilities: complex-information visualization, interactive precise editing, photorealistic imagery and portrait quality, and multilingual input and generation. It is available on the Volcano Ark experience center and will later roll out to Doubao and Jimeng.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Seedream 5.0 Pro将中文AI图像生成从“一次性出图”推向“可编辑、可返工”的专业设计工作流，直接对标ChatGPT Images 2.0的界面复刻与精准编辑能力。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Seedream 5.0 Pro moves Chinese AI image generation from one-shot generation to editable, iterative professional design workflows, directly challenging ChatGPT Images 2.0 in UI replication and precise editing.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://seed.bytedance.com/en/research" target="_blank">ByteDance Seed Research</a></div>
+    </div>
+
+    <div class="news-item cn">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">智谱发布并开源 GLM-5.2：744B MoE、1M上下文、MIT许可证</div>
+          <div class="news-title-en">Zhipu Releases and Open-Sources GLM-5.2: 744B MoE, 1M Context, MIT License</div>
+        </div>
+        <span class="news-tag tag-cn">CN / Open</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">智谱发布新一代旗舰模型GLM-5.2并开源。模型采用744B MoE架构，支持工程可用的1M token上下文。GLM-5.2在FrontierSWE、SWE-bench Pro、Terminal-Bench 2.1等长程编程基准上位列开源模型SOTA，整体能力接近Claude Opus 4.8。模型以MIT协议开源，无地域限制，已接入Vercel等平台。</div>
+        <div class="news-summary-en">Zhipu released GLM-5.2, its latest flagship model, as open-source. Built on a 744B MoE architecture with a usable 1M-token context, GLM-5.2 ranks as the top open-source model on long-horizon coding benchmarks including FrontierSWE, SWE-bench Pro and Terminal-Bench 2.1, approaching Claude Opus 4.8 overall. It is released under the MIT license with no regional restrictions and is already integrated into platforms such as Vercel.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>GLM-5.2是中国开源模型在Agentic Coding领域的重要突破，上线首周在Vercel平台日token量增长约27倍、客户数增长约80倍。</div>
+        <div class="why-en"><strong>Why it matters:</strong> GLM-5.2 is a major Chinese open-source breakthrough in agentic coding, with daily token volume on Vercel growing roughly 27× and customer count 80× in its first full week.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.zhipuai.cn/zh/research/161" target="_blank">Zhipu AI Research</a></div>
+    </div>
+
+    <div class="news-item us">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">Meta 发布 Muse Image：超级智能实验室首款图像生成模型，接入 Instagram 与 WhatsApp</div>
+          <div class="news-title-en">Meta Releases Muse Image: First Image-Generation Model from Meta Superintelligence Labs, Integrated with Instagram and WhatsApp</div>
+        </div>
+        <span class="news-tag tag-us">US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Meta通过其超级智能实验室（MSL）正式发布AI图像生成模型Muse Image。该模型已集成至Meta AI应用，并接入Instagram、WhatsApp等社交平台。用户可通过自然语言描述生成图像、基于现有照片编辑、去除背景路人，并生成清晰的文字内容。未来还将向广告主通过Meta Advantage+ creative开放。</div>
+        <div class="news-summary-en">Meta Superintelligence Labs (MSL) officially released Muse Image, an AI image-generation model integrated into the Meta AI app and platforms including Instagram and WhatsApp. Users can generate images from text, edit existing photos, remove background objects and render clean text. It will later be made available to advertisers through Meta Advantage+ creative.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Muse Image的竞争力不在单项技术指标，而在Meta超过30亿月活用户的社交分发网络，它把AI图像生成从“专业工具”变成“社交功能”。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Muse Image’s advantage lies less in a single benchmark than in Meta’s 3 billion+ monthly active users across social apps, turning AI image generation from a professional tool into a social feature.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://about.fb.com/news/2026/07/introducing-muse-image-meta-ai/" target="_blank">Meta Newsroom</a></div>
+    </div>
+
+    <div class="news-item us">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">Anthropic 推出 Claude Science：面向科学家的 AI 工作台</div>
+          <div class="news-title-en">Anthropic Launches Claude Science: An AI Workbench for Scientists</div>
+        </div>
+        <span class="news-tag tag-us">US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Anthropic发布Claude Science，一款面向科学家的AI工作台。它整合PubMed、Jupyter、R、HPC集群等60多个数据库与工具，支持文献分析、多步研究、图表生成、手稿起草和计算工作流管理。每个输出都附带可审计历史（生成代码、环境、消息记录），以确保可复现性。Claude Science以beta形式向Pro、Max、Team及Enterprise用户开放。</div>
+        <div class="news-summary-en">Anthropic released Claude Science, an AI workbench for scientists. It integrates more than 60 databases and tools including PubMed, Jupyter, R and HPC clusters, supporting literature analysis, multi-step research, figure generation, manuscript drafting and compute workflow management. Every output includes an auditable history—code, environment and message log—to ensure reproducibility. It is available in beta for Claude Pro, Max, Team and Enterprise users.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>Claude Science代表Anthropic从通用模型竞争转向特定行业工作流（生命科学）的深度渗透，与OpenAI GPT-Rosalind、DeepMind Gemini for Science形成三条不同路径。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Claude Science signals Anthropic’s shift from general-model competition to deep vertical workflow penetration in life sciences, joining OpenAI’s GPT-Rosalind and DeepMind’s Gemini for Science as three distinct approaches.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.anthropic.com/news/claude-science-ai-workbench" target="_blank">Anthropic Newsroom</a></div>
+    </div>
+  </div>
+
+  <!-- Research & Tech -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔬</span>
+      <span class="title-cn">研究与技术</span>
+      <span class="title-en">Research & Technology</span>
+    </div>
+
+    <div class="news-item research">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">GPT-Red 发现“Fake Chain-of-Thought”新型提示注入攻击</div>
+          <div class="news-title-en">GPT-Red Discovers “Fake Chain-of-Thought” Prompt-Injection Attack</div>
+        </div>
+        <span class="news-tag tag-research">Research / US</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">MIT Technology Review报道，GPT-Red在自对弈训练中发现了一种名为“Fake Chain-of-Thought”的攻击方式：通过在目标模型的思维链中插入虚假条目，让模型误以为某些错误信息已被验证，从而绕过安全对齐。团队称这种攻击人类红队此前从未见过。GPT-Red在84%的间接提示注入场景中成功，而人类红队仅13%。</div>
+        <div class="news-summary-en">MIT Technology Review reports that GPT-Red discovered a “Fake Chain-of-Thought” attack during self-play training: it inserts fake entries into a target model’s chain-of-thought, making the model believe false information has already been verified and thus bypassing safety alignment. The team says this attack had not been seen by human red-teamers. GPT-Red succeeded in 84% of indirect prompt-injection scenarios, compared with 13% for human red-teamers.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>揭示了大模型推理过程本身可被利用，安全研究需要从“审计输出生成”转向“审计推理过程”，并推动可解释性与安全对齐的同步迭代。</div>
+        <div class="why-en"><strong>Why it matters:</strong> It reveals that the reasoning process itself can be exploited, shifting safety research from auditing outputs to auditing chains of thought and pushing interpretability and alignment to evolve together.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.technologyreview.com/2026/07/15/1140514/meet-gpt-red-an-llm-super-hacker-openai-built-to-make-its-models-safer" target="_blank">MIT Technology Review</a></div>
+    </div>
+
+    <div class="news-item research">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">DeepSeek V4 稀疏注意力：1M上下文推理计算量降至 V3.2 的 27%</div>
+          <div class="news-title-en">DeepSeek V4 Sparse Attention: 1M-Context Inference FLOPs Drop to 27% of V3.2</div>
+        </div>
+        <span class="news-tag tag-research">Research / CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">DeepSeek V4采用Token-wise压缩与DeepSeek Sparse Attention（DSA）机制，在1M上下文长度下将单位token推理计算量降至前代V3.2的约27%，KV缓存占用降至10%。团队还联合北京大学发布DSpark推理加速框架，采用半自回归生成与硬件感知置信度调度，使V4-Flash速度提升60%-85%、V4-Pro提升57%-78%。</div>
+        <div class="news-summary-en">DeepSeek V4 uses token-wise compression and DeepSeek Sparse Attention (DSA) to cut per-token inference FLOPs at 1M context to roughly 27% of the previous V3.2 generation and KV-cache usage to 10%. The team also published DSpark, an inference acceleration framework co-developed with Peking University, which uses semi-autoregressive generation and hardware-aware confidence scheduling to boost V4-Flash speed by 60–85% and V4-Pro by 57–78%.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>验证了稀疏注意力在长上下文工程中的可行性，为国产算力高效运行超大模型、降低长文本应用成本提供了关键路径。</div>
+        <div class="why-en"><strong>Why it matters:</strong> It validates sparse attention for production-grade long-context inference, providing a key path to run giant models efficiently on domestic hardware and lower the cost of long-document applications.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://api-docs.deepseek.com/news/news260424" target="_blank">DeepSeek API Docs</a></div>
+    </div>
+
+    <div class="news-item research">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">Kimi K3 的 KDA 混合线性注意力与 Stable LatentMoE</div>
+          <div class="news-title-en">Kimi K3’s KDA Hybrid Linear Attention and Stable LatentMoE</div>
+        </div>
+        <span class="news-tag tag-research">Research / CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Kimi K3基于KDA（Kimi Delta Attention）混合线性注意力机制和注意力残差（Attention Residuals）技术构建，旨在让信息在更长序列和更深模型中更顺畅流动。Stable LatentMoE框架使模型在896个专家中高效激活16个。相比上一代K2，K3的整体扩展效率提升约2.5倍，输出token效率提升约21%。</div>
+        <div class="news-summary-en">Kimi K3 is built on KDA (Kimi Delta Attention) hybrid linear attention and Attention Residuals, designed to let information flow more smoothly across longer sequences and deeper models. The Stable LatentMoE framework enables efficient activation of 16 experts out of 896. Compared with the previous K2 generation, K3’s overall scaling efficiency improves by roughly 2.5× and output-token efficiency by about 21%.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>这些架构创新支撑了3T级模型的可训练性与可服务性，是K3在保持长上下文与视觉能力的同时实现高效推理的关键。</div>
+        <div class="why-en"><strong>Why it matters:</strong> These architectural innovations make a 3T-parameter model trainable and servicable, enabling K3 to combine long-context and vision capabilities with efficient inference.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.moonshot.ai" target="_blank">Moonshot AI</a></div>
+    </div>
+  </div>
+
+  <!-- Policy & Industry -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚖️</span>
+      <span class="title-cn">政策与产业</span>
+      <span class="title-en">Policy & Industry</span>
+    </div>
+
+    <div class="news-item policy">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">WAIC 2026 主席声明：坚持以人为本、智能向善、公平普惠、协同共治</div>
+          <div class="news-title-en">WAIC 2026 Chair’s Statement: People-Centered, AI-for-Good, Equitable and Inclusive Governance</div>
+        </div>
+        <span class="news-tag tag-policy">Policy / CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">《二〇二六世界人工智能大会暨人工智能全球治理高级别会议主席声明》发布。声明倡导培育以企业为主体、市场为牵引的创新生态；推动人工智能赋能千行百业；强调开源开放是普惠发展的重要路径；提出加强人工智能国际合作、弥合智能鸿沟、帮助全球南方国家平等受益。习近平主席在开幕式发表主旨讲话，提出“确保人工智能始终处于人类控制之下”。</div>
+        <div class="news-summary-en">The Chair’s Statement of the WAIC 2026 High-Level Meeting on Global AI Governance was released. It calls for an innovation ecosystem led by enterprises and driven by markets; promoting AI-enabled transformation across industries; stressing that open-source openness is key to inclusive development; and strengthening international AI cooperation, bridging the intelligence gap and helping Global South countries benefit equally. President Xi Jinping delivered a keynote calling for ensuring AI “always remains under human control.”</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>为AI全球治理提供“中国方案”，将安全可控、普惠共享与国际合作提升到与技术创新同等高度，对后续多边治理框架具有导向作用。</div>
+        <div class="why-en"><strong>Why it matters:</strong> It provides a Chinese framework for global AI governance, elevating safety, inclusiveness and international cooperation to the same level as technological innovation and guiding future multilateral governance structures.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://politics.people.com.cn/n1/2026/0718/c461001-40763055.html" target="_blank">人民网 People's Daily</a></div>
+    </div>
+
+    <div class="news-item policy">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">CNBC：中国AI模型因成本优势获美国企业大量采用</div>
+          <div class="news-title-en">CNBC: Chinese AI Models Gain US Enterprise Adoption on Cost Advantage</div>
+        </div>
+        <span class="news-tag tag-policy">Policy / CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">据美国CNBC报道，受美国头部AI厂商定价持续上涨影响，中国开源/开放权重模型在美国企业中的采用率快速上升。OpenRouter数据显示，自2026年2月8日起，美国企业调用中国AI模型的token占比每周均超过30%，最高达46%。美国AI初创公司Lindy称已将全部流量从Anthropic Claude切换至DeepSeek，预计数月内节省数百万美元。</div>
+        <div class="news-summary-en">CNBC reported that rising prices from top US AI labs are driving US enterprises to adopt Chinese open/open-weight models. OpenRouter data shows that since February 8, 2026, US enterprise token usage of Chinese models has stayed above 30% weekly, peaking at 46%. US startup Lindy said it moved all traffic from Anthropic Claude to DeepSeek and expects to save millions of dollars within months.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>标志着企业AI采购逻辑从“追求最强模型”转向“按任务成本优化”，也引发美国国会对中国模型安全性与数据主权的审查，技术与地缘政治交织加剧。</div>
+        <div class="why-en"><strong>Why it matters:</strong> It marks a shift in enterprise AI procurement from “best model at any cost” to “task-based cost optimization,” while triggering US congressional scrutiny of Chinese model security and data sovereignty, deepening the tech-geopolitical mix.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.chinadaily.com.cn/a/202607/14/WS6a55aaaea310986e2b4652ce.html" target="_blank">China Daily ( citing CNBC )</a></div>
+    </div>
+
+    <div class="news-item sg">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">新加坡 MDDI 启动数字基础设施法案与社交媒体年龄管理咨询</div>
+          <div class="news-title-en">Singapore MDDI Launches Digital Infrastructure Bill and Social-Media Age Assurance Consultation</div>
+        </div>
+        <span class="news-tag tag-sg">SG / Policy</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">新加坡数字发展与信息部（MDDI）启动《数字基础设施法案》公众咨询，拟对主要云服务和数据中心建立监管框架，强化运营韧性、业务连续性、灾难恢复和环境可持续性标准。同期，政府就社交媒体年龄管理展开咨询，建议13岁以下儿童原则上禁用主流社交平台，并对13-17岁青少年实施每日使用时长限制、禁用无限滚动和陌生人私信。</div>
+        <div class="news-summary-en">Singapore’s Ministry of Digital Development and Information (MDDI) launched a public consultation on the Digital Infrastructure Bill, proposing a regulatory framework for major cloud services and data centers to strengthen operational resilience, business continuity, disaster recovery and environmental sustainability. Separately, the government consulted on social-media age assurance, recommending that children under 13 be barred from mainstream platforms and that teens aged 13–17 face daily time limits, no infinite scroll and no direct messages from strangers.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>显示新加坡将AI基础设施与数字安全纳入国家监管议程，在AI能力快速扩张的同时，同步推进儿童网络保护和关键数字基础设施韧性。</div>
+        <div class="why-en"><strong>Why it matters:</strong> Singapore is placing AI infrastructure and digital safety on the national regulatory agenda, advancing child protection and critical digital infrastructure resilience alongside rapid AI capability growth.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.mddi.gov.sg/newsroom/public-consultation-on-digital-infrastructure-bill/" target="_blank">MDDI Singapore</a></div>
+    </div>
+  </div>
+
+  <!-- Open Source -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🌐</span>
+      <span class="title-cn">开源生态</span>
+      <span class="title-en">Open Source</span>
+    </div>
+
+    <div class="news-item open">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">Kimi K3 完整权重将于7月27日前在 Hugging Face 开源</div>
+          <div class="news-title-en">Kimi K3 Full Weights to Be Open-Sourced on Hugging Face Before July 27</div>
+        </div>
+        <span class="news-tag tag-open">Open / CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">Moonshot AI宣布Kimi K3将以开源权重形式发布，完整模型权重计划于2026年7月27日前在Hugging Face等平台开放下载。模型采用MIT协议，允许自由下载、部署与商用，成为目前规模最大的开源模型。</div>
+        <div class="news-summary-en">Moonshot AI announced that Kimi K3 will be released as open weights, with full model weights scheduled for download on Hugging Face before July 27, 2026. Under the MIT license, it can be freely downloaded, deployed and commercially used, making it the largest open-source model to date.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>进一步巩固中国在全球开源AI生态中的话语权，同时为研究机构和企业提供可自主部署的3T级基础模型选项。</div>
+        <div class="why-en"><strong>Why it matters:</strong> It further strengthens China’s voice in the global open-source AI ecosystem and gives researchers and enterprises a self-hostable 3T-class foundation model option.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.moonshot.ai" target="_blank">Moonshot AI</a></div>
+    </div>
+
+    <div class="news-item open">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">智谱 GLM-5.2 以 MIT 协议在 Hugging Face 与 ModelScope 开源</div>
+          <div class="news-title-en">Zhipu GLM-5.2 Open-Sourced on Hugging Face and ModelScope Under MIT License</div>
+        </div>
+        <span class="news-tag tag-open">Open / CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">GLM-5.2已在Hugging Face与ModelScope以MIT协议开源，模型权重、代码和部署文档均已公开。vLLM、SGLang、Transformers等主流推理框架已支持，开发者可自由下载、部署与商用，无地域限制。</div>
+        <div class="news-summary-en">GLM-5.2 is open-sourced on Hugging Face and ModelScope under the MIT license, with weights, code and deployment docs publicly available. Major inference frameworks including vLLM, SGLang and Transformers already support it, allowing developers to freely download, deploy and commercially use the model without regional restrictions.</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>MIT协议无地域限制，为海外开发者和企业提供可自主部署的高性能长程任务模型，降低对单一云服务商的依赖。</div>
+        <div class="why-en"><strong>Why it matters:</strong> The MIT license’s lack of regional restrictions gives overseas developers and enterprises a self-hostable, high-performance long-horizon model, reducing dependence on single cloud providers.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://www.zhipuai.cn/zh/research/161" target="_blank">Zhipu AI Research</a></div>
+    </div>
+
+    <div class="news-item open">
+      <div class="news-header">
+        <div>
+          <div class="news-title-cn">DeepSeek V4 系列在 Hugging Face 开源，含技术报告</div>
+          <div class="news-title-en">DeepSeek V4 Family Open-Sourced on Hugging Face with Technical Report</div>
+        </div>
+        <span class="news-tag tag-open">Open / CN</span>
+      </div>
+      <div class="news-summary">
+        <div class="news-summary-cn">DeepSeek V4系列在Hugging Face开源，提供V4-Pro和V4-Flash两个版本。技术报告可在Hugging Face仓库下载，模型兼容vLLM等主流推理框架，并支持1M上下文与双模式（Thinking / Non-Thinking）。</div>
+        <div class="news-summary-en">The DeepSeek V4 family is open-sourced on Hugging Face, offering V4-Pro and V4-Flash. A technical report is available in the Hugging Face repository, and the models are compatible with mainstream inference frameworks such as vLLM, supporting 1M context and dual modes (Thinking / Non-Thinking).</div>
+      </div>
+      <div class="why-matters">
+        <div class="why-cn"><strong>为何重要：</strong>DeepSeek持续以开源推动长上下文和Agentic Coding能力的普惠化，为社区提供可直接复现、二次研究的模型与训练细节。</div>
+        <div class="why-en"><strong>Why it matters:</strong> DeepSeek continues to democratize long-context and agentic coding capabilities through open-source, giving the community reproducible models and training details for further research.</div>
+      </div>
+      <div class="news-source">来源 Source: <a href="https://huggingface.co/collections/deepseek-ai/deepseek-v4" target="_blank">Hugging Face · DeepSeek</a></div>
+    </div>
+  </div>
+
+  <!-- Whitelist -->
+  <div class="whitelist-section">
+    <div class="whitelist-title-cn">📋 本期来源白名单 · Source Whitelist</div>
+    <div class="whitelist-title-en">Tracked sources for this briefing</div>
+    <div class="whitelist-note-cn">本期新增 3 个来源：worldaic.com.cn（WAIC 官方）、people.com.cn（人民网）、chinadaily.com.cn（中国日报）。</div>
+    <div class="whitelist-note-en">3 new sources added this issue: worldaic.com.cn (WAIC official), people.com.cn (People’s Daily), chinadaily.com.cn (China Daily).</div>
+    <div class="whitelist-list">
+      <strong>US:</strong> OpenAI (openai.com), Anthropic (anthropic.com), Meta Superintelligence Labs (about.fb.com/news), Google DeepMind (deepmind.google/blog)<br>
+      <strong>China:</strong> Moonshot/Kimi (moonshot.ai, kimi.com), MiniMax (minimaxi.com), Zhipu (zhipuai.cn, open.bigmodel.cn), Qwen/Alibaba Cloud (qwen.ai/blog), DeepSeek (deepseek.com), ByteDance Seed (seed.bytedance.com)<br>
+      <strong>Singapore:</strong> A*STAR AI (a-star.edu.sg/aiml), GovTech (tech.gov.sg), Singapore DSAI (smartnation.sg), NUS AI (nus.edu.sg), MDDI (mddi.gov.sg), Singtel (singtel.com), PAIR Chat (pair.gov.sg, reports.open.gov.sg), AIBots (developer.tech.gov.sg), Transcribe (transcribe.gov.sg)<br>
+      <strong>Media:</strong> Reuters (reuters.com/technology), MIT Technology Review (technologyreview.com), Xinhua EN (xinhuanet.com/english), CNBC (cnbc.com), Forbes (forbes.com), AI Critique (aicritique.org), IEEE Spectrum (spectrum.ieee.org), AI Flash Report (aiflashreport.com), WinBuzzer (winbuzzer.com), Kersai (kersai.com), AI Release Tracker (aireleasetracker.com), Straits Times (straitstimes.com/tech), AgenticWire (agenticwire.news), explainx.ai (explainx.ai), Legalithm (legalithm.com), TechNode (technode.com), AI in Asia (aiinasia.com), <span class="new-source">China Daily (chinadaily.com.cn 🆕)</span>, <span class="new-source">People's Daily (people.com.cn 🆕)</span><br>
+      <strong>Open Source/Research:</strong> Hugging Face (huggingface.co/blog), arXiv (arxiv.org/list/cs.AI), OpenBMB (openbmb.org), HKUDS (hku-datascience.github.io), Marktechpost (marktechpost.com), PaddlePaddle on HF (huggingface.co/blog/PaddlePaddle), ServiceNow on HF (huggingface.co/blog/ServiceNow), DeepReinforce Ornith (deep-reinforce.com), GitHub Changelog (github.blog)<br>
+      <strong>Computer Use:</strong> H Company (hcompany.ai), Hugging Face Computer Use (huggingface.co/blog/Hcompany/holo3)<br>
+      <strong>Governance/Policy:</strong> Plural Policy (pluralpolicy.com/blog), UK AISI (aisi.gov.uk/blog), Stanford HAI (hai.stanford.edu), Mayer Brown (mayerbrown.com), EU Council (consilium.europa.eu), Inside Global Tech (insideglobaltech.com)<br>
+      <strong>Events/Official:</strong> <span class="new-source">WAIC (worldaic.com.cn 🆕)</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-cn">AI 简报由自动化脚本生成，来源见各条链接，仅供信息参考，不构成任何投资建议。</div>
+    <div class="footer-en">AI Briefing is auto-generated. Sources are linked per item. For information only, not investment advice.</div>
+    <div class="footer-cn" style="margin-top: 8px;">发布于 GitHub Pages：<a href="https://kidultop.github.io/investment-reports/ai_briefing_20260720_morning.html" target="_blank">https://kidultop.github.io/investment-reports/ai_briefing_20260720_morning.html</a></div>
+    <div class="footer-en">Published on GitHub Pages: <a href="https://kidultop.github.io/investment-reports/ai_briefing_20260720_morning.html" target="_blank">https://kidultop.github.io/investment-reports/ai_briefing_20260720_morning.html</a></div>
+  </div>
+</div>
+</body>
+</html>
