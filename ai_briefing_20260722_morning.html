@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 早报 · AI Morning Briefing — 2026-07-22</title>
+<style>
+  :root{
+    --bg:#0f172a;
+    --bg-soft:#1e293b;
+    --bg-card:#172033;
+    --accent:#a78bfa;
+    --accent-soft:#c4b5fd;
+    --text:#e2e8f0;
+    --muted:#94a3b8;
+    --border:#334155;
+    --us:#60a5fa;
+    --cn:#f87171;
+    --sg:#fb923c;
+    --research:#4ade80;
+    --open:#a78bfa;
+    --policy:#facc15;
+    --new:#22d3ee;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.6;font-size:15px;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 60px;}
+  header.brief-head{
+    border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:24px;
+  }
+  .brief-head h1{font-size:26px;margin:0 0 4px;color:#fff;letter-spacing:.5px;}
+  .brief-head .sub{font-style:italic;color:var(--muted);font-size:14px;}
+  .brief-head .meta{margin-top:10px;font-size:13px;color:var(--muted);}
+  .brief-head .meta b{color:var(--accent-soft);}
+
+  /* Trends card */
+  .trends-card{
+    background:linear-gradient(135deg,#1e1b4b,#172033);
+    border:1px solid var(--accent);border-radius:14px;padding:18px 20px;margin-bottom:28px;
+  }
+  .trends-title-cn{font-size:16px;font-weight:700;color:var(--accent-soft);}
+  .trends-title-en{font-size:12px;font-style:italic;color:var(--muted);margin-bottom:12px;}
+  .trend-item{padding:8px 0;border-top:1px dashed var(--border);}
+  .trend-item:first-of-type{border-top:none;}
+  .trend-cn{font-size:14px;color:var(--text);}
+  .trend-en{font-size:12px;font-style:italic;color:var(--muted);}
+
+  /* Section */
+  .card-title{display:flex;align-items:baseline;gap:10px;margin:34px 0 14px;padding-left:10px;border-left:4px solid var(--accent);}
+  .card-title .title-cn{font-size:19px;font-weight:700;color:#fff;}
+  .card-title .title-en{font-size:13px;font-style:italic;color:var(--muted);}
+
+  /* News item */
+  .news-item{
+    background:var(--bg-card);border:1px solid var(--border);border-radius:12px;
+    padding:16px 18px;margin-bottom:14px;position:relative;overflow:hidden;
+  }
+  .news-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);}
+  .news-item.tag-us::before{background:var(--us);}
+  .news-item.tag-cn::before{background:var(--cn);}
+  .news-item.tag-sg::before{background:var(--sg);}
+  .news-item.tag-research::before{background:var(--research);}
+  .news-item.tag-open::before{background:var(--open);}
+  .news-item.tag-policy::before{background:var(--policy);}
+  .news-item.tag-new::before{background:var(--new);}
+
+  .news-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .news-title-cn{font-size:16px;font-weight:600;color:#fff;margin:0;}
+  .news-title-en{font-size:12px;font-style:italic;color:var(--muted);margin:2px 0 0;}
+  .tag{
+    flex-shrink:0;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;
+    border:1px solid currentColor;
+  }
+  .tag.tag-us{color:var(--us);}
+  .tag.tag-cn{color:var(--cn);}
+  .tag.tag-sg{color:var(--sg);}
+  .tag.tag-research{color:var(--research);}
+  .tag.tag-open{color:var(--open);}
+  .tag.tag-policy{color:var(--policy);}
+  .tag.tag-new{color:var(--new);}
+
+  .news-summary{display:flex;margin-top:12px;gap:0;}
+  .news-summary-cn{flex:1;padding-left:12px;border-left:3px solid var(--us);font-size:14px;color:var(--text);}
+  .news-summary-en{flex:1;padding-left:12px;border-left:3px solid var(--border);font-size:12.5px;font-style:italic;color:var(--muted);}
+
+  .why-matters{margin-top:12px;background:rgba(167,139,250,.08);border-radius:8px;padding:10px 12px;font-size:13.5px;}
+  .why-cn{color:var(--text);}
+  .why-cn strong{color:var(--accent-soft);}
+  .why-en{color:var(--muted);font-style:italic;margin-top:4px;}
+  .why-en strong{color:var(--accent-soft);font-style:normal;}
+
+  .src-link{display:inline-block;margin-top:12px;font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:5px 12px;border-radius:8px;transition:.15s;}
+  .src-link:hover{background:var(--accent);color:#0f172a;}
+
+  .new-source-callout{
+    margin-top:12px;background:rgba(34,211,238,.10);border:1px solid var(--new);
+    border-radius:8px;padding:10px 12px;font-size:13px;color:#a5f3fc;
+  }
+  .new-source-callout b{color:var(--new);}
+
+  /* Whitelist */
+  .whitelist{margin-top:40px;background:var(--bg-soft);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+  .whitelist-title-cn{font-size:16px;font-weight:700;color:var(--accent-soft);}
+  .whitelist-title-en{font-size:12px;font-style:italic;color:var(--muted);margin-bottom:6px;}
+  .whitelist-note-cn{font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .whitelist-note-en{font-size:12px;font-style:italic;color:var(--muted);margin-bottom:14px;}
+  .wl-group{margin-bottom:12px;font-size:13px;}
+  .wl-group .wl-h{font-weight:700;color:var(--text);}
+  .wl-group .wl-items{color:var(--muted);}
+  .wl-new{color:var(--new);font-weight:700;}
+
+  footer.brief-foot{margin-top:36px;border-top:1px solid var(--border);padding-top:16px;font-size:12px;color:var(--muted);}
+  .footer-cn{color:var(--text);}
+  .footer-en{font-style:italic;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brief-head">
+    <h1>AI 早报</h1>
+    <div class="sub">AI Morning Briefing — Wednesday, July 22, 2026 (SGT)</div>
+    <div class="meta">追踪来源 <b>40+</b> · 分区 <b>5</b> · 生成时间 <b>08:37 SGT</b> · 自动化发布：<b>ai</b></div>
+  </header>
+
+  <!-- TRENDS CARD -->
+  <div class="trends-card">
+    <div class="trends-title-cn">今日核心趋势</div>
+    <div class="trends-title-en">Core Trends Today</div>
+    <div class="trend-item">
+      <div class="trend-cn">① 中国开源模型（Kimi / GLM-5）引发美国政策内部分裂，开源 vs 闭源路线之争进入白宫审查阶段</div>
+      <div class="trend-en">① China's open-weight models (Kimi, GLM-5) fracture US AI policy circles; open-vs-closed debate reaches White House model-vetting process.</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">② 国产旗舰集体冲向"长程任务 / 系统级交付"：智谱 GLM-5、商汤 SenseNova U1 Pro 定义 Agentic Engineering 新基准</div>
+      <div class="trend-en">② Domestic flagships pivot to long-horizon, system-level delivery: Zhipu GLM-5 and SenseTime SenseNova U1 Pro reset the Agentic Engineering bar.</div>
+    </div>
+    <div class="trend-item">
+      <div class="trend-cn">③ 可解释性进入"全局工作空间"阶段；arXiv 与 Anthropic 同步强调基础方法优先于临时技巧</div>
+      <div class="trend-en">③ Interpretability enters the "global workspace" era; arXiv and Anthropic both stress foundation-first methods over ad-hoc tricks.</div>
+    </div>
+  </div>
+
+  <!-- ============ TOP STORIES ============ -->
+  <div class="card-title"><span class="title-cn">头条</span><span class="title-en">Top Stories</span></div>
+
+  <div class="news-item tag-policy">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">中国开源模型（Kimi）令特朗普 AI 阵营内部分裂</h3>
+        <div class="news-title-en">China's AI models have Trump's AI world at war with itself</div>
+      </div>
+      <span class="tag tag-policy">Policy</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">MIT Technology Review 报道，月之暗面上周发布的免费开源模型 Kimi 在美国 AI 战略圈引发公开互呛：前 AI 与加密事务负责人 David Sacks 批评头部厂商"想让政府清除开源竞争者"，而国防部官员 Emil Michael 则反唇相讥。争议焦点是白宫新设的发布前安全审查流程是否构成"事实上的前沿 AI 许可制"。</div>
+      <div class="news-summary-en">MIT Technology Review reports that Moonshot's free, open-source Kimi — launched last week — has split Trump's AI advisers. Former AI czar David Sacks blasted top labs for wanting the government to "eliminate their open-source competition," while a Pentagon official fired back. The flashpoint is a new White House pre-release security review some call a "de facto licensing regime for frontier AI."</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>中国开源模型首次在"经济 + 政治"双重维度动摇美国闭源商业模式，出口管制松动与蒸馏争议叠加，可能重塑全球 AI 治理与采购格局。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Chinese open-weight models are disrupting the US closed-source business case on both economic and political fronts; combined with eased export controls and distillation disputes, this may reshape global AI governance and procurement.</div>
+    </div>
+    <a class="src-link" href="https://www.technologyreview.com/?id=17540" target="_blank">来源 / Source: MIT Technology Review</a>
+  </div>
+
+  <div class="news-item tag-cn">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">智谱开源 GLM-5：744B MoE，开源模型 SOTA</h3>
+        <div class="news-title-en">Zhipu open-sources GLM-5: 744B MoE, open-source SOTA</div>
+      </div>
+      <span class="tag tag-cn">CN</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">智谱发布并开源新一代旗舰 GLM-5：参数从 355B（激活 32B）扩展至 744B（激活 40B），预训练数据提升至 28.5T，采用 DeepSeek 稀疏注意力以降低部署成本。在 Artificial Analysis 榜单居全球第四、开源第一；SWE-bench Verified 77.8、Terminal Bench 2.0 56.2，编码体感逼近 Claude Opus 4.5。权重以 MIT License 在 Hugging Face / ModelScope 同步开源，并完成华为昇腾、摩尔线程、寒武纪等国产芯片适配。</div>
+      <div class="news-summary-en">Zhipu released and open-sourced GLM-5: scaling from 355B (32B active) to 744B (40B active) with 28.5T training tokens and DeepSeek Sparse Attention for cheaper deployment. It ranks #4 globally and #1 open-source on Artificial Analysis, with SWE-bench Verified 77.8 and Terminal Bench 2.0 56.2 — closing on Claude Opus 4.5. Weights are MIT-licensed on Hugging Face / ModelScope and adapted to domestic chips (Ascend, Moore Threads, Cambricon).</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GLM-5 将开源模型从"写代码"推向"写工程"，标志国产模型在长程 Agent 任务与国产算力闭环上进入代际跃迁。</div>
+      <div class="why-en"><strong>Why it matters:</strong> GLM-5 shifts open models from "writing code" to "writing engineering," marking a generational leap for Chinese models in long-horizon agentic tasks and domestic-compute closed loops.</div>
+    </div>
+    <a class="src-link" href="https://www.zhipuai.cn/zh/research/154" target="_blank">来源 / Source: 智谱 Zhipu AI</a>
+  </div>
+
+  <div class="news-item tag-us">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">OpenAI 发布 GPT-5.6 系列：Sol / Terra / Luna</h3>
+        <div class="news-title-en">OpenAI launches GPT-5.6 family: Sol / Terra / Luna</div>
+      </div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">OpenAI 于 7 月 9 日发布 GPT-5.6 三档模型：旗舰 Sol、日常向 Terra、经济型 Luna。官方称 Sol 在编码智能体、电脑使用、网络安全与长上下文方向显著提升，Artificial Analysis Coding Agent Index 达 80，SWE-bench Pro 64.6%，OSWorld 2.0 62.6%；定价为每百万 token 输入/输出 5/30（Sol）、2.5/15（Terra）、1/6（Luna）美元。发布前已通过美国政府审查流程。</div>
+      <div class="news-summary-en">OpenAI released the GPT-5.6 family on July 9: flagship Sol, everyday Terra, and economical Luna. Sol lifts coding-agent, computer-use, cybersecurity and long-context ability, with an Artificial Analysis Coding Agent Index of 80, SWE-bench Pro 64.6%, and OSWorld 2.0 62.6%. Pricing is $5/$30 (Sol), $2.5/$15 (Terra), $1/$6 (Luna) per million tokens. The launch cleared the US government review process.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>GPT-5.6 以更低单价与更强长程/电脑使用能力直击 Anthropic 与国产开源的价格—性能带，推理消耗从文本问答扩展至真实工作流。</div>
+      <div class="why-en"><strong>Why it matters:</strong> GPT-5.6 undercuts Anthropic and Chinese open models on price-per-performance while extending inference from Q&A into real workflows (long-horizon, computer-use).</div>
+    </div>
+    <a class="src-link" href="https://openai.com/research/index/release" target="_blank">来源 / Source: OpenAI</a>
+  </div>
+
+  <!-- ============ 官方发布 ============ -->
+  <div class="card-title"><span class="title-cn">官方发布</span><span class="title-en">Official Releases</span></div>
+
+  <div class="news-item tag-us">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">OpenAI 推出 GPT-Live 全双工语音模型</h3>
+        <div class="news-title-en">OpenAI introduces GPT-Live full-duplex voice models</div>
+      </div>
+      <span class="tag tag-us">US</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 8 日，OpenAI 发布新一代语音模型 GPT-Live-1 与 GPT-Live-1 mini，采用全双工架构，可同时听与说，支持自然打断、停顿理解与实时翻译。复杂任务在后台委托 GPT-5.5 完成，语音保持对话流。目前已向全球 ChatGPT 用户滚动推送，API 即将开放。</div>
+      <div class="news-summary-en">On July 8, OpenAI launched GPT-Live-1 and GPT-Live-1 mini with a full-duplex architecture that listens and speaks simultaneously, enabling natural interruptions, pause understanding, and live translation. Hard tasks are delegated to GPT-5.5 in the background. Rolling out to ChatGPT users globally; API coming soon.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>语音正成为 ChatGPT 的统一交互入口，全双工架构把"人机对话"从轮次式推向连续式，为更长程、更 Agentic 的语音工作铺路。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Voice is becoming ChatGPT's unified interface; full-duplex design moves human-AI talk from turn-based to continuous, paving the way for longer, more agentic voice work.</div>
+    </div>
+    <a class="src-link" href="https://openai.com/index/introducing-gpt-live/" target="_blank">来源 / Source: OpenAI</a>
+  </div>
+
+  <div class="news-item tag-new">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">商汤发布 SenseNova U1 Pro：交付级原生多模态智能体基座</h3>
+        <div class="news-title-en">SenseTime releases SenseNova U1 Pro: delivery-grade native multimodal agent base</div>
+      </div>
+      <span class="tag tag-new">🆕 CN</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">7 月 18 日 WAIC 期间，商汤发布"日日新 SenseNova U1 Pro"，定位面向长程任务的交付级原生多模态智能体基座，底层基于 NEO-unify 原生统一架构（MoT，理解/生成/编辑共享表征）。主打四大交付能力：专业设计美感、原生 8K 超清输出、极致图文控制、数十轮 Agentic Generation Loop 闭环。预览版已开启邀请测试，8 月上线并同步 API。</div>
+      <div class="news-summary-en">At WAIC on July 18, SenseTime launched SenseNova U1 Pro, a delivery-grade native multimodal agent base for long-horizon tasks, built on the NEO-unify unified architecture (MoT, sharing representations across understanding/generation/editing). Four delivery pillars: pro design aesthetics, native 8K output, tight image-text control, and tens-of-round Agentic Generation Loops. Preview invite-only; GA and API in August.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>多模态竞争从"单次抽卡式生成"升级为"复杂长程任务的稳定交付"，商汤以架构换代切入系统级内容交付赛道。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Multimodal competition shifts from one-shot "lucky draw" generation to stable delivery of complex long-horizon tasks; SenseTime enters the system-level content-delivery race via an architecture reset.</div>
+    </div>
+    <div class="new-source-callout">
+      <b>🆕 新增白名单来源：</b>商汤 SenseTime / SenseNova（sensenova.cn）— 因 WAIC 发布 U1 Pro 旗舰多模态模型加入追踪。官方 URL：<a href="https://www.sensenova.cn/u1-pro" target="_blank" style="color:#a5f3fc;">sensenova.cn/u1-pro</a>
+    </div>
+    <a class="src-link" href="https://www.sensenova.cn/u1-pro" target="_blank">来源 / Source: SenseNova（商汤）</a>
+  </div>
+
+  <div class="news-item tag-cn">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">MiniMax 推出 Speech 2.5 与 M2.1 通用模型</h3>
+        <div class="news-title-en">MiniMax ships Speech 2.5 and M2.1 general model</div>
+      </div>
+      <span class="tag tag-cn">CN</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">MiniMax 近期上线 Speech 2.5 语音模型（更强多语种表现力与音色复刻）与 M2.1 文本模型（80K 思维链 × 1M 输入，AgentCompany Benchmark 表现领先）。M2.1 全面支持自动 Cache，并保持 Coding Plan 价格不变；同步开放 MiniMax MCP Server（视频/图像/语音/声音克隆）。</div>
+      <div class="news-summary-en">MiniMax recently launched Speech 2.5 (stronger multilingual expressiveness and voice cloning) and M2.1 (80K CoT × 1M context, leading on AgentCompany Benchmark). M2.1 adds automatic caching at unchanged Coding Plan pricing; a MiniMax MCP Server (video/image/audio/voice-clone) is now open to developers.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>国产多模态矩阵持续补齐语音与 Agent 工具链，MCP Server 开放降低开发者接入门槛。</div>
+      <div class="why-en"><strong>Why it matters:</strong> China's multimodal matrix keeps filling voice and agent tooling gaps; the open MCP Server lowers developer integration cost.</div>
+    </div>
+    <a class="src-link" href="https://minimaxi.com/news/minimax-m21" target="_blank">来源 / Source: MiniMax</a>
+  </div>
+
+  <!-- ============ 研究与技术 ============ -->
+  <div class="card-title"><span class="title-cn">研究与技术</span><span class="title-en">Research &amp; Technology</span></div>
+
+  <div class="news-item tag-research">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">Anthropic 发现语言模型中的"全局工作空间"（J-space）</h3>
+        <div class="news-title-en">Anthropic discovers a "global workspace" in language models (J-space)</div>
+      </div>
+      <span class="tag tag-research">Research</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Anthropic 可解释性团队发表新研究，揭示 Claude 内部存在一个涌现的"心理工作空间"，可暂存不出现在输出中的内部思考。MIT Technology Review 同步评论称，该发现既展示了模型内部推理的新证据，也提醒人们勿过度解读其"意识"含义。研究延续了 Global Workspace 理论在 LLM 上的实证。</div>
+      <div class="news-summary-en">Anthropic's interpretability team published new work revealing an emergent "mental workspace" inside Claude that holds internal thoughts absent from the output. MIT Technology Review notes the finding shows new evidence of internal reasoning while cautioning against over-reading "consciousness." It extends the Global Workspace theory to LLMs empirically.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>为可控、可审计的 Agent 推理提供机制层面的抓手，也是安全监测（如越狱、目标漂移）的潜在观测点。</div>
+      <div class="why-en"><strong>Why it matters:</strong> It gives a mechanistic handle for controllable, auditable agent reasoning and a potential observation point for safety monitoring (jailbreaks, goal drift).</div>
+    </div>
+    <a class="src-link" href="https://www.anthropic.com/research" target="_blank">来源 / Source: Anthropic Research</a>
+  </div>
+
+  <div class="news-item tag-research">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">arXiv 立场论文：可解释性研究应优先夯实基础方法</h3>
+        <div class="news-title-en">arXiv position paper: Explainability research must prioritize foundations</div>
+      </div>
+      <span class="tag tag-research">Research</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">被 ICML 2026 接收的立场论文（Rudin、Rudin 等）主张，可解释性研究应优先发展具备理论保证的基础方法，而非依赖临时、不可证伪的事后技巧。论文呼应了同周 Anthropic 对"全局工作空间"的实证的底层关切：机制可解释性需要可验证的根基。</div>
+      <div class="news-summary-en">An ICML 2026 position paper (Rudin et al.) argues explainability should prioritize theoretically grounded foundation methods over ad-hoc, unfalsifiable post-hoc tricks. It echoes the same underlying concern behind Anthropic's "global workspace" empirical work: mechanistic interpretability needs verifiable foundations.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>在高风险部署（医疗、金融、政务）中，可证伪、可验证的解释比"看起来合理"的事后归因更关键。</div>
+      <div class="why-en"><strong>Why it matters:</strong> In high-stakes deployment (healthcare, finance, government), falsifiable, verifiable explanations matter more than plausible-looking post-hoc attributions.</div>
+    </div>
+    <a class="src-link" href="https://arxiv.org/list/cs.AI/recent" target="_blank">来源 / Source: arXiv cs.AI</a>
+  </div>
+
+  <!-- ============ 政策与产业 ============ -->
+  <div class="card-title"><span class="title-cn">政策与产业</span><span class="title-en">Policy &amp; Industry</span></div>
+
+  <div class="news-item tag-policy">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">研究：AI 在招聘中比人类更易形成偏见</h3>
+        <div class="news-title-en">Study: AI more likely than humans to form biases when hiring</div>
+      </div>
+      <span class="tag tag-policy">Policy</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">MIT Technology Review 报道的一项新研究表明，在招聘场景中，AI 系统比人类更可能对候选者形成并放大偏见。该发现为企业在部署自动化招聘时提出了合规与审计要求，也呼应了欧盟 AI 法案对高风险应用的约束方向。</div>
+      <div class="news-summary-en">A new study reported by MIT Technology Review finds that in hiring scenarios AI systems are more likely than humans to form and amplify bias. The finding raises compliance and audit demands for automated recruiting and aligns with the EU AI Act's high-risk application constraints.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>招聘是高敏感、高频的 AI 落地场景，偏见证据将推动更严格的模型评估与人工复核机制。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Hiring is a high-sensitivity, high-frequency AI use case; bias evidence will drive stricter model evaluation and human-review requirements.</div>
+    </div>
+    <a class="src-link" href="https://www.technologyreview.com/" target="_blank">来源 / Source: MIT Technology Review</a>
+  </div>
+
+  <div class="news-item tag-sg">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">新加坡将用本地临床数据与诊疗指南训练 AI 模型</h3>
+        <div class="news-title-en">Singapore to train AI models on local clinical data and medical guidelines</div>
+      </div>
+      <span class="tag tag-sg">🇸🇬 SG</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">新加坡 AI 治理追踪（sgai.md）7 月 12 日更新：新加坡计划基于本地临床数据与医疗指南训练专属 AI 模型，以提升在多元族群与本地医疗语境下的适配性；同期旅游向导等服务业也在适应 AI 与社交媒体对业态的重塑。</div>
+      <div class="news-summary-en">Per a July 12 sgai.md update, Singapore plans to train dedicated AI models on local clinical data and medical guidelines to improve fit across its multi-ethnic population and local care context; meanwhile service sectors like tourist guiding are adapting to AI- and social-media-driven change.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>以本地数据与指南训练的医用 AI 更贴合新加坡医疗体系，是国家级可信 AI 部署的典型样本，对临床数据分析有直接借鉴价值。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Medically trained on local data and guidelines, such AI fits Singapore's health system better — a template for national trustworthy-AI deployment with direct relevance to clinical data work.</div>
+    </div>
+    <a class="src-link" href="https://sgai.md/updates" target="_blank">来源 / Source: Singapore AI Governance Tracker (sgai.md)</a>
+  </div>
+
+  <!-- ============ 开源生态 ============ -->
+  <div class="card-title"><span class="title-cn">开源生态</span><span class="title-en">Open Source</span></div>
+
+  <div class="news-item tag-open">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">Hugging Face：以 GLM-5.2-FP8 部署前沿级开源 Agent</h3>
+        <div class="news-title-en">Hugging Face: Deploy GLM-5.2-FP8 as an open, frontier-level agent</div>
+      </div>
+      <span class="tag tag-open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Hugging Face 社区指南演示如何将智谱 GLM-5.2-FP8（1M 无损上下文、国产算力友好）作为开源前沿级 Agent 部署，配合 transformers / vLLM 实现低显存推理。同期 NVIDIA 发布 Nemotron 3 Embed，在 RTEB 检索嵌入基准上排名整体第一。</div>
+      <div class="news-summary-en">A Hugging Face community guide shows how to deploy Zhipu's GLM-5.2-FP8 (1M lossless context, domestic-compute friendly) as an open frontier-level agent via transformers / vLLM for low-VRAM inference. Separately, NVIDIA released Nemotron 3 Embed, ranking #1 overall on the RTEB retrieval-embedding benchmark.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>FP8 量化 + 开源权重降低了前沿模型的自托管门槛，让开发者在合规环境下跑通长程 Agent。</div>
+      <div class="why-en"><strong>Why it matters:</strong> FP8 quantization plus open weights lower the self-hosting bar for frontier models, letting developers run long-horizon agents in compliant environments.</div>
+    </div>
+    <a class="src-link" href="https://huggingface.co/blog" target="_blank">来源 / Source: Hugging Face Blog</a>
+  </div>
+
+  <div class="news-item tag-open">
+    <div class="news-head">
+      <div>
+        <h3 class="news-title-cn">NVIDIA Nemotron 3 Embed 登顶 RTEB 检索嵌入榜</h3>
+        <div class="news-title-en">NVIDIA Nemotron 3 Embed ranks #1 overall on RTEB</div>
+      </div>
+      <span class="tag tag-open">Open</span>
+    </div>
+    <div class="news-summary">
+      <div class="news-summary-cn">Hugging Face 博客（1 天前）报道，NVIDIA Nemotron 3 Embed 在 RTEB（检索式嵌入基准）上取得整体第一，强化 Agentic Retrieval 场景下的文档/知识检索能力，对企业 RAG 与多 Agent 协作有直接增益。</div>
+      <div class="news-summary-en">Per Hugging Face (1 day ago), NVIDIA Nemotron 3 Embed ranks #1 overall on RTEB (Retrieval Embedding Benchmark), strengthening document/knowledge retrieval for agentic retrieval and directly benefiting enterprise RAG and multi-agent collaboration.</div>
+    </div>
+    <div class="why-matters">
+      <div class="why-cn"><strong>为何重要：</strong>更强的检索嵌入是 RAG 与 Agent 知识获取的底座，直接影响长程任务的准确性与成本。</div>
+      <div class="why-en"><strong>Why it matters:</strong> Stronger retrieval embeddings underpin RAG and agent knowledge access, directly affecting long-horizon task accuracy and cost.</div>
+    </div>
+    <a class="src-link" href="https://huggingface.co/blog" target="_blank">来源 / Source: Hugging Face Blog</a>
+  </div>
+
+  <!-- ============ WHITELIST ============ -->
+  <div class="whitelist">
+    <div class="whitelist-title-cn">追踪来源白名单</div>
+    <div class="whitelist-title-en">Tracked Source Whitelist</div>
+    <div class="whitelist-note-cn">以下为本简报持续追踪的官方与权威来源；🆕 标注本期（2026-07-22）新增。</div>
+    <div class="whitelist-note-en">Sources continuously tracked by this briefing; 🆕 marks additions in this issue (2026-07-22).</div>
+
+    <div class="wl-group"><span class="wl-h">US：</span><span class="wl-items">OpenAI (openai.com/news, openai.com/research), Anthropic (anthropic.com/news, anthropic.com/research), Google DeepMind (deepmind.google/blog), Meta Superintelligence Labs (about.fb.com/news)</span></div>
+    <div class="wl-group"><span class="wl-h">China：</span><span class="wl-items">Moonshot/Kimi (moonshot.ai, kimi.com), MiniMax (minimaxi.com), 智谱 Zhipu (zhipuai.cn, open.bigmodel.cn), Qwen/Alibaba Cloud (qwen.ai/blog), DeepSeek (deepseek.com), <span class="wl-new">🆕 SenseTime SenseNova (sensenova.cn)</span></span></div>
+    <div class="wl-group"><span class="wl-h">Singapore：</span><span class="wl-items">A*STAR AI (a-star.edu.sg/aiml), GovTech (tech.gov.sg), Singapore DSAI (smartnation.sg), NUS AI, MDDI (mddi.gov.sg/newsroom), Singtel RE:AI (singtel.com), PAIR Chat / AIBots / Transcribe (gov.sg), sgai.md (Singapore AI Governance Tracker)</span></div>
+    <div class="wl-group"><span class="wl-h">Media：</span><span class="wl-items">Reuters (reuters.com/technology), MIT Tech Review (technologyreview.com), Xinhua EN, CNBC, Forbes, AI Critique, IEEE Spectrum, AI Flash Report, WinBuzzer, Kersai, AI Release Tracker, Straits Times Tech, AgenticWire, explainx.ai, Legalithm, TechNode, AI in Asia, China Daily, People's Daily</span></div>
+    <div class="wl-group"><span class="wl-h">Open Source / Research：</span><span class="wl-items">Hugging Face (huggingface.co/blog), arXiv CS.AI, OpenBMB, HKUDS, Marktechpost, PaddlePaddle, ServiceNow, DeepReinforce, GitHub Changelog (github.blog)</span></div>
+    <div class="wl-group"><span class="wl-h">AI Governance / Policy：</span><span class="wl-items">Plural Policy, UK AISI (aisi.gov.uk), Stanford HAI, Mayer Brown, EU Council, Inside Global Tech</span></div>
+    <div class="wl-group"><span class="wl-h">China Extended / Events：</span><span class="wl-items">ByteDance Seed, Knightli, Kimi K2 Official, Meituan LongCat, Shengshu/Vidu, WAIC (worldaic.com.cn)</span></div>
+  </div>
+
+  <footer class="brief-foot">
+    <div class="footer-cn">本简报由自动化任务 <b>ai</b> 生成并发布至 GitHub Pages · 内容基于官方与权威媒体公开信息，仅供参考，不构成投资建议。</div>
+    <div class="footer-en">Auto-generated by automation "ai" and published to GitHub Pages · Based on public official & authoritative sources; for reference only, not investment advice.</div>
+  </footer>
+
+</div>
+</body>
+</html>
