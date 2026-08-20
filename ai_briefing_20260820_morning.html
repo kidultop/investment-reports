@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 技术早报 · 2026-08-20</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-2: #334155;
+            --text: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #a78bfa;
+            --border: rgba(167, 139, 250, 0.2);
+            --top: #a78bfa;
+            --us: #60a5fa;
+            --cn: #f87171;
+            --sg: #fb923c;
+            --research: #34d399;
+            --open: #c084fc;
+            --policy: #facc15;
+            --new: #22d3ee;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 2rem 1rem;
+        }
+        .container { max-width: 960px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 2rem 0 2.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        .meta {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        .card-title {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--surface-2);
+        }
+        .title-cn { font-size: 1.4rem; font-weight: 700; }
+        .title-en { font-size: 0.95rem; font-style: italic; color: var(--text-secondary); }
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+        }
+        .card.top { border-left-color: var(--top); }
+        .card.us { border-left-color: var(--us); }
+        .card.cn { border-left-color: var(--cn); }
+        .card.sg { border-left-color: var(--sg); }
+        .card.research { border-left-color: var(--research); }
+        .card.open { border-left-color: var(--open); }
+        .card.policy { border-left-color: var(--policy); }
+
+        .news-title-cn {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+        .news-title-en {
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        .news-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 720px) {
+            .news-body { grid-template-columns: 1fr; }
+        }
+        .news-cn { padding-right: 1.25rem; border-right: 2px solid var(--surface-2); }
+        .news-en { padding-left: 0; }
+        @media (min-width: 721px) {
+            .news-en { padding-left: 1.25rem; }
+        }
+        .news-cn p, .news-en p { margin-bottom: 0.75rem; }
+        .news-cn p:last-child, .news-en p:last-child { margin-bottom: 0; }
+        .why-matters {
+            background: rgba(167, 139, 250, 0.08);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+        }
+        .why-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .why-matters .why-cn, .why-matters .why-en {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .why-matters .why-en { font-style: italic; }
+        .card-footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .source-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--surface-2);
+            color: var(--text);
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+        .source-btn:hover { background: var(--accent); color: var(--bg); }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--bg);
+        }
+        .tag.us { background: var(--us); }
+        .tag.cn { background: var(--cn); }
+        .tag.sg { background: var(--sg); }
+        .tag.research { background: var(--research); }
+        .tag.open { background: var(--open); }
+        .tag.policy { background: var(--policy); }
+        .tag.top { background: var(--top); color: var(--text); }
+
+        .whitelist {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .whitelist h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--accent); }
+        .whitelist-group { margin-bottom: 1rem; }
+        .whitelist-group-title { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.4rem; }
+        .whitelist-group ul { list-style: none; font-size: 0.85rem; color: var(--text-secondary); }
+        .whitelist-group li { margin-bottom: 0.25rem; }
+        .new-source { color: var(--new); font-weight: 700; }
+        .new-source-callout {
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">AI 技术早报</div>
+            <div class="subtitle">Daily AI Briefing</div>
+            <div class="meta">2026-08-20 · Morning Edition · SGT</div>
+        </header>
+
+        <div class="new-source-callout">
+            <strong>🆕 本期新增白名单来源</strong>：Z.ai 官方博客 (z.ai/blog) 用于智谱 GLM-5.3 发布；Nippon.com 用于日本 AI 治理动态。
+        </div>
+
+        <!-- Top Stories -->
+        <section class="section">
+            <div class="card-title">
+                <span class="title-cn">头条</span>
+                <span class="title-en">Top Stories</span>
+            </div>
+
+            <article class="card top">
+                <div class="news-title-cn">OpenAI 因 Astra 可能触及“关键级网络能力”阈值，暂停前沿 RL 训练两周</div>
+                <div class="news-title-en">OpenAI pauses frontier RL training for two weeks as Astra may hit Critical cyber capability threshold</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>OpenAI 在 8 月 18 日发布的《Pacing model development in an era of cyber-critical capabilities》中确认：内部评估显示即将推出的 Astra 模型可能达到其“Preparedness Framework”下的 Critical 级网络安全能力阈值。为此，公司已对最新部署导向模型暂停强化学习（RL）训练两周，并对研究环境进行加固、红队测试与监控扩展；最大规模的前沿 RL 运行目前仍处于暂停状态。</p>
+                        <p>同时，OpenAI 升级了研究环境安全标准：高风险工作负载执行沙箱隔离与网络隔离，移除潜在脆弱共享服务，并引入基于模型的持续安全测试。链式思维（chain-of-thought）监控也被扩展，要求对异常 token 活动、工具动作与执行序列进行实时分析，若潜在安全边界违规在 30 分钟内无法排除，则必须暂停运行。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>In an August 18 post, OpenAI confirmed that internal evaluations suggest its upcoming Astra model may reach the Critical cybersecurity capability threshold under its Preparedness Framework. The company has paused reinforcement-learning training on its latest deployment-bound models for two weeks while it hardens research environments, red-teams safeguards, and expands monitoring. Its largest planned frontier RL run remains on hold.</p>
+                        <p>OpenAI also raised security standards for research environments: high-risk workloads now require sandbox and network isolation, vulnerable shared services are being removed, and model-driven continuous security testing is being introduced. Chain-of-thought monitoring is being expanded to analyze token activity, tool actions, and execution sequences in real time; if a potential security-boundary violation cannot be ruled out within 30 minutes, the run must be paused.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">这是首家前沿实验室公开因模型自身能力越过内部网络安全阈值而主动放缓训练节奏。它把“安全置信度决定 AI 进步速度”从口号变成 operational gate，也可能成为后续监管与行业自律的参照。</div>
+                    <div class="why-en">This is the first major frontier lab to publicly slow training because a model crossed an internal cyber-capability threshold. It turns “safety confidence sets the pace of AI progress” from a slogan into an operational gate and may shape future regulation and industry self-governance.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://openai.com/index/pacing-model-development-cyber-capabilities/" target="_blank">OpenAI 原文 ↗</a>
+                    <div class="tags"><span class="tag top">Top Story</span><span class="tag us">US</span><span class="tag policy">Policy</span></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Official Releases -->
+        <section class="section">
+            <div class="card-title">
+                <span class="title-cn">官方发布</span>
+                <span class="title-en">Official Releases</span>
+            </div>
+
+            <article class="card cn">
+                <div class="news-title-cn">智谱 GLM-5.3 API 正式上线，权重将分两阶段开源</div>
+                <div class="news-title-en">Zhipu GLM-5.3 API goes live via GLM Coding Plan; open weights staged</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>智谱通过其新官方博客 z.ai 发布 GLM-5.3：与 GLM-5.2 共享同一 743B 基底，所有提升来自后训练扩展。模型提供 low / high / max 三档 reasoning_effort，API 已接入 GLM Coding Plan 与 ZCode；独立 API 与开放权重将在完成安全评估后分阶段放出，官方预计约两周后公开权重。</p>
+                        <p>官方公布的亮点包括：Terminal-Bench 3.0 从 4.6 提升至 28.3；CyberGym 84.5%、AutomationBench 48.2%；非高峰时段（UTC+8 20:00–次日 14:00 及周末）调用点数减半。ZCode 提供 98%+ 缓存命中率和限时 1.5 倍配额加成。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>Zhipu released GLM-5.3 via its new official blog z.ai. It shares the same 743B base as GLM-5.2 and improves solely through scaled post-training. The model offers low / high / max reasoning_effort tiers and is available now through the GLM Coding Plan and ZCode. Standalone API and open weights will follow safety evaluations, with weights expected in roughly two weeks.</p>
+                        <p>Reported highlights include Terminal-Bench 3.0 rising from 4.6 to 28.3, CyberGym 84.5%, and AutomationBench 48.2%. Off-peak usage (UTC+8 20:00–14:00 and weekends) consumes half the standard points. ZCode offers 98%+ cache hit rate and a limited-time 1.5× quota boost.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">GLM-5.3 证明后训练扩展可独立推动网络/编码能力跃升，且其“先订阅、后 API、再开源”的节奏与 GLM-5.2 的快开权重策略明显不同，反映出中国对双用途网络能力的审慎。</div>
+                    <div class="why-en">GLM-5.3 shows that scaled post-training alone can drive large jumps in cyber and coding capability. Its staged rollout—subscription first, then API, then open weights—differs sharply from GLM-5.2’s rapid open-weight release, reflecting caution around dual-use cyber capabilities.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://z.ai/blog/glm-5.3" target="_blank">z.ai 官方博客 ↗</a>
+                    <div class="tags"><span class="tag cn">CN</span><span class="tag open">Open</span></div>
+                </div>
+            </article>
+
+            <article class="card cn">
+                <div class="news-title-cn">阿里 Qwen3.8-27B 开源：Apache 2.0、原生多模态、1M 上下文</div>
+                <div class="news-title-en">Alibaba releases Qwen3.8-27B under Apache 2.0: native multimodal, up to 1M context</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>阿里于 8 月 14 日在 Hugging Face 与 ModelScope 开源 Qwen3.8-27B，采用 Apache 2.0 协议。该模型为 27.8B 参数原生多模态稠密模型，支持图像与视频理解，原生上下文 262K，可通过 YaRN 扩展至 1M tokens。</p>
+                        <p>架构上采用 Gated DeltaNet 与全注意力混合布局，支持 reasoning_effort 档位。官方称其在 SWE-bench Pro、OSWorld-Verified 等任务上超过 Claude Opus 4.6 Max，同时提供 BF16 与 FP8 权重以适配消费级 GPU。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>On August 14, Alibaba open-sourced Qwen3.8-27B on Hugging Face and ModelScope under Apache 2.0. It is a 27.8B-parameter native multimodal dense model supporting image and video understanding, with 262K native context extensible to 1M tokens via YaRN.</p>
+                        <p>The architecture uses a hybrid of Gated DeltaNet and full-attention blocks and supports reasoning_effort tuning. Alibaba reports that it beats Claude Opus 4.6 Max on SWE-bench Pro and OSWorld-Verified, and ships both BF16 and FP8 weights for consumer-grade GPUs.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">在“小尺寸高性能”成为本地 Agent 部署关键变量的背景下，Qwen3.8-27B 以宽松协议和可本地运行的体量出现，可能进一步压缩闭源 API 在编码与办公 Agent 场景的优势。</div>
+                    <div class="why-en">As small-but-capable models become critical for local agent deployments, Qwen3.8-27B arrives under a permissive license at a runnable scale, potentially eroding closed-API advantages in coding and office-agent use cases.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank">Hugging Face 权重 ↗</a>
+                    <div class="tags"><span class="tag cn">CN</span><span class="tag open">Open</span></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Research & Technology -->
+        <section class="section">
+            <div class="card-title">
+                <span class="title-cn">研究与技术</span>
+                <span class="title-en">Research & Technology</span>
+            </div>
+
+            <article class="card research us">
+                <div class="news-title-cn">Anthropic：Claude 自主完成蛋白质设计与分析化学实验</div>
+                <div class="news-title-en">Anthropic: Claude autonomously designs proteins and analyzes chemistry data</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>Anthropic 8 月 18 日公布两项实验。蛋白质设计实验中，Mythos Preview 与 Opus 4.8 针对 15 个靶点设计结合剂，其中 14 个获得成功；命中率 22%–35%，显著高于行业典型的 10%–15%。在 RBX1 靶点上，Claude 40% 命中率远超公开竞赛的 3.7%，最佳设计亲和力为冠军方案约 10 倍；Opus 4.8 还解决了多个专家团队失败的 TNFα 靶点。</p>
+                        <p>分析化学实验中，Claude Opus 5 仅用 19–23 分钟便从 NMR 与 LC-MS 原始文件得出与实验室化学家一致的结论（样品纯度 96.4% vs 实验室报告 96.33%）。Anthropic 已公开提示词、计算模型与体外实验数据。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>Anthropic reported two experiments on August 18. In protein design, Mythos Preview and Opus 4.8 designed binders for 15 targets, succeeding on 14; hit rates of 22–35% are well above the typical 10–15% industry baseline. On RBX1, Claude achieved a 40% hit rate versus 3.7% in a public competition, and its top design bound roughly 10× better than the winning entry. Opus 4.8 also solved TNFα, a target multiple expert groups had failed.</p>
+                        <p>In analytical chemistry, Claude Opus 5 analyzed raw NMR and LC-MS files in 19–23 minutes, matching the conclusions of human chemists (sample purity 96.4% vs. lab-reported 96.33%). Anthropic has released prompts, computational models, and in-vitro data.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">通用模型开始直接执行需要数周专家工作的科研流程，且结果经独立实验室验证。这标志着 AI 从“科研助理”向“科研执行者”移动一步，同时也放大了生物能力双用途风险的治理压力。</div>
+                    <div class="why-en">General-purpose models are beginning to execute research workflows that normally take experts weeks, with results validated by independent labs. This moves AI from research assistant toward research executor and intensifies governance pressure around dual-use biological capabilities.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://www.anthropic.com/research/Claude-accelerates-protein-design" target="_blank">Anthropic 技术报告 ↗</a>
+                    <div class="tags"><span class="tag research">Research</span><span class="tag us">US</span></div>
+                </div>
+            </article>
+
+            <article class="card research us">
+                <div class="news-title-cn">Google DeepMind WeatherNext Cyclones 登 Nature：5 天路径误差 230 km，提前预警 30+ 小时</div>
+                <div class="news-title-en">Google DeepMind WeatherNext Cyclones published in Nature: 230 km 5-day track error, 30+ hours extra lead time</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>DeepMind 的 WeatherNext Cyclones（WN-C）系统研究被 Nature 接受。该系统将全球大气状态与热带气旋专属变量联合训练，可生成最长 15 天、最多 1000 个成员的概率集合预报。在 2023–2025 年测试中，WN-C 5 天平均路径误差 230 km，优于 ECMWF ENS 的 370 km 与 GenCast 的 335 km；ENS 直到约 3.75 天后才达到同等精度，意味着 WN-C 提供超过 30 小时额外预警时间。</p>
+                        <p>WN-C 在强度预报上也显著优于 NOAA 高分辨率区域模式 HAFS，3 天强度误差平均低 3.75 节。研究发现，粗分辨率（0.25°，约 28 km）全球分析资料中蕴含此前未被充分利用的强度演变信号，高分辨率并非强度预报的唯一前提。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>DeepMind’s WeatherNext Cyclones (WN-C) system was accepted by Nature. It jointly trains on global atmospheric states and tropical-cyclone-specific variables, producing probabilistic ensemble forecasts up to 15 days ahead with up to 1,000 members. In 2023–2025 tests, WN-C’s 5-day average track error was 230 km, outperforming ECMWF ENS (370 km) and GenCast (335 km). ENS only reached that accuracy around 3.75 days out, giving WN-C more than 30 hours of additional lead time.</p>
+                        <p>WN-C also beat NOAA’s high-resolution regional HAFS model on intensity forecasts, with 3-day intensity error 3.75 knots lower. The finding suggests coarse global data contains more intensity-evolution signal than previously recognized, and high resolution is not the only path to skillful intensity forecasts.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">这是首个在路径、强度和风圈结构上同时超越传统与 AI 业务模式的台风预报系统，且已在国家飓风中心等业务场景使用。它证明 AI 与物理模式互补优于“完全替代”，并为防灾决策提供更长的概率化风险窗口。</div>
+                    <div class="why-en">This is the first AI system to simultaneously lead operational models on tropical-cyclone track, intensity, and wind structure, and it is already used in operational settings including the National Hurricane Center. It demonstrates that AI plus physical models beats full replacement, while giving emergency managers a longer, probabilistic risk window.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://deepmind.google/blog/weathernext-ai-model-achieves-breakthrough-in-forecasting-cyclones/" target="_blank">DeepMind 博客 ↗</a>
+                    <div class="tags"><span class="tag research">Research</span><span class="tag us">US</span></div>
+                </div>
+            </article>
+
+            <article class="card research">
+                <div class="news-title-cn">arXiv 双项：StateM 以“执行 harness”把终端 Agent 推至 95.3%；AlphaEvolve 刷新矩阵乘法指数</div>
+                <div class="news-title-en">arXiv highlights: StateM pushes terminal agents to 95.3% via harness scaling; AlphaEvolve tightens matrix-multiplication exponent</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>StateM（arXiv:2608.15089）提出一种围绕持久状态、阶段上下文、检查点转换与版本化 runbook 的 Agent 运行时。在不修改模型权重的情况下，StateM 将 GPT-5.6 Sol xhigh 在 Terminal-Bench 2.1 上从基线推至 95.3%，并在 445 次试验中完成全部 89 个任务；最终评分 API 费用约 15 美元，而 GPT 参考运行约 574.68 美元。</p>
+                        <p>另一篇论文（arXiv:2608.16884）结合现代机器学习优化与 AlphaEvolve，将矩阵乘法指数 ω 的上界从 2.371339 改进至 2.371177。虽然该算法族仍属“银河算法”、短期内无实用加速，但它显示 AI 系统正通过搜索密集型优化步骤推动数学前沿。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>StateM (arXiv:2608.15089) introduces an agent runtime built on durable states, phase-local context, checked transitions, and versioned runbooks. Without changing model weights, it pushes GPT-5.6 Sol xhigh to 95.3% on Terminal-Bench 2.1 and completes all 89 tasks across 445 trials. Final-score API cost was about $15 versus ~$574.68 for the GPT reference run.</p>
+                        <p>A separate paper (arXiv:2608.16884) combines modern ML optimization with AlphaEvolve to improve the matrix-multiplication exponent upper bound from 2.371339 to 2.371177. While still a galactic algorithm with no practical speedup yet, it shows AI systems pushing mathematical frontiers through search-heavy optimization steps.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">StateM 揭示 Agent 工程的新杠杆：在模型不变时，通过“harness 扩展”即可大幅提升长程任务成功率并压缩成本。矩阵乘法指数的推进则说明，AI 辅助数学的贡献更多体现在“搜索与验证”而非“自动证明”。</div>
+                    <div class="why-en">StateM reveals a new lever in agent engineering: harness scaling can sharply improve long-horizon success and cut costs without changing the model. The matrix-multiplication result shows AI-assisted mathematics currently contributes most in search-and-verification, not autonomous theorem-proving.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://arxiv.org/abs/2608.15089v1" target="_blank">StateM ↗</a>
+                    <a class="source-btn" href="https://arxiv.org/abs/2608.16884v1" target="_blank">AlphaEvolve ↗</a>
+                    <div class="tags"><span class="tag research">Research</span><span class="tag open">Open</span></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Policy & Industry -->
+        <section class="section">
+            <div class="card-title">
+                <span class="title-cn">政策与产业</span>
+                <span class="title-en">Policy & Industry</span>
+            </div>
+
+            <article class="card policy">
+                <div class="news-title-cn">日本内阁府专家组通过生成式 AI 训练数据透明化原则草案</div>
+                <div class="news-title-en">Japan Cabinet Office panel approves draft Principle Code for generative AI training-data transparency</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>日本内阁府 AI 知识产权专家小组于 8 月 18 日原则上通过一份“原则规范（Principle Code）”草案，要求生成式 AI 开发者公开披露训练数据的类型、收集方式、模型架构设计及知识产权保护措施。该草案不具有法律约束力，采用“遵守或解释”的软法路径，旨在平衡创作者权益与技术创新。</p>
+                        <p>草案鼓励企业避免从盗版或侵权网站抓取数据，并在无法披露特定信息时说明理由。日本官方称，此举参考了欧盟《AI 法案》与美国加州 2026 年训练数据披露法，但选择不设置罚款，以免抑制研发。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>On August 18, a Cabinet Office expert panel in Japan broadly approved a draft Principle Code urging generative-AI developers to disclose training-data types, collection methods, model architecture, and IP safeguards. The code is voluntary and uses a “comply or explain” soft-law approach intended to balance creators’ rights with technological innovation.</p>
+                        <p>The draft encourages companies to avoid scraping from pirate or infringing sites and to explain why specific items cannot be disclosed. Officials cited the EU AI Act and California’s 2026 training-data disclosure law as references, but chose not to impose fines in order to avoid stifling R&D.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">日本选择软法而非欧盟式硬监管，为 AI 训练数据透明度提供了另一条路径。它可能成为全球标准分化的又一案例：欧盟重罚、美国州法、亚洲自愿规范，企业在不同市场将面临多重披露义务。</div>
+                    <div class="why-en">Japan’s soft-law approach offers an alternative to the EU’s hard penalties for training-data transparency. It is another example of global standard divergence: EU fines, U.S. state laws, and Asian voluntary codes, creating overlapping disclosure obligations for global providers.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://www.nippon.com/en/news/yjj2026081800841/" target="_blank">Nippon.com 报道 ↗</a>
+                    <div class="tags"><span class="tag policy">Policy</span><span class="tag us">JP</span></div>
+                </div>
+            </article>
+
+            <article class="card policy us">
+                <div class="news-title-cn">MIT TR / 普林斯顿“影子评估”：AI 智能体尚不能独立完成顶级会议级研究</div>
+                <div class="news-title-en">MIT TR / Princeton shadow evaluation: AI agents still cannot conduct top-conference-quality open-ended research</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>《麻省理工科技评论》8 月 18 日报道普林斯顿 Sayash Kapoor 与 Peter Kirgis 团队的“影子评估”研究。研究人员让 Claude Opus 4.8 在 6 天时间、3000 美元 API 额度、GPU 预算、虚拟机和开放网络访问的条件下，复现两篇尚未公开的 NeurIPS 2026 投稿论文的研究问题。原论文作者以会议审稿标准评审后，两篇 AI 生成的论文均被拒。</p>
+                        <p>智能体在工程层面表现合格：完成文献综述、数百次实验并整理结果；但在真正需要原创判断的研究环节表现不佳，表现为过快锁定死胡同、无法根本性回溯、难以吸收反馈。Anthropic 联创 Jack Clark 称这是“短期递归自我改进时间线的看跌信号”。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>MIT Technology Review reported on August 18 about a Princeton shadow-evaluation study by Sayash Kapoor and Peter Kirgis. They gave Claude Opus 4.8 six days, $3,000 in API credits, GPU budget, virtual computers, and open web access to reproduce research questions from two unpublished NeurIPS 2026 submissions. The original authors reviewed the outputs as conference submissions and rejected both AI-generated papers.</p>
+                        <p>The agents were competent on engineering tasks—literature review, hundreds of experiments, result compilation—but poor at open-ended research: they locked into dead ends too quickly, could not fundamentally backtrack, and struggled to incorporate feedback. Anthropic co-founder Jack Clark called it “a bearish signal on short recursive self-improvement timelines.”</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">该研究为“递归自我改进即将到来”的叙事提供了直接反证。它同时说明，评估开放研究能力需要新的方法论，而当前 AI 在工程执行与原创判断之间存在明显断层。</div>
+                    <div class="why-en">The study provides direct evidence against the narrative that recursive self-improvement is imminent. It also shows that evaluating open-ended research requires new methods, and that a clear gap remains between AI engineering execution and original scientific judgment.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://www.technologyreview.com/2026/08/18/1142188/ai-recursive-self-improvement" target="_blank">MIT Technology Review ↗</a>
+                    <div class="tags"><span class="tag policy">Policy</span><span class="tag research">Research</span><span class="tag us">US</span></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Open Source Ecosystem -->
+        <section class="section">
+            <div class="card-title">
+                <span class="title-cn">开源生态</span>
+                <span class="title-en">Open Source Ecosystem</span>
+            </div>
+
+            <article class="card open">
+                <div class="news-title-cn">Hugging Face 发布《2026 夏季开源模型观察》：中国实验室主导前沿开放权重</div>
+                <div class="news-title-en">Hugging Face State of Open Models: Summer 2026 — Chinese labs dominate frontier open weights</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>Hugging Face 发布半年度开源模型观察报告，覆盖 2026 年 1 月至 8 月。数据显示 Hugging Face Hub 公开模型仓库从 243 万增至 296 万，数据集从 71.1 万增至 100 万。关键发现：2026 年几乎每个月最大、最强的开放模型均来自中国实验室，月参数量天花板在 754B 至 2.78T 之间；美国实验室自有开放模型多数低于 130B。</p>
+                        <p>报告还指出，AMD 与 NVIDIA 是今年发布新开源模型仓库最多的组织（各 200+），将开放模型视为芯片销售渠道；Qwen 已成为社区衍生模型最多的基座，衍生仓库超过 Meta 的 2.6 倍。同时，HF 披露 7 月遭遇首例自主 Agent 持续性入侵事件，最终由量化版 GLM-5.2 在本地完成攻击代码分析。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>Hugging Face’s biannual report covers January–August 2026. Public model repositories on the Hub grew from 2.43M to 2.96M and datasets from 711K to 1M. A key finding: in almost every month of 2026, the largest and most capable open model came from a Chinese lab, with monthly parameter ceilings between 754B and 2.78T, while U.S. labs’ own open releases mostly stayed below 130B.</p>
+                        <p>The report also notes that AMD and NVIDIA are the top publishers of new open-model repositories (200+ each), treating open weights as a chip-sales channel. Qwen has become the community’s dominant base model, with more than 2.6× the derivative repositories of Meta. HF also disclosed that a sustained autonomous-agent intrusion in July was analyzed locally using a quantized GLM-5.2.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">这份来自开源平台本身的数据报告确认了中国在开放权重前沿的结构性领先，以及硬件厂商在开源生态中的新角色。它还揭示了 Agent 已成为 Hub 上最大用户群体，开源社区的安全与治理压力随之上升。</div>
+                    <div class="why-en">This data report from the open-source platform itself confirms China’s structural lead in frontier open weights and the emerging role of hardware vendors as open-source publishers. It also reveals that agents have become the largest user class on the Hub, raising security and governance pressure on open-source communities.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://huggingface.co/blog/state-of-open-models-summer-2026" target="_blank">Hugging Face 报告 ↗</a>
+                    <div class="tags"><span class="tag open">Open</span><span class="tag us">US</span><span class="tag cn">CN</span></div>
+                </div>
+            </article>
+
+            <article class="card open cn">
+                <div class="news-title-cn">智谱 GLM-5.3 权重将开源，延续中国“大模型 + 开放权重”双线策略</div>
+                <div class="news-title-en">Zhipu GLM-5.3 weights to be open-sourced, continuing China’s large-model-plus-open-weights dual track</div>
+                <div class="news-body">
+                    <div class="news-cn">
+                        <p>智谱官方表示 GLM-5.3 权重将在约两周后公开，前提是完成安全评估与加固。这与 Qwen3.8-27B、Kimi K3 等中国前沿开放权重形成持续释放节奏，显示出中国头部实验室在 API 变现与开源社区影响力之间的并行策略。</p>
+                    </div>
+                    <div class="news-en">
+                        <p>Zhipu says GLM-5.3 weights will be released in roughly two weeks after safety evaluation and hardening. This follows Qwen3.8-27B, Kimi K3, and other Chinese frontier open-weight releases, showing top Chinese labs pursuing API monetization and open-source community influence in parallel.</p>
+                    </div>
+                </div>
+                <div class="why-matters">
+                    <div class="why-label">Why it matters / 为何重要</div>
+                    <div class="why-cn">GLM-5.3 若如期开源，将进一步巩固中国在开放权重生态中的密度，并对美国 Meta、Mistral 等开放权重阵营形成竞争压力。其网络能力特性也意味着开源安全审核将成为焦点。</div>
+                    <div class="why-en">If GLM-5.3 is open-sourced as planned, it will further consolidate China’s density in open-weight ecosystems and compete with Meta, Mistral, and other U.S./European open-weight strategies. Its cyber-capability profile will make open-source safety review a focal point.</div>
+                </div>
+                <div class="card-footer">
+                    <a class="source-btn" href="https://z.ai/blog/glm-5.3" target="_blank">z.ai 官方博客 ↗</a>
+                    <div class="tags"><span class="tag open">Open</span><span class="tag cn">CN</span></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Whitelist -->
+        <section class="whitelist">
+            <h3>来源白名单 Source Whitelist</h3>
+
+            <div class="whitelist-group">
+                <div class="whitelist-group-title">US 官方</div>
+                <ul>
+                    <li>OpenAI (openai.com/news, /research, /index) 2026-04-05</li>
+                    <li>Anthropic (anthropic.com/news, /research) 2026-04-05</li>
+                    <li>Google DeepMind (deepmind.google/blog) 2026-04-05</li>
+                    <li>Meta Superintelligence Labs (about.fb.com/news) 2026-04-10</li>
+                    <li>AMD Newsroom (amd.com/newsroom) 2026-07-24</li>
+                    <li>Amazon AI (about.amazon.com/ai) 2026-07-29</li>
+                    <li>Microsoft AI (microsoft.com/ai) 2026-08-05</li>
+                </ul>
+            </div>
+
+            <div class="whitelist-group">
+                <div class="whitelist-group-title">CN 官方</div>
+                <ul>
+                    <li>Moonshot/Kimi (moonshot.ai, kimi.com) 2026-04-05</li>
+                    <li>MiniMax (minimaxi.com) 2026-04-05</li>
+                    <li>Zhipu (zhipuai.cn, open.bigmodel.cn) 2026-04-05</li>
+                    <li>Qwen/Alibaba Cloud (qwen.ai/blog) 2026-04-05</li>
+                    <li>DeepSeek (deepseek.com) 2026-04-11</li>
+                    <li>SenseTime SenseNova (sensenova.cn) 2026-07-22</li>
+                    <li><span class="new-source">🆕 Z.ai 官方博客 (z.ai/blog) 2026-08-20</span></li>
+                </ul>
+            </div>
+
+            <div class="whitelist-group">
+                <div class="whitelist-group-title">SG 官方</div>
+                <ul>
+                    <li>A*STAR AI Division (a-star.edu.sg/aiml)</li>
+                    <li>GovTech (tech.gov.sg)</li>
+                    <li>DSAI (smartnation.sg/digital-singapore/ai-sg)</li>
+                    <li>NUS AI Research (nus.edu.sg/computing/ai-research)</li>
+                    <li>MDDI (mddi.gov.sg/newsroom) 2026-04-29</li>
+                    <li>Singtel (singtel.com/about-us/media-centre) 2026-05-01</li>
+                    <li>Singapore Ministry of Home Affairs (mha.gov.sg) 2026-08-19</li>
+                </ul>
+            </div>
+
+            <div class="whitelist-group">
+                <div class="whitelist-group-title">媒体</div>
+                <ul>
+                    <li>Reuters (reuters.com/technology)</li>
+                    <li>MIT Tech Review (technologyreview.com/topic/artificial-intelligence)</li>
+                    <li>Xinhua EN (xinhuanet.com/english)</li>
+                    <li>CNBC (cnbc.com) 2026-04-29</li>
+                    <li>Forbes AI 50 (forbes.com) 2026-04-29</li>
+                    <li>AI Critique (aicritique.org) 2026-05-01</li>
+                    <li>IEEE Spectrum (spectrum.ieee.org) 2026-05-01</li>
+                    <li>AI Flash Report (aiflashreport.com) 2026-05-05</li>
+                    <li>WinBuzzer (winbuzzer.com) 2026-05-05</li>
+                    <li>Kersai (kersai.com) 2026-06-02</li>
+                    <li>AI Release Tracker (aireleasetracker.com) 2026-06-02</li>
+                    <li>Straits Times Tech (straitstimes.com/tech) 2026-06-24</li>
+                    <li>AgenticWire (agenticwire.news) 2026-06-24</li>
+                    <li>explainx.ai 2026-06-30</li>
+                    <li>Legalithm (legalithm.com) 2026-06-30</li>
+                    <li>TechNode (technode.com) 2026-07-08</li>
+                    <li>AI in Asia (aiinasia.com) 2026-07-14</li>
+                    <li>China Daily (chinadaily.com.cn) 2026-07-20</li>
+                    <li>People's Daily (people.com.cn) 2026-07-20</li>
+                    <li><span class="new-source">🆕 Nippon.com (nippon.com) 2026-08-20</span></li>
+                </ul>
+            </div>
+
+            <div class="whitelist-group">
+                <div class="whitelist-group-title">开源 / 研究</div>
+                <ul>
+                    <li>Hugging Face Blog (huggingface.co/blog)</li>
+                    <li>arXiv CS.AI (arxiv.org/list/cs.AI)</li>
+                    <li>OpenBMB (openbmb.org) 2026-04-11</li>
+                    <li>HKUDS (hku-datascience.github.io, hkuds.github.io/DeepTutor) 2026-04-11/12</li>
+                    <li>Marktechpost (marktechpost.com) 2026-05-01</li>
+                    <li>PaddlePaddle on HF (huggingface.co/blog/PaddlePaddle) 2026-06-23</li>
+                    <li>ServiceNow on HF (huggingface.co/blog/ServiceNow) 2026-06-23</li>
+                    <li>DeepReinforce Ornith (deep-reinforce.com) 2026-07-01</li>
+                    <li>GitHub Changelog (github.blog) 2026-07-08</li>
+                    <li>Black Forest Labs (blackforestlabs.ai) 2026-07-29</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>Daily AI Briefing · Generated 2026-08-20 08:48 SGT · kidultop.github.io/investment-reports/</p>
+        </footer>
+    </div>
+</body>
+</html>
