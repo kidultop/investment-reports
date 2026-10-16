@@ -1,0 +1,32 @@
+{
+  "builtin": "schedule",
+  "args": [
+    "CRON_TZ=Asia/Singapore 0 8 * * 1-6",
+    "agentapi",
+    "new-conversation",
+    "--",
+    "生成今日投资早报。\n\n【时间校验 - 必须优先执行】\n在执行任何操作前，先检查当前时间：\n- 早报有效窗口：当日 06:00 ~ 11:00\n- 如果当前时间已超过 11:00（例如 11:30、下午、晚上），说明早报时间窗口已过，请直接输出一行：「早报时间窗口已过（当前 HH:MM），跳过本次生成。」然后停止，不执行任何后续步骤。\n- 只有当前时间在 06:00 ~ 11:00 之间，才继续生成早报。\n\n【正常执行 - 仅在时间校验通过后执行】\n请先读取 /Users/Kidult/.gemini/config/skills/daily-investment-report/SKILL.md 技能说明并严格按步骤执行（中间文件统一保存在 /Users/Kidult/.gemini/antigravity/scratch/investment-reports/ 目录下）：\n1. 运行 python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/fetch_market_data.py --mode morning --output /Users/Kidult/.gemini/antigravity/scratch/investment-reports/market_data_YYYYMMDD.json 抓取行情数据，并核验欧股/亚指 prev_close、2Y美债收益率与大宗商品结算价；\n2. 使用 search_web 搜索隔夜全球重要金融经济新闻（严格遵守国际主流财经媒体与国际通讯社白名单，重点覆盖与16只持仓配置 NVDA/GOOGL/AAPL/MSFT/AMD/SNDK/IBM/JNJ/KO/PG/SPCX/SKHY/IAU/SLV/EWJ/VT 相关的消息），翻译为中英双语写入 /Users/Kidult/.gemini/antigravity/scratch/investment-reports/raw_news_YYYYMMDD_morning.json，并运行 python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/fetch_news.py 评分分类；\n3. 撰写执行摘要、全部16只持仓个股简评与投资建议写入 /Users/Kidult/.gemini/antigravity/scratch/investment-reports/insights_YYYYMMDD.json；\n4. 运行 python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/generate_report.py 生成 HTML 格式早报；\n5. 运行 python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/publish_to_github.py --report /Users/Kidult/.gemini/antigravity/scratch/investment-reports/daily_report_YYYYMMDD_morning.html 自动更新 index.html 并推送到 GitHub Pages (https://kidultop.github.io/investment-reports/)。"
+  ],
+  "restart_policy": "always",
+  "display_name": "Daily Investment Morning Brief",
+  "description": "周一至周六每日 08:00 (Asia/Singapore) 自动抓取全球行情与国际权威财经新闻，生成每日投资早报 HTML 并推送至 GitHub Pages。",
+  "agent_permissions": {
+    "workspace_uris": [
+      "file:///Users/Kidult/investment-reports",
+      "file:///Users/Kidult/.gemini/antigravity/scratch/investment-reports"
+    ],
+    "access_grants": [
+      "read_file(/Users/Kidult/.gemini/config/skills/daily-investment-report)",
+      "read_file(/Users/Kidult/investment-reports)",
+      "write_file(/Users/Kidult/investment-reports)",
+      "read_file(/Users/Kidult/.gemini/antigravity/scratch/investment-reports)",
+      "write_file(/Users/Kidult/.gemini/antigravity/scratch/investment-reports)",
+      "command(python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/fetch_market_data.py)",
+      "command(python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/fetch_news.py)",
+      "command(python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/generate_report.py)",
+      "command(python3 /Users/Kidult/.gemini/config/skills/daily-investment-report/scripts/publish_to_github.py)",
+      "command(/opt/homebrew/bin/gh)",
+      "command(git)"
+    ]
+  }
+}
