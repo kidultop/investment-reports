@@ -3,7 +3,12 @@ name: Daily Investment Morning Brief
 on:
   schedule:
     # 00:00 UTC = 08:15 SGT (UTC+8), 每周一至周六自动运行
+    # 第一梯队：00:15 UTC = 08:15 SGT，避开整点大拥堵
     - cron: '15 0 * * 1-6'
+    # 第二梯队（兜底重试）：00:45 UTC = 08:45 SGT
+    - cron: '45 0 * * 1-6'
+    # 第三梯队（二次重试）：01:15 UTC = 09:15 SGT
+    - cron: '15 1 * * 1-6'
   workflow_dispatch: # 支持在 GitHub 网页端或手机 GitHub App 上随时点击一键手动触发
 
 permissions:
