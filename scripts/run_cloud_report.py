@@ -39,6 +39,17 @@ def check_run_window():
     print(f"🚀 开始执行投资早报自动化流水线 - 日期: {now_sgt.strftime('%Y-%m-%d %H:%M:%S')} SGT")
 
 
+def check_already_generated(report_file: Path, force: bool = False):
+    """防重复检查：若当日早报已经成功生成并存在，自动静默退出，防止多梯队重复生成与提交"""
+    if force:
+        print("⚡ 检测到 --force 参数，强制重新生成今日早报。")
+        return
+    if report_file.exists() and report_file.stat().st_size > 5000:
+        print(f"✅ 今日早报 ({report_file.name}) 已经存在且内容完整（大小: {report_file.stat().st_size} 字节）。")
+        print("🛡️ 防重复机制生效：跳过本次运行，无需重复生成与提交！")
+        sys.exit(0)
+
+
 def run_cmd(cmd, cwd=None):
     import subprocess
     print(f"▶️ 执行: {cmd}")
@@ -296,14 +307,14 @@ def generate_fallback_insights(portfolio_data, us_data):
 
 
 def main():
-    check_run_window()
-    
-    market_file = TEMP_DIR / f"market_data_{date_str}.json"
-    raw_news_file = TEMP_DIR / f"raw_news_{date_str}_morning.json"
-    news_file = TEMP_DIR / f"news_data_{date_str}_morning.json"
-    insights_file = TEMP_DIR / f"insights_{date_str}.json"
+    force = "--force" in sys.argv
     report_html_name = f"daily_report_{date_str}_morning.html"
     output_html_file = REPO_ROOT / report_html_name
+    
+    check_run_window()
+    check_already_generated(output_html_file, force)
+    
+    market_file = TEMP_DIR / f"market_data_{date_str}.json"
     
     # 1. 抓取行情数据
     fetch_market_data(market_file)
