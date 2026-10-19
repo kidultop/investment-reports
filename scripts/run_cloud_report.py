@@ -315,9 +315,15 @@ def main():
     check_already_generated(output_html_file, force)
     
     market_file = TEMP_DIR / f"market_data_{date_str}.json"
+    raw_news_file = TEMP_DIR / f"raw_news_{date_str}_morning.json"
+    news_file = TEMP_DIR / f"news_data_{date_str}_morning.json"
+    insights_file = TEMP_DIR / f"insights_{date_str}.json"
     
     # 1. 抓取行情数据
-    fetch_market_data(market_file)
+    if not market_file.exists() or force:
+        fetch_market_data(market_file)
+    else:
+        print(f"ℹ️ 行情数据已存在: {market_file}")
     
     # 2. 生成新闻与见解
     generate_news_and_insights(market_file, raw_news_file, insights_file)
