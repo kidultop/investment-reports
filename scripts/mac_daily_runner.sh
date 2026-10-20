@@ -21,8 +21,17 @@ echo "========================================================================"
 echo "⏰ [$(date '+%Y-%m-%d %H:%M:%S')] 启动 macOS 本地早报自动调度任务"
 echo "========================================================================"
 
+# 检测并优先使用带有 yfinance 依赖的 Python 环境
+if [ -x "/usr/local/bin/python3.12" ]; then
+    PYTHON_EXEC="/usr/local/bin/python3.12"
+elif command -v python3.12 &>/dev/null; then
+    PYTHON_EXEC="$(command -v python3.12)"
+else
+    PYTHON_EXEC="python3"
+fi
+
 # 执行早报流水线
-python3 scripts/run_cloud_report.py
+$PYTHON_EXEC scripts/run_cloud_report.py
 
 EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then

@@ -63,8 +63,8 @@ def run_cmd(cmd, cwd=None):
 def fetch_market_data(output_file: Path):
     """Step 1: 运行行情抓取脚本"""
     print("\n--- [Step 1] 抓取全球行情与持仓数据 ---")
-    script = SCRIPTS_DIR / "fetch_market_data.py"
-    run_cmd(f"python3 {script} --mode morning --output {output_file}")
+    py_bin = sys.executable
+    run_cmd(f'"{py_bin}" "{script}" --mode morning --output "{output_file}"')
     if not output_file.exists():
         print(f"❌ 行情数据文件未生成: {output_file}")
         sys.exit(1)
@@ -328,15 +328,16 @@ def main():
     # 2. 生成新闻与见解
     generate_news_and_insights(market_file, raw_news_file, insights_file)
     
+    py_bin = sys.executable
     # 3. 运行评分分类脚本清洗新闻
     print("\n--- [Step 3] 校验与分类新闻 ---")
     script_news = SCRIPTS_DIR / "fetch_news.py"
-    run_cmd(f"python3 {script_news} --input {raw_news_file} --output {news_file}")
+    run_cmd(f'"{py_bin}" "{script_news}" --input "{raw_news_file}" --output "{news_file}"')
     
     # 4. 生成 HTML 报告
     print("\n--- [Step 4] 渲染 HTML 双语报告 ---")
     script_gen = SCRIPTS_DIR / "generate_report.py"
-    run_cmd(f"python3 {script_gen} --data {market_file} --news {news_file} --insights {insights_file} --output {output_html_file} --mode morning")
+    run_cmd(f'"{py_bin}" "{script_gen}" --data "{market_file}" --news "{news_file}" --insights "{insights_file}" --output "{output_html_file}" --mode morning')
     if not output_html_file.exists():
         print(f"❌ HTML 报告未生成: {output_html_file}")
         sys.exit(1)
