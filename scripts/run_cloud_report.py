@@ -233,10 +233,12 @@ def fetch_rss_fallback():
     news_items = []
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
     
+    import ssl
+    ctx = ssl._create_unverified_context()
     for url, source in feeds:
         try:
             req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            with urllib.request.urlopen(req, timeout=15, context=ctx) as resp:
                 tree = ET.fromstring(resp.read())
                 for item in tree.findall(".//item")[:4]:
                     title = item.findtext("title", "").strip()
