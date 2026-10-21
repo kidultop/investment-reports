@@ -61,8 +61,7 @@ def run_cmd(cmd, cwd=None):
 
 
 def fetch_market_data(output_file: Path):
-    """Step 1: 运行行情抓取脚本"""
-    print("\n--- [Step 1] 抓取全球行情与持仓数据 ---")
+    script = SCRIPTS_DIR / "fetch_market_data.py"
     py_bin = sys.executable
     run_cmd(f'"{py_bin}" "{script}" --mode morning --output "{output_file}"')
     if not output_file.exists():
