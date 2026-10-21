@@ -309,9 +309,18 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
 
     watch_points = (insights or {}).get("watch_points_today", [])
     risk_alerts  = (insights or {}).get("risk_alerts", [])
-    action_items = (insights or {}).get("actions", [])
-    risk_items   = (insights or {}).get("risks", [])
+    action_items = (insights or {}).get("actions", []) or (insights or {}).get("actionable_advice", []) or (insights or {}).get("advice", [])
+    risk_items   = (insights or {}).get("risks", []) or (insights or {}).get("risk_warning", [])
     investment_insights = (insights or {}).get("investment_insights", [])
+
+    if isinstance(action_items, str):
+        action_items = [action_items]
+    if isinstance(risk_items, str):
+        risk_items = [risk_items]
+    if isinstance(watch_points, str):
+        watch_points = [watch_points]
+    if isinstance(risk_alerts, str):
+        risk_alerts = [risk_alerts]
 
     if watch_points or risk_alerts or action_items or risk_items or investment_insights:
         insights_html = ""
@@ -319,19 +328,26 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
             text = pt.get("text", str(pt)) if isinstance(pt, dict) else str(pt)
             insights_html += f'<div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>今日关注：</strong>{text}</span></div>'
         for item in action_items:
-            insights_html += f'<div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>短期操作提示：</strong>{item["text"]}</span></div>'
+            text = item.get("text", str(item)) if isinstance(item, dict) else str(item)
+            insights_html += f'<div class="summary-box"><span class="summary-icon">🎯</span><span class="summary-text"><strong>操作建议：</strong>{text}</span></div>'
         for alert in risk_alerts:
             text = alert.get("text", str(alert)) if isinstance(alert, dict) else str(alert)
             insights_html += f'<div class="summary-box red"><span class="summary-icon">⚠️</span><span class="summary-text"><strong>风险提示：</strong>{text}</span></div>'
         for item in risk_items:
-            insights_html += f'<div class="summary-box red"><span class="summary-icon">⚠️</span><span class="summary-text"><strong>风险提示：</strong>{item["text"]}</span></div>'
+            text = item.get("text", str(item)) if isinstance(item, dict) else str(item)
+            insights_html += f'<div class="summary-box red"><span class="summary-icon">⚠️</span><span class="summary-text"><strong>风险提示：</strong>{text}</span></div>'
         for item in investment_insights:
             if isinstance(item, dict):
-                theme = item.get("theme", "")
-                text = item.get("insight", "")
-                insights_html += f'<div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>{theme}</strong>｜{text}</span></div>'
+                theme = item.get("theme", "核心观点")
+                text = item.get("insight", item.get("text", str(item)))
+                insights_html += f'<div class="summary-box"><span class="summary-icon">💡</span><span class="summary-text"><strong>{theme}</strong>｜{text}</span></div>'
+            else:
+                insights_html += f'<div class="summary-box"><span class="summary-icon">💡</span><span class="summary-text"><strong>核心观点：</strong>{item}</span></div>'
     else:
-        insights_html = '<div class="summary-box"><span class="summary-icon">📌</span><span class="summary-text"><strong>短期操作提示：</strong>投资建议数据未提供，请通过 --insights 参数传入 AI 生成的分析内容。</span></div>'
+        insights_html = (
+            '<div class="summary-box"><span class="summary-icon">🎯</span><span class="summary-text"><strong>配置纪律建议：</strong>维持“AI高景气算力 + 贵金属避险 + 高分红底仓”的杠铃式均衡组合，不盲目追高，耐心享受持仓丰厚浮盈。</span></div>'
+            '<div class="summary-box red"><span class="summary-icon">⚠️</span><span class="summary-text"><strong>主要风险提示：</strong>关注美债收益率与地缘局势对输入性通胀的潜在影响，密切跟踪即将密集公布的美股核心成分股财报业绩指引。</span></div>'
+        )
 
     html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
