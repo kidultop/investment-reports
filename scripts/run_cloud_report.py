@@ -220,43 +220,43 @@ def generate_news_and_insights(market_data_file: Path, raw_news_file: Path, insi
         with open(raw_news_file, "w", encoding="utf-8") as f:
             json.dump(raw_news, f, ensure_ascii=False, indent=2)
             
-        insights = generate_fallback_insights(portfolio_data, us_data)
+        insights = generate_fallback_insights(mdata)
         with open(insights_file, "w", encoding="utf-8") as f:
             json.dump(insights, f, ensure_ascii=False, indent=2)
         print("✅ 兜底数据与新闻抓取成功！")
 
 
 def fetch_rss_fallback():
-    """备选信源：从国际主流英文 RSS 抓取最新新闻"""
+    """备选信源：从国际主流纯金融 RSS 抓取最新华尔街与全球市场要闻"""
     feeds = [
-        ("https://search.cnbc.com/rs/search/view.html?partnerId=2000&keywords=markets&sort=date", "cnbc.com"),
-        ("https://feeds.bbci.co.uk/news/business/rss.xml", "bbc.com"),
+        ("https://www.cnbc.com/id/10000664/device/rss/rss.html", "cnbc.com"),
+        ("https://feeds.content.dowjones.io/public/rss/mw_topstories", "marketwatch.com"),
     ]
     news_items = []
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
     
     import ssl
     ctx = ssl._create_unverified_context()
     for url, source in feeds:
         try:
             req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req, timeout=15, context=ctx) as resp:
+            with urllib.request.urlopen(req, timeout=12, context=ctx) as resp:
                 tree = ET.fromstring(resp.read())
                 for item in tree.findall(".//item")[:4]:
-                    title = item.findtext("title", "").strip()
-                    link = item.findtext("link", "").strip()
-                    desc = item.findtext("description", "").strip()
-                    pub = item.findtext("pubDate", "")
+                    title = (item.findtext("title") or "").strip()
+                    link = (item.findtext("link") or "").strip()
+                    desc = (item.findtext("description") or "").strip()
+                    desc = re.sub(r'<[^>]+>', '', desc).strip()
                     if title:
                         news_items.append({
                             "title": title,
                             "title_cn": title,
                             "source": source,
-                            "snippet": desc[:200] if desc else title,
-                            "snippet_cn": desc[:200] if desc else title,
-                            "url": link or "https://www.cnbc.com/world/",
+                            "snippet": desc[:250] if desc else title,
+                            "snippet_cn": desc[:250] if desc else title,
+                            "url": link or f"https://www.{source}/",
                             "published_time": now_sgt.strftime("%Y-%m-%d %H:%M"),
-                            "score": 7.5,
+                            "score": 8.8,
                             "category": "macro"
                         })
         except Exception as e:
@@ -297,10 +297,32 @@ HOLDINGS_PROFILE = {
 }
 
 
-def generate_fallback_insights(portfolio_data, us_data):
-    """基于行情数据的稳健分析兜底"""
-    insights_dict = {}
+def generate_fallback_insights(mdata):
+    """基于今日实时抓取的实际行情数据进行 100% 动态分析计算，绝不使用任何静态硬编码数字"""
+    data = (mdata or {}).get("data", {})
+    us_data = data.get("us_indices", [])
+    bonds = data.get("bonds", [])
+    commodities = data.get("commodities_spot", []) or data.get("commodities", [])
+    portfolio_data = data.get("us_stocks", []) + data.get("etf_commodities", [])
+
+    idx_map = {item.get("name"): item for item in us_data}
+    sp500 = idx_map.get("S&P 500", {})
+    nasdaq = idx_map.get("NASDAQ", {})
+    dow = idx_map.get("Dow Jones", {})
+    vix = idx_map.get("VIX", {})
+
+    cmd_map = {item.get("name"): item for item in commodities}
+    brent = cmd_map.get("Brent Crude", {})
+    gold = cmd_map.get("Gold Spot", {})
+    silver = cmd_map.get("Silver Spot", {})
+
+    bond_map = {item.get("name"): item for item in bonds}
+    us10y = bond_map.get("US 10Y Treasury", {})
+
     p_map = {p.get("symbol"): p for p in portfolio_data}
+
+    # 1. 动态持仓分析
+    insights_dict = {}
     for sym, profile in HOLDINGS_PROFILE.items():
         p = p_map.get(sym, {})
         price = p.get("price", 0)
@@ -313,24 +335,66 @@ def generate_fallback_insights(portfolio_data, us_data):
             insights_dict[sym] = f"【{name} · {role}】收报 ${price:.2f} ({sign}{chg:.2f}%)｜{note}"
         else:
             insights_dict[sym] = f"【{name} · {role}】{note}"
-        
+
+    # 2. 动态大盘综述
+    sp_price = sp500.get("price", 0)
+    sp_chg = sp500.get("change_pct", 0)
+    sp_sign = "+" if sp_chg >= 0 else ""
+    nasdaq_price = nasdaq.get("price", 0)
+    nasdaq_chg = nasdaq.get("change_pct", 0)
+    nasdaq_sign = "+" if nasdaq_chg >= 0 else ""
+    dow_price = dow.get("price", 0)
+    dow_chg = dow.get("change_pct", 0)
+    dow_sign = "+" if dow_chg >= 0 else ""
+    vix_val = vix.get("price", 0)
+
+    brent_price = brent.get("price", 0)
+    gold_price = gold.get("price", 0)
+    silver_price = silver.get("price", 0)
+    us10y_yield = us10y.get("price", 0)
+
+    summary = [
+        {
+            "icon": "📈", "level": "green" if sp_chg >= 0 else "red",
+            "text": f"美股隔夜收盘：标普500收报 {sp_price:.2f} ({sp_sign}{sp_chg:.2f}%)，纳指收报 {nasdaq_price:.2f} ({nasdaq_sign}{nasdaq_chg:.2f}%)，道指收报 {dow_price:.2f} ({dow_sign}{dow_chg:.2f}%)，恐慌指数VIX报 {vix_val:.2f}。"
+        },
+        {
+            "icon": "🏛️", "level": "yellow",
+            "text": f"基准美债与宏观流动性：10年期美债收益率收报 {us10y_yield:.3f}%，全球多资产基金密切跟踪利率走势与宏观通胀预期。"
+        },
+        {
+            "icon": "🌍", "level": "red" if brent_price > 90 else "yellow",
+            "text": f"大宗商品与避险资产：现货黄金报 ${gold_price:.2f}/盎司，现货白银报 ${silver_price:.2f}/盎司，布伦特原油报 ${brent_price:.2f}/桶。"
+        }
+    ]
+
+    # 3. 动态寻找今日领涨和领跌标的
+    valid_p = [p for p in portfolio_data if p.get("symbol") in HOLDINGS_PROFILE and p.get("price")]
+    valid_p.sort(key=lambda x: x.get("change_pct", 0), reverse=True)
+    top_gainers = [f"{p['symbol']} (+{p['change_pct']:.2f}%)" for p in valid_p if p.get("change_pct", 0) > 0][:3]
+    top_losers = [f"{p['symbol']} ({p['change_pct']:.2f}%)" for p in valid_p if p.get("change_pct", 0) < 0][-2:]
+
+    gain_str = "、".join(top_gainers) if top_gainers else "核心资产"
+    lose_str = "、".join(top_losers) if top_losers else "部分蓝筹"
+
+    actions = [
+        {"text": f"【AI算力与成长仓位（NVDA/AMD/SNDK/SKHY）】：今日表现突出者包括 {gain_str}。建议保持战略核心多头底仓，切勿因短期快速拉升而盲目恐高离场，让利润充分奔跑。"},
+        {"text": f"【科技巨头与企业云（MSFT/GOOGL/AAPL）】：端侧AI与企业工作负载稳步放量，短期如有温和技术修整均属健康消化，继续享受跨周期复利。"},
+        {"text": f"【高股息价值防御（IBM/JNJ/PG/KO）】：成熟高分红与现金流标的为组合筑起防守堡垒，持续平抑风格切换时的组合净值回撤。"},
+        {"text": f"【贵金属与抗通胀（IAU/SLV）】：现货黄金 ${gold_price:.2f} 与白银 ${silver_price:.2f} 维持高位中枢，去美元化储备长线逻辑未变，坚定持有。"},
+        {"text": "【流动性套利管理（SPCX）】：SPCX 作为高流动性现金对冲工具保持利差收益，全组合‘高成长+高分红+贵金属’杠铃配置坚实稳定。"}
+    ]
+
+    risks = [
+        {"text": f"【能源通胀溢价】：布伦特原油收报 ${brent_price:.2f}/桶，地缘航道通行安全风险与库存去化对输入性通胀构成扰动。"},
+        {"text": f"【美债利率波动】：10年期美债收益率收报 {us10y_yield:.3f}%，关注即将密集披露的核心科技成分股资本开支与业绩指引。"}
+    ]
+
     return {
-        "summary": [
-            {"icon": "📈", "level": "green", "text": "全球主要市场平稳交投，资金按既定配置纪律在科技龙头与防御标的间保持均衡分布。"},
-            {"icon": "⚠️", "level": "yellow", "text": "宏观利率与通胀数据预期维持稳定，基准美债收益率窄幅整理。"},
-            {"icon": "🌍", "level": "red", "text": "地缘局势与原油高位运行，白银突破58美元、黄金在4140美元展现极强对冲功能。"}
-        ],
+        "summary": summary,
         "portfolio_insights": insights_dict,
-        "actions": [
-            {"text": "【AI芯片与存储】维持 NVDA/AMD/SNDK/SKHY 核心仓位不动，高位不盲目追高，耐心享受持仓浮盈。"},
-            {"text": "【科技巨头生态】继续持有 MSFT/GOOGL/AAPL 底仓，享受企业云与端侧AI落地的长期复利。"},
-            {"text": "【高股息防御标的】IBM、强生JNJ、宝洁PG逆势爆发创阶段新高，有效熨平市场波动，维持底仓压舱石定位。"},
-            {"text": "【贵金属对冲仓位】现货白银大涨突破 58 美元（SLV +1.13%），工业刚需叠加避险属性弹性突出，坚定持有。"}
-        ],
-        "risks": [
-            {"text": "【利率再定价风险】10年期美债收益率在 5.12% 高位徘徊对高估值成长股的阶段性估值挤压。"},
-            {"text": "【地缘与通胀传导】中东霍尔木兹海运风险对国际原油（布伦特 $109.45）及输入性通胀的潜在催化。"}
-        ]
+        "actions": actions,
+        "risks": risks
     }
 
 

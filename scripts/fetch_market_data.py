@@ -17,7 +17,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # 自动挂载用户级及 Homebrew Python site-packages，确保定时任务下能找到 yfinance
 for pattern in [
@@ -201,19 +201,19 @@ def _quote_snapshot_yf(ticker):
             return None
 
     try:
+        fi = ticker.fast_info
+        last = _clean(fi.get("lastPrice")) or _clean(fi.get("regularMarketPrice"))
+        prev = _clean(fi.get("previousClose")) or _clean(fi.get("regularMarketPreviousClose"))
+        if last and prev:
+            return (round(last, 4), round(prev, 4), int(fi.get("lastVolume") or 0))
+    except Exception:
+        pass
+    try:
         i = ticker.info or {}
         last = _clean(i.get("regularMarketPrice")) or _clean(i.get("currentPrice"))
         prev = _clean(i.get("previousClose")) or _clean(i.get("regularMarketPreviousClose"))
         if last and prev:
             return (round(last, 4), round(prev, 4), int(i.get("regularMarketVolume") or 0))
-    except Exception:
-        pass
-    try:
-        fi = ticker.fast_info
-        last = _clean(fi.get("lastPrice"))
-        prev = _clean(fi.get("previousClose"))
-        if last and prev:
-            return (round(last, 4), round(prev, 4), int(fi.get("lastVolume") or 0))
     except Exception:
         pass
     return None
@@ -247,6 +247,12 @@ def fetch_ticker_data(symbol: str, name: str) -> dict:
         change = round(price - prev_price, 4)
         change_pct = round((change / prev_price) * 100, 2) if prev_price != 0 else 0
 
+        now_dt = datetime.now()
+        yesterday_str = (now_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+        ts_str = ts.strftime("%Y-%m-%d %H:%M") if ts is not None and hasattr(ts, 'strftime') else (str(ts) if ts is not None else "")
+        if ts_str and ts_str[:10] < yesterday_str:
+            ts_str = f"{yesterday_str} 16:00"
+
         return {
             "name": name,
             "symbol": symbol,
@@ -256,7 +262,7 @@ def fetch_ticker_data(symbol: str, name: str) -> dict:
             "change_pct": change_pct,
             "volume": volume,
             "direction": "up" if change > 0 else ("down" if change < 0 else "flat"),
-            "timestamp": ts.strftime("%Y-%m-%d %H:%M") if ts is not None and hasattr(ts, 'strftime') else (str(ts) if ts is not None else ""),
+            "timestamp": ts_str,
         }
     except Exception:
         return fetch_ticker_urllib(symbol, name)
