@@ -246,11 +246,11 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
                 domain = source.replace('www.', '').split('/')[0] if source and '/' in source else (source or '─')
 
                 title_html = '<div class="news-title">' + title + '</div>' if title else ''
-                if title_cn:
+                if title_cn and _has_cjk(title_cn):
                     title_html += '<div class="news-title-cn">' + title_cn + '</div>'
 
                 snippet_html = '<div class="news-snippet">' + snippet + '</div>' if snippet else ''
-                if snippet_cn:
+                if snippet_cn and _has_cjk(snippet_cn):
                     snippet_html += '<div class="news-snippet-cn">' + snippet_cn + '</div>'
 
                 news_html += '<div class="news-item"><div class="news-meta"><span class="news-domain">' + domain + '</span><span class="news-score ' + score_class + '" title="权威评分 Authority Score: ' + str(total_score) + '/10">' + score_stars + '</span></div>' + title_html + snippet_html + '</div>'

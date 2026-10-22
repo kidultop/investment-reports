@@ -226,8 +226,30 @@ def generate_news_and_insights(market_data_file: Path, raw_news_file: Path, insi
         print("✅ 兜底数据与新闻抓取成功！")
 
 
+def translate_en_to_cn(text: str) -> str:
+    """自动将英文财经新闻标题或摘要翻译为通顺流畅的中文"""
+    if not text:
+        return ""
+    if any("\u4e00" <= ch <= "\u9fff" for ch in text):
+        return text
+    try:
+        encoded = urllib.parse.quote(text[:300])
+        url = f"https://api.mymemory.translated.net/get?q={encoded}&langpair=en|zh-CN"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        import ssl
+        ctx = ssl._create_unverified_context()
+        with urllib.request.urlopen(req, timeout=8, context=ctx) as r:
+            res = json.loads(r.read().decode("utf-8"))
+            trans = res.get("responseData", {}).get("translatedText", "")
+            if trans and trans != text and not trans.startswith("QUERY LENGTH"):
+                return trans
+    except Exception:
+        pass
+    return text
+
+
 def fetch_rss_fallback():
-    """备选信源：从国际主流纯金融 RSS 抓取最新华尔街与全球市场要闻"""
+    """备选信源：从国际主流纯金融 RSS 抓取最新华尔街与全球市场要闻并提供中英对照"""
     feeds = [
         ("https://www.cnbc.com/id/10000664/device/rss/rss.html", "cnbc.com"),
         ("https://feeds.content.dowjones.io/public/rss/mw_topstories", "marketwatch.com"),
@@ -248,12 +270,14 @@ def fetch_rss_fallback():
                     desc = (item.findtext("description") or "").strip()
                     desc = re.sub(r'<[^>]+>', '', desc).strip()
                     if title:
+                        t_cn = translate_en_to_cn(title)
+                        s_cn = translate_en_to_cn(desc[:250] if desc else title)
                         news_items.append({
                             "title": title,
-                            "title_cn": title,
+                            "title_cn": t_cn,
                             "source": source,
                             "snippet": desc[:250] if desc else title,
-                            "snippet_cn": desc[:250] if desc else title,
+                            "snippet_cn": s_cn,
                             "url": link or f"https://www.{source}/",
                             "published_time": now_sgt.strftime("%Y-%m-%d %H:%M"),
                             "score": 8.8,
