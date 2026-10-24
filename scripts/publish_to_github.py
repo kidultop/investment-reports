@@ -25,7 +25,13 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-REPO_DIR = Path(__file__).resolve().parent.parent
+_CANDIDATE_ROOT = Path(__file__).resolve().parent.parent
+if (_CANDIDATE_ROOT / ".git").exists() or (_CANDIDATE_ROOT / "index.html").exists():
+    REPO_DIR = _CANDIDATE_ROOT
+elif os.environ.get("GITHUB_WORKSPACE"):
+    REPO_DIR = Path(os.environ["GITHUB_WORKSPACE"])
+else:
+    REPO_DIR = Path.home() / "investment-reports"
 INDEX_FILE = REPO_DIR / "index.html"
 GIT_BIN = "git"
 GH_BIN = "/opt/homebrew/bin/gh"

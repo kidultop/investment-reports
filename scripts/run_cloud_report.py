@@ -19,7 +19,13 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+_CANDIDATE_ROOT = Path(__file__).resolve().parent.parent
+if (_CANDIDATE_ROOT / ".git").exists() or (_CANDIDATE_ROOT / "index.html").exists():
+    REPO_ROOT = _CANDIDATE_ROOT
+elif os.environ.get("GITHUB_WORKSPACE"):
+    REPO_ROOT = Path(os.environ["GITHUB_WORKSPACE"])
+else:
+    REPO_ROOT = Path.home() / "investment-reports"
 SCRIPTS_DIR = Path(__file__).resolve().parent
 TEMP_DIR = Path("/tmp/cloud_report_workspace")
 TEMP_DIR.mkdir(parents=True, exist_ok=True)
