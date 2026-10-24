@@ -124,14 +124,72 @@ SG_FUNDS = [
 ]
 
 
+def _compute_history_metrics(closes: list, highs: list, lows: list, price: float, change_pct: float) -> dict:
+    """基于过去 20 个交易日（1个月）的历史收盘/高低点序列，计算多周期趋势指标"""
+    hist_closes = list(closes) if closes else [price]
+    if abs(hist_closes[-1] - price) > max(0.001 * price, 0.01):
+        hist_closes.append(price)
+
+    n = len(hist_closes)
+    p_5d_ago = hist_closes[-6] if n >= 6 else hist_closes[0]
+    p_20d_ago = hist_closes[-21] if n >= 21 else hist_closes[0]
+
+    chg_5d = round((price - p_5d_ago) / p_5d_ago * 100, 2) if p_5d_ago else 0.0
+    chg_20d = round((price - p_20d_ago) / p_20d_ago * 100, 2) if p_20d_ago else 0.0
+
+    recent_5 = hist_closes[-5:]
+    recent_20 = hist_closes[-20:]
+    ma5 = round(sum(recent_5) / len(recent_5), 4) if recent_5 else price
+    ma20 = round(sum(recent_20) / len(recent_20), 4) if recent_20 else price
+
+    high_candidates = [price] + recent_20 + (highs[-20:] if highs else [])
+    low_candidates = [price] + recent_20 + (lows[-20:] if lows else [])
+    high_20d = round(max(high_candidates), 4)
+    low_20d = round(min(low_candidates), 4)
+    drawdown_20d_pct = round((price - high_20d) / high_20d * 100, 2) if high_20d > 0 else 0.0
+
+    up_days_5d = 0
+    if n >= 2:
+        window = hist_closes[-6:] if n >= 6 else hist_closes
+        for i in range(1, len(window)):
+            if window[i] > window[i - 1]:
+                up_days_5d += 1
+
+    # 多周期量价趋势判定（避免仅看单日涨跌）
+    if change_pct > 0.3 and (chg_5d <= -2.0 or drawdown_20d_pct <= -5.0):
+        trend_regime = "超跌反弹"
+    elif change_pct < -0.3 and chg_5d <= -2.0:
+        trend_regime = "连续回调"
+    elif chg_5d <= -1.5 and price < ma5:
+        trend_regime = "阶段走弱"
+    elif price < ma20 and drawdown_20d_pct <= -5.0:
+        trend_regime = "弱势整理"
+    elif chg_5d >= 1.5 and price >= ma20 and drawdown_20d_pct >= -3.0:
+        trend_regime = "多头强势"
+    else:
+        trend_regime = "区间震荡"
+
+    return {
+        "change_5d_pct": chg_5d,
+        "change_20d_pct": chg_20d,
+        "ma5": ma5,
+        "ma20": ma20,
+        "high_20d": high_20d,
+        "low_20d": low_20d,
+        "drawdown_20d_pct": drawdown_20d_pct,
+        "up_days_5d": up_days_5d,
+        "trend_regime": trend_regime,
+    }
+
+
 def fetch_ticker_urllib(symbol: str, name: str) -> dict:
-    """使用标准库 urllib 从 Yahoo Finance v8 API 获取单标的行情（带 query1/query2 轮询与退避防 429）"""
+    """使用标准库 urllib 从 Yahoo Finance v8 API 获取单标的行情（1个月历史 + 实时报价）"""
     encoded = urllib.parse.quote(symbol)
     hosts = ["query1.finance.yahoo.com", "query2.finance.yahoo.com"]
     last_err = ""
     for attempt in range(3):
         host = hosts[attempt % 2]
-        url = f"https://{host}/v8/finance/chart/{encoded}?interval=1d&range=5d"
+        url = f"https://{host}/v8/finance/chart/{encoded}?interval=1d&range=1mo"
         req = urllib.request.Request(
             url,
             headers={
@@ -150,6 +208,8 @@ def fetch_ticker_urllib(symbol: str, name: str) -> dict:
             meta = result.get("meta", {})
             indicators = result.get("indicators", {}).get("quote", [{}])[0]
             closes = [round(float(c), 4) for c in (indicators.get("close") or []) if c is not None]
+            highs = [round(float(h), 4) for h in (indicators.get("high") or []) if h is not None]
+            lows = [round(float(l), 4) for l in (indicators.get("low") or []) if l is not None]
             volumes = [int(v) for v in (indicators.get("volume") or []) if v is not None]
 
             price = meta.get("regularMarketPrice")
@@ -174,6 +234,7 @@ def fetch_ticker_urllib(symbol: str, name: str) -> dict:
             change_pct = round((change / prev_price) * 100, 2) if prev_price != 0 else 0.0
             ts = meta.get("regularMarketTime")
             ts_str = datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M") if ts else ""
+            hist_metrics = _compute_history_metrics(closes, highs, lows, price, change_pct)
 
             return {
                 "name": name,
@@ -185,6 +246,7 @@ def fetch_ticker_urllib(symbol: str, name: str) -> dict:
                 "volume": volume,
                 "direction": "up" if change > 0 else ("down" if change < 0 else "flat"),
                 "timestamp": ts_str,
+                **hist_metrics,
             }
         except Exception as e:
             last_err = str(e)
@@ -224,11 +286,15 @@ def fetch_ticker_data(symbol: str, name: str) -> dict:
         return fetch_ticker_urllib(symbol, name)
     try:
         ticker = yf.Ticker(symbol)
-        hist = ticker.history(period="5d")
+        hist = ticker.history(period="1mo")
         hist = hist.dropna(subset=["Close"]) if not hist.empty else hist
 
         latest = hist.iloc[-1] if not hist.empty else None
         prev = hist.iloc[-2] if len(hist) >= 2 else (hist.iloc[-1] if not hist.empty else None)
+
+        closes = [round(float(v), 4) for v in hist["Close"].tolist()] if not hist.empty else []
+        highs = [round(float(v), 4) for v in hist["High"].dropna().tolist()] if not hist.empty and "High" in hist else []
+        lows = [round(float(v), 4) for v in hist["Low"].dropna().tolist()] if not hist.empty and "Low" in hist else []
 
         h_last = round(float(latest["Close"]), 4) if latest is not None else None
         h_prev = round(float(prev["Close"]), 4) if prev is not None else None
@@ -246,6 +312,7 @@ def fetch_ticker_data(symbol: str, name: str) -> dict:
 
         change = round(price - prev_price, 4)
         change_pct = round((change / prev_price) * 100, 2) if prev_price != 0 else 0
+        hist_metrics = _compute_history_metrics(closes, highs, lows, price, change_pct)
 
         now_dt = datetime.now()
         yesterday_str = (now_dt - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -263,6 +330,7 @@ def fetch_ticker_data(symbol: str, name: str) -> dict:
             "volume": volume,
             "direction": "up" if change > 0 else ("down" if change < 0 else "flat"),
             "timestamp": ts_str,
+            **hist_metrics,
         }
     except Exception:
         return fetch_ticker_urllib(symbol, name)

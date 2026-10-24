@@ -67,6 +67,11 @@ def build_ticker_row(item: dict, show_volume: bool = False, show_cost: bool = Fa
     arw = arrow(item.get("direction", "neutral"))
     vol = f"<td class='volume'>{item.get('volume', 0):,}</td>" if show_volume else ""
 
+    chg_5d = item.get("change_5d_pct")
+    chg_20d = item.get("change_20d_pct")
+    dd_20d = item.get("drawdown_20d_pct")
+    regime = item.get("trend_regime", "")
+
     cost_col = ""
     if show_cost:
         sym = item.get("symbol", "")
@@ -85,13 +90,40 @@ def build_ticker_row(item: dict, show_volume: bool = False, show_cost: bool = Fa
         else:
             cost_col = "<td class='cost-col neutral'>─</td>"
 
+    # 第四列：变动 + 历史多周期趋势（5D / 20D / 回撤）
+    abs_chg_str = f"{item.get('change', 0):+,.2f}"
+    if chg_5d is not None:
+        c5_cls = "up" if chg_5d > 0 else ("down" if chg_5d < 0 else "neutral")
+        c5_str = f"{chg_5d:+.2f}%"
+        if show_volume and chg_20d is not None:
+            c20_cls = "up" if chg_20d > 0 else ("down" if chg_20d < 0 else "neutral")
+            c20_str = f"{chg_20d:+.2f}%"
+            dd_str = f"回撤{dd_20d:.1f}%" if dd_20d is not None and dd_20d < -1.0 else "近高点"
+            regime_html = f" <span style='font-size:11px;padding:1px 5px;border-radius:4px;background:rgba(148,163,184,0.15);color:var(--text);'>{regime}·{dd_str}</span>" if regime else ""
+            fourth_col = (
+                f"<td class='change-abs'>"
+                f"<span class='{cls}'>{abs_chg_str}</span> "
+                f"<span style='font-size:11px;color:var(--text-muted);'>| 5D:</span><span class='{c5_cls}' style='font-size:11px;font-weight:600;'>{c5_str}</span> "
+                f"<span style='font-size:11px;color:var(--text-muted);'>20D:</span><span class='{c20_cls}' style='font-size:11px;'>{c20_str}</span>"
+                f"{regime_html}</td>"
+            )
+        else:
+            fourth_col = (
+                f"<td class='change-abs'>"
+                f"<span class='{cls}'>{abs_chg_str}</span> "
+                f"<span style='font-size:11px;color:var(--text-muted);'>(5D: <span class='{c5_cls}'>{c5_str}</span>)</span>"
+                f"</td>"
+            )
+    else:
+        fourth_col = f"<td class='{cls} change-abs'>{abs_chg_str}</td>"
+
     return f"""
         <tr class="ticker-row">
             <td><span class="symbol">{item['symbol']}</span> <span class="name-label">{item['name']}</span></td>
             <td class="{cls} price">{item.get('price', 'N/A'):,.2f}</td>
             {cost_col}
             <td class="{cls}">{arw} {format_change(item.get('change_pct', 0))}</td>
-            <td class="{cls} change-abs">{item.get('change', 0):+,.2f}</td>
+            {fourth_col}
             {vol}
         </tr>"""
 
@@ -470,14 +502,14 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
         <div class="card">
             <div class="card-title">🇺🇸 美股指数 US Markets {vix_html}</div>
             <table>
-                <thead><tr><th>指数 Index</th><th>收盘价 Close</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <thead><tr><th>指数 Index</th><th>收盘价 Close</th><th>单日 Change%</th><th>变动 / 5日趋势</th></tr></thead>
                 <tbody>{us_index_rows}</tbody>
             </table>
         </div>
         <div class="card">
             <div class="card-title">🇪🇺 欧洲市场 European Markets</div>
             <table>
-                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>单日 Change%</th><th>变动 / 5日趋势</th></tr></thead>
                 <tbody>{europe_rows}</tbody>
             </table>
         </div>
@@ -490,14 +522,14 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
                 <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:8px;">{asia_label}</span>
             </div>
             <table>
-                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>单日 Change%</th><th>变动 / 5日趋势</th></tr></thead>
                 <tbody>{asia_rows}</tbody>
             </table>
         </div>
         <div class="card">
             <div class="card-title">🌏 澳洲 & 中国市场 Australia & China</div>
             <table>
-                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <thead><tr><th>市场 Market</th><th>指数 Index</th><th>单日 Change%</th><th>变动 / 5日趋势</th></tr></thead>
                 <tbody>
                     <tr><td colspan="4" style="color:var(--text-muted);font-size:11px;padding:4px 10px;">🇦🇺 澳洲市场 Australia</td></tr>
                     {australia_rows}
@@ -512,7 +544,7 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
     <div class="card">
         <div class="card-title">📈 持仓个股 Portfolio Stocks</div>
         <table>
-            <thead><tr><th>股票 Stock</th><th>现价 Price(USD)</th><th>成本价 Cost Basis</th><th>涨跌幅 Change%</th><th>变动 Change</th><th>成交量 Volume</th></tr></thead>
+            <thead><tr><th>股票 Stock</th><th>现价 Price(USD)</th><th>成本价 Cost Basis</th><th>单日 1D%</th><th>变动 & 历史趋势 (5D / 20D / 形态)</th><th>成交量 Volume</th></tr></thead>
             <tbody>{stock_rows}</tbody>
         </table>
     </div>
@@ -522,7 +554,7 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
         <div class="card">
         <div class="card-title">🥇 ETF & 贵金属 ETF & Precious Metals</div>
             <table>
-                <thead><tr><th>标的 Ticker</th><th>现价 Price</th><th>成本价 Cost</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <thead><tr><th>标的 Ticker</th><th>现价 Price</th><th>成本价 Cost</th><th>单日 1D%</th><th>变动 / 5日趋势</th></tr></thead>
                 <tbody>{etf_rows}{commodity_rows}</tbody>
             </table>
         </div>
@@ -531,7 +563,7 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
         <div class="card">
             <div class="card-title">💱 汇率 & 债券 FX & Bonds</div>
             <table>
-                <thead><tr><th>指标 Indicator</th><th>数值 Value</th><th>涨跌幅 Change%</th><th>变动 Change</th></tr></thead>
+                <thead><tr><th>指标 Indicator</th><th>数值 Value</th><th>单日 1D%</th><th>变动 / 5日趋势</th></tr></thead>
                 <tbody>{forex_rows}{bond_rows}{spread_html}</tbody>
             </table>
         </div>

@@ -31,7 +31,7 @@ else
 fi
 
 # 执行早报流水线
-$PYTHON_EXEC scripts/run_cloud_report.py
+$PYTHON_EXEC scripts/run_cloud_report.py "$@"
 
 EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then
@@ -39,11 +39,11 @@ if [ $EXIT_CODE -ne 0 ]; then
     exit $EXIT_CODE
 fi
 
-# 检查是否有新报告变更，若有则提交并推送
-git add daily_report_*.html index.html
+# 检查是否有新报告或脚本变更，若有则提交并推送
+git add daily_report_*.html index.html scripts/
 if ! git diff --staged --quiet; then
     echo "📦 检测到新生成的早报，开始自动提交并推送到 GitHub..."
-    git commit -m "report: $(date +'%Y-%m-%d') 早报 Morning [mac-automated]"
+    git commit -m "report: $(date +'%Y-%m-%d') 早报 Morning (多周期历史量化版) [mac-automated]"
     git pull --rebase origin main || true
     git push origin main
     echo "🚀 早报已成功发布并同步到 GitHub Pages！"

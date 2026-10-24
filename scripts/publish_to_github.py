@@ -25,7 +25,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-REPO_DIR = Path.home() / "investment-reports"
+REPO_DIR = Path(__file__).resolve().parent.parent
 INDEX_FILE = REPO_DIR / "index.html"
 GIT_BIN = "git"
 GH_BIN = "/opt/homebrew/bin/gh"
