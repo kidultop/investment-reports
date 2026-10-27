@@ -21,6 +21,16 @@ echo "========================================================================"
 echo "⏰ [$(date '+%Y-%m-%d %H:%M:%S')] 启动 macOS 本地早报自动调度任务"
 echo "========================================================================"
 
+# 自动清理任何异常残留的 rebase 状态
+if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ]; then
+    echo "⚠️ 检测到残留的 rebase 状态，自动清理..."
+    git rebase --abort 2>/dev/null || rm -rf .git/rebase-merge .git/rebase-apply
+fi
+
+# 同步远程最新提交，确保包含云端 GitHub Actions 可能已生成的历史报告
+git fetch origin main 2>/dev/null
+git merge origin/main --no-edit 2>/dev/null || true
+
 # 检测并优先使用带有 yfinance 依赖的 Python 环境
 if [ -x "/usr/local/bin/python3.12" ]; then
     PYTHON_EXEC="/usr/local/bin/python3.12"
@@ -44,8 +54,16 @@ git add daily_report_*.html index.html scripts/
 if ! git diff --staged --quiet; then
     echo "📦 检测到新生成的早报，开始自动提交并推送到 GitHub..."
     git commit -m "report: $(date +'%Y-%m-%d') 早报 Morning (多周期历史量化版) [mac-automated]"
-    git pull --rebase origin main || true
-    git push origin main
+    if ! git push origin main; then
+        echo "⚠️ 推送遇到远端更新，拉取合并并自动解决 index.html 差异..."
+        git fetch origin main
+        git merge origin/main --no-edit -m "merge: sync remote before pushing report" || {
+            $PYTHON_EXEC -c "import sys; sys.path.insert(0, 'scripts'); from publish_to_github import rebuild_index; rebuild_index()"
+            git add index.html
+            git commit --no-edit || true
+        }
+        git push origin main
+    fi
     echo "🚀 早报已成功发布并同步到 GitHub Pages！"
 else
     echo "✨ 当日早报已是最新状态，无需重复提交。"
