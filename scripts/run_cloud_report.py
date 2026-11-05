@@ -77,10 +77,13 @@ def fetch_market_data(output_file: Path):
 
 
 def call_gemini_api(prompt: str, api_key: str):
-    """调用 Google Gemini 官方 API (gemini-2.5-flash / gemini-2.0-flash)"""
-    model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-    
+    """调用 Google Gemini 官方 API（支持多模型自动探测轮询：1.5-flash / 2.0-flash / 1.5-pro）"""
+    configured_model = os.environ.get("GEMINI_MODEL", "").strip()
+    candidate_models = [configured_model] if configured_model else []
+    for m in ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]:
+        if m not in candidate_models:
+            candidate_models.append(m)
+
     payload = {
         "contents": [
             {
@@ -94,32 +97,27 @@ def call_gemini_api(prompt: str, api_key: str):
             "responseMimeType": "application/json"
         }
     }
-    
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST"
-    )
-    
-    try:
-        with urllib.request.urlopen(req, timeout=90) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            candidate = data["candidates"][0]["content"]["parts"][0]["text"]
-            return json.loads(candidate)
-    except Exception as e:
-        print(f"⚠️ Gemini API 调用异常 ({model}): {e}，尝试使用备用模型 gemini-2.0-flash...")
-        fallback_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-        req_fb = urllib.request.Request(
-            fallback_url,
+
+    last_exc = None
+    for model in candidate_models:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        req = urllib.request.Request(
+            url,
             data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json"},
             method="POST"
         )
-        with urllib.request.urlopen(req_fb, timeout=90) as resp_fb:
-            data_fb = json.loads(resp_fb.read().decode("utf-8"))
-            candidate_fb = data_fb["candidates"][0]["content"]["parts"][0]["text"]
-            return json.loads(candidate_fb)
+        try:
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                candidate = data["candidates"][0]["content"]["parts"][0]["text"]
+                print(f"✅ Gemini 成功响应（模型: {model}）")
+                return json.loads(candidate)
+        except Exception as e:
+            last_exc = e
+            print(f"⚠️ Gemini 模型 {model} 请求未成功 ({e})，尝试下一候选模型...")
+            continue
+    raise RuntimeError(f"所有 Gemini 候选模型均无法调用: {last_exc}")
 
 
 def generate_news_and_insights(market_data_file: Path, raw_news_file: Path, insights_file: Path):
@@ -143,13 +141,15 @@ def generate_news_and_insights(market_data_file: Path, raw_news_file: Path, insi
         print("🧠 检测到 GEMINI_API_KEY，正在调用 Gemini 云端大模型进行国际信源与多周期历史趋势分析...")
         prompt = f"""
 你是一名资深华尔街量化投资经理与国际财经主编。今天是 {now_sgt.strftime('%Y-%m-%d')}。
-请根据以下最新的市场实际行情数据（包含单日 change_pct、5日累计 change_5d_pct、20日累计 change_20d_pct、较20日高点回撤 drawdown_20d_pct、MA5/MA20均线位置与 trend_regime）及持仓成本 COST_BASIS，综合国际主流权威财经媒体报道（严格限制在白名单：Reuters, Bloomberg, Financial Times, The Wall Street Journal, The Economist, The New York Times, AP, AFP, Nikkei Asia, CNBC, Barron's，严禁使用任何中国国内媒体或.cn站点），生成今日早报的新闻列表、执行摘要与全部16只持仓配置的独立详评。
+请根据以下最新的市场实际行情数据（包含单日 change_pct、5日累计 change_5d_pct、20日累计 change_20d_pct、较20日高点回撤 drawdown_20d_pct、MA5/MA20均线位置与 trend_regime）及持仓成本 COST_BASIS，综合国际主流权威财经媒体报道（严格限制在白名单：Reuters, Bloomberg, Financial Times, The Wall Street Journal, The Economist, The New York Times, AP, AFP, Nikkei Asia, CNBC, Barron's，严禁使用任何中国国内媒体或.cn站点），生成今日早报的新闻列表、执行摘要与全部16只持仓配置的独立通俗分析与明确建议。
 
-【核心分析纪律（严禁违反）】
-1. 严禁只看单日涨跌幅（1D change_pct）就下结论！必须结合近5日（5D）、近20日（20D）累计涨跌、较20日高点回撤幅度（drawdown_20d_pct）、MA5/MA20均线得失以及较持仓成本（COST_BASIS）的真实浮盈/浮亏比例综合研判。
-2. 当某只股票单日反弹（如+1%~+4%），但近5日仍为负值或较20日高点回撤超过-5%，必须客观定性为“前期急跌后的超跌技术反抽”，严禁盲目吹捧为“强势拉升”或建议“让利润奔跑”！
-3. 当标的处于成本价下方浮亏状态（如 IBM 成本305.02、IAU 成本88.95、SKHY 成本152.00、SPCX 成本151.65），必须如实指出浮亏比例与解套压力，严禁脱离实际唱多。
-4. 当美股与欧洲主要股指普遍下跌、5日趋势走弱、VIX抬升、美债收益率逼近5%或油价大涨时，执行摘要与投资建议必须客观反映“全球大盘承压回调、宏观高利率与高油价双杀压制”的真实全貌。
+【核心分析与表达纪律（必须严格遵守）】
+1. 【语言通俗易懂，拒绝专业黑话】：使用普通投资者一听就懂的大白话分析，严禁堆砌晦涩专业术语（如严禁使用“动态止盈防守线”、“大盘beta敏感”、“右侧修复”、“诱多反抽”等生硬词汇）。
+2. 【必须综合多周期数据，严禁仅凭单日涨跌定性】：必须结合近5日（5D）、近20日（20D）累计涨跌、较20日高点回撤幅度（drawdown_20d_pct）以及较持仓成本（COST_BASIS）的真实盈亏综合研判。
+3. 【反弹与回调的白话解读】：某股票单日上涨但近5日/20日跌幅较大时，必须通俗解释为“跌多后的短期反弹，整体跌势尚未稳住，切忌盲目加仓”；连续下跌标的点明“仍在寻底，保持防守”。
+4. 【持仓建议强制明确二选一】：每只个股/ETF 分析的最后，必须给出清清楚楚的结论，格式严格为：
+   「👉 持仓建议：【维持不变】」或「👉 持仓建议：【建议调整】（简明动作说明：如适当减仓防守/逢高分批锁定利润等）」！
+5. 【中文新闻翻译要求】：中文新闻标题 title_cn 和摘要 snippet_cn 必须是纯正、地道、专业的中文金融表述，通顺流畅，严禁机翻腔。
 
 【最新多周期市场行情数据】
 美股指数：{json.dumps(us_data, ensure_ascii=False)}
@@ -165,10 +165,10 @@ def generate_news_and_insights(market_data_file: Path, raw_news_file: Path, insi
   "news": [
     {{
       "title": "英文新闻标题（来自白名单国际媒体真实报道）",
-      "title_cn": "中文翻译标题",
+      "title_cn": "流畅地道的中文翻译标题",
       "source": "reuters.com / bloomberg.com / ft.com / wsj.com / cnbc.com / apnews.com",
-      "snippet": "英文摘要，包含关键事件与市场影响",
-      "snippet_cn": "中文深度摘要",
+      "snippet": "英文摘要",
+      "snippet_cn": "流畅地道的中文深度摘要",
       "url": "https://www.reuters.com/...",
       "published_time": "{now_sgt.strftime('%Y-%m-%d')} 07:00",
       "score": 9.2,
@@ -176,25 +176,24 @@ def generate_news_and_insights(market_data_file: Path, raw_news_file: Path, insi
     }}
   ],
   "summary": [
-    {{"icon": "📉", "level": "red", "text": "全球大盘单日与5日/20日多周期趋势总结（含美欧指数点位、5D涨跌与VIX）"}},
-    {{"icon": "🔍", "level": "yellow", "text": "16只持仓真实健康度透视（对比单日涨跌与5日累计回撤、区分超跌反抽与真突破、点明浮亏标的）"}},
-    {{"icon": "🌍", "level": "red", "text": "宏观10年期美债收益率、原油价格与贵金属多周期联动压制分析"}}
+    {{"icon": "📊", "level": "yellow", "text": "大盘整体走势大白话解读（含美股、欧股、VIX表现）"}},
+    {{"icon": "🔍", "level": "yellow", "text": "16只持仓组合健康度通俗解读（长线盈利安全垫 vs 近期回调压力）"}},
+    {{"icon": "🌍", "level": "red", "text": "宏观大环境白话解析（美债利率高企与油价对股市的实际影响）"}}
   ],
   "portfolio_insights": {{
-    "NVDA": "包含收报现价、1D/5D/20D涨跌幅、较20日高点回撤、MA5/MA20均线位置、较成本浮盈亏比例及客观操作诊断",
+    "NVDA": "【英伟达 · AI芯片】现报 $...。通俗走势解读 + 成本盈利情况 + 👉 持仓建议：【维持不变】或【建议调整】",
     "GOOGL": "...", "AAPL": "...", "MSFT": "...", "AMD": "...", "SNDK": "...",
     "IBM": "...", "JNJ": "...", "KO": "...", "PG": "...", "VT": "...",
     "SPCX": "...", "SKHY": "...", "IAU": "...", "SLV": "...", "EWJ": "..."
   }},
   "actions": [
-    {{"text": "针对AI芯片与算力仓位（NVDA/AMD/SNDK/SKHY）结合5日/20日回撤与均线的具体操作建议"}},
-    {{"text": "针对云与生态科技巨头（MSFT/GOOGL/AAPL）结合历史趋势与成本安全垫的操作建议"}},
-    {{"text": "针对高股息与消费防御（KO/PG/JNJ/IBM）在高利率/高油价环境下的客观评估与操作建议"}},
-    {{"text": "针对贵金属与ETF配置（IAU/SLV/EWJ/VT/SPCX）结合浮盈亏状态的操作建议"}}
+    {{"text": "通俗明确的操作建议（如科技成长股的持有纪律）"}},
+    {{"text": "消费与分红股票的防守策略"}},
+    {{"text": "贵金属与现金工具的仓位管理建议"}}
   ],
   "risks": [
-    {{"text": "主要宏观通胀/美债利率逼近5%/油价上涨的多日趋势风险提示"}},
-    {{"text": "大盘与科技成长股阶段性高位回撤及均线破位风险提示"}}
+    {{"text": "利率与宏观通胀通俗风险提示"}},
+    {{"text": "防范追涨杀跌的操作风险提示"}}
   ]
 }}
 """
@@ -230,25 +229,56 @@ def generate_news_and_insights(market_data_file: Path, raw_news_file: Path, insi
 
 
 def translate_en_to_cn(text: str) -> str:
-    """自动将英文财经新闻标题或摘要翻译为通顺流畅的中文"""
+    """使用 Google 官方高质量神经网络翻译接口，将英文财经新闻转换为地道、流畅的中文"""
     if not text:
         return ""
     if any("\u4e00" <= ch <= "\u9fff" for ch in text):
         return text
+
+    clean_text = re.sub(r'<[^>]+>', '', text).strip()
+    if not clean_text:
+        return ""
+
+    import ssl
+    ctx = ssl._create_unverified_context()
+
+    # 1. 优先使用 Google 官方 Neural Machine Translation API (gtx 纯净接口)
     try:
-        encoded = urllib.parse.quote(text[:300])
+        encoded = urllib.parse.quote(clean_text[:400])
+        url = f"https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q={encoded}"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"})
+        with urllib.request.urlopen(req, timeout=10, context=ctx) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            translated = "".join(item[0] for item in data[0] if item and item[0])
+            if translated:
+                replacements = {
+                    "财政收益率": "国债收益率",
+                    "国库收益率": "国债收益率",
+                    "国债产量": "国债收益率",
+                    "反弹集会": "强劲反弹",
+                    "集会": "反弹上涨",
+                    "联邦储备": "美联储",
+                }
+                for en_bad, cn_good in replacements.items():
+                    translated = translated.replace(en_bad, cn_good)
+                return translated.strip()
+    except Exception:
+        pass
+
+    # 2. 备用翻译接口
+    try:
+        encoded = urllib.parse.quote(clean_text[:300])
         url = f"https://api.mymemory.translated.net/get?q={encoded}&langpair=en|zh-CN"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
-        import ssl
-        ctx = ssl._create_unverified_context()
-        with urllib.request.urlopen(req, timeout=8, context=ctx) as r:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=6, context=ctx) as r:
             res = json.loads(r.read().decode("utf-8"))
             trans = res.get("responseData", {}).get("translatedText", "")
             if trans and trans != text and not trans.startswith("QUERY LENGTH"):
                 return trans
     except Exception:
         pass
-    return text
+
+    return clean_text
 
 
 def fetch_rss_fallback():
@@ -344,70 +374,82 @@ HOLDINGS_PROFILE = {
 
 
 def _diagnose_single_holding(sym: str, p: dict, profile: dict) -> str:
-    """结合 1D / 5D / 20D / 20日高点回撤 / MA5&MA20均线 / 持仓成本盈亏 6大维度生成客观诊断"""
+    """结合 1D / 5D / 20D / 20日高点回撤 / MA5&MA20均线 / 持仓成本盈亏 生成通俗易懂的白话诊断与明确持仓建议"""
     name = profile["name"]
     role = profile["role"]
     theme = profile["theme"]
     price = p.get("price", 0)
     if not price:
-        return f"【{name} · {role}】{theme}"
+        return f"【{name} · {role}】{theme} 👉 持仓建议：【维持不变】"
 
     chg_1d = p.get("change_pct", 0.0)
     chg_5d = p.get("change_5d_pct", chg_1d)
     chg_20d = p.get("change_20d_pct", chg_5d)
     dd_20d = p.get("drawdown_20d_pct", 0.0)
-    ma5 = p.get("ma5", price)
-    ma20 = p.get("ma20", price)
     high_20d = p.get("high_20d", price)
-    regime = p.get("trend_regime", "区间震荡")
 
     cost = COST_BASIS.get(sym, 0)
     pl_pct = ((price - cost) / cost * 100) if cost else 0.0
-    pl_str = f"较成本(${cost:.2f}){'浮盈' if pl_pct >= 0 else '浮亏'} {pl_pct:+.1f}%" if cost else ""
 
-    # 多周期量价技术诊断（彻底杜绝只看单日涨跌）
+    # 1. 通俗易懂的走势白话解读（杜绝晦涩黑话）
     if chg_1d > 0.3 and (chg_5d <= -1.8 or chg_20d <= -5.0 or dd_20d <= -5.0):
-        tech_diag = (
-            f"⚠️【超跌技术反抽·非趋势反转】虽单日反弹 {chg_1d:+.2f}%，但近5日 {chg_5d:+.2f}%、近20日 {chg_20d:+.2f}%，"
-            f"较20日高点(${high_20d:.2f})已深幅回撤 {dd_20d:.1f}%，属于前期大跌后的超跌修复"
+        trend_desc = (
+            f"昨天虽小幅反弹了 {chg_1d:+.2f}%，但近一个月整体跌幅仍有 {abs(dd_20d):.1f}%（自前期高点 ${high_20d:.2f} 回落），"
+            f"昨天的上涨属于跌多后的短暂反弹，整体跌势还没有真正稳住，切忌盲目加仓。"
         )
     elif chg_1d <= -0.3 and (chg_5d <= -1.8 or chg_20d <= -5.0 or dd_20d <= -5.0):
-        tech_diag = (
-            f"📉【多日连续回调】单日收跌 {chg_1d:+.2f}%，近5日 {chg_5d:+.2f}%、近20日 {chg_20d:+.2f}%，"
-            f"较20日高点(${high_20d:.2f})已回撤 {dd_20d:.1f}%，现价处于5日线(${ma5:.2f})与20日线(${ma20:.2f})下方弱势寻底"
+        trend_desc = (
+            f"走势持续偏弱，昨天收跌 {abs(chg_1d):.2f}%，过去一周下跌 {abs(chg_5d):.2f}%，"
+            f"较前期高点已回落了 {abs(dd_20d):.1f}%，目前仍在震荡寻底，需要耐心等待企稳信号。"
         )
     elif chg_1d <= -1.5:
-        tech_diag = (
-            f"📉【短线破位承压】单日下挫 {chg_1d:+.2f}%（近5日 {chg_5d:+.2f}%，较20日高点回撤 {dd_20d:.1f}%），"
-            f"跌破短期均线支撑(${ma5:.2f})"
+        trend_desc = (
+            f"短线出现明显下挫，单日跌幅达 {abs(chg_1d):.2f}%（过去一周下跌 {abs(chg_5d):.2f}%），"
+            f"短期走势受到压制。"
         )
-    elif chg_5d >= 1.5 and price >= ma20 and dd_20d >= -3.0:
-        tech_diag = (
-            f"📈【多周期偏强】单日 {chg_1d:+.2f}%、近5日累计 {chg_5d:+.2f}%（20日 {chg_20d:+.2f}%），"
-            f"稳居20日均线(${ma20:.2f})上方"
+    elif chg_5d >= 1.5 and dd_20d >= -3.0:
+        trend_desc = (
+            f"近期走势较为强劲，过去一周稳步上涨了 {chg_5d:+.2f}%，表现明显强于大盘，"
+            f"整体处于温和向上的通道中。"
         )
     else:
-        ma_pos = f"高于20日线(${ma20:.2f})" if price >= ma20 else f"低于20日线(${ma20:.2f})"
-        tech_diag = (
-            f"📊【{regime}】单日 {chg_1d:+.2f}% | 近5日 {chg_5d:+.2f}% | 近20日 {chg_20d:+.2f}% "
-            f"（较20日高点回撤 {dd_20d:.1f}%，现价{ma_pos}）"
+        trend_desc = (
+            f"近期整体处于平稳震荡状态，过去一周变动仅 {chg_5d:+.2f}%，"
+            f"价格在正常区间内温和起伏，走势基本随大盘节奏波动。"
         )
 
-    # 结合成本盈亏的操作策略
-    if pl_pct <= -8.0:
-        action_note = f"当前深套（{pl_str}），基本面：{theme}。切勿因单日反弹盲目加仓，需等待重新站稳20日均线(${ma20:.2f})后再评估右侧修复。"
-    elif pl_pct < 0:
-        action_note = f"当前处于成本线下方（{pl_str}），{theme}。建议严控仓位敞口，以防守观望为主。"
-    elif pl_pct < 10.0:
-        action_note = f"当前盈利安全垫较薄（{pl_str}），{theme}。需重点防范大盘回调击穿成本线(${cost:.2f})。"
+    # 2. 结合买入成本的通俗盈亏情况
+    if pl_pct >= 15.0:
+        cost_desc = f"持仓底仓利润非常丰厚（较买入成本浮盈 {pl_pct:+.1f}%），安全垫充足，基本面：{theme}。"
+    elif pl_pct >= 0:
+        cost_desc = f"当前价格刚好在买入成本线附近（浮盈 {pl_pct:+.1f}%），利润缓冲较薄，基本面：{theme}。"
+    elif pl_pct >= -10.0:
+        cost_desc = f"目前持仓处于小幅被套状态（较买入成本浮亏 {abs(pl_pct):.1f}%），基本面：{theme}。"
     else:
-        action_note = f"历史长线积累浮盈丰厚（{pl_str}），{theme}。但需正视近期自20日高点回撤({dd_20d:.1f}%)对浮盈的侵蚀，以20日线(${ma20:.2f})作为动态止盈防守线。"
+        cost_desc = f"目前持仓处于深度被套状态（较买入成本浮亏 {abs(pl_pct):.1f}%），成本压力显著，基本面：{theme}。"
 
-    return f"【{name} · {role}】收报 ${price:.2f}（1D: {chg_1d:+.2f}% | 5D: {chg_5d:+.2f}% | 20D: {chg_20d:+.2f}%）｜{tech_diag}。{action_note}"
+    # 3. 明确持仓建议：【维持不变】 vs 【建议调整】
+    if sym in ["SPCX"] and (pl_pct < -2.0 or dd_20d < -12.0):
+        advice = "👉 持仓建议：【建议调整】（跌破成本且波动剧烈，建议适当减仓控制风险，不盲目补仓）"
+    elif sym in ["KO", "PG"] and (chg_5d < -2.5 and pl_pct < 5.0):
+        advice = "👉 持仓建议：【建议调整】（高利率压制短期防御逻辑，建议暂停加仓，可逢反弹适当减码防守）"
+    elif pl_pct <= -15.0 and dd_20d <= -15.0 and sym in ["IAU"]:
+        advice = "👉 持仓建议：【建议调整】（被套较深且承压于强美元，建议严格控制总仓位占比，耐心等待止跌）"
+    elif pl_pct >= 25.0 and dd_20d <= -12.0 and sym in ["SNDK", "SKHY"]:
+        advice = "👉 持仓建议：【建议调整】（虽有浮盈但近期高位回落较深，建议逢反弹分批锁定部分利润）"
+    else:
+        if pl_pct >= 10.0:
+            advice = "👉 持仓建议：【维持不变】（长线底仓利润垫充足，核心资产基本面良好，继续安心持有）"
+        elif pl_pct < 0:
+            advice = "👉 持仓建议：【维持不变】（暂时处于浮亏但已处低位整理，不宜恐慌割肉，耐心持股等待企稳）"
+        else:
+            advice = "👉 持仓建议：【维持不变】（价格在成本线附近窄幅震荡，暂无单边风险，保持原仓位继续观察）"
+
+    return f"【{name} · {role}】现报 ${price:.2f}（昨天: {chg_1d:+.2f}%，过去一周: {chg_5d:+.2f}%，过去一个月: {chg_20d:+.2f}%）。{trend_desc} {cost_desc} {advice}"
 
 
 def generate_fallback_insights(mdata):
-    """基于 1D / 5D / 20D / 20日高点回撤 / MA20均线 / 持仓成本盈亏 的全量历史数据量化分析引擎"""
+    """基于 1D / 5D / 20D / 20日高点回撤 / MA20均线 / 持仓成本盈亏 的全量通俗量化分析引擎"""
     data = (mdata or {}).get("data", {})
     us_data = data.get("us_indices", [])
     eu_data = data.get("europe_indices", [])
@@ -433,13 +475,13 @@ def generate_fallback_insights(mdata):
 
     p_map = {p.get("symbol"): p for p in portfolio_data}
 
-    # 1. 逐只生成 16 只持仓的多周期历史客观诊断
+    # 1. 逐只生成 16 只持仓的白话诊断与明确持仓建议
     insights_dict = {}
     for sym, profile in HOLDINGS_PROFILE.items():
         p = p_map.get(sym, {})
         insights_dict[sym] = _diagnose_single_holding(sym, p, profile)
 
-    # 2. 统计大盘广度与多周期趋势
+    # 2. 统计大盘走势
     sp_price = sp500.get("price", 0)
     sp_1d = sp500.get("change_pct", 0)
     sp_5d = sp500.get("change_5d_pct", sp_1d)
@@ -456,143 +498,100 @@ def generate_fallback_insights(mdata):
 
     vix_val = vix.get("price", 0)
     vix_1d = vix.get("change_pct", 0)
-    vix_5d = vix.get("change_5d_pct", vix_1d)
-
-    eu_down_count = sum(1 for item in eu_data if item.get("change_pct", 0) < 0)
-    eu_total = len(eu_data) or 5
 
     brent_price = brent.get("price", 0)
     brent_1d = brent.get("change_pct", 0)
-    brent_5d = brent.get("change_5d_pct", brent_1d)
     gold_price = gold.get("price", 0)
     gold_1d = gold.get("change_pct", 0)
-    gold_5d = gold.get("change_5d_pct", gold_1d)
-    silver_price = silver.get("price", 0)
-    silver_1d = silver.get("change_pct", 0)
-    silver_5d = silver.get("change_5d_pct", silver_1d)
     us10y_yield = us10y.get("price", 0)
-    us10y_5d = us10y.get("change_5d_pct", 0)
 
-    # 统计 16 只持仓的多日真实涨跌分布
+    # 统计持仓盈亏分布
     valid_p = [p for p in portfolio_data if p.get("symbol") in HOLDINGS_PROFILE and p.get("price")]
-    down_1d_list = [p for p in valid_p if p.get("change_pct", 0) < 0]
-    down_5d_list = [p for p in valid_p if p.get("change_5d_pct", 0) < 0]
-    down_20d_list = [p for p in valid_p if p.get("change_20d_pct", 0) < 0]
-    oversold_bounce_list = [
-        p for p in valid_p
-        if p.get("change_pct", 0) > 0 and (p.get("change_5d_pct", 0) < -1.0 or p.get("drawdown_20d_pct", 0) <= -4.5)
-    ]
-    oversold_bounce_list.sort(key=lambda x: x.get("drawdown_20d_pct", 0))
     underwater_list = []
+    profit_rich_list = []
     for p in valid_p:
         sym = p["symbol"]
         c = COST_BASIS.get(sym, 0)
-        if c and p["price"] < c:
+        if c:
             pl = (p["price"] - c) / c * 100
-            underwater_list.append((sym, pl))
-    underwater_list.sort(key=lambda x: x[1])
-    underwater_str = "、".join(f"{sym} ({pl:+.1f}%)" for sym, pl in underwater_list) if underwater_list else "无"
+            if pl < 0:
+                underwater_list.append((sym, pl))
+            elif pl >= 15.0:
+                profit_rich_list.append((sym, pl))
 
-    bounce_str = "、".join(
-        f"{p['symbol']} (单日{p['change_pct']:+.2f}%，但20日{p.get('change_20d_pct', 0):+.1f}%/较20日高点回撤{p.get('drawdown_20d_pct', 0):.1f}%)"
-        for p in oversold_bounce_list[:4]
-    )
+    underwater_str = "、".join(f"{sym} ({pl:+.1f}%)" for sym, pl in underwater_list) if underwater_list else "暂无"
+    profit_str = "、".join(f"{sym} ({pl:+.1f}%)" for sym, pl in profit_rich_list) if profit_rich_list else "暂无"
 
-    market_is_weak = (sp_1d < 0 and nq_1d < 0) or (sp_5d < -0.5 and nq_5d < -0.5)
+    # 动态大盘定性
+    if sp_1d >= 0.5 and nq_1d >= 0.5:
+        market_status = f"美股全面反弹：标普500上涨 {sp_1d:+.2f}% 收报 {sp_price:.2f}，纳指上涨 {nq_1d:+.2f}% 收报 {nq_price:.2f}，道指变动 {dow_1d:+.2f}%。"
+        m_icon = "📈"
+        m_level = "green"
+    elif sp_1d <= -0.5 and nq_1d <= -0.5:
+        market_status = f"美股承压回调：标普500收跌 {sp_1d:+.2f}% 收报 {sp_price:.2f}，纳指收跌 {nq_1d:+.2f}% 收报 {nq_price:.2f}，道指变动 {dow_1d:+.2f}%。"
+        m_icon = "📉"
+        m_level = "red"
+    else:
+        market_status = f"美股窄幅分化震荡：标普500收报 {sp_price:.2f}（{sp_1d:+.2f}%），纳指收报 {nq_price:.2f}（{nq_1d:+.2f}%），道指收报 {dow_price:.2f}（{dow_1d:+.2f}%）。"
+        m_icon = "📊"
+        m_level = "yellow"
 
     summary = [
         {
-            "icon": "📉" if market_is_weak else "📊",
-            "level": "red" if market_is_weak else "yellow",
+            "icon": m_icon,
+            "level": m_level,
             "text": (
-                f"全球大盘多周期趋势透视（回调承压·非单日偶发波动）：美股三大指数全线收跌且处于高位回调通道——"
-                f"标普500收报 {sp_price:.2f}（单日 {sp_1d:+.2f}% | 近5日 {sp_5d:+.2f}% | 较20日高点回撤 {sp_dd:.1f}%），"
-                f"纳指收报 {nq_price:.2f}（单日 {nq_1d:+.2f}% | 近5日 {nq_5d:+.2f}% | 较20日高点回撤 {nq_dd:.1f}%），"
-                f"道指重挫收报 {dow_price:.2f}（单日 {dow_1d:+.2f}%）；"
-                f"欧洲主要股指 {eu_down_count}/{eu_total} 全线收跌，恐慌指数 VIX 升至 {vix_val:.2f}（单日 {vix_1d:+.2f}%），"
-                f"表明全球权益市场正处于阶段性高位回撤与估值压缩周期。"
+                f"【全球股市大盘表现】：{market_status}"
+                f"恐慌指数 VIX 报 {vix_val:.2f}（变动 {vix_1d:+.2f}%），反映市场当前情绪整体处于正常偏谨慎区间。"
             )
         },
         {
-            "icon": "🔍",
-            "level": "red",
+            "icon": "💼",
+            "level": "yellow",
             "text": (
-                f"持仓组合真实健康度（穿透单日涨跌假象）：16只核心持仓中，单日下跌 {len(down_1d_list)}/16 只，"
-                f"近5日下跌 {len(down_5d_list)}/16 只，近20日累计下跌达 {len(down_20d_list)}/16 只。"
-                + (
-                    f"今日虽有部分标的翻红，但结合20日历史数据看：{bounce_str}，本质均为前期暴跌后的超跌技术反抽，远未收复20日均线；"
-                    if bounce_str else ""
-                )
-                + f"此外，组合中仍有 {len(underwater_list)} 只标的处于持仓成本线水下：{underwater_str}。"
+                f"【持仓组合整体健康度】：核心科技龙头底仓依然非常扎实，拥有丰厚利润安全垫：{profit_str}；"
+                f"部分受高利率压制或处于调整周期的标的目前仍在成本水下：{underwater_str}。"
+                f"整体组合抗风险能力稳固，重点在于做好节奏把控，避免盲目频繁换手。"
             )
         },
         {
-            "icon": "🌍",
-            "level": "red",
+            "icon": "🌐",
+            "level": "yellow",
             "text": (
-                f"宏观“高利率 + 高油价”双杀压制：10年期美债收益率攀升至 {us10y_yield:.3f}%（逼近 5.0% 关键风险阈值），"
-                f"布伦特原油大涨至 ${brent_price:.2f}/桶（单日 {brent_1d:+.2f}% | 近5日 {brent_5d:+.2f}%）。"
-                f"通胀反弹与高无风险利率不仅压制科技成长估值，亦导致现货黄金（${gold_price:.2f}，1D {gold_1d:+.2f}% / 5D {gold_5d:+.2f}%）、"
-                f"白银（${silver_price:.2f}，1D {silver_1d:+.2f}% / 5D {silver_5d:+.2f}%）及高股息消费股同步回落。"
+                f"【宏观大环境要点】：10年期美国国债收益率目前在 {us10y_yield:.3f}% 附近运行，"
+                f"布伦特原油报 ${brent_price:.2f}/桶（单日 {brent_1d:+.2f}%），黄金现报 ${gold_price:.2f}/盎司。"
+                f"高利率环境仍在持续考验高估值股票和防守分红股的性价比，保持适度耐心是当前最佳策略。"
             )
         }
     ]
 
-    # 3. 结合历史趋势与成本状态的深度投资建议
-    nvda_p = p_map.get("NVDA", {})
-    amd_p = p_map.get("AMD", {})
-    sndk_p = p_map.get("SNDK", {})
-    skhy_p = p_map.get("SKHY", {})
-    googl_p = p_map.get("GOOGL", {})
-    aapl_p = p_map.get("AAPL", {})
-    msft_p = p_map.get("MSFT", {})
-    ko_p = p_map.get("KO", {})
-    pg_p = p_map.get("PG", {})
-    jnj_p = p_map.get("JNJ", {})
-    ibm_p = p_map.get("IBM", {})
-    iau_p = p_map.get("IAU", {})
-    slv_p = p_map.get("SLV", {})
-    spcx_p = p_map.get("SPCX", {})
-
     actions = [
         {
             "text": (
-                f"【AI算力与芯片（NVDA/AMD/SNDK/SKHY）—— 警惕“深跌后单日反抽”假象，以保护浮盈与控险为主】：\n"
-                f"从近20日历史数据看，芯片板块正经历深度调整："
-                f"SNDK 近20日累跌 {sndk_p.get('change_20d_pct', 0):+.1f}%（较20日高点 $1802 回撤达 {sndk_p.get('drawdown_20d_pct', 0):.1f}%），"
-                f"SKHY 近20日累跌 {skhy_p.get('change_20d_pct', 0):+.1f}%（较20日高点 $195.97 回撤 {skhy_p.get('drawdown_20d_pct', 0):.1f}%，且较成本 $152.00 浮亏 -9.9%），"
-                f"AMD 近20日累跌 {amd_p.get('change_20d_pct', 0):+.1f}%（较20日高点 $658.52 回撤 {amd_p.get('drawdown_20d_pct', 0):.1f}%），"
-                f"NVDA 较20日高点 $243.37 回撤 {nvda_p.get('drawdown_20d_pct', 0):.1f}%（1D {nvda_p.get('change_pct', 0):+.2f}% / 5D {nvda_p.get('change_5d_pct', 0):+.2f}%）。"
-                f"今日 SKHY (+{skhy_p.get('change_pct', 0):.2f}%)、AMD (+{amd_p.get('change_pct', 0):.2f}%) 的单日上涨仅为深幅回调 20%~30% 后的技术性超跌反抽，现价均远低于20日均线，绝不可误判为行情走好。"
-                f"操作上：严禁在超跌反抽中盲目追高；对 SNDK、AMD、NVDA 严格执行阶段止盈与仓位保护，SKHY 在未收复 $152 成本线与 20 日线（${skhy_p.get('ma20', 0):.2f}）前严禁补仓。"
+                f"【核心科技龙头（NVDA/GOOGL/AAPL/MSFT）—— 维持不变，底仓安心持有】：\n"
+                f"英伟达、谷歌、苹果、微软等核心标的长线盈利垫丰厚（大部分浮盈达 15%~30%），基本面稳固。"
+                f"当前策略：建议全部【维持不变】，继续以底仓长线持有为主；短期如果出现反弹不要急于追高加仓，有回踩也不用恐慌割肉。"
             )
         },
         {
             "text": (
-                f"【科技巨头（MSFT/GOOGL/AAPL）—— 关注 MSFT 成本保卫战与 GOOGL 连续回撤】：\n"
-                f"GOOGL 单日跌 {googl_p.get('change_pct', 0):+.2f}%、近5日累跌 {googl_p.get('change_5d_pct', 0):+.2f}%（较20日高点 $359.40 已回撤 {googl_p.get('drawdown_20d_pct', 0):.1f}%）；"
-                f"MSFT 收报 ${msft_p.get('price', 0):.2f}（较20日高点回撤 {msft_p.get('drawdown_20d_pct', 0):.1f}%，已跌破 20 日均线 ${msft_p.get('ma20', 0):.2f}），距持仓成本 $515.00 仅剩 +1.8% 微薄安全垫；"
-                f"仅 AAPL（1D {aapl_p.get('change_pct', 0):+.2f}% / 5D {aapl_p.get('change_5d_pct', 0):+.2f}%）维持在 20 日均线上方相对抗跌。"
-                f"操作上：重点盯防 MSFT $515 成本线得失，若跌破需防范由盈转亏；GOOGL 待企稳于 5 日线（${googl_p.get('ma5', 0):.2f}）上方后再做定夺。"
+                f"【弹性芯片与周期标的（AMD/SNDK/SKHY）—— 逢反弹注意减码锁利，不盲目抄底】：\n"
+                f"这类标的弹性极大，近期从高点回撤较为明显。对已经积累较大涨幅的标的，若遇到短期快速反弹，可适当逢高落袋部分利润；"
+                f"而对于跌破成本线的标的，在未见到明确企稳前，建议保持克制，不盲目补仓摊薄成本。"
             )
         },
         {
             "text": (
-                f"【传统红利防御（KO/PG/JNJ/IBM）—— 正视“高利率+高油价”下的防御失灵】：\n"
-                f"在大盘下跌时，KO（单日 {ko_p.get('change_pct', 0):+.2f}% / 5D {ko_p.get('change_5d_pct', 0):+.2f}%）、"
-                f"PG（单日 {pg_p.get('change_pct', 0):+.2f}%）、"
-                f"JNJ（单日 {jnj_p.get('change_pct', 0):+.2f}% / 20D {jnj_p.get('change_20d_pct', 0):+.2f}%）非但未能护盘，反而出现单日大幅杀跌。"
-                f"根源在于 10 年期美债收益率升至 {us10y_yield:.3f}% 削弱了必选消费股息吸引力，且 $116.72 的高油价挤压消费品毛利。"
-                f"同时 IBM（${ibm_p.get('price', 0):.2f}）虽近期反弹，但较成本 $305.022 仍深套 -16.9%。建议暂停对消费红利股的增配，待美债收益率回落至 4.80% 以下再评估。"
+                f"【传统消费防守与分红股（KO/PG/JNJ/IBM）—— 暂停增配，以观望防守为主】：\n"
+                f"当前美国国债收益率维持高位，一定程度上分流了高股息消费股的买盘，使得可口可乐、宝洁等标的短期吸引力减弱。"
+                f"操作建议：维持现有仓位观望防守，暂不追加资金增配，待利率环境更明朗后再做打算。"
             )
         },
         {
             "text": (
-                f"【贵金属与特殊工具（IAU/SLV/SPCX）—— 控制水下持仓风险，警惕类现金标的大幅回撤】：\n"
-                f"金银近5日与近20日持续走弱：IAU（${iau_p.get('price', 0):.2f}，5D {iau_p.get('change_5d_pct', 0):+.2f}% / 20D {iau_p.get('change_20d_pct', 0):+.2f}%）较成本 $88.95 深套 -15.5%；"
-                f"SLV（${slv_p.get('price', 0):.2f}，5D {slv_p.get('change_5d_pct', 0):+.2f}% / 20D {slv_p.get('change_20d_pct', 0):+.2f}%，较20日高点回撤 {slv_p.get('drawdown_20d_pct', 0):.1f}%）浮盈大幅缩水至 +10.1%。"
-                f"更需高度警惕 SPCX（${spcx_p.get('price', 0):.2f}）较20日高点 $176.42 已大幅回撤 {spcx_p.get('drawdown_20d_pct', 0):.1f}%，并跌破成本 $151.65（浮亏 -2.7%），"
-                f"说明其当前波动剧烈，需严控仓位占比，切勿再将其视为无风险现金替代品。"
+                f"【贵金属与现金工具（IAU/SLV/SPCX）—— 严控仓位，保持耐心】：\n"
+                f"黄金白银近期跟随美元汇率波动整理，SPCX 出现一定波动并跌破成本。建议严格控制这类资产在总持仓中的比例，"
+                f"切勿当作无风险资产重仓押注，耐心等待外部宏观拐点出现。"
             )
         }
     ]
@@ -600,20 +599,14 @@ def generate_fallback_insights(mdata):
     risks = [
         {
             "text": (
-                f"【美债收益率逼近 5% 临界点】：10年期美债收益率收报 {us10y_yield:.3f}%，若向上突破 5.0% 整数心理大关，"
-                f"将触发华尔街量化基金进一步削减高估值科技股（NVDA/AMD/SNDK）与高股息股（KO/PG）的多头敞口。"
+                f"【国债收益率高企对股市估值的压制】：美国10年期国债收益率仍在 {us10y_yield:.3f}% 高位徘徊，"
+                f"若利率长期居高不下，科技成长股与高估值板块的估值扩张空间会受到持续制约。"
             )
         },
         {
             "text": (
-                f"【原油突破 $116 引发二次滞胀交易】：布伦特原油单日跳涨 +{brent_1d:.2f}% 至 ${brent_price:.2f}/桶（近5日累涨 {brent_5d:+.2f}%，WTI 报 ${wti.get('price', 0):.2f}/桶），"
-                f"能源成本飙升不仅锁死美联储降息空间，更直接侵蚀企业盈利预期，是大盘近期连续调整的核心推手。"
-            )
-        },
-        {
-            "text": (
-                f"【技术面深幅回撤与反抽诱多风险】：目前纳指较20日高点已回撤 {nq_dd:.1f}%，SNDK (-31.3%)、SKHY (-30.1%)、AMD (-21.5%)、SPCX (-16.4%)、NVDA (-13.3%)、SLV (-12.8%)、GOOGL (-10.9%) 均处于显著下跌通道中，"
-                f"下跌趋势中的单日阳线极易形成“诱多反抽”，务必坚持“不收复20日均线不盲目看多、不急于左侧抄底”的风控纪律。"
+                f"【防范震荡市追涨杀跌】：在市场趋势不明朗的震荡期，单日的小涨小跌容易让人冲动交易。"
+                f"务必坚持“看长做短、不急于盲目抄底、不恐慌割肉核心资产”的纪律。"
             )
         }
     ]

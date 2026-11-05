@@ -10,6 +10,12 @@ export LC_ALL="en_US.UTF-8"
 REPO_DIR="/Users/Kidult/investment-reports"
 cd "$REPO_DIR" || exit 1
 
+# 防休眠唤醒保障：确保 MacBook 在合盖且电池供电暗唤醒(DarkWake)时持有电源锁，不会被 macOS 秒速强制休眠
+if [ -z "$CAFFEINATE_ACTIVE" ] && command -v caffeinate &>/dev/null; then
+    export CAFFEINATE_ACTIVE=1
+    exec caffeinate -dimsu -t 900 /bin/bash "$0" "$@"
+fi
+
 # 加载本地 .env（若存在，可配置 GEMINI_API_KEY）
 if [ -f "$REPO_DIR/.env" ]; then
     set -a

@@ -330,7 +330,12 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
     if portfolio_insights:
         portfolio_rows_html = ""
         for symbol, note in portfolio_insights.items():
-            portfolio_rows_html += f'<div class="news-item"><div class="news-meta"><span class="news-domain">{symbol}</span></div><div class="news-title"><a href="#">{note}</a></div></div>'
+            styled_note = note
+            if "【维持不变】" in styled_note:
+                styled_note = styled_note.replace("【维持不变】", '<span class="badge-hold">维持不变</span>')
+            if "【建议调整】" in styled_note:
+                styled_note = styled_note.replace("【建议调整】", '<span class="badge-adjust">建议调整</span>')
+            portfolio_rows_html += f'<div class="news-item"><div class="news-meta"><span class="news-domain">{symbol}</span></div><div class="news-title" style="line-height:1.7; font-size:13px;">{styled_note}</div></div>'
         portfolio_insights_html = f'''
     <div class="card">
         <div class="card-title">💼 持仓个股分析 Portfolio Insights</div>
@@ -465,6 +470,8 @@ def generate_html_report(data: dict, mode: str, news_data: dict = None, insights
         .news-title a {{ color: var(--text); text-decoration: none; }}
         .news-snippet {{ font-size: 11px; color: var(--text-muted); line-height: 1.4; }}
         .news-snippet-cn {{ font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic; }}
+        .badge-hold {{ display: inline-block; background: rgba(34, 197, 94, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); padding: 1px 7px; border-radius: 4px; font-weight: 700; font-size: 12px; margin: 0 4px; vertical-align: middle; }}
+        .badge-adjust {{ display: inline-block; background: rgba(249, 115, 22, 0.18); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); padding: 1px 7px; border-radius: 4px; font-weight: 700; font-size: 12px; margin: 0 4px; vertical-align: middle; }}
     </style>
 </head>
 <body>

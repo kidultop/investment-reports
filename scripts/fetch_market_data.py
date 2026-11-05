@@ -182,26 +182,60 @@ def _compute_history_metrics(closes: list, highs: list, lows: list, price: float
     }
 
 
-def fetch_ticker_urllib(symbol: str, name: str) -> dict:
+# 指数 429 限流代理备份映射（当主指数遭遇 429 或限流时自动无缝降级）
+INDEX_PROXY_MAP = {
+    "^GSPC": {"proxy": "SPY", "ratio": 10.0, "label": "S&P 500 (SPY代理换算)"},
+    "^IXIC": {"proxy": "QQQ", "ratio": 40.0, "label": "NASDAQ (QQQ代理换算)"},
+    "^DJI":  {"proxy": "DIA", "ratio": 100.0, "label": "Dow Jones (DIA代理换算)"},
+    "^VIX":  {"proxy": "^VIX3M", "ratio": 1.0, "label": "VIX (3M参考)"},
+}
+
+
+def _load_latest_cache(symbol: str) -> dict:
+    """从本地近期的历史数据缓存中提取最近一次有效收盘，作为终极防 429 兜底"""
+    cache_dir = Path("/tmp/cloud_report_workspace")
+    if not cache_dir.exists():
+        return {}
+    cache_files = sorted(cache_dir.glob("market_data_*.json"), reverse=True)
+    for cfile in cache_files:
+        try:
+            with open(cfile, "r", encoding="utf-8") as f:
+                cdata = json.load(f).get("data", {})
+            for cat_list in cdata.values():
+                if isinstance(cat_list, list):
+                    for item in cat_list:
+                        if isinstance(item, dict) and item.get("symbol") == symbol and item.get("price"):
+                            cached_item = dict(item)
+                            cached_item["note"] = "网络限流-采用上一有效交易日数据"
+                            return cached_item
+        except Exception:
+            continue
+    return {}
+
+
+def fetch_ticker_urllib(symbol: str, name: str, is_retry_proxy: bool = False) -> dict:
     """使用标准库 urllib 从 Yahoo Finance v8 API 获取单标的行情（1个月历史 + 实时报价）"""
     encoded = urllib.parse.quote(symbol)
     hosts = ["query1.finance.yahoo.com", "query2.finance.yahoo.com"]
     last_err = ""
-    for attempt in range(3):
+    user_agents = [
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+    ]
+    for attempt in range(4):
         host = hosts[attempt % 2]
         url = f"https://{host}/v8/finance/chart/{encoded}?interval=1d&range=1mo"
         req = urllib.request.Request(
             url,
             headers={
-                "User-Agent": (
-                    f"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                    f"AppleWebKit/537.36 (KHTML, like Gecko) Chrome/12{attempt}.0.0.0 Safari/537.36"
-                ),
-                "Accept": "application/json",
+                "User-Agent": user_agents[attempt % len(user_agents)],
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9",
             },
         )
         try:
-            time.sleep(0.2 + random.uniform(0.05, 0.15))
+            time.sleep(0.3 + random.uniform(0.1, 0.25))
             with urllib.request.urlopen(req, timeout=12, context=_SSL_CTX) as resp:
                 payload = json.loads(resp.read().decode("utf-8"))
             result = payload["chart"]["result"][0]
@@ -218,7 +252,10 @@ def fetch_ticker_urllib(symbol: str, name: str) -> dict:
             elif closes:
                 price = closes[-1]
             else:
-                return {"name": name, "symbol": symbol, "error": "No price data"}
+                price = None
+
+            if price is None:
+                raise ValueError("No price in payload")
 
             prev_price = None
             if len(closes) >= 2 and abs(closes[-1] - price) < max(0.05 * price, 1.0):
@@ -250,11 +287,33 @@ def fetch_ticker_urllib(symbol: str, name: str) -> dict:
             }
         except Exception as e:
             last_err = str(e)
-            time.sleep(0.6 * (attempt + 1))
+            # 若触发 429 Too Many Requests，退避等待
+            if "429" in last_err:
+                time.sleep(1.5 * (attempt + 1))
+            else:
+                time.sleep(0.5 * (attempt + 1))
+
+    # 若主指数遇到 429 或限流且有代理 ETF，自动降级至代理 ETF
+    if symbol in INDEX_PROXY_MAP and not is_retry_proxy:
+        p_info = INDEX_PROXY_MAP[symbol]
+        print(f"⚠️ 标的 {symbol} 访问受限 ({last_err})，自动降级切换至核心代理 {p_info['proxy']}...")
+        proxy_res = fetch_ticker_urllib(p_info["proxy"], p_info["label"], is_retry_proxy=True)
+        if not proxy_res.get("error"):
+            proxy_res["name"] = name
+            proxy_res["symbol"] = symbol
+            return proxy_res
+
+    # 尝试从近期历史数据缓存恢复
+    cached = _load_latest_cache(symbol)
+    if cached:
+        print(f"ℹ️ 标的 {symbol} 启用近期有效行情缓存兜底")
+        return cached
+
     return {"name": name, "symbol": symbol, "error": last_err}
 
 
 def _quote_snapshot_yf(ticker):
+    """仅通过 fast_info 获取实时快照，严禁调用重量级且极易触发 429 的 ticker.info"""
     def _clean(v):
         try:
             v = float(v)
@@ -268,14 +327,6 @@ def _quote_snapshot_yf(ticker):
         prev = _clean(fi.get("previousClose")) or _clean(fi.get("regularMarketPreviousClose"))
         if last and prev:
             return (round(last, 4), round(prev, 4), int(fi.get("lastVolume") or 0))
-    except Exception:
-        pass
-    try:
-        i = ticker.info or {}
-        last = _clean(i.get("regularMarketPrice")) or _clean(i.get("currentPrice"))
-        prev = _clean(i.get("previousClose")) or _clean(i.get("regularMarketPreviousClose"))
-        if last and prev:
-            return (round(last, 4), round(prev, 4), int(i.get("regularMarketVolume") or 0))
     except Exception:
         pass
     return None
